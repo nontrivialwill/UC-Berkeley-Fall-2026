@@ -1,0 +1,93 @@
+\tocsection{\textbf{8/28/26 Lecture 2: }Introduction to Measure}
+
+We want to assign a size to subsets $A \subseteq \R$. If $A = [a, b]$, it's quite natural to say its size is $b - a$. Also, we would want the size of $\cup I_{n}$ with $I_{i}$ are disjoint to be the sum of the sizes of $I_{n}$. 
+
+\subsection*{Digression on Probability Theory}
+\sectionspace
+
+We can model a sequence of coin flips as an element if $\{T, H\}^{\N}$. However, here is another way to do it. For $x \in [0, 1]$, write $x$ in binary like $x = (0.1001\ldots)_{2}$ for instance. Then, associate coin tosses to points in $[0, 1]$ by mapping $T \to 0$ and $H \to 1$, so that $HTTH\ldots \to (0.1001\ldots)_{2}$. This allows us to interpret statements about probability as statements about sizes of subsets of $[0, 1]$.\\
+
+For instance, 
+\begin{align*}
+    \{x \in \{T, H\}^{\N} \col x \text{ begins with an }H\} &= \{x \in [0, 1] \col x = 0.1\ldots\}\\
+    &= [1/2, 1]
+\end{align*}
+Thus, one can conclude that the probability that a sequence of flips starts with an $H$ is $1/2$.\\
+
+Here's another question, one that is harder to solve: How do we show that the number of head and tails get closer and closer to being equal with probability $1$? Let's try to represent this set of sequences as a subset of $[0, 1]$. It is clear that the set of such sequences is in correspondence with
+\[ \mathcal{N} = \left\{x \in [0, 1] \col \lim_{n \to \infty} \frac{1}{N}\sum_{i = 1}^{N} b_{n}(x) = 1/2\right\} \]
+where $b_{n}$ is the $n$th binary digit of $x$. However, this has limits and, so is there a way to make this more digestible? The answer is yes. Consider
+\[ \bigcap_{k = 1}^{\infty} \bigcup_{N = 1}^{\infty} \bigcap_{n = N}^{\infty} \left\{x \in [0, 1] \col \abs{\frac{1}{n}\sum_{i = 1}^{n} b_{i}(x) - 1/2} < 1/k\right\} \]
+Parsing what this set is, we see it says that belonging in this set means that ``for all $k$, there exists an $N$, such that for all $n \geq N$, $\abs{\frac{1}{n}\sum_{i = 1}^{n} b_{i}(x) - 1/2} = 1/k$''. That is, we just turned the notion of a limit into the intersection and union of simpler sets! Soon, we will see this technique makes it much easier to measure sets with properties like limits approaching a certain value. Before that, some topology.
+
+\begin{definition}[\textbf{Definition 2.1:} Negligible Sets]
+    A set $A$ is \emph{negligible} if, $\forall \epsilon > 0$, there is a countable collection of (open?) intervals $\{I_{n}\}_{n = 1}^{\infty}$ such that
+    \[ A \subseteq \bigcup_{n = 1}^{\infty} I_{n} \]
+    and $\sum_{n = 1}^{\infty} \abs{I_{n}} < \epsilon$. 
+\end{definition}
+\clearpage
+
+The following is a theorem we won't prove, but we will state it here. 
+
+\begin{theorem}[\textbf{Theorem 2.2: }Borel's Normal Number Theorem]
+    The set $\mathcal{N}^{c} = [0, 1] \backslash \cal{N}$ is negligible. 
+\end{theorem}
+Thus, we can conclude that the probability that the number of heads and tails aren't equal in the long run occurs with probability 0. Moving past probability, let's explore some other useful results about this topological/measure theoretic term we just defined.
+
+\begin{lemma}[\textbf{Proposition 2.3}]
+    If $A$ is countable, then it is negligible. 
+\end{lemma}
+\begin{proof}{Proof:}
+    Let $\epsilon > 0$ and $A = \{a_1, a_2, \ldots\}$. Then, letting $I_{n} = (a_{n} - \epsilon / 2^{n + 2}, a_{n} + \epsilon / 2^{n + 2})$, we see that $A \subseteq \cup_{n = 1}^{\infty} I_{n}$. Then, as $\abs{I_{n}} = \epsilon/2^{n + 1}$, we see
+    \[ \sum_{b = 1}^{\infty} \abs{I_{n}} = \sum_{n = 1}^{\infty} \epsilon / 2^{n + 1} = \epsilon/2 < \epsilon \]
+    Thus, $A$ is countable. 
+
+    $\qed$
+\end{proof}
+
+\begin{lemma}[\textbf{Proposition 2.4}]
+    Let $\{A_{n}\}_{n = 1}^{\infty}$ be a collection of negligible sets. Then $\cup_{n = 1}^{\infty} A_{n}$ is also negligible. 
+\end{lemma}
+\begin{proof}{Proof:}
+    Let $\epsilon > 0$. For each $A_{i}$, we can find a collection of intervals $\{I_{n, i}\}$ such that $A_i \subseteq \cup_{n = 1}^{\infty} I_{n, i}$ and $\sum_{n = 1}^{\infty} \abs{I_{n, i}} < \epsilon / 2^{i}$.\\
+    
+    Now, consider the set $\{I_{n, i} \col i, n \in \N\}$. We see that this is a countable collection of intervals, $\cup_{i = 1}^{\infty} \subseteq \cup_{n, i \geq 1} I_{n, i}$, and
+    \begin{align*}
+        \sum_{n, i \geq 1} \abs{I_{n, i}} &= \sum_{i = 1}^{\infty} \sum_{n = 1}^{\infty} \abs{I_{n, i}}\\
+        &< \sum_{i = 1}^{\infty} \epsilon / 2^{i}\\
+        &= \epsilon
+    \end{align*} 
+    Thus, $\cup_{n = 1}^{\infty} A_{n}$ is negligible.
+
+    $\qed$
+\end{proof}
+\clearpage
+
+Now, small contingency. Is it possible that we can have a $\cal{N} \subseteq [0, 1]$ with both $\cal{N}^{c} = [0, 1] \backslash \cal{N}$ and $\cal{N}$ being negligible? Do non-negligible sets even exist? Our intuition says this shouldn't occur, but it is a suprisingly nontrivial result to show! 
+
+\begin{lemma}[\textbf{Proposition 2.5}]
+    $[0, 1]$ is not negligible. 
+\end{lemma}
+Before we prove this result however, we need some more tools!
+
+\begin{definition}[\textbf{Definition 2.6: }Open Covers]
+    Let $C \subseteq \R$. An \emph{open cover} $\cal{O} = \{\cal{U}_{\alpha}\}_{\alpha \in I}$ is a collection of open sets such that $C \subseteq \cup_{\alpha \in I} \cal{U}_{\alpha}$. 
+\end{definition}
+
+\begin{definition}[\textbf{Definition 2.7: }Compactness]
+    Let $C \subseteq \R$. We say that $C$ is \emph{compact} if every open cover of $C$ has a finite subcover. That is, given an open cover $C \subseteq \cup_{\alpha \in I} \cal{U}_{\alpha}$, then we can write $C \subseteq \cup_{i = 1}^{n} \cal{U}_{\alpha_1}$ for some $\cal{U}_{\alpha_i} \in \{\cal{U}_{\alpha}\}$. 
+\end{definition}
+
+\begin{theorem}[\textbf{Theorem 2.8: }Heine-Borel Theorem]
+    A set $C \subseteq \R$ is compact if, and only if, $C$ is closed and bounded.
+\end{theorem}
+
+Now, let's try to prove Proposition 2.5 To do this, we will prove the following lemma. The full proof will be shown next lecture, but here is the proof sketch. 
+
+\begin{lemma}[\textbf{Lemma 2.9}]
+    If $\cal{O} = \{I_\alpha\}_{\alpha \in J}$ is a collection of open intervals such that $[a, b] \subseteq \cup_{\alpha} I_{\alpha}$, then $\sum_{\alpha} \abs{I_{\alpha}} > b - a$. 
+\end{lemma}
+\begin{proof}{Proof Sketch:}
+    Given an open cover (of intervals), pass to a finite cover. Thus, we only need to show this result for finite collections. To do this, we will use induction. For $k = 1$, we see that if $[a, b] \subseteq [c, d]$, indeed $d - c \geq b - a$. For the inductive step, wlog, write $[a, b] = [0, 1]$. Then, considering a cover of $k + 1$ intervals, note that one interval must contain the endpoint $1$. Let this interval be $I^{*}$. Then, apply the inductive step to the interval $[0, 1] \backslash I^{*}$ as this is covered with $k$ intervals. 
+\end{proof}
+\clearpage

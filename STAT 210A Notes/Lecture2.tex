@@ -1,0 +1,83 @@
+\tocsection{\textbf{9/2/26 Lecture 2:} What is Probability?}
+
+First, here are the questions that we will be answering in this course:
+\begin{enumerate}
+    \item \textbf{Bayesian vs Frequentist}: What are the pros and cons? How do different frameworks influence how we view probability?
+    \item \textbf{Sufficiency:} Does a parameter sufficiently summarize the data well? If we were to forget all the data and keep the parameter, is anything of importance lost?
+    \item \textbf{Estimation:} What is a good way to estimate parameters? For a binomial parameters, it seems like $X/n$ is a good estimator, and why? Even further, how can we use outside information to improve our estimators?
+    \item \textbf{Non-Parametric Testing:} How do we test confidence without parameters?
+    \item \textbf{Testing:} Hypothesis testing and rejecting them
+    \item \textbf{Asymptotics:} For large datasets, using certain estimators are not a good idea, due to the sheer computation you would need to do. How do we approximate using asymptotics?
+\end{enumerate}
+
+\subsection*{What is Probability?}
+\sectionspace
+
+\textbf{Frequentist Answer:} It is the relative frequency of an outcome when an experiment is repeated many times.\\
+
+\textbf{Bayesian Answer:} It is the degree of belief that something will happen.\\
+
+\textbf{Mathematicians Answer (holy mog):} It is a function $P$ that maps some sets of a space $X$ to $[0, 1]$ that is countable additive and such that $P(X) = 1$. 
+
+\subsection*{Measure Theory Basics}
+\sectionspace
+
+Heuristically, if $X$ is a set, a measure $\mu$ is map that maps some subsets of $X$ to the nonnegative reals such that it is countable additive. Here are some examples:\\
+
+\textbf{1. Counting Measure:} If $X$ is countable, consider the function $\#(A) = \# \text{ of points in } A$. This is a measure!\\
+
+\textbf{2. Lebesgue Measure:} If $X = \R^n$, the \emph{Lebesgue measure} $\lambda$ is defined by
+\[ \lambda(A) = \int \cdots \int_{A} dx_1 \cdots dx_{n} \]
+What does this mean? We will know in a couple weeks maybe.\\
+
+\textbf{3. Standard Gaussian:} If $X = \R$, let $P_{z}(A) = \mathbb{P}(z \in A)$ where $z \sim \mathcal{N}(0, 1)$. Thus, we see that
+\[ P_{z}(A) = \int_{A} \phi(x) dx \text{ where } \phi(x) = \frac{1}{\sqrt{2\pi}}e^{-\frac{1}{2}x^2} \]
+
+Now, recall we said that measures are only defined over certain collections of sets. We will define what the collection needs to be.
+
+\begin{definition}[\textbf{Definition 2.1: }$\sigma$-fields]
+    A collection $\cal{F} \subseteq \P(X)$ is a \emph{$\sigma$-field} if it contains $X$ and is closed under complements and countable unions. We then call $(X \cal{F})$ a \emph{measurable space}.
+\end{definition}
+For example, if $X$ is countable, then we can have $\cal{F} = \P(X)$, and if $X = \R^n$, then we will often have $\cal{F} = \cal{B}(X)$, where $\cal{B}(X)$ is the Borel $\sigma$-field, which we will (maybe) define later.\\
+
+\begin{definition}[\textbf{Definition 2.2: }Measures]
+    Given a measurable space $(X, \cal{F})$, a \emph{measure} $\mu$ is a map $\mu : \cal{F} \to [0, \infty]$ such that
+    \begin{enumerate}
+        \item $\mu(\cup_{i = 1}^{\infty} A_i) = \sum_{i = 1}^{\infty} \mu(A_i)$
+        \item $\mu(\emptyset) = 0$. 
+    \end{enumerate}
+    We call $\mu$ a \emph{probability measure} if $\mu(X) = 1$. We call $(X, \cal{F}, \mu)$ a \emph{measure space}.
+\end{definition}
+
+Now, if $(X, \cal{F}, \mu)$ is a measure space, and $f : X \to Y$ is a nice enough function, we can induce a measure $\nu$ on $Y$ as follows: If $B \subseteq Y$, then let
+\[ \nu(B) = \mu(f^{-1}(B)) \]
+(thus, we need $f$ to be a nice function in that the preimage of measurable sets are measurable). We call this induced measure the \emph{push-forward measure} on $Y$.\\
+
+For instance, if $Z$ is a random variable, and we let $Y = f(Z) = \max{Z, 0}$, then we see that
+\begin{align*}
+    P_{Y}(B) &= \mathbb{P}(y \in B)\\
+    &= \mathbb{P}(z \in f^{-1}(B))\\
+    &= P_{Z}(f^{-1}(B))
+\end{align*}
+
+\subsection*{Integrals}
+Heuristically, taking integrals of functions with respect to a measure $\mu$, denote $\int f(x) d\mu(x)$, is a way to put a weight on the area we are integrating over. How do we develop the definition?\\
+
+First, certainly we want that $\int 1_{A}(x) d\mu(x) = \mu(A)$ where $1_{A}$ is the indicator function of $A$. Then, because we want linearity, we should allow that
+\[ \int \sum c_i 1_{A_i}(x) d\mu(x) = \sum c_i \mu(A_i) \]
+we call the function $\sum c_i 1_{A_i}(x)$ a simple function. Thus, we currently have the integral defined for indicators and simple functions.\\
+
+Now, if $f$ is positive, it turns out we can approximate $f$ from below using increasing simple functions, getting more and more accurate. Thus, we can let
+\[ \int f(x) d\mu(x) = \sup\left\{\int s d\mu \col s \text{ is simple and } s \leq f \right\} \]
+Finally, if $f$ is just any function on $\R$, we can consider it's positive parts $f^{+} = \max{f, 0}$ and $f^{-} = \max{-f, 0}$, and as these are integrable in the sense above, define
+\[ \int f(x) d\mu(x) = \int f^{+}(x) d\mu(x) - \int f^{-}(x) d\mu(x) \]
+Thus, just from requiring linearity and defining the function on indicators, we have defined the integral for all sorts of functions! Here are some examples:
+
+\textbf{Example 1:} If $\#$ is the counting measure, we have that
+\[ \int f(x) d\#(x) = \sum_{x \in X} f(x) \]
+
+\textbf{Example 2:} If $P_{Z}$ is the Gaussian distribution, then as
+\[ \int 1_{A}(x) dP_{Z} = \int 1_{A}(x) \phi(x) dx \]
+we see that
+\[ \int f(x) dP_{Z} = \int f(x)\phi(x) dx \]
+This looks a lot like how expectations are defined in lower level probability classes!

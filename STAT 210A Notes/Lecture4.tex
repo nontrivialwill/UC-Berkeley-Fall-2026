@@ -1,0 +1,109 @@
+\tocsection{\textbf{9/8/26 Lecture 4: }Estimation and Sufficiency}
+
+Recall the setting. We observe data $X \sim P$ for some $P \in \cal{P} = \{P_{\theta} : \theta \in \Theta\}$. We want to guess estimand $g(\theta)$ (which is typically the median, mean, or some coefficient) by applying an estimator $\delta(\cdot)$ to $X$.\\
+
+A good guess is something that minimizes a function $L(\theta, d)$, which is called the loss. This measures the disutility of a guess. Typically, we take $L(\theta, d) = (g(\theta) - d)^2$. Finally, to tell how good a estimator is given any sample, we use the risk function
+\begin{align*}
+    R(\theta; \delta) &= \bb{E}_{\theta}[L(\theta, \delta(X))]\\
+    &= \int_{X} L(\theta, \delta(X))dP_{\theta}(X)
+\end{align*}
+for example, an example of the risk function is
+\[ \tt{MSE}(\delta) = \bb{E}_{\theta}[(g(\theta) - \delta(X))^2] \]
+
+For instance, consider $X \sim \tt{Binom}(n, \theta)$, which has probability mass function $p_{\theta}(x) = {n \choose x}\theta^{x}(1 - \theta)^{n - x}$. We want to estimate $g(\theta) = \theta$. Consider the following estimators
+\[ \delta_0(X) = \frac{X}{n},\quad \delta_1(X) = \frac{X + 1}{n + 2},\quad \delta_2(X) = \frac{X + 2}{n + 4},\quad \text{ and } \delta_{3}(X) = \frac{X + 1}{n} \]
+Notice that although the first one is unbiased, the others have smaller variance, so their MSEs are comparable. Here is a graph of their MSEs for a given $\theta$. 
+
+\fig{0.6}{Lecture4Fig1}{}
+
+We see that between $\theta_0, \theta_1, \theta_2$, there is always one $\theta$ that makes one estimator better than another. However, we see that $\theta_3$ is strictly worse than $\theta_0$, which means there is no reason to use it over $\theta_0$. We will soon formalize what this means, but first: Why don't we just consider an estimator that is the best among all estimators?\\
+
+Well, the reason is that it doesn't exist. If there exists an estimator that is always better than every estimator everywhere, then for a given $\theta$, we can take an estimator that simply gives the constant estimate $\theta$. Then, it has no $\tt{MSE}$, which implies that our ``best everywhere'' estimator must have no $\tt{MSE}$ everywhere, which simply cannot happen. 
+
+\begin{definition}[\textbf{Definition 4.1:} Inadmissable Estimators]
+    We say an estimator $\delta$ is \emph{inadmissable} if there exists an estimator $\delta^{*}$ such that
+    \begin{enumerate}
+        \item $R(\theta; \delta^{*}) \leq R(\theta; \delta)$ for all $\theta \in \Theta$.
+        \item $R(\theta; \delta^{*}) < R(\theta; \delta)$ for some $\theta \in \Theta$. 
+    \end{enumerate}
+    We then say that $\delta^{*}$ strictly dominates $\delta$. 
+\end{definition}
+
+Thus, in our case above, $\delta_{3}$ is inadmissable.\\
+
+Now, given multiple estimators that are inadmissable, how do we remove the ambiguity. The way to do this is to reduce the risk function $R(\theta; \delta)$ to a scalar (not dependent on $\theta$). There are multiple ways to do this.\\
+
+\textbf{Method 1: Average Case Risk:} This involes measuring the average case risk, which means we are going to average over $\theta$. Thus, we need to assume that $\theta \sim \pi$ and minimize $\int_{\theta} R(\theta;\delta) d\pi(\theta)$. If $\pi$ is a probability measure, then we are trying to find $\bb{E}_{\pi}[R(\theta; \delta)]$. For instance, if $\pi$ is uniform on $[0, 1]$ in the case above, then we summarize the risk functions by integrating over the MSE over $[0, 1]$.\\
+
+Notice that this isn't inherently Bayes. We aren't assuming that $\theta$ takes a distribution, but we are using this distribution as a way to average $\theta$. However, if we are doing Bayesian statistics, then this would be the way to pick the best estimator.\\
+
+\textbf{Method 2: Worse Case Risk:} With this method, we are trying to minimize, over $\theta$, the $\sup_{\theta \in \Theta} R(\theta; \delta)$. From out example above $\delta_2$ minimizes worse case risk among the other estimators. \\
+
+\textbf{Method 3: Restrict Estimators:} One thing we can do is to just rule out all unbiased estimators and try Method 1 or Method 2 on the resulting list. This has merit in some cases, but we will see sometimes it's useful to use biased estimators.
+
+\subsection*{Sufficiency}
+\sectionspace
+
+Recall the three models of coin flips: \\
+
+\textbf{Model 3:} $X_{i, t} \overset{\tt{ind}}{\sim} \tt{Bern}(\theta_{i, t})$, for $i \leq 48$ and $t \leq n_{i}$\\
+
+\textbf{Model 2:} $X_{i} \overset{\tt{ind}}{\sim} \tt{Binom}(\theta_{i})$ for $i \leq 48$. Notice that $X_{i} \sum_{t = 1}^{n_{i}} X_{i, t}$ where $X_{i, t} \overset{\tt{ind}}{\sim} \tt{Bern}(\theta_{i})$.\\
+
+\textbf{Model 1:} $X \overset{\tt{ind}}{\sim} \tt{Binom}(n^{+}, \theta)$. Notice that $X = \sum_{i} X_{i} = \sum_{i, t} X_{i, t}$. 
+
+Thus, in some sense
+\[ \text{Model 1} \subseteq \text{Model 2} \subseteq \tt{Model 3} \]
+as given that we know $X_{i, t}$ but Model 2 is our assumption, we can construct $X_{i}$, and given that we know $X_{i}$ but Model 1 is our assumption, we can construct $X$.
+
+\begin{definition}[\textbf{Definition 4.2:} Sufficient Statistics]
+    A statistics $T(X)$ is \emph{sufficient} for a model $\cal{P}$ if the conditional distribution of $X | T(X)$ is the same for all $P \in \cal{P}$. In other words, no matter what $\cal{P}$ is, knowing that $T(X) = c$ can tell you what the distribution of $X$ is. 
+\end{definition}
+
+For example, if $X_1, \ldots, X_n$ are i.i.d. $\tt{Bern}(\theta)$, then $T(X) = \sum_{i} X_i$ is sufficient, because knowing that $T(X) = c$ can give you the marginal distribution of $X = (X_1, \ldots, X_n)$.\\
+
+Now, notice that $X_i$ is sufficient for $\tt{Binom}(n_i, \theta_i)$, it is not sufficient for $\tt{Bern}(\theta_{i, t})$, and is not minimal sufficient for $\tt{Binom}(n, \theta)$ (as it gives too much information).
+
+\subsection*{Factorization Theorem}
+\begin{theorem}[\textbf{Theorem 4.3:} Factorization Theorem]
+    Let $\cal{P} = \{P_{\theta} \col \theta \in \Theta\}$ be a model with densities $p_{\theta}(X)$ with respect to a common dominating measure $\mu$ on $X$. Then, $T(X)$ is sufficient if, and only if, there exists a $g_{\theta}(t)$ and $h(x) \geq 0$ such that
+    \[ p_{\theta}(x) \overset{\mu \tt{ a.e.}}{=} g_{\theta}(T(x)) \cdot h(x) \]
+\end{theorem}
+\begin{proof}{Proof:}
+    We will prove it for discrete $X$, as the proof for the continuous case is similar but just requires measure theoretic notions. First, assume wlog that $\mu = \#$ (as every measure is absolutely continuous with respect to $\#$). \\
+
+    $(\Leftarrow)$ We see that
+    \begin{align*}
+        \bb{P}_{\theta}(X = x \given T = t) &= \frac{\bb{P}_{\theta}(X = x, T(x) = t)}{\bb{P}_{\theta}(T(x) = t)}\\
+        &= \frac{\bb{P}_{\theta}(X = x, T(x) = t)}{\sum_{z \col Tz = t} \bb{P}_{\theta}(X = z)}\\
+        &= \frac{g_{\theta}(t)h(x) \cdot 1\{T(x) = t\}}{\sum_{T(z) = t} g_{\theta}(t)h(z)}\\
+        &= \frac{h(z)1\{T(x) = t\}}{\sum_{T(z) = t}h(z)}
+    \end{align*}
+    Thus, we see that this doesn't depend on $\theta$, so is the same for all $P \in \cal{P}$.\\
+
+    $(\Rightarrow)$ Assume that $T$ is sufficient. Then, let $g_{\theta}(t) = \bb{P}_{\theta}(T(X) = t)$ and $h(x) = \bb{P}_{\theta}(X = x \given T(x) = t)$. Then, as
+    \begin{align*}
+        g_{\theta}(T(x))h(x) &= \bb{P}_{\theta}(T(X) = T(x) \text{ and } X = x)\\
+        &= \bb{P}_{\theta}(X = x)\\
+        &= p_{\theta}(x)
+    \end{align*}
+    which was to be shown.
+
+    $\qed$
+\end{proof}
+\textbf{Note:} We can absorb $h(x)$ into $\mu$ by letting $\nu$ such that $\frac{d\nu}{d\mu} = h$. Thus, we would then have $p_{\theta}(X) = g_{\theta}(T(X))$, which is what we kind of mean by ``$T$ gives the distribution of $X$''.\\
+
+For example, if $X_1, \ldots, X_n \overset{\tt{iid}}{\sim} \cal{N}(\theta, 1)$, then as the density function is $\phi(x) = \frac{1}{\sqrt{2\pi}}e^{-\frac{1}{2}(x - \theta)^2}$, we see that
+\begin{align*}
+    p_{\theta}(x) &= (2\pi)^{-n/2} \prod_{i = 1}^{n} e^{-1/2(x_i - \theta)^2}\\
+    &= e^{\theta\sum_{i = 1}^{n} x_i - n\theta^2/2} \cdot \frac{e^{-\sum x_i^2/2}}{(2\pi)^{n/2}}
+\end{align*}
+which is the desired factorization showing that $\sum_{i = 1}^{n} x_i$ is sufficient.\\
+
+Another example is that if $X_1, \ldots, X_n \overset{\tt{iid}}{\sim} \tt{Pois}(\theta)$, then as $\phi(x) = \frac{{\theta}^{x}e^{-\theta}}{x!}$ for $x = 0, 1, \ldots$, then as
+\[ p_{\theta}(x) = \prod_{i = 1}^{n} \frac{\theta^{x_i}e^{-\theta}}{x_i!} = \theta^{\sum x_i}e^{-n\theta} \cdot \frac{1}{\prod_{i = 1}^{n} x_i!} \]
+we see that $\sum_{i = 1}^{x} x_i$ is sufficient.\\
+
+One last interesting example is that, if $X_i \overset{\tt{iid}}{\sim} U[\theta, \theta + 1]$, then as $\theta(x) = 1\{\theta \leq x \leq \theta + 1\}$, we see that
+\[ p_{\theta}(x) = \prod_{i = 1}^{n} 1\{\theta \leq x_i \leq \theta + 1\} = 1\{\theta \leq \min_{i} X_i \leq \max_{i} X_i \leq \theta + 1\} \]
+we can conclude that $(\min_{i} X_i, \max_{i} X_i)$ is sufficient.

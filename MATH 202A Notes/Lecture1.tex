@@ -1,0 +1,76 @@
+\tocsection{\textbf{8/25/26 Lecture 1: }Introduction}
+
+\begin{definition}[\textbf{Definition 1.1:} Metric Spaces]
+    Given a set $X$, $d : X \times X \to \R$ is a \emph{metric} if
+    \begin{enumerate}
+        \item $d(x, y) = 0 \iff x = y$
+        \item $d(x, y) = d(y, x)$
+        \item $d(x, z) \leq d(x, y) + d(y, z)$
+    \end{enumerate}
+    We then say $(X, d)$ is a \emph{metric space} 
+\end{definition}
+
+Lets start with $\Q$ with it's metric being $d\left(\frac{m_1}{n_1}, \frac{m_2}{n_2}\right) = \abs{\frac{m_1}{n_1} - \frac{m_2}{n_2}}$
+
+\subsection*{Construction of the Reals}
+
+First, why do we want $\R$? The answer is that in $\Q$, we don't have solutions to many polynomial equations, and that sets don't have well defined suprema and infima. 
+
+\begin{definition}[\textbf{Definition 1.2: }Cauchy Sequences]
+	We say a sequence $\{x_n\} \in X$ is \emph{Cauchy} if $\forall \epsilon > 0$, $\exists N > 0$ such that $\forall n, m > N$,
+	\[ d(x_n, x_m) < \epsilon \]
+\end{definition}
+Now, the goal is to define real numbers as Cauchy sequences of $\Q$, but right now, we have a problem with unique representation. There are many Cauchy sequences that approach the same limit, so we can fix that.\\
+
+Let $X' = \{\{x_n\} \in \Q \col \{x_n\} \text{ is Cauchy}\}$, and define the following equivalence relation. Say
+\[ \{x_n\} \sim \{y_n\} \text{ if, and only if } d(x_n, y_n) \to 0 \text{ as } n \to \infty \]
+With this, we can define $\R$ to be equivalence classes of $X'$. Note that with this definition, we can define a natural metric on $\R$ by
+\[ d_{\R}([x_n], [y_n]) = \lim_{n \to \infty} d_{\Q}(x_n, y_n) \]
+and this is well defined (choice of representative is irrelevant). 
+
+\begin{definition}[\textbf{Definition 1.3: }Completeness]
+	We say a metric space $X$ is \emph{complete} if all Cauchy sequences converge.
+\end{definition}
+
+\begin{theorem}[\textbf{Theorem 1.4:} Completeness of $\R$]
+	With $d(x, y) = \abs{x - y}$, $\R$ is complete. 
+\end{theorem}
+
+Here are some interesting examples of metric spaces. 
+
+\begin{itemize}
+	\item Given a connected graph, let $d(x, y)$ be the length of the shortest path between the vertices $x$ and $y$. 
+	\item Given a set of strings of length $n$ from an alphabet, let $d(w_1, w_2)$ be the number of entries in which $w_1$ and $w_2$ differ. This is called the \emph{Hamming distance}.
+	\item Consider $\Q$, and for $x, y \in \Q$, write $\abs{x - y} = 2^{k}\frac{a}{b}$ where $a$ and $b$ are odd. This representation is unique, so define $d(x, y) = 2^{-k}$. This is called the 2-adic metric. It turns out by Ostrowski's theorem, every nontrivial absolute value on $\Q$ is either the normal one, or a $p$-adic one, which is cool!
+	\item Consider $X = \{\text{functions on } [0, 1]\}$ with $d(f, g) = \sup\abs{f(x) - g(x)}$. This is well defined since $[0, 1]$ is compact. 
+\end{itemize}
+
+\begin{definition}[\textbf{Definition 1.5: }Completions]
+	Given a metric space $(X, d)$, we say that $(X^{*}, d^{*})$ is a \emph{completion} of $(X, d)$ if it is complete and there exists an injective function $f : X \to X^{*}$ such that
+	\[ d^{*}(f(x), f(y)) = d(x, y) \]
+	and also that $f(X)$ is dense in $X^{*}$. By dense, we mean that for any $x^{*} \in X^{*}$, there is a sequence of points in $X$ that approach it. 
+\end{definition}
+
+With this definition, we see that $\R$ is a completion of $\Q$, and we take $f(x) = \{x_n = x\}$ to be the injective function. A quick question one may ask is why we need density? The reason is that we want uniqueness. For example, we don't want to say that $\R$ with an additional far point off the real line is a completion of $\Q$.
+
+\begin{theorem}[\textbf{Theorem 1.6: }Existence of Completion]
+	Every metric space has a completion
+\end{theorem}
+\begin{proof}{Proof Sketch:}
+	Take the desired set to be equivalence classes of Cauchy sequences in $X$, and show that this is a completion.
+\end{proof}
+
+Now, we also want to show that completions of metric spaces are unique, but we need a notion of equivalence first. 
+
+\begin{definition}[\textbf{Definition 1.7: }Isometries]
+	A map $f : X \to Y$ of metric spaces is an \emph{isometry} if
+	\[ d_{X}(x, y) = d_{Y}(f(x), d(f(y))) \]
+	An \emph{isomorphism} is a bijective isometry.
+\end{definition}
+
+\begin{theorem}[\textbf{Theorem 1.8: }Uniqueness of Metric Spaces]
+	A completion of a metric space is unique up to isomorphism.
+\end{theorem}
+
+An example of such an isomorphism is letting $X = \R$, $Y = \{(x, 0) \in \R^2\}$, and $f(x) = (x, 0)$, where $X$ and $Y$ have the Euclidean metric. It can be easily checked that $f$ is an isomorphism. 
+\clearpage

@@ -1,0 +1,99 @@
+\tocsection{\textbf{8/31/26 Lecture 3: }Introduction to Measure}
+
+\begin{lemma}[\textbf{Proposition 3.1}]
+    A set $\cal{U} \subseteq \R$ is open if $\cal{U}$ can be written as a union of countable many disjoint open intervals.
+\end{lemma}
+
+\begin{theorem}[\textbf{Theorem 3.2: }Existence of Non-Negligible Sets]
+    The interval $[0, 1]$ is not negligible
+\end{theorem}
+Before we prove this theorem, we need a short lemma.
+
+\begin{lemma}[\textbf{Lemma 3.3}]
+    If $\{I_n\}_{n = 1}^{N}$ is a finite collection so that $[a, b] \subseteq \bigcup_{i = 1}^{N} I_{i}$, then $[a, b] \leq \sum_{i = 1}^{N} \abs{I_{i}}$. 
+\end{lemma}
+\begin{proof}{Proof:}
+    We will use induction on $N$, the size of the collection. First, for the $N = 1$, we see clearly that if $[a, b] \subseteq (c, d)$, then $d - c > b - a$.\\
+
+    Now, suppose it holds for $N - 1$, and suppose $\{I_{n}\}_{n = 1}^{N}$ cover $[a, b]$. Then, there must be an $n^{*}$ so that $b \in I_{n^*}$. Now, if $I_{n^{*}} = (c, d)$, then we see that $\{I_{n}\}_{n = 1}^{N - 1}$ must cover $[a, c] = [a, b] \backslash I_{n^{*}}$.\\
+
+    By the inductive step, we know that $\sum_{i = 1}^{N - 1} \abs{I_{i}} \geq c - a$. Thus, we see that
+    \[ \sum_{i = 1}^{N} \abs{I_{i}} \geq c - a + (d - c) = d - a \geq b - a \]
+    which was to be proved.
+
+    $\qed$
+\end{proof}
+
+Now, we proceed with the proof of Theorem 3.2.\\
+
+\begin{proof}{\textbf{Proof of Theorem 3.2:}}
+    Suppose that $[0, 1] \subseteq \cup_{n = 1}^{\infty} I_{n}$. By compactness, there exists a finite subcollection of the $I_{i}$ such that $[0, 1] \subseteq \cup_{n = 1}^{N} I_{n_k}$. Then, by our proposition, we know that $\sum_{k = 1}^{N} \abs{I_{n_k}} \geq 1$, so clearly $\sum_{n = 1}^{\infty} \abs{I_{n}} \geq 1$. Thus, all interval coverings have combined length greater than or equal to $1$, so it cannot be epsilon close to $0$. 
+
+    $\qed$
+\end{proof}
+
+Now, moving past these topological notions, we want to try to construct a function $\lambda$ on some subsets $A \subseteq \R$ such that $\lambda(A)$ assigns a size to $A$. So far, we want that if $\cal{U} \subseteq \R$ and $\cal{U} = \cup_{n = 1}^{\infty} I_{n}$ with $I_{n}$ being disjoint intervals, then we should have $\lambda(\cal{U}) = \sum_{n} \abs{I_{n}}$.\\
+
+Similarly, if we have an $A \subseteq [0, 1]$ that is closed, then as $A \backslash [0, 1] = \cal{U}$ is open, then we should have that $\lambda(A) = 1 - \lambda(\cal{U})$. \\
+
+Here is a first attempt: For $A \in \P(\R)$ define
+\begin{align*}
+    \lambda^{*}(A) &= \inf\left\{\sum_{n = 1}^{\infty} \abs{I_{n}} \col A \subseteq \bigcup_{n = 1}^{\infty} I_{n}\right\}\\
+    &= \inf\{\lambda(\cal{U}) \col \cal{U} \text{ is open and } A \subseteq \cal{U}\}
+\end{align*}
+This is actually not a bad attempt, and motivates the following definition!
+
+\begin{definition}[\textbf{Definition 3.4: }Outer Measures]
+    For a set $X$, a function $\mu^{*} : \P(X) \to [0, 1]$ is an \emph{outer measure} if
+    \begin{enumerate}
+        \item $\mu^{*}(\emptyset) = 0$
+        \item $\mu^{*}\left(\bigcup_{n = 1}^{\infty} A_n\right) \leq \sum_{n = 1}^{\infty} \mu^{*}(A_n)$, $A_n \subseteq X$
+        \item If $A \subseteq B$, then $\mu^{*}(A) \leq \mu^{*}(B)$
+    \end{enumerate}
+\end{definition}
+
+\begin{lemma}[\textbf{Proposition 3.5}]
+    $\lambda^{*}$, as defined above, is an outer measure.
+\end{lemma}
+\begin{proof}{Proof:}
+    $1$ and $3$ follow immediately from the definition of $\lambda^{*}$, so we just need to prove $2$. Start by letting $\{A_n\} \subseteq \R$ and let $\epsilon > 0$. Then, for each $A_{n}$, pick a collection of intervals $\{I_{n, j}\}$ so that $A_n \subseteq \cup_{j} I_{n, j}$ and that $\sum_{j} \abs{I_{n, j}} \leq \lambda^{*}(A_n) + \epsilon/2^{n}$ (we can do this by the definition of an infimum). Then, considering the countable collection $\{I_{n, j}\}$ we see that $\cup_{n} A_n \subseteq \cup_{n, j} I_{n, j}$ and that
+    \begin{align*}
+        \lambda^{*}\left(\bigcup_{n} A_n\right) &\leq \sum_{n, j} \abs{I_{n, j}}\\
+        &= \sum_{n}\left(\sum_{j} \abs{I_{n, j}}\right)\\
+        &= \sum_{n} \lambda^{*}(A_n) + \epsilon
+    \end{align*}
+    Thus, $\lambda^{*}\left(\bigcup_{n} A_n\right) \leq \sum_{n} \lambda^{*}(A_n) + \epsilon$ for all $\epsilon$. Thus, $\lambda^{*}\left(\bigcup_{n} A_n\right) \leq \sum_{n} \lambda^{*}(A_n)$.
+
+    $\qed$
+\end{proof}
+
+Now, we will come back to outer measures soon, but first, we should define what a measure is. To do that, we need a suitable class of subsets of $\R$ on which a measure can exist.
+
+\begin{definition}[\textbf{Definition 3.6: }$\sigma$-Algebras]
+    For a set $X$, a subset $\cal{A} \subseteq \P(X)$ is a \emph{$\sigma$-algebra} if
+    \begin{enumerate}
+        \item $\emptyset, X \in \cal{A}$
+        \item If $A_n \in \cal{A}$, then $\cup_{n} A_n \in \cal{A}$
+        \item If $A \in \cal{A}$ then $A^{c} = X \backslash A \in \cal{A}$
+    \end{enumerate}
+\end{definition}
+
+\begin{lemma}[\textbf{Corollary 3.7}]
+    If $A_n \in \cal{A}$, then $\cap_{n} A_n \in \cal{A}$
+\end{lemma}
+\begin{proof}{Proof:}
+    This follows immediately from applying De Morgan's laws to the definition of a $\sigma$-algebra.
+
+    $\qed$
+\end{proof}
+
+Some examples of $\sigma$-algebras on any $X$ are $\{\emptyset, X\}$ and $\P(X)$. With this definition, we can now define a measure.
+
+\begin{definition}[\textbf{Definition 3.7: }Measures and Measure Spaces]
+    A \emph{measure space} is a triple $(X, \cal{A}, \mu)$ where $\cal{A}$ is a $\sigma$-algebra and $\mu : \cal{A} \to [0, \infty]$ is a map that satisfies the following properties:
+    \begin{enumerate}
+        \item $\mu(\emptyset) = 0$
+        \item If $A_n \in \cal{A}$ is a countable collection of pairwise disjoint sets, then $\mu(\cup_{n} A_n) = \sum_{n} \mu(A_n)$
+    \end{enumerate}
+    We call $\mu$ a \emph{measure}.
+\end{definition}

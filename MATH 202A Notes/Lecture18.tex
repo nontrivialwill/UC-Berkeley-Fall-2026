@@ -1,0 +1,62 @@
+\tocsection{\textbf{10/9/26 Lecture 18:} Fubini-Tonelli}
+
+Consider $(X, \cal{A}, \mu)$ and $(Y, \cal{B}, \nu)$, and consider $\cal{C}_0$, the algebra of rectangles $\bigcup_{i = 1}^{N} A_i \times B_i$. Recall that for $E \subseteq X \times Y$,
+\[ E_{x} = \{y \col (x, y) \in E\} \quand E^{y} = \{x \col (x, y) \in E\} \]
+and for $f : X \times Y \to \R$,
+\[ f_{x}(y) = f(x, y) \quand f^{y}(x) = f(x, y) \]
+
+\begin{theorem}[\textbf{Theorem 18.1:} Fubini-Tonelli]
+    Suppose $\mu$ and $\nu$ are $\sigma$-finite and $f$ is $\mu \times \nu$ measurable. Then, if $f$ is nonnegative or integrable, then
+    \[ g(x) := \int f(x, y) d\nu(y) \quand h(y) := \int f(x, y) d\mu(x) \]
+    are measurable and
+    \begin{align*}
+        \int f(x, y) d(\mu \times \nu)(x, y) &= \iint f(x, y) d\nu(y) d\mu(x)\\
+        &= \iint f(x, y) d\mu(x) d\nu(y)
+    \end{align*}
+\end{theorem}
+\begin{proof}{Proof:}
+    By Proposition 17.4 from last time, the theorem holds for simple functions. Now, if $f$ is non-negative, let $0 \leq f_n \uparrow f$ be a sequence of simple functions increasing to $f$. Let
+    \[ g_n(x) := \int f_n(x, y) d\nu(y) \quand h_n(y) := \int f_n(x, y) d\mu(x) \]
+    We see that as $f_n(x, y) \uparrow f(x, y)$, $g_n(x) \uparrow g(x)$ and $h_n(y) \uparrow h(y)$ by the MCT. Thus, $g$ and $h$ are measurable.\\
+
+    Now,
+    \[ \int g(x) d\mu(x) = \lim_{n \to \infty} \int g_n(x) d\mu(x) = \lim_{n \to \infty} \int f_n(x, y) d(\mu \times \nu)(x, y) = \int f(x, y) d(\mu \times \nu)(x, y) \]
+    by the MCT. The analogous result for $h$ holds.\\
+
+    Now, if $f$ is integrable (this is so that $\int f d\mu = \int f^{+} d\mu - \int f^{-} d\mu$), write $f = f^{+} - f^{-}$ and apply the nonnegative result. 
+
+    $\qed$
+\end{proof}
+
+\begin{remark}{Remark}
+    The utility of the theorem is that we can switch the order of integration:
+    \[ \int g(x) d\mu(x) = \int h(y) d\nu(y) \]
+\end{remark}
+
+\begin{example}{\textbf{Example}}
+    Let $A \subseteq \R$ have finite Lebesgue measure and let $f(t) = \lambda(A \cap (A + t))$. We want to show that
+    \[ \int f(t) dt = (\lambda(A))^2 \]
+\end{example}
+\begin{solution}{Proof:}
+    We can write
+    \[ \int f(t) dt = \int_{\R} \left(\int_{\R} \chi_{A}(x)\chi_{A + t}(x) dx\right) dt \]
+    Since $\chi_{A}(x)\chi_{A + t}(x) \geq 0$, we can switch the order of integration to get
+    \begin{align*}
+        \int_{\R} \left(\int_{\R} \chi_{A}(x)\chi_{A + t}(x) dx\right) dt &= \int_{\R} \left(\int_{\R} \chi_{A}(x)\chi_{A + t}(x) dt\right) dx\\
+        &= \int_{\R} \chi_{A}(x)\left(\int_{\R} \chi_{x - A}(t) dt\right) dx\\
+        &= \int_{\R} \chi_{A}(x)\lambda(A) dx\\
+        &= \lambda(A)^2
+    \end{align*}
+    where we used that $\chi_{A + t}(x) = \chi_{x - A}(t)$. 
+\end{solution}
+
+\begin{example}{\textbf{Example:} Necessity of Integrability}
+    Let $f : [0, \infty)^2 \to \R$ be given by
+    \[ f(x, y) = \left\{\begin{matrix} 1 & x \leq y < x + 1 \\ -1 & x + 1 \leq y \leq x + 2 \\ 0 & \tt{else} \end{matrix}\right. \]
+    \fig{0.5}{Lecture18Fig1}{}
+    Then,
+    \[ \int_{0}^{\infty} f(x, y) dy = 0 \quand \int_{0}^{\infty} f(x, y) dx = \left\{\begin{matrix} 0 & y \geq 2 \\ 2 - y & 1 \leq y \leq 2 \\ y & 0 \leq y \leq 1 \end{matrix}\right. \]
+    so
+    \[ \int_{0}^{\infty}\int_{0}^{\infty} f(x, y) dy dx = 0 \quand \int_{0}^{\infty}\int_{0}^{\infty} f(x, y) dx dy = 1 \]
+    Luckily, $f$ is not integrable, as $\int f^{+} = \infty$ and $\int f^{-} = \infty$.
+\end{example}

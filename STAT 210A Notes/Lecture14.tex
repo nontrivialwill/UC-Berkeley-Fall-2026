@@ -1,0 +1,96 @@
+\tocsection{\textbf{10/13/26 Lecture 14:} Objective Bayes}
+
+\textbf{Subjective Priors:} These are good if you want your results to reflect your beliefs, but bad if you don't. They are also hard to use if you have high dimensional data, since joint distributions are tough to specify.
+
+\begin{example}{\textbf{Example:} Subjective Priors with a Coin}
+    Here is what a subjective prior on the probability that a coin lands heads might look like.
+    \fig{0.5}{Lecture14Fig1}{}
+    \begin{itemize}
+        \item[\checkmark] Reflects beliefs.
+        \item[$\times$] Reflects beliefs.
+    \end{itemize}
+\end{example}
+
+\subsection*{Objective Bayes}
+\sectionspace
+
+\begin{definition}[\textbf{Definition 14.1:} Flat Prior]
+    The \emph{flat prior} is $\lambda(\theta) \propto_{\theta} 1$ on $\Theta$.
+\end{definition}
+Note that the flat prior could be improper ($\Lambda(\Theta) = \infty$), but this may not be an issue.
+
+\begin{example}{\textbf{Example:} Flat Prior on a Normal Mean}
+    Let $\theta$ have the flat prior and $X \given \theta \sim N(\theta, \sigma^2)$. Then,
+    \[ \lambda(\theta \given X) \propto_{\theta} 1 \cdot \frac{1}{\sqrt{2\pi\sigma^2}}e^{-\frac{1}{2\sigma^2}(x - \theta)^2} \]
+    so $\theta \given X \sim N(X, \sigma^{2})$.
+\end{example}
+
+\textbf{Problem:} The flat prior is not invariant to reparametrization.
+
+\begin{example}{\textbf{Example}}
+    Let $X \sim \Binom(n, \theta)$ with $\theta \in [0, 1]$, and let $\eta = \log\left(\frac{\theta}{1 - \theta}\right)$. Then, a flat prior on $\theta$ does not give a flat prior on $\eta$.
+\end{example}
+
+\begin{definition}[\textbf{Definition 14.2:} Jeffreys' Prior]
+    The \emph{Jeffreys' prior} is
+    \[ \lambda(\theta) \propto \abs{J(\theta)}^{1/2} \]
+\end{definition}
+The intuition behind choosing a Jefferey's prior is that if $J(\theta)$ is large, we want to add more density, and if $J(\theta)$ is small, we add less. We are ``spreading'' out the data in a statistical sense.
+    
+
+\begin{example}{\textbf{Example:} Jeffreys' Prior for the Binomial}
+    Let $X \sim \Binom(n, \theta)$ with $\theta \in [0, 1]$. Then,
+    \[ \lambda(\theta) \propto_{\theta} J(\theta)^{1/2} = \left(\frac{n}{\theta(1 - \theta)}\right)^{1/2} \propto_{\theta} \tt{Beta}\left(\frac{1}{2}, \frac{1}{2}\right) \]
+    which looks like
+    \fig{0.45}{Lecture14Fig2}{}
+    \vspace{-0.5cm}
+    In the $\theta$ parametrization, the edges have more information.
+\end{example}
+
+\textbf{Question:} How is this objective?
+
+\textbf{Answer:} It's not really, but when we have a default rule to choose the prior, we call it an objective prior. 
+
+\subsection*{Intersubjective Agreement}
+\sectionspace
+
+\begin{example}{\textbf{Example}}
+    Let $X \sim \tt{Bin}(10{,}000, \theta)$ and suppose we observe $X = 3000$, so $\frac{X}{n} = 0.3$. Then,
+    \[ \tt{SD}_{\theta}\left(\frac{X}{n}\right) = \sqrt{\frac{\theta(1 - \theta)}{n}} \leq 0.005 \]
+    so the data ``swamps'' our prior, and we find that $\tt{Lik}(\theta; X) \approx 0$ outside of $[0.29, 0.31]$. Then, we can say that
+    \[ \lambda(\theta \given X) \mathrel{\tilde{\propto}_{\theta}} \tt{Lik}(\theta; X) \mathrel{\tilde{\propto}_{\theta}} \exp\left\{-\frac{J(0.3)}{2}(\theta - 0.3)^2\right\} \]
+    by a Taylor expansion, and the right hand side is proportional to the density of $N(0.3, J(0.3)^{-1})$. Thus,
+    \[ \lambda(\theta \given X) \approx N(0.3, J(0.3)^{-1}) = N\left(0.3, \frac{0.21}{n}\right) = N(0.3, 2.1 \cdot 10^{-5}) \]
+\end{example}
+
+\textbf{Idea:} The data pins $\theta$ down to a little interval. This is ``intersubjective'' in the sense that it is the posterior for almost every prior that gives any mass near $0.3$ (the data swamps all priors equally).
+
+\begin{example}{\textbf{Example}}
+    Let $X \given \mu \sim N(\mu, I_{d})$ with $\mu \in \R^{d}$. The Fisher information is constant, so the Jeffreys' prior is flat on $\R^{d}$. Then,
+    \[ \lambda(\mu \given X) \propto_{\mu} \exp\left\{-\frac{\norm{X - \mu}^2}{2}\right\} \sim N(X, I_{d}) \]
+    so the Bayes estimate is $\bb{E}[\mu \given X] = X$.\\
+
+    What about $\rho^2 = \norm{\mu}^2$? If $\mu \given X \sim N_{d}(X, I_{d})$, then
+    \[ \bb{E}[\mu_i^2 \given X] = \bb{E}[\mu_i \given X]^2 + \Var(\mu_i \given X) \]
+    so
+    \[ \bb{E}[\norm{\mu}^2 \given X] = \norm{X}^2 + d \]
+    Recall that $\delta_{\tt{UMVU}}(X) = \norm{X}^2 - d$. Notice that $\delta_{\tt{UMVU}}(X)$ has the same variance as the Bayes estimator but less bias, so the Bayes estimator is not great! That is, the Jeffreys' prior on $\mu$ is not great here.\\
+
+    Indeed, the effective prior induced on $\rho^2$ is
+    \[ \lambda(\rho^2) \propto_{\rho^2} \rho^{d - 2} \]
+    which makes sense, as it puts more weight on high norms.
+\end{example}
+
+\subsection*{Hierarchical and Empirical Bayes}
+\sectionspace
+
+\begin{example}{\textbf{Example:} Same-Side Bias}
+    How do we estimate the same-side bias for $m = 48$ coin flippers? Let $\alpha, \beta \sim \lambda$, and
+    \[ \theta_i \given \alpha, \beta \iidsim \tt{Beta}(\alpha, \beta) \quand X_i \given \alpha, \beta, \theta \overset{\tt{ind}}{\sim} \Binom(n_i, \theta_i) \]
+    We can find empirically justified $\alpha, \beta$ using our data from the $X_i$. If we fix $\alpha$ and $\beta$, then
+    \[ \bb{E}[\theta_i \given X, \alpha, \beta] = \frac{X_i + \alpha}{n_i + \alpha + \beta} \]
+    However, averaging over $\alpha$ and $\beta$,
+    \[ \bb{E}[\theta_i \given X] = \iint \frac{X_i + \alpha}{n_i + \alpha + \beta}\lambda(\alpha, \beta \given X) d\alpha d\beta \]
+    Here, $\alpha$ and $\beta$ are \emph{hyper-parameters} that give a ``prior'' on $\theta$.
+\end{example}
+This is useful if we don't know much about the $\theta_i$ (does matter (much) prior we use).

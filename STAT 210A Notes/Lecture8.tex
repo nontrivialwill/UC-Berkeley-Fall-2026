@@ -1,0 +1,122 @@
+\tocsection{\textbf{9/22/26 Lecture 8:} Complete Statistics}
+
+Recall the definition.
+
+\begin{definition}[\textbf{Definition 8.1: }Completeness]
+    $T(X)$ is \emph{complete} for $\cal{P} = \{P_{\theta} \col \theta \in \Theta\}$ if
+    \[ \bb{E}_{\theta}[f(T(X))] = 0 \forall \theta \implies f(T(x)) \overset{\tt{a.s.}}{=} 0 \]
+    That is, no nontrivial functions of $T$ have mean zero. 
+\end{definition}
+
+\textbf{Question:} What if $\bb{E}_{\theta}[\delta_1(X)] = \bb{E}_{\theta}[\delta_2(X)] = g(\theta)$ for all $\theta$ and $X$ is complete?\\
+
+\textbf{Answer:} This implies that $\delta_1 \overset{\tt{a.s.}}{=} \delta_2$, as we see that
+\[ \bb{E}_{\theta}[(\delta_1 - \delta_2)(X)] = 0\]
+Similarly, if we had two functions of the complete statistic whose mean is the same, then they must be the same almost everywhere. We can then reason that if a sufficient statistic is complete, then there is only one unbiased estimator up to almost everywhere equivalence.\\
+
+\begin{example}{\textbf{Example:} German Tank Problem}
+    Let $X_1, \ldots, X_n \iidsim U[0, \theta]$, $\theta \in (0, \infty)$. Then,
+    \[ p_{\theta}(x) = \prod_{i = 1}^{n} \frac{1}{\theta}1\{x_i \leq \theta\} = \frac{1}{\theta^{n}}1\{x_{(n)} \leq \theta\} \]
+    By the factorization theorem, we see that $x_{(n)}$ is a sufficient statistic, and it must be minimal sufficient as clearly $x \equiv_{p} y \implies x_{(n)} = y_{(n)}$. \\
+
+    Now, we want to find the density of $T(X) = X_{(n)}$. We see
+    \begin{align*}
+        \bb{P}_{\theta}(T \leq t) = \left(\frac{t}{\theta} \wedge 1\right)^{n} = \frac{t^{n}}{\theta^{n}} \wedge 1 
+    \end{align*}
+    Then, 
+    \[ p_{\theta}(t) = \frac{d}{dt} \bb{P}_{\theta}(T \leq t) = n\frac{t^{n - 1}}{\theta^{n}}1\{t \leq \theta\} \]
+    Now, suppose that we have an $f(t)$ for which
+    \[ \bb{E}_{\theta}[f(T(X))] = 0\quad \forall \theta \]
+    This implies that
+    \begin{align*}
+        0 &= \int_{0}^{\theta} f(t)p_{\theta}(t)dt\\
+        &= \frac{n}{\theta}\int_{0}^{\theta}f(t)t^{n - 1}dt\\
+        \implies& \int_{0}^{\theta} f(t)t^{n - 1}dt = 0\quad \forall \theta
+    \end{align*}
+    Differentiating with respect to $\theta$, we see that
+    \[ 0 = f(\theta)\theta^{n - 1} \]
+    which implies that $f(\theta) = 0$. Thus, we see that $T(X) = X_{(n)}$ is complete.
+
+    $\qed$
+\end{example}
+
+\begin{definition}[\textbf{Definition 8.2:} Full-Rank and Curved Exponential Families]
+    Assume $\cal{P} = \{P_{\eta} \col \eta \in \Xi\}$ has densities
+    \[ p_{\eta}(x) = e^{\eta'T(x) - A(\eta)}h(x) \]
+    with respect to some $\mu$. If $T(x)$ satisfies no linear constraints; that is there do not exist an $a \ne 0, b$ with $a'T(x) \overset{\tt{a.s.}}{=} b$, and if $\Xi$ contains an open set, then we say that $\cal{P}$ is \emph{full-rank}. Otherwise, we say that $\cal{P}$ is \emph{curved}.
+\end{definition}
+Note that this linear constraint condition just asks us to reduce the dimension of $\cal{P}$, so we can take WLOG $\cal{P}$ has this condition that $T(x)$ satisfies no linear constraints. \\
+
+\begin{theorem}[\textbf{Theorem 8.3:} Full Rank Families have Complete Sufficient Statistics]
+    If $\cal{P}$ is full rank, then $T(X)$ is complete sufficient. That is, it is a complete sufficient statistic. 
+\end{theorem}
+\begin{proof}{Proof:}
+    WLOG, assume that $\cal{P}$ is in canonical form (we can always reduce to this case)
+    \[ p_{\eta}(x) = e^{\eta'x - A(\eta)} \]
+    Also, assume wlog that $0 \in \Xi^{\circ}$ and that $A(0) = 0$ (because we can always absorb any value of $A(0)$ into the carrier).\\
+
+    Now, suppose by way of contradiction that
+    \[ \bb{P}_{0}(f(X) \ne 0) > 0 \]
+    Then, this implies that $\bb{P}_{\eta}(f(X) \ne 0) > 0$ for all $\eta$, as our exponential tilt just scales this value. Also, assume that
+    \[ \bb{E}_{\eta}[f(X)] = 0 \quad \forall \eta \in \Xi \]
+    Now, write $f(x) = f^{+}(x) - f^{-}(x)$ where $f^{+} = f(x) \vee 0$ and $f^{-} = (-f(x)) \vee 0$. Then, $f^{+}, f^{-} \geq 0$. Then, 
+    \begin{align*}
+        \int e^{\eta'x}f^{+}(x) d\mu(x) = \int e^{\eta'x}f^{-}(x)d\mu(x)
+    \end{align*}
+    for all $\eta$. Now, let $Y^{+} \sim f^{+}$ and $Y^{-} \sim f^{-}$. Now, as these have the same MGF in a neighborhood of $0$ (by above), then $Y^{+} \overset{D}{=} Y^{-}$ which implies that $f^{+} \overset{\tt{a.s.}}{=} f^{-}$. This implies that $f(x) \overset{\tt{a.s.}}{=} 0$. 
+
+    $\qed$
+\end{proof}
+
+\begin{theorem}[\textbf{Theorem 8.4:} Complete Sufficient implies Minimal Sufficient]
+    If $T(X)$ is complete sufficient, then it is minimal sufficient. 
+\end{theorem}
+\begin{proof}{Proof:}
+    Assume that $S(X)$ is minimal sufficient.\\
+
+    Let $\overline{T}(S(X)) = \bb{E}[T(X) \given S(X)]$. We want to show that $\overline{T}(S(X)) \overset{\tt{a.s.}}{=} T(X)$. Now, as $S$ is minimal sufficient, we know that $S(X) \overset{\tt{a.s.}}{=} f(T(X))$ for some $f$. Let
+    \[ g(t) = t - \overline{T}(f(t)) \]
+    Then, 
+    \begin{align*}
+        \bb{E}_{\theta}[g(T(X))] = \bb{E}_{\theta}[T(X)] - \bb{E}_{\theta}[\overline{T}(S(X))]
+    \end{align*}
+    However, as 
+    \[ \bb{E}_{\theta}[\overline{T}(S(X))] = \bb{E}_{\theta}[\bb{E}[T(X) \given S(X)]] = \bb{E}_{\theta}[T(X)] \]
+    this implies that
+    \[ \bb{E}_{\theta}[g(T(X))] = 0 \]
+    which implies that $g(t) = 0$, so $T(X) \overset{\tt{a.s.}}{=} \overline{T}(S(X))$.\\
+
+    Thus, this implies that $T$ is minimal, as it is ``isomorphic'' to a minimal sufficient statistic. 
+
+    $\qed$
+\end{proof}
+
+\begin{definition}[\textbf{Defintion 8.5:} Ancillary Statistics]
+    We say that $V(X)$ is \emph{ancillary} for $\cal{P} = \{P_{\theta} \col \theta \in \Theta\}$ if its distribution does not depend on $\theta$. 
+\end{definition}
+
+What this implies is that $V(X)$ is a latent variable not depending on $\theta$, so the conditional principle tells us to just condition on $V(X)$. 
+
+\newcommand{\indep}{\perp \!\!\! \perp}
+\begin{theorem}[\textbf{Theorem 8.6:} Basu's Theorem]
+    If $T(X)$ is complete sufficient for $\cal{P}$, and $V(X)$ is ancillary for $\cal{P}$, then $V \indep T$ for all $P_{\theta} \in \cal{P}$. 
+\end{theorem}
+\begin{proof}{Proof:}
+    What we want to show is that
+    \[ \bb{P}_{\theta}(V \in A, T \in B) = \bb{P}_{\theta}(V \in A) \bb{P}_{\theta}(T \in B) \]
+    Define $q_{A}(T(x)) = \bb{P}(V \in A \given T)$, and define $p_{A} = \bb{P}(V \in A)$. Notice that neither of these depend on $\theta$, as $T$ is sufficient, and $V$ is ancillary. Now, their expectation's are equal, they are both equal to $p_{A}$ (expectation of a condition is just expectation), which implies that $q_{A}(t) - p_{A} = 0$, which implies that
+    \[ \bb{P}(V \in A \given T) \overset{\tt{a.s.}}{=} \bb{P}(V \in A) \]
+
+    $\qed$
+\end{proof}
+
+Notice that the hypotheses of Basu's theorem is a statistics statement, whereas the conclusions tell us about probability. Thus, what this means is that if $\cal{P}$ doesn't satisfy the premises of Basu's theorem, we can rewrite it as a union of families that do satisfy the premises of Basu's theorem, and we can get a weaker statement. 
+
+\begin{example}{\textbf{Example}}
+    Suppose that $X_1, \ldots, X_n \iidsim \cal{N}(\mu, \sigma^2)$ where both $\mu \in \R$ and $\sigma^2 > 0$ are unknown. Now, let
+    \[ \overline{X} = \frac{1}{n}\sum X_i \quand S^2 = \frac{1}{n - 1}\sum (X_i - \overline{X})^2 \]
+    Define $\cal{P}_{\sigma^2} = \{P_{\mu, \sigma^2} \col \mu \in \R\}$. That is, we restrict to a known $\sigma^2$. Then, it can be shown that $\overline{X}$ is complete sufficient by a theorem above, and $S^2$ is ancillary as it is independent for all $P_{\mu, \sigma^2} \in \cal{P}_{\sigma^2}$. Thus, they are independent, and as they are independent for all $\sigma^2$, they are independent everywhere.
+
+    $\qed$
+\end{example}
+

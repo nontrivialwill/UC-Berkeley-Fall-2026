@@ -1,0 +1,57 @@
+\tocsection{\textbf{9/24/26 Lecture 8: }Properties of Integrals}
+
+\begin{theorem}[\textbf{Theorem 8.1: }Dominated Convergence Theorem]
+    Let $f, f_1, f_2, \ldots$ and $g, g_1, g_2, \ldots$ be measurable functions on $(\Omega, \cal{A}, \mu)$ with $\abs{f_n} \leq g_n$ for all $n$ and such that $f_n \to f$, $g_n \to g$ and $\mu g_n \to \mu g < \infty$. Then, $\mu f_n \to \mu f$. 
+\end{theorem}
+\begin{proof}{Proof:}
+    Consider the collection of functions $g_n \pm f_n \geq 0$. We then see that
+    \[ \mu g + \liminf_{n \to \infty}\left(\pm \mu f_n \right) = \liminf_{n \to \infty} \mu(g_n \pm f_n) \geq \mu(g \pm f) = \mu g \pm \mu f \]
+    by Fatou's lemma. Subtracting $\mu g < \infty$ from both sides, we see that
+    \[ \liminf_{n \to \infty}(\pm \mu f_n) \geq \pm \mu f \]
+    Thus, we see that
+    \[ \mu f \leq \liminf_{n \to \infty} \mu f_n \]
+    and
+    \[ -\mu f \leq \liminf_{n \to \infty} -\mu f_n = -\limsup_{n \to \infty} \mu f_n \implies \mu f \geq \limsup_{n \to \infty} \mu f_n\]
+    Thus, we have that
+    \[ \mu f \leq \liminf_{n \to \infty} \mu f_n \leq \limsup_{n \to \infty} \mu f_n \leq \mu f \]
+    Thus, we must have that $\mu f = \liminf_{n \to \infty} \mu f_n = \limsup_{n \to \infty} \mu f_n$, so 
+    \[ \mu f = \lim_{n \to \infty} \mu f_n \]
+
+    $\qed$
+\end{proof}
+
+\begin{lemma}[\textbf{Lemma 8.2: }Substitution Lemma]
+    Consider a measure space $(\Omega, \cal{A}, \mu)$, a measurable space $(S, \cal{S})$ and two measurable mappings $f : \Omega \to S$ and $g : S \to \R$. Then, 
+    \[ \mu(g \circ f) = (\mu \circ f^{-1})(g) \]
+    whenever either side exists; that is, when one side exists then so does the other and they are equal.\\
+
+    Thus, the integral of $g \circ f$ with respect to $\mu$ is equal to the integral of $g$ with respect to the push-forward measure $\mu \circ f^{-1}$. 
+\end{lemma}
+\begin{proof}{Proof:}
+    If $g$ is an indicator, then the above equality reduces to the definition of $\mu \circ f^{-1}$, as $(\mu \circ f^{-1})(1_{A}) = (\mu \circ f^{-1})(A) = \mu(f^{-1}(A))$, and similarly, $\mu(1_{A} \circ f) = \mu(f^{-1}(A))$, as $1_{A} \circ f = 1_{f^{-1}(A)}$.\\
+
+    From here, we use linearity and monotone convergence to extend to any measurable function $g \geq 0$. For a general $g$, it follows that $\mu \abs{g \circ f} = (\mu \circ f^{-1})\abs{g}$, and so the integrals on both sides of the equality exist at the same time. When they do, we can get equality using the definition of an integral of a general function.
+\end{proof}
+
+\begin{example}{\textbf{Example}}
+    Let $\Omega = \{\tt{meteroite strikes}\}$ and let $S^2$ be the 2-dimensional sphere. Let $f(\omega) = \text{location of meteorite strike}$ and $g(s)$ be the distance of $s$ from the equator of $S$. Then $\mu(g \circ f)$ is the probability a meteor strikes a given distance from the equator, and $(\mu \circ f^{-1})(g)$ also tells you the probability a meteor strikes a given distance from the equator.  
+\end{example}
+
+\begin{definition}[\textbf{Definition 8.3:} Null Sets]
+   Let $(\Omega, \cal{A}, \mu)$ be a measure space. We say that $A \in \cal{A}$ is said to be a \emph{$\mu$-null set} or a \emph{null set} if $\mu(A) = 0$. A relationship between functions on $\Omega$ is said to hold \emph{almost everywhere} with respect to $\mu$, denoted \emph{a.e. $\mu$} or \emph{$\mu$-a.e.}, if it holds for all $\omega \in \Omega$ outside some $\mu$-null set. 
+\end{definition}
+
+An example of measure 0 Borel set is the Cantor set $K$, which consists of elements of $[0, 1]$ that only have $0$'s and $2'$ in their ternary expansion. Notice that $(K, \cal{B}(K))$ is Borel-isomorphic to $([0, 1], \cal{B}([0, 1]))$, by mapping binary sequences to these such ternary sequences.\\
+
+Then, as $\cal{B}([0, 1]) \ne 2^{[0 ,1]}$, by Vitali, we must have that there are some subsets of $\cal{B}(K)$ that are not Borel. Thus, there do exists subsets of sets of measure zero that are not measurable! However, we can still assign a measure for such sets that extends the Lebesgue measure to these sets; namely 0.\\
+
+\begin{lemma}[\textbf{Lemma 8.4:} Null Sets and Functions]
+    For any measurable function $f \geq 0$ on some measure space $(\Omega, \cal{A}, \mu)$, then $\mu f = 0$ iff $f = 0$ $\mu$-a.e.
+\end{lemma}
+\begin{proof}{Proof:}
+    This is obvious when $f$ is simple. In the general case, we may choose some simple measurable functions $f_n$ with $0 \leq f_n \uparrow f$, and note that $f = 0 \tt{ a.e.}$ if, and only if, $f_n = 0 \tt{ a.e.}$ for every $n$ if, and only if, $\mu f_n = 0$ for all $n$. Thus, as the integrals converge to $\mu f$, we see that this condition is equivalent to saying $\mu f = 0$. 
+\end{proof}
+
+\begin{definition}[\textbf{Definition 8.5: }$\mu$-completions]
+    Given a measure space $(\Omega, \cal{A}, \mu)$ and a $\sigma$-field $\cal{F} \subseteq \cal{A}$, define the \emph{$\mu$-completion} of $\cal{F}$ in $\cal{A}$ as the $\sigma$-field $\cal{F}^{\mu} = \sigma(\cal{F}, \cal{N}_{\mu})$, where $\cal{N}_{\mu}$ denotes the class of all subsets of arbitrary $\mu$-null sets in $\cal{A}$. 
+\end{definition}

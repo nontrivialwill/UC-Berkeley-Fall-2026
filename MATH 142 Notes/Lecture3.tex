@@ -1,0 +1,91 @@
+\tocsection{\textbf{8/31/26 Lecture 3: }Topology Continued}
+
+First, as a quick note, recall that on $\R^n$ we have $3$ different metrics,
+\[ d(x, y) = \left\{\begin{matrix} \sqrt{\sum (x_i - y_i)^2} \\ \sum \abs{x_i - y_i} \\ \max_{i} \abs{x_i - y_i}\end{matrix}\right. \]
+It turns out all of these give the same open sets, so we say they have the same topology. This motivates the following definition
+
+\begin{definition}[\textbf{Definition 3.1: }Topologies]
+    Let $X$ be any set. A \emph{topology} $\tau$ on $X$ is a collection of sets, which we call open, such that
+    \begin{enumerate}
+        \item $\emptyset, X \in \tau$
+        \item $\cup_{\alpha \in I} U_{\alpha} \in \tau$ if $U_{\alpha} \in \tau$
+        \item $\cap_{i = 1}^{n} U_{i} \in \tau$ if $U_{i} \in \tau$.
+    \end{enumerate}
+    A topological space is a pair $(X, \tau)$ where $\tau$ is a topology on the set $X$.
+\end{definition}
+
+Note that every metric space is a topological space with it's induced metric topology.
+
+\begin{definition}[\textbf{Definition 3.2: }Subspace Topology]
+    Let $X$ be a topological space and $Y \subseteq X$. The \emph{subspace topology} on $Y$ is formed by taking open sets of $X$ and intersecting them with $Y$. That is, $U \subseteq Y$ is open if there exists an open $O \subseteq X$ such that
+    \[ U = O \cap Y \]
+\end{definition}
+Note that open sets of $Y$ need not be open in $X$. For example, if $Y = [0, 1]$, $Y$ is an open set in $Y$ but is not one in $\R$. Also, thankfully, the metric on a metric subspace induces the subspace topology, so these definitions ``agree''. Some examples of topologies on any set $X$ are $\P(X)$, called the discrete topology, and $\{\emptyset, X\}$ called the indiscrete topology.\\
+
+\textbf{Question:} Does every topology come from a metric?
+
+\textbf{Answer:} No, and here's why. Suppose $X = \{x_1, \ldots, x_n\}$ has a metric. What is the corresponding topology? The answer is the discrete topology, as it's possible to contain each $x_i$ by itself in an open ball by taking a sufficiently small radius. Thus, all metrics on finite spaces induce the discrete topologies, but there are many non-discrete topologies on finite spaces (which must then not come from a metric!).\\
+
+Now, a bunch of definitions that will be soon useful.
+
+\begin{definition}[\textbf{Definition 3.3: }Neighborhoods]
+    Let $X$ be a topological space. Given $x \in X$, a subset $N \subseteq X$ is a \emph{neighborhood} of $x$ if there exists an open $\cal{U}$ containing $x$ such that $\cal{U} \subseteq N$.
+\end{definition}
+
+\begin{definition}[\textbf{Definition 3.4: }Closed Sets]
+    If $X$ is a topological space, then $F \subseteq X$ is \emph{closed} if $F^{c}$ is open.
+\end{definition}
+
+\begin{definition}[\textbf{Definition 3.5: }Limit Points]
+    Let $A \subseteq X$. Then $p$ is a \emph{limit point} of $A$ if every neighborhood of $p$ intersects $A \backslash \{p\}$. 
+\end{definition}
+Note that the limit points of a set do not necessarily need to be containing in that set.\\
+
+\begin{lemma}[\textbf{Proposition 3.6}]
+    A set $A \subseteq X$ is closed iff $A$ contains all of it's limit points.
+\end{lemma}
+\begin{proof}{Proof:}
+    ($\Rightarrow$) Suppose $A$ is closed. Then $X \backslash A$ is open. Thus, if $x \in X \backslash A$, then there exists an open $U$ containing $x$ such that $U \subseteq X \backslash A$. Then, as $U \cap A = \emptyset$, we see that $x$ is not a limit point of $A$. Thus, $A$ contains all of it's limit points.\\
+
+    ($\Leftarrow$) Suppose $A$ contains all of it's limit points. Let $x \in X \backslash A$. Since $x$ is not a limit point of $A$, there exists an open $U_{x}$ containing $x$ such that $U_{x} \cap A = \emptyset$, so $U_{x} \subseteq X \backslash A$. Then, as we can write
+    \[ X \backslash A = \cup_{x \in X \backslash A} U_{x} \]
+    we see that $X \backslash A$ is open, so $A$ is closed.
+
+    $\qed$
+\end{proof}
+
+\begin{definition}[\textbf{Definition 3.7: }Closure of a Set]
+    Let $A \subseteq X$. Then, $\overline{A} = A \cup \{\text{limit points of } A\}$ is called the \emph{closure} of $A$
+\end{definition}
+
+\begin{lemma}[\textbf{Proposition 3.8}]
+    If $A \subseteq X$, then $\overline{A}$ is the smallest closed set containing $A$. That is $\overline{A}$ is the intersection of all closed sets containing $A$.
+\end{lemma}
+\begin{proof}{Proof:}
+    First, we will show that $\overline{A}$ is closed. If $p \in X \backslash \overline{A}$, then $p \notin A$ and $p$ is not a limit point of $A$, so there exists an open $U_{p}$ such that $p \in U_{p} \subseteq X \backslash A$. If a limit point of $A$ is containing in $U_{p}$, then a point of $A$ must also be in $U_{p}$ (because $U_{p}$ would be a neighborhood of that limit point!), which cannot occur. Thus, we have that $p \in U_{p} \subseteq X \backslash \overline{A}$. Thus, as
+    \[ X \backslash \overline{A} = \cup_{p \in X \backslash \overline{A}} U_{p} \]
+    we see that $X \backslash \overline{A}$ is open, so $\overline{A}$ is closed.\\
+
+    Now, if $F \supseteq A$ is a closed set, then it must contain $A$ and limit points of $A$ (as it contains limit points of itself), which implies that $\overline{A} \subseteq F$. Thus, $\overline{A}$ must be the smallest closed set containing $A$.
+
+    $\qed$
+\end{proof}
+\begin{lemma}[\textbf{Corollary 3.9}]
+    A set $A$ is closed iff $A = \overline{A}$
+\end{lemma}
+
+Now, some final definitions.
+
+\begin{definition}[\textbf{Definition 3.10: }Dense Sets]
+    Let $X$ be a topological space. A subset $A \subseteq X$ is \emph{dense} in $X$ if $\overline{A} = X$. 
+\end{definition}
+
+\begin{definition}[\textbf{Definition 3.11: }Interior]
+    If $X$ is a topological space, the \emph{interior} of an $A \subseteq X$ is the set
+    \[ \text{int}(A) = \bigcup_{\cal{U} \subseteq A, \cal{U} \text{ is open}} \cal{U} \]
+\end{definition}
+
+\begin{definition}[\textbf{Definition 3.12: }Frontier]
+    The \emph{frontier} of a set $A \subseteq X$ is $\overline{A} \cap \overline{X \backslash A}$. 
+\end{definition}
+\clearpage

@@ -1,0 +1,110 @@
+\tocsection{\textbf{10/21/26 Lecture 23:} The Maximal Function and Lebesgue Differentiation}
+
+\textbf{Recall:} For $f$ integrable, $f : \R^d \to \R$,
+\[ f_r(x) = \frac{1}{\lambda(B_r(x))} \int_{B_r(x)} f(y) dy \]
+Does $f_r(x) \to f(x)$ as $r \to 0$?\\
+
+\textbf{In general:} No. Let $f(x) = \chi_{C}$ for $C$ the Cantor set. Then $f_r(x) = 0$. So $f(x) \neq f_r(x)$, but note $f(x) = 0$ a.e.
+
+\begin{definition}[\textbf{Definition 23.1:} Locally Integrable Functions]
+    We say $f$ measurable is \emph{locally integrable} if $\int_{K} \abs{f} < \infty$ for any compact set $K$, and we write $f \in L^1_{\tt{loc}}$.
+\end{definition}
+
+\begin{lemma}[\textbf{Theorem 23.2:} Lebesgue Differentiation Theorem]
+    If $f \in L^1_{\tt{loc}}$, then $f_r(x) \to f(x)$ a.e. as $r \to 0$.
+\end{lemma}
+
+We will work toward proving this, but not yet.
+
+\begin{lemma}[\textbf{Proposition 23.3}]
+    If $f \in L^1_{\tt{loc}}$, then $Mf(x)$ is measurable.
+\end{lemma}
+\begin{proof}{Proof:}
+    Given sets $A$ and $B$,
+    \begin{align*}
+        \abs{\int_{A} f - \int_{B} f} &= \abs{\int_{A} f - \left(\int_{A \cap B} f + \int_{B \setminus A} f\right)}\\
+        &= \abs{\int_{A \setminus B} f - \int_{B \setminus A} f}\\
+        &\leq \int_{A \setminus B} \abs{f} + \int_{B \setminus A} \abs{f}\\
+        &= \int_{A \triangle B} \abs{f}
+    \end{align*}
+    Thus, for $r$ fixed,
+    \[ \abs{\frac{1}{\lambda(B_r(x))} \int_{B_r(x)} f(y) dy - \frac{1}{\lambda(B_r(x'))} \int_{B_r(x')} f(y) dy} \leq \frac{1}{\lambda(B_r(0))} \int_{B_r(x) \triangle B_r(x')} \abs{f} dy \]
+    As $x' \to x$, $\lambda(B_r(x) \triangle B_r(x')) \downarrow 0$, so the integral goes to $0$ by DCT. Thus,
+    \[ \frac{1}{\lambda(B_r(x))} \int_{B_r(x)} \abs{f} dy \]
+    is continuous in $x$. Thus, it is measurable, and as the sup of measurable functions is measurable, $Mf(x)$ is measurable.
+
+    $\qed$
+\end{proof}
+
+\begin{lemma}[\textbf{Lemma 23.4:} Wiener Covering Lemma]
+    Let $\{B_{\alpha}\}_{\alpha \in I}$ be a collection of balls in $\R^d$ with $\lambda\left(\bigcup_{\alpha} B_{\alpha}\right) < \infty$. Then, for every $\epsilon > 0$, there exist finitely many disjoint $B_1, \ldots, B_n$ such that
+    \[ \sum_{j = 1}^{n} \lambda(B_j) \geq 3^{-d}(1 - \epsilon)\lambda\left(\bigcup_{\alpha} B_{\alpha}\right) \]
+\end{lemma}
+\begin{proof}{Proof:}
+    By inner regularity, we can find $K$ compact so that $\lambda(K) > (1 - \epsilon)\lambda\left(\bigcup_{\alpha} B_{\alpha}\right)$ and $K \subseteq \bigcup_{\alpha} B_{\alpha}$. Then, by compactness, we can find $\tilde{B}_1, \ldots, \tilde{B}_m$ that cover $K$.\\
+
+    Let $B_1$ be the $\tilde{B}_j$ with the largest radius. Then, let $B_j$ be the $\tilde{B}_j$ with the largest radius that does not intersect the $B_1, \ldots, B_{j - 1}$. Do this until we can no longer pick $B_j$. Let $B_1, \ldots, B_n$ be our collection.\\
+
+    Now, for every $\tilde{B}_j$, we have that it is in our collection or intersects a ball in our collection. If it does intersect another ball in our collection, let $B_k$ be the smallest index such that $\tilde{B}_j \cap B_k \neq \emptyset$. This implies $\tilde{B}_j$ does not intersect $B_1, \ldots, B_{k - 1}$.\\
+
+    Thus, we must have $\tt{rad}(\tilde{B}_j) \leq \tt{rad}(B_k)$ by our method of selection. Thus, writing $B_k = B_{r_k}(x)$ and $B_k^{*} = B_{3r_k}(x)$,\\
+
+    \textbf{Claim:} $\tilde{B}_j \subseteq B_k^{*}$.
+.
+    \fig{0.42}{Lecture23Fig1}{}
+    Thus, we see
+    \[ (1 - \epsilon)\lambda\left(\bigcup_{\alpha} B_{\alpha}\right) < \lambda(K) \leq \sum_{j = 1}^{n} \lambda(B_j^{*}) = \sum_{j = 1}^{n} 3^d\lambda(B_j) \]
+    which gives us the inequality.
+
+    $\qed$
+\end{proof}
+
+\begin{theorem}[\textbf{Theorem 23.5:} Weak 1-1 Inequality for $M$]
+    There is a constant $C > 0$ so that for all $f \in L^1$ and any $\alpha > 0$,
+    \[ \lambda(\{x \col Mf > \alpha\}) \leq \frac{C}{\alpha}\int \abs{f} dx \]
+\end{theorem}
+\begin{proof}{Proof:}
+    Let $A_{\alpha} = \{x \col Mf > \alpha\}$. Then, for each $x \in A_{\alpha}$, we can find a ball $B_{r_x}(x)$ such that
+    \[ \frac{1}{\lambda(B_{r_x}(x))} \int_{B_{r_x}(x)} \abs{f} dy > \alpha \]
+
+    By our lemma, we can find finitely many disjoint balls $B_1, \ldots, B_n$ such that
+    \[ 3^{-d}(1 - \epsilon)\lambda(A_{\alpha}) \leq \sum_{j = 1}^{n} \lambda(B_j) \]
+    Thus,
+    \begin{align*}
+        (1 - \epsilon)\lambda(A_{\alpha}) \leq 3^d\sum_{j = 1}^{n} \lambda(B_j) &\leq \frac{3^d}{\alpha}\sum_{j = 1}^{n} \int_{B_j} \abs{f} dy\\
+        &\leq \frac{3^d}{\alpha}\int \abs{f} dy
+    \end{align*}
+    because the $B_j$ are disjoint. Then, taking $\epsilon \to 0$, we get
+    \[ \lambda(A_{\alpha}) \leq \frac{3^d}{\alpha}\int \abs{f} dy \]
+    which was to be shown!
+
+    $\qed$
+\end{proof}
+
+\textbf{Remark:} Suppose we knew $\int Mf dx \leq C\int \abs{f} dx$; this is a strong 1-1 bound. Then, by Chebyshev,
+
+\[ \lambda\{Mf > \alpha\} \leq \frac{\int Mf}{\alpha} \leq \frac{C}{\alpha}\int \abs{f} \]
+which is our weak bound. However, this is typically not true.\\
+
+Consider $d = 1$ and let $f = \chi_{[0, 1]}(x)$.
+\fig{0.38}{Lecture23Fig2}{}
+
+then, we see that for $x > 1$,
+\[ \sup_{r > 0} \frac{1}{2r}\int_{B_r(x)} \chi_{[0, 1]}(y) dy \geq \frac{1}{2x} \]
+so for $x > 1$, $Mf \geq \frac{1}{2x}$, which is not integrable. Thus, the strong 1-1 inequality can't hold.\\
+
+Now, we go back to the theorem we want to prove.
+\vspace{0.2cm}
+
+\begin{proof}{Proof of Theorem 23.2:}
+    It suffices to consider $f\chi_{\abs{x} \leq N}$, since we only care about the limit behavior of $f_r$. Thus, assume $f$ is integrable. Given $\epsilon > 0$, find $g$ continuous and compactly supported so that $\int \abs{f - g} < \epsilon$. Then,
+    \begin{align*}
+        \limsup_{r \to 0} \abs{f_r(x) - f(x)} &\leq \limsup_{r \to 0} \abs{(f - g)_r(x) + g_r(x) - g(x) + g(x) - f(x)}\\
+        &\leq \limsup_{r \to 0} \left(\abs{(f - g)_r(x)} + \abs{g_r(x) - g(x)} + \abs{g(x) - f(x)}\right)\\
+        &\leq M(f - g)(x) + 0 + \limsup_{r \to 0} \abs{g(x) - f(x)}
+    \end{align*}
+
+    Let $E_{\alpha} = \{\limsup_{r \to 0} \abs{f_r(x) - f(x)} > \alpha\}$ and $F_{\alpha} = \{\abs{f(x) - g(x)} > \alpha\}$. Then,
+    \[ E_{\alpha} \subseteq F_{\alpha/2} \cup \{M(f - g) > \alpha/2\} \]
+    We will finish next lecture using the fact that $F_{\alpha}$ is controlled by Chebyshev and $\{M(f - g) > \alpha/2\}$ is controlled by weak 1-1.
+\end{proof}

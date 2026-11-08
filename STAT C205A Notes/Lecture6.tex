@@ -1,0 +1,79 @@
+\tocsection{\textbf{9/15/26 Lecture 6:} Introduction to Measures}
+
+Let $(\Omega, 2^{\Omega})$ be a measurable space where $\Omega$ is the set of students in a class. Let $f : \Omega \to \{\tt{male}, tt{female}\}$ and consider $\sigma(f)$.\\
+
+Now, let $g : \Omega \to \{0, 1, \ldots\}$ by giving the number of dollars the student has. \\
+
+\textbf{Question:} When is $g$ $\sigma(f)$-measurable.\\
+
+\textbf{Answer:} This holds if $\sigma(g) \subseteq \sigma(f)$, which holds if, and only if, there exists a map $h : \{\tt{male}, \tt{female}\} \to \{0, 1, 2, \ldots\}$ such that $g = h \circ f$ (this is because one direction holds, and given that $\sigma(g) \subseteq \sigma(f)$, we can construct a function $h$ as we know each preimage of $g$ is a preimage of $f$). \\
+
+\begin{definition}[\textbf{Definition 6.1:} $f$-measurable]
+    Let $f : \Omega \to X$ and $g : \Omega \to Y$ be maps. Then, we say $g$ is \emph{$f$-measurable} if $g$ is $\sigma(f)$-measurable. 
+\end{definition}
+
+\begin{definition}[\textbf{Definition 6.2:} Borel Isomorphims and Borel Spaces]
+    Two measurable spaces $S$ and $T$ are \emph{Borel isomorphic} if there exists a bijection $f : S \to T$ such that $f$ and $f^{-1}$ are measurable. A measurable space that is Borel isomorphic to a Borel subset of $[0, 1]$ is called a \emph{Borel space}.
+\end{definition}
+
+\begin{definition}[\textbf{Definition 6.3: }Polish Spaces]
+    A \emph{Polish space} is a topological space that has a separable and complete metrization.
+\end{definition}
+
+\begin{lemma}[\textbf{Lemma 6.4}]
+    Every Polish space with its Borel $\sigma$-field is Borel.
+\end{lemma}
+
+Note: The reason these definitions above are useful is that many spaces are Borel spaces, and it is often convenient to prove facts about $\R$ and then extend to other spaces via Borel isomorphisms.\\
+
+Here's an example to show how common Borel spaces are. Consider $S = ([0, 1], \cal{B}([0, 1]))$ and $T = \{0, 1\}^{\N}$ with it's product $\sigma$-field. They look quite different, but if we consider $f : [0, 1] \to T$ by $f(x) = (x)_{2}$ (it's binary representation), then choosing representations carefully, it turns ou $f$ is a Borel isomorphism.\\
+
+Using this same argument, we see that $T \times T$ is Borel isomorphic to $[0, 1] \times [0, 1]$, and as $T \times T$ is Borel isomorphic to $T$ by interleaving binary strings, we see that $[0, 1]$ is Borel isomorphic to $[0, 1]^{2}$. Thus by induction, we see that $[0, 1]$ is Borel isomorphic to $[0, 1]^{n}$, which is quite odd!\\
+
+An example about Polish spaces is $(0, 1)$ with the usual topology. This may seem wrong at first since the normal metric isn't complete in $(0, 1)$, but there does exist some metric that works (Hint: Identify $(0, 1)$ with $\R$). It can also be shown that $\ell^{\infty}$ is Polish and is Borel with it's Borel $\sigma$-algebra.\\
+
+Now, going back to measures, here is a generalization of the fact we saw above.
+
+\begin{theorem}[\textbf{Lemma 6.5:} Doob-Dynkin Lemma]
+    Fix two measurable functions $f$ and $g$ on $\Omega$ into measurable spaces $(S, \cal{S})$ and $(T, \cal{T})$ where the former, $(S, \cal{S})$ is Borel. Then, $f$ is $g$-measurable if, and only if, there exists a measurable $h : T \to S$ such that $f = h \circ g$. 
+\end{theorem}
+
+Now, after all of this rigamarole, we define what a measure is.
+
+\begin{definition}[\textbf{Definition 6.6:} Measures]
+    Given any measurable space $(\Omega, \cal{A})$, a map $\mu : \cal{A} \to \overline{\R}_{+}$ is \emph{countably additive} if
+    \[ \mu\left(\bigcup_{k \geq 1} A_{k}\right) = \sum_{k \geq 1} \mu(A_k) \text{ with } A_1, \ldots \in \cal{A} \text{ disjoint} \]
+    A \emph{measure} on $(\Omega, \cal{A})$ is a map $\mu : A \to \overline{\R}_{+}$ such that $\mu(\emptyset) = 0$ and that $\mu$ is countably additive. A triple $(\Omega, \cal{A}, \mu)$ is a \emph{measure space}.
+\end{definition}
+
+\begin{lemma}[\textbf{Lemma 6.7}]
+    Let $\mu$ be a measure on $(\Omega, \cal{A})$ and assume that $A_1, A_2, \ldots \in \cal{A}$. Then, 
+    \begin{enumerate}
+        \item $A_n \uparrow A$ implies $\mu(A_n) \uparrow \mu(A)$.
+        \item $A_n \downarrow A$ with $\mu(A_1) < \infty$ implies $\mu(A_n) \downarrow \mu(A)$
+    \end{enumerate}
+\end{lemma}
+\begin{proof}{Proof:}
+    Apply countable additivity to $D_n = A_n \backslash A_{n - 1}$ (defining $A_0 = \emptyset$), and for (ii) apply (i) to $B_n = A_1 \backslash A_n$, using the fact that $A_1 \backslash A_n \uparrow A_1 \backslash A$, so $-\mu(A_n) \uparrow -\mu(A)$ (this step requries $A_1$ to have finite measure).
+
+    $\qed$
+\end{proof}
+
+\begin{lemma}[\textbf{Proposition 6.8}]
+    For any measures $\mu_1, \mu_2, \ldots$ on $(\Omega, \cal{A})$ and constants $c_1, c_2, \ldots, \geq 0$, the sum $\mu = \sum_{n} c_n\mu_n$ is again a measure.
+\end{lemma}
+\begin{proof}{Proof:}
+    We first want to show that $\sum_{i} \sum_{j} c_{ij} = \sum_{j}\sum_{i} c_{ij}$ for $c_{ij} \geq 0$, $i, j \in \N$. Since
+    \[ \sum_{i}\sum_{j} c_{ij} \geq \sum_{i \leq m}\sum_{j \leq n} c_{ij} = \sum_{j \leq n}\sum_{j \leq m} c_{ij} \]
+    Taking $n, m \to \infty$ (one at a time), we see that $\sum_{i}\sum_{j}c_{ij} \geq \sum_{j}\sum_{i}c_{ij}$. By symmetry, equality holds.\\
+
+    Now, if $A_1, A_2, \ldots \in \cal{A}$ are disjoint, then we see by countable additivity of the components, 
+    \begin{align*}
+        \mu\left(\bigcup_{k \geq 1} A_k\right) &= \sum_{n} c_n\mu_{n}\left(\bigcup_{k \geq 1}A_{k}\right)\\
+        &= \sum_{n} c_n \sum_{k \geq 1} \mu_{n}(A_k)\\
+        &= \sum_{k \geq 1} \sum_{n} c_n\mu_{n}(A_k)\\
+        &= \sum_{k \geq 1} \mu(A_k)
+    \end{align*}
+
+    $\qed$
+\end{proof}

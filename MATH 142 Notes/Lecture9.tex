@@ -1,0 +1,112 @@
+\tocsection{\textbf{9/16/26 Lecture 9:} Compactness and Connectedness}
+
+We start by proving a weaker form of Tychonoff's theorem.
+
+\begin{theorem}[\textbf{Theorem 9.1: }Tychonoff's Theorem]
+    $X$ and $Y$ are compact topological spaces if, and only if, $X \times Y$ is compact.
+\end{theorem}
+\begin{proof}{Proof:}
+
+    $(\Rightarrow)$ If $X \times Y$ is compact, then as the projections $p_1$ and $p_2$ are continuous and onto, $X$ and $Y$ are continuous.\\
+
+    $(\Leftarrow)$ Let $\cal{F}$ be an open cover of $X \times Y$ by basis elements $\cal{U}_{\alpha} \times \cal{V}_{\alpha}$.\\
+
+    Now, fix $x \in X$. Then, we see that $\{x\} \times Y$ is compact as it is the image of the map $y \mapsto (x, y)$. Thus, as $\{U_{\alpha} \times V_{\alpha}\}$ covers it, pass to a subcover $\{U_{i}^x \times V_{i}^{x}\}_{i = 1}^{n_{x}}$.\\
+
+    Now, consider $U^{x} = \bigcap_{i = 1}^{n_{x}}U_{i}^{x}$. This is an open set containing $x$ and the union of $\{U_{i}^{x} \times V_{i}^{x}\}_{i = 1}^{n_{x}}$ covers $U^{x} \times Y$.\\
+
+    Consider the collection $\{U^{x} \col x \in X\}$. This is a cover of $X$, so pass to a subcover $\{U^{x_i}\}_{i = 1}^{n}$. Then, we see that
+    \begin{align*}
+        X \times Y &= \bigcup_{i = 1}^{n} (U^{x_i} \times Y)\\
+        &= \bigcup_{i = 1}^{N}\left(\bigcup_{j = 1}^{n_{x_i}}\left(U_{j}^{x_i} \times V_{j}^{x_i}\right)\right) 
+    \end{align*}
+    Thus, we see that $\cal{F}$ has a finite subcover.
+
+    $\qed$
+\end{proof}
+
+Fortunately, the product topology on $\R^n$ is equivalent to the topology induced by the Euclidean metric. This can be seen because $\{(a_1, b_1) \times \cdots \times (a_n, b_n)\}$ forms a basis for the product topology, and we can write these as a union of metric balls.
+
+\begin{lemma}[\textbf{Theorem 9.2:} Heine-Borel Theorem]
+    A subset of $\R^n$ is compact if, and only if, it is closed and bounded.
+\end{lemma}
+\begin{proof}{Proof:}
+
+    $(\Rightarrow)$ We prove this last time!\\
+
+    $(\Leftarrow)$ Suppose $X \in \R^n$ is closed and bounded. Then, we can find an $s > 0$ so that $X \subseteq [-s, s] \times \cdots \times [-s, s]$. Then, as $[-s, s]$ is compact in $\R$, we see that $[-s, s]^{n}$ is compact in $\R^n$. Thus, as $X$ is a closed subset of a compact set, it is compact as well.
+
+    $\qed$
+\end{proof}
+As emphasized previously, we will see that in the general metric space, compact implies closed and boundedness, but the converse does not typically hold.
+
+\subsection*{Connectedness}
+\sectionspace
+
+\begin{definition}[\textbf{Definition 9.3: }Connectedness]
+    A topological space $X$ is \emph{connected} if, whenever $X = A \sqcup B$ with $A$ and $B$ nonempty, then $\overline{A} \cap B = \emptyset$ or $A \cap \overline{B} = \emptyset$. 
+\end{definition}
+
+An example of a disconnected space is $X = [0, 1] \cup [2, 3]$ with the subspace topology from $\R$.\\
+
+\begin{lemma}[\textbf{Fact}]
+    $\R$ is connected and a nonempty subset of $\R$ is connected if, and only if, it is an interval.
+\end{lemma}
+
+\begin{lemma}[\textbf{Proposition 9.4}]
+    The following are equivalent about a topological space $X$:
+    \begin{enumerate}
+        \item $X$ is connected.
+        \item The only clopen subset of $X$ are $\emptyset$ and $X$.
+        \item $X$ is not the union of two nonempty disjoint open sets.
+        \item There is no surjective map to a discrete space with more than one point.
+    \end{enumerate}
+\end{lemma}
+\begin{proof}{Proof:}
+    
+    $(1) \implies (2)$: If $X$ is connected and $A$ is clopen, then $A^{c}$ is clopen. Namely, they are both closed, so as $X = A \cup A^{c}$, we must have that either $A$ or $A^{c}$ are nonempty (their closures, which are themselves, don't intersect). Thus, either $A = \emptyset$ or $A = X$.\\
+
+    $(2) \implies (3)$: Suppose that $X = A \sqcup B$ with $A$ and $B$ being open. Then, notice that $A^{c} = B$. Thus as $A$ is open and $A^{c}$ is open, $A$ is clopen, so it is either $\emptyset$ or $X$, which means either $A$ is empty or $B$ is empty.\\
+
+    $(3) \implies (4)$: Suppose that $f : X \to Y$ is a surjective map onto a discrete space with more than one point. Let $y_1 \in Y$. Then, we see that $f^{-1}(\{y_1\})$ is open in $X$ and $f^{-1}(\{y_1\}^{c}) = f^{-1}(\{y_1\})^{c}$ is also open in $X$. Thus, one of them must be empty, but this either contradicts the fact that $f$ is onto, or that $Y$ has more than one point. Thus, no such $f$ exists.\\
+
+    $(4) \implies (1)$: Suppose that $X$ is disconnected. Then, write $X = A \cup B$ where $A$ and $B$ are nonempty and $\overline{A} \cap B = \emptyset$ and $A \cap \overline{B} = \emptyset$. Now, if $b \in B$, then $b \notin \overline{A}$ so $b \in X - \overline{A}$, and vice versa, so $B = X - \overline{A}$. Similarly $A = X - \overline{B}$. This implies they are both open.\\
+
+    Now, define $f : X \to \{0, 1\}$ with $f\res{A} = 0$ and $f\res{B} = 1$. Then, the preimage of any subset of $\{0, 1\}$ is either $\emptyset, B, A$ or $X$, which is continuous. Thus, a surjective map clearly does exist. 
+
+    $\qed$
+\end{proof}
+
+The upshot of this theorem is that $X$ is connected if, and only if, writing $X$ as a disjoint union of open set implies that one of the open sets must be empty.
+
+\begin{lemma}[\textbf{Proposition 9.5}]
+    If $X$ is connected and $f : X \to Y$ is a map, then $f(X)$ is connected. 
+\end{lemma}
+\begin{proof}{Proof:}
+    Suppose that $f(X) = U \cup V$ for disjoint open (in $f(X)$!) sets $U$ and $V$. Then, as 
+    \[ X = f^{-1}(U) \cup f^{-1}(V) \]
+    and we have that $f^{-1}(U)$ and $f^{-1}(V)$ are disjoint open sets, this implies that one of them is empty. This then implies that either $U$ or $V$ is empty as $f$ is onto $f(X)$. 
+
+    $\qed$
+\end{proof}
+
+\begin{lemma}[\textbf{Corollary 9.6}]
+    If $f : [a, b] \to \R$ is continuous and $f(a) \leq r \leq f(b)$, then $\exists c \in [a, b]$ for which $f(c) = r$
+\end{lemma}
+\begin{proof}{Proof:}
+    We know that $f[a, b]$ is connected, which implies that it is an interval. Then, as it contains $f(a)$ and $f(b)$, it must also contain any $r$ between them. 
+
+    $\qed$
+\end{proof}
+
+Now, we wil prove this next theorem next time, but I will state it here so I can give an example.
+
+\begin{lemma}[\textbf{Proposition 9.7}]
+    If $X$ is a topological space and $Z$ is a dense subset that is connected, then $X$ is connected.
+\end{lemma}
+
+\begin{example}{Example}
+    An interesting example of this is 
+    \[ X = \{(x, \sin(1/x)) \col 0 < x < \infty\} \cup \{(0, y) \col -1 \leq y \leq 1\} \]
+    the set on the left is dense and connected, which implies that $X$ is connected!
+\end{example}

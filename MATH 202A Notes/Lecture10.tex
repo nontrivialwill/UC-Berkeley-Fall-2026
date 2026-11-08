@@ -1,0 +1,78 @@
+\tocsection{\textbf{9/16/26 Lecture 10:} More on Lebesgue Integrals}
+
+\begin{lemma}[\textbf{Proposition 10.1}]
+    If $f : \R \to \R$ is monotone, then it is Borel-measurable. 
+\end{lemma}
+\begin{proof}{Proof:}
+	WLOG, assume that $f$ is increasing. We want to show that $f^{-1}(a, \infty)$ is an interval. Now, let
+    \[ x_0 = \sup\{x \col f(x) \leq a\} \]
+    We have to cases. If $f(x_0) \leq a$, then $f^{-1}(a, \infty) = (x_0, \infty)$. Similarly, if $f(x_0) > a$, then $f^{-1}(a, \infty) = [x_0, \infty]$. 
+\end{proof}
+
+\begin{lemma}[\textbf{Proposition 10.2}]
+    Let $(X, \cal{A})$ be a measurable space. If $f : X \to \R$ is measurable, then $f^{-1}(A) \in \cal{A}$ whenever $A \in \cal{B}$. 
+\end{lemma}
+\begin{proof}{Proof:}
+    Let $\cal{C} = \{A \subseteq \R \col f^{-1}(A) \in \cal{A}\}$. We see that $\cal{C}$ contains all subsets of the form $(a, \infty)$. Now, we see that $\R$ and $\emptyset \in \cal{C}$, it is closed under complements, and is closed under unions (as $f^{-1}$ distributes across them). Thus, we see that $\sigma(\{(a, \infty)\}) \subseteq \cal{C}$, so $\cal{B} \subseteq \cal{C}$. 
+
+    $\qed$
+\end{proof}
+
+\begin{lemma}[\textbf{Proposition 10.3}]
+    Let $f \geq 0$ and measurable. Then, there exists a sequence of simple functions $s_n \geq 0$ such that $s_n \uparrow f$. That is, $0 \leq s_1 \leq s_2 \leq \cdots \leq f(x)$ and $\sup_{n} s_n = f$. 
+\end{lemma}
+\begin{proof}{Proof:}
+    For each $n$, define
+    \[ I_{j, n} = \left[\frac{j - 1}{2^{n}}, \frac{j}{2^{n}}\right) \]
+    now for $j = 1, \ldots, n2^{n}$, let
+    \[ s_n = \sum_{j = 1}^{n2^{n}} \frac{j - 1}{2^{n}}\chi_{f^{-1}(I_{j, n})} + n\chi_{f^{-1}[n, \infty)} \]
+    Now, it can be checked that $s_n$ is increasing, and that for each $x$, $s_n(x) \uparrow f(x)$. 
+\end{proof}
+Now, we will work towards proving Lusin's theorem.
+
+
+
+\begin{definition}[\textbf{Definition 10.4: }Support of a Function]
+    The \emph{support} of a function $f$ is
+    \[ \text{supp}(f) = \overline{\{x \col f(x) \ne 0\}} \]
+\end{definition}
+
+Now, one way to define continuity is that, for $f : X \to \R$, $f$ is continuous if $f(x_n) \to f(x)$ for a sequence $x_n \to x$.\\
+
+If $Y \subseteq X$, then $f \res{Y} : Y \to \R$ is given by $f\res{Y}(x) = f(x)$. If we have a function $f$ defined only on $Y$, then continuity means that $g(x_n) \to g(x)$ but only for $x_n \to x$ contained in $Y$. 
+
+\begin{example}{\textbf{Example 1}}
+    Consider $\chi_{\Q} : \R \to \R$. This is not continuous, but we see that $\chi_{\Q} \res{\Q} : \Q \to \R$ is continuous as it is the constant function $1$. 
+\end{example}
+
+\begin{lemma}[\textbf{Lemma 10.5}]
+    If $A \subseteq \R$, define the distance from a point to a set as
+    \[ d(x, A) := \inf\{d(x, y) \col y \in A\} \]
+    This is a continuous function, and if $A$ is closed, then $f(x) = 0$ if, and only if, $x \in A$. 
+\end{lemma}
+
+Now, we state and prove Lusin's Theorem.
+
+\begin{theorem}[\textbf{Theorem 10.6: }Lusin's Theorem]
+    Let $f : [0, 1] \to \R$ be Lebesgue measurable. Then, for any $\epsilon > 0$, there exists a closed set $E \subseteq [0, 1]$ such that $\lambda([0, 1] \backslash E) < \epsilon$ and $f\res{E}$ is continuous. 
+\end{theorem}
+\begin{proof}{Proof:}
+    First, we start by proving it for characteristic functions. Let $f = \chi_{A}$. Then, we can find $K \subseteq A \subseteq U$ with $K$ closed and $U$ open so that $\lambda(A \backslash K) < \epsilon/2$ and $\lambda(U \backslash A) < \epsilon/2$.\\
+
+    Let $E = K \cup (U^{c}) \cap [0, 1]$. We see that $E$ is closed, so we need to show that $f\res{E}$ is continuous. Let 
+    \[ g(x) = \frac{d(x, U^{c})}{d(x, K) + d(x, U^{c})} \]
+    This function is continuous because it's components are continuous and $d(x, K) + d(x, U^{c}) = 0 \implies d(x, K) = 0$ and $d(x, U^{c}) = 0$, which isn't possible as $K \cap U^{c} = \emptyset$ and they are both closed.\\
+
+    Then, notice that
+    \[ g\res{E}(x) = \left\{\begin{matrix} 0 & x \in U^{c} \\ 1 & x \in K\end{matrix}\right. = f(x) \]
+    so as $g\res{E}$ is continuous, we see that $f$ is continuous. Also, notice that 
+    \[ \lambda([0, 1] \backslash E) = \lambda(K^{c} \cap U \cap [0, 1]) \leq \lambda(K^{c} \cap U) = \lambda(U \backslash K) < \epsilon \]
+
+    Now, we will prove it for simple functions. Let 
+    \[ f = \sum_{n = 1}^{N} a_n\chi_{A_n} \]
+    Now, by the previous step, there exist for each $n$, a $K_n$ so that $\lambda([0, 1] \backslash K_n) < \frac{\epsilon}{n}$, and $\chi_{A_n} \res{K_n}$ is continuous. Then, let
+    \[ E = \bigcap_{n = 1}^{N} K_n \]
+    We see that $E$ is closed, $\mu([0, 1] \backslash E) < \epsilon$, and as each $\chi_{A_n}$ is continuous on $E$, we see that $f\res{E}$ is continuous.\\
+
+    We will finish this proof next time.-
+\end{proof}

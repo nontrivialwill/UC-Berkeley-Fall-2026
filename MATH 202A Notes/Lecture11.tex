@@ -1,0 +1,104 @@
+\tocsection{\textbf{9/21/26 Lecture 11:} More on Integrals}
+
+We first start by finishing the proof of Lusin's theorem. \\
+
+\begin{proof}{Proof of Lusin's Theorem:}
+    \vspace{0.2cm}
+
+    Now, we will prove this for positive functions $f$ bounded above by $N$. Let 
+    \[ \tilde{s}_n = \sum_{j = 1}^{N2^{N} + 1} \frac{j - 1}{2^{n}}\chi_{f^{-1}[\frac{j - 1}{2^{n}}, \frac{j}{2^{n}})} \]
+    This is a similar construction as before, but as $N$ is bounded, we don't need the extra term at the end. Let $f_n = \tilde{s}_{n + 1} - \tilde{s}_{n}$. This is still a simple function, and satisfies
+    \[ \abs{f_n(x)} < \frac{1}{2^{n}} \]
+    Then, as $f_n$ are simple functions, we can find sets $E_n$ with $\lambda([0, 1] \backslash E_n) < \frac{\epsilon}{2^{n + 1}}$. Now, we see that $f_n \res{E_{n}}$ is continuous, and notice that
+    \[ \tilde{s}_0(x) + \sum_{j = 1}^{n} f_{j}(x) = \tilde{s}_{n + 1}(x) \]
+    Now, letting $E = \bigcap_{n = 1}^{\infty} E_n$, then we see that each $f_n$ is continuous on $E$, and we see that $(\sum_{j = 1}^{\infty} f_n(x) - \tilde{s}_0(x))$ converges uniformly to $f$ by the Weierstrass $M$-test. Thus, $f$ is continuous on $E$, as each $f_n$ is continuous on $E$. \\
+
+    Since we see that
+    \begin{align*}
+        \lambda\left([0, 1] \backslash \bigcap_{i = 1}^{n} E_n\right) \leq \sum_{i = 1}^{\infty} \lambda([0, 1] \backslash E_n) < \epsilon
+    \end{align*}
+    we are done.
+    \vspace{0.4cm}
+
+    Now, suppose $f$ is positive, but not necessarily bounded. Let
+    \[ B_{N}(x) = \{x \col f(x) \leq N\} \]
+    Notice that $[0, 1] = \bigcup_{n = 1}^{\infty} B_N$. Now, we can find an $N$ for which
+    \[ \lambda([0, 1] \backslash B_n) < \frac{\epsilon}{3} \]
+    and further find a closed $K \subseteq B_N$ so that
+    \[ \lambda(B_N \backslash K) < \epsilon/3 \]
+    Consider $f\chi_{K}$. This function is positive and bounded, so we can find $E \subseteq [0, 1]$ so that $f\chi_{K} \res{E}$ is continuous and $\lambda([0, 1] \backslash E) < \frac{\epsilon}{3}$. Also, notice that $f \res{K} = f\chi_{K}\res{K}$. \\
+
+    Then, we see that $\lambda([0, 1] \backslash (E \cap K)) < \epsilon$, and $f \res{E \cap K}$ is continuous as it agrees with $f\chi_{K}$ on $E \cap K$.\\
+
+    Finally, let $f$ be any measurable function. Then, write $f = f_{+} - f_{-}$ where $f_{\pm} = (\pm f) \vee 0$. Then, apply the previous step to $f_{+}$ and $f_{-}$, and the intersection of the sets on which they are continuous gives us a set on which $f$ is continuous.
+    
+    $\qed$
+\end{proof}
+
+Here's something that comes directly from this theorem.
+
+\begin{lemma}[\textbf{Corollary 11.1}]
+    Let $f : [0, 1] \to \R$ be Lebesgue measurable. For every $\epsilon > 0$, there is a continuous function $g : [0, 1] \to \R$ so that
+    \[ \lambda(\{x \col f(x) \ne g(x)\}) < \epsilon \]
+\end{lemma}
+\begin{proof}{Proof:}
+    By Lusin's theorem, we can find a closed set $E \subseteq [0, 1]$ so that $f\res{E}$ is continuous and $\lambda([0, 1] \backslash E) < \epsilon$.\\
+
+    Now, I want to find a $g$ that agrees with $f$ on $E$ that is still continuous on its complement. Now, note that
+    \[ [0, 1] \backslash E = \bigcup_{n = 1}^{\infty} (a_n, b_n) \]
+    now, on $(a_n, b_n)$, we do linear interpolation. We know that $g(b_n) = f(b_n)$ and $g(a_n) = f(a_n)$. Then, on $(a_n, b_n)$, let $g$ be the line between $(a_n, f(a_n))$ and $(b_n, f(b_n))$. That is, let
+    \[ g\res{(a_n, b_n)} = f(a_n) + \frac{f(b_n) - f(a_n)}{b_n - a_n}(x - a_n) \]
+
+    Now, the claim is that $g$ is in fact continuous. We will not prove this.
+
+    $\qed$
+\end{proof}
+
+\subsection*{Lebesgue Integral}
+\sectionspace
+
+Let $(X, \cal{A}, \mu)$ be a measure space. We will define the Lebesgue integral again, but now with more tools. 
+
+\begin{definition}[\textbf{Definition 11.2: }Lebesuge Integral for Simple Functions]
+    For a simple function
+    \[ s = \sum_{j = 1}^{n} a_j\chi_{E_j},\ E_j \subseteq \cal{A} \]
+    define
+    \[ \int s d\mu = \sum_{i = 1}^{\infty} a_j\mu(E_j) \]
+\end{definition}
+
+Note that this sum can be infinite if $\mu(E_j) = \infty$, but if $a_j = 0$ and $\mu(E_j) = \infty$, then we take by convention that $0 \cdot \infty = 0$.\\
+
+Now, note that for any simple function $s$, there are many ways to represent it as a sum of characteristic functions. However, luckily it turns out that the above definition is independent of the representation of $s$.\\
+
+\begin{definition}[\textbf{Definition 11.3:} Lebesgue Integral]
+    Let $f \geq 0$ be measurable. Then, define
+    \[ \int f d\mu = \sup\left\{\int s d\mu \col s \leq f,\ s \tt{ is simple}\right\} \]
+    Now, if $f$ is not necessarily positive, then let $f = f^{+} - f^{-}$ and define
+    \[ \int f d\mu = \int f^{+}d\mu - \int f^{-}d\mu \]
+    but only when not both $\int f^{+}d\mu$ and $\int f^{-}d\mu$ are infinite. 
+\end{definition}
+
+\begin{lemma}[\textbf{Proposition 11.4}]
+    Assume $f$ and $g$ are measurable. The following are true about Lebesgue integrals
+    \begin{enumerate}
+        \item If $0 \leq a \leq f \leq b$ for $x \in X$ and $\mu(X) < \infty$, then
+        \[ a\mu(X) \leq \int f d\mu \leq b\mu(X) \]
+        \item If $0 \leq f(x) \leq g(x)$
+        \[ 0 \leq \int fd\mu \leq \int gd\mu \]
+        \item For any constant $c$, 
+        \[ \int cf d\mu = c \int f d\mu \]
+        \item If $\mu(A) = 0$, then
+        \[ \int f\chi_{A}d\mu = 0 \]
+    \end{enumerate}
+\end{lemma}
+\begin{proof}{Proof:}
+    
+    \textbf{(1)} Note that the simple function $a\chi_{X} \leq f(x)$, and as $\int a\chi_{X} = a\mu(X)$, it is immediately clear that $a\mu(X) \leq \int f d\mu$ from the definition. Now, let $s \leq f$ be a simple function with $s = \sum_{j = 1}^{n} a_j\chi_{A_j}$. We want to show that
+    \[ \int s d\mu \leq b\mu(X) \]
+    Now, we want to make these $A_j$ disjoint. Since $s$ takes on finitely many values, we can write
+    \[ s = \sum_{j = 1}^{m} b_j\chi_{B_j} \]
+    for disjoint $B_j$. Now, as $b_j \leq b$ for each $j$, then we see that $s \leq f \leq b$ and 
+    \[ \int \sum_{j = 1}^{m} b_j\chi_{b} \leq b\sum_{j = 1}^{m}\mu(B_j) \leq b\mu(X) \]
+
+    $\qed$
+\end{proof}

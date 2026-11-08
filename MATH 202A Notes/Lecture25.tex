@@ -1,0 +1,88 @@
+\tocsection{\textbf{10/26/26 Lecture 25:} Differentiating Monotone Functions and Bounded Variation}
+
+\begin{lemma}[\textbf{Proposition 25.1}]
+    Let $F : \R \to \R$ be increasing and right-continuous. Then, $F'(x)$ exists a.e. and
+    \[ \int_{a}^{b} F'(x) dx \leq F(b) - F(a) \]
+\end{lemma}
+\begin{proof}{Proof:}
+    Because differentiation is local, it suffices to prove the claim for a function that agrees with $F$ on $[0, 1]$.\\
+
+    Redefine $F$ so that $F(x) = \lim_{x \to 0^{+}} F(x)$ for $x \leq 0$ and $F(x) = F(1)$ for $x \geq 1$. Then,
+    \fig{0.5}{Lecture25Fig1}{}
+    $F$ is still increasing and right continuous, but its LS measure is finite. Let $\nu$ be the LS measure of this $F$. Then,
+    \[ \nu(A) = \int_{A} f d\lambda + \rho(A) \quad \tt{for } \rho \perp \lambda \]
+    Then,
+    \begin{align*}
+        \rho((a, b]) &= \nu((a, b]) - \int_{a}^{b} f(y) dy\\
+        &= F(b) - F(a) - \int_{a}^{b} f(y) dy
+    \end{align*}
+    Now, $\rho$ is a Lebesgue-Stieltjes measure, and
+    \[ \frac{F(x + h) - F(x)}{h} = \frac{1}{h}\int_{x}^{x + h} f(y) dy + \frac{\rho((x, x + h])}{h} \]
+    so by the corollary from before, the first term goes to $f$ almost everywhere, and by a proposition from last time,
+    \[ \frac{\rho((x, x + h])}{h} \leq \frac{\rho(x - 2h, x + 2h)}{h} = 4\frac{\rho(x - 2h, x + 2h)}{\lambda(x - 2h, x + 2h)} \to 0 \]
+    because $\rho$ is mutually singular with $\lambda$. Thus,
+    \[ \int_{a}^{b} F'(x) dx = \int_{a}^{b} f(x) dx \leq \nu((a, b]) = F(b) - F(a) \]
+
+    $\qed$
+\end{proof}
+
+\begin{example}{\textbf{Example:} Cantor Function}
+    Let $F$ be the Cantor function. $F$ has the property that it is constant outside the Cantor set, so $F'(x) = 0$ a.e. Thus, the L-S measure of $F$ is mutually singular with $\lambda$. Thus, we see
+    \[ \int_{a}^{b} F'(x) dx = 0 \leq F(b) - F(a) \]
+    Thus, we don't always achieve equality.
+\end{example}
+
+\textbf{Note:} In our proof above, we see $\int_{a}^{b} F'(x) dx = F(b) - F(a)$ when the LS measure $\nu$ is absolutely continuous with respect to $\lambda$.
+
+\begin{lemma}[\textbf{Theorem 25.2}]
+    Let $F : \R \to \R$ be increasing and let $G(x) = F(x^{+}) = \lim_{y \to x^{+}} F(y)$. Then, the set of points where $F$ is not continuous is countable, and $F$ and $G$ are differentiable with
+    \[ F' = G' \tt{ a.e.} \quand \int_{a}^{b} F'(y) dy \leq F(b) - F(a) \]
+\end{lemma}
+\begin{proof}{Proof:}
+    $G$ is increasing and right continuous.\\
+
+    Now, the points where $F$ is discontinuous are points such that $F(x^{+}) \neq F(x^{-})$ (and namely $F(x^{-}) < F(x^{+})$).\\
+
+    At any such point, we can find a rational in $(F(x^{-}), F(x^{+}))$, but as $F$ is increasing, all such intervals are disjoint, and thus, all such rationals are unique. Thus, the number of points $F$ is discontinuous is countable.\\
+
+    Now, note that $G$ agrees with $F$ where $F$ is continuous. Since $G'$ exists a.e. from above, we can find $x$ such that $G'(x)$ exists, $F(x) = G(x)$, and $F$ is continuous at $x$.\\
+
+    Fix $\epsilon > 0$. For any $h \geq 0$,
+    \[ F(x + h) \leq G(x + (1 + \epsilon)h) \]
+    This is because in $(x + h, x + (1 + \epsilon)h)$, we can find a point $x_h$ where $F$ and $G$ agree, and $G(x + (1 + \epsilon)h) \geq G(x_h)$. Thus,
+    \begin{align*}
+        \limsup_{h \to 0^{+}} \frac{F(x + h) - F(x)}{h} &\leq \limsup_{h \to 0^{+}} \frac{G(x + (1 + \epsilon)h) - G(x)}{h}\\
+        &= (1 + \epsilon)\limsup_{h \to 0^{+}} \frac{G(x + (1 + \epsilon)h) - G(x)}{(1 + \epsilon)h}\\
+        &= (1 + \epsilon)G'(x)
+    \end{align*}
+    Thus, $\limsup_{h \to 0^{+}} \frac{F(x + h) - F(x)}{h} \leq (1 + \epsilon)G'(x)$. By a similar argument, $\liminf_{h \to 0^{+}} \frac{F(x + h) - F(x)}{h} \geq (1 - \epsilon)G'(x)$. Then, taking $\epsilon \to 0$, we get $F'(x) = G'(x)$.\\
+
+    Finally, to show $\int_{a}^{b} F'(x) dx \leq F(b) - F(a)$, given $a < b$, choose $a_n \downarrow a$ and $b_n \uparrow b$ so that $F$ and $G$ agree at these points. Then,
+    \begin{align*}
+        \int_{a_n}^{b_n} F'(x) dx &= \int_{a_n}^{b_n} G'(x) dx\\
+        &\leq G(b_n) - G(a_n)\\
+        &= F(b_n) - F(a_n)\\
+        &\leq F(b) - F(a)
+    \end{align*}
+    where we apply MCT to get the inequality as $F'$ is non-negative almost everywhere. 
+
+    $\qed$
+\end{proof}
+
+Let $F : \R \to \R$. Define
+\[ T_F(x) = \sup\left\{\sum_{j = 1}^{n} \abs{F(x_j) - F(x_{j - 1})} \col n \in \N,\ x_0 < x_1 < \cdots < x_n = x\right\} \]
+If $F$ is smooth, $T_F(x) = \int_{-\infty}^{x} \abs{F'(t)} dt$.
+
+\begin{definition}[\textbf{Definition 25.3:} Bounded Variation]
+    We say $F$ is of \emph{bounded variation}, denoted BV, if $\lim_{x \to \infty} T_F(x) = T_F(\infty) < \infty$.
+\end{definition}
+
+\begin{example}{\textbf{Example:} Bounded Increasing Functions}
+    If $F$ is bounded and increasing, then $F$ is BV.
+\end{example}
+
+\begin{example}{\textbf{Example:} $x\sin(1/x)$}
+    Monotonicity is important. Consider $F(x) = x\sin\left(\frac{1}{x}\right)$.
+    \fig{0.3}{Lecture25Fig2}{}
+    This function is bounded near 0, but not BV on any interval containing 0. 
+\end{example}

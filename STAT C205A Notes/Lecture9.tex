@@ -1,0 +1,82 @@
+\tocsection{\textbf{9/29/26 Lecture 9:} Lebesgue-Fubini-Tonelli-H\"older-Minkowski}
+
+\begin{lemma}[\textbf{Lemma 9.1:} Completion]
+    Consider a measure space $(\Omega, \cal{A}, \mu)$, a $\sigma$-field $\cal{F} \subseteq \cal{A}$, and a Borel space $(S, \cal{S})$. Then, a function $f : \Omega \to S$ is $\cal{F}^{\mu}$-measurable if, and only if, there exists some $\cal{F}$-measurable function $g$ such that $f = g$ a.e. $\mu$. 
+\end{lemma}
+\begin{proof}{Proof:}
+    Let's start with indicators. If $\cal{G}$ is the set of $A \subseteq \Omega$ such that $A \Delta B \in \cal{N}_{\mu}$ for some $B \in \cal{F}$. Then, we have that $A \backslash B$ and $B \backslash A$ are in $\cal{N}_{\mu}$ (they are subset of a null set), which implies that $\cal{G} \subseteq \cal{F}^{\mu}$. This is because we know that $B \cup A \backslash B = A \cup B \in \cal{F}^{\mu}$ and $A \cup B \backslash (B \backslash A) = A \in \cal{F}^{\mu}$. Conversely, $\cal{F}^{\mu} \subseteq \cal{G}$ since both $\cal{F}$ and $\cal{N}_{\mu}$ are trivially ($\cal{F}$ is trivial, for $\cal{N}_{\mu}$, consider $A \Delta \emptyset$) contained in $\cal{G}$, and it can be shown that $\cal{G}$ is a $\sigma$-field. \\
+
+    Then, we see that $A \in \cal{F}^{\mu}$ if, and only if $1_{A} = 1_{B}$ almost everywhere for some $B \in \cal{F}$. When, we may choose some simple $\cal{F}^{\mu}$-measurable functions $f_n$ such that $0 \leq f_n \uparrow f$. By our result above there exists $\cal{F}$-measurable functions $g_n$ such that $f_n = g_n$ almost everywhere. Since a countable union of null sets is a null set, we see that $g = \limsup_{n} g_n$ has the property that we want.
+
+    $\qed$
+\end{proof}
+
+\begin{definition}[\textbf{Definition 9.2:} $\sigma$-finiteness]
+    A measure $\mu$ on a measurable space $(\Omega, \cal{A})$ is \emph{$\sigma$-finite} if $\Omega = \bigcup_{i = 1}^{\infty} A_n$ with $A_i \cap A_j = \emptyset$ for $i \ne j$ such that $\mu A_n < \infty$ for all $n$. Equivalently, $\mu$ is $\sigma$-finite if, and only if, there is a measurable strictly positive function $f$ such that $\mu f < \infty$. 
+\end{definition}
+
+
+The following results answer when
+\[ \int_{S}\left(\int_{T} f(s, t) \nu(t)\right)\mu(s) = \int_{T}\left(\int_{S} f(s, t)\mu(s)\right)\mu(t) \]
+First, we start with a lemma to show that the statement above even makes sense at all.
+\begin{lemma}[\textbf{Lemma 9.3:} Sections]
+    Fix two measurable spaces $(S, \cal{S})$ and $(T, \cal{T})$, a measurable function $f : S \times T \to \R_{+}$, and a $\sigma$-finite measure $\mu$ on $S$. Then,
+    \begin{enumerate}
+        \item $f(s, t)$ is $\cal{S}$ measurable in $s \in S$ for each $t \in T$.
+        \item $\int f(s, t)\mu(ds)$ is $\cal{T}$-measurable in $t \in T$. 
+    \end{enumerate}
+\end{lemma}
+\begin{proof}{Proof:}
+    We may assume that $\mu$ is bounded. Both statements are obvious when $f = 1_{A}$ with $A = B \times C$ for some $B \in \cal{S}$ and $C \in \cal{T}$. This extends by a monotone class argument to any indicator functions of sets in $\cal{S} \otimes \cal{T}$. The general case then follows by linearity and monotone convergence. 
+
+    $\qed$
+\end{proof}
+
+\begin{theorem}[\textbf{Theorem 9.4:} Lebesgue-Fubini-Tonelli Theorem]
+    For any $\sigma$-finite measure spaces $(S, \cal{S}, \mu)$ and $(T, \cal{T}, \nu)$, there exists a unique measure $\mu \otimes \nu$ on $(S \times T, \cal{S} \otimes \cal{T})$ satisfying
+    \[ (\mu \otimes \nu)(B \times C) = \mu(B) \cdot \nu(C),\quad B \in \cal{S}, C \in \cal{T} \]
+    Furthermore, for any non-negative measureable function $f : S \times T \to \R_{+}$, 
+    \[ (\mu \otimes \nu)v = \int \mu(ds)\int f(s, t)\nu(dt) = \int \nu(dt) \int f(s, t) \mu(ds) \]
+    The last relation remains valid for any measurable function $f : S \times T \to \R$ with $(\mu \otimes \nu)\abs{f} < \infty$.\\
+    
+    Note that these integrals are well defined by the lemma above, and although the inner integrals $\nu f(s, \cdot)$ and $\mu f(\cdot, t)$ may fail to exist on some null sets in $S$ and $T$, when everything works, everything agrees. 
+\end{theorem}
+\begin{proof}{Proof:}
+    By the lemma above, we can define
+    \[ (\mu \otimes \nu)(A) = \int \mu(ds)\int 1_{A}(s, t)\nu(dt), \quad A \in \cal{S} \otimes \cal{T} \]
+    which is a clearly a measure on $S \times T$. By a monotone class argument, there can be at most one measure (Caratheodory Extension Theorem).\\
+
+    In particular, if we interchange the integrals, from the same monotone class argument, we see that the corresponding measure $\nu \otimes \mu$ also agrees with $\mu \otimes \nu$. Thus, we see that the statement in the theorem about integrals holds for indicator functions. Then, by linearity and monotone convergence, it holds for arbitrary measurable functions $f \geq 0$.\\
+
+    Now, for the general case, we see that for any measurable $f$, statement about integrals holds for $\abs{f}$. Then, if $(\mu \otimes \nu)\abs{f} < \infty$, it follows that $N_{S} = \{s \in S \col \nu\abs{f(s, \cdot)} = \infty\}$ is a $\mu$-null set in $S$ (as otherwise we would get infinity for our integral), and similarly $N_{T} = \{t \in T \col \mu\abs{f(\cdot, t)} = \infty\}$ is also a $\nu$-null set. Then, we can define $f(s, t)$ to  be zero when $s \in N_{S}$ or $t \in N_{t}$. This new function has the same integral as the previous function.\\
+
+    Then, the statement about integrals follows for $f$ by subtraction of the formulas for $f_{+}$ and $f_{-}$. 
+
+\end{proof}
+
+Now, we move on to $L^{p}$ spaces!
+
+\begin{definition}[\textbf{Definition 9.5:} $L^{p}$ Spaces]
+    Given a measure space $(\Omega, \cal{A}, \mu)$ and a $p > 0$, write $L^{p} = L^{p}(\Omega, \cal{A}, \mu)$ for the class of all measurable functions $f : \Omega \to \R$ with
+    \[ \norm{f}_{p} := \left[\int \abs{f}^{p} d\mu\right]^{1/p} < \infty \]
+\end{definition}
+
+Now, here are some very useful inequalities:
+
+\begin{theorem}[\textbf{Theorem 9.6:} H\"older and Minkowski Inequalities]
+    For any measurable functions $f$ and $g$ on some measure space $(\Omega, \cal{A}, \mu)$, we have
+    \begin{enumerate}
+        \item $\norm{fg}_{r} \leq \norm{f}_{p}\norm{g}_{q}$ for all $p, q, r > 0$ with $p^{-1} + q^{-1} = r^{-1}$.
+        \item $\norm{f + g}_{p}\leq \norm{f}_{p} + \norm{g}_{p}$ for all $p \geq 1$, and $\norm{f + g}_{p}^{p} \leq \norm{f}_{p}^{p} + \norm{g}_{p}^{p}$ for $0 < p < 1$. 
+    \end{enumerate}
+\end{theorem}
+\begin{proof}{Proof:}
+    For (1), it is clearly enough to take $r = 1$ (replace $f$ and $g$ with $f^{r}$ and $g^{r}$) and $\norm{f}_p = \norm{g}_{q} = 1$ (replace $f$ and $g$ with their normalized versions, and if norm 0, inequality is obvious). The relation $p^{-1} + q^{-1} = 1$ implies $(p - 1)(q - 1) = 1$, so the equations $y = x^{p -1}$ and $x = y^{q - 1}$ are equivalent for $x, y \geq 0$. Thus, $(\cdot)^{p - 1}$ and $(\cdot)^{q - 1}$ are inverses. By Young's inequality, which is depicted below:
+
+    \fig{0.6}{Lecture9Fig1}{}
+    we have that,
+    \[ \abs{fg} \leq \int_{0}^{\abs{f}}x^{p - 1}dx + \int_{0}^{\abs{g}}y^{q - 1}dy = p^{-1}\abs{f}^{p} + q^{-1}\abs{g}^{q} \]
+    Thus, 
+    \[ \norm{fg}_{1} \leq p^{-1} \int \abs{f}^{p}d\mu + q^{-1} \int \abs{g}^{q}d\mu = p^{-1} + q^{-1} = 1 \]
+    We will prove the second inequality next.
+\end{proof}

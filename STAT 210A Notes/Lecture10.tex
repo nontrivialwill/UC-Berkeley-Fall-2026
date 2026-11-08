@@ -1,0 +1,106 @@
+\tocsection{\textbf{9/29/26 Lecture 10:} Score and Fisher Information}
+
+Recall last lectures example: $X_1, \ldots, X_n \iidsim U[0, 1]$. Recall that $X_{(n)}$ is complete sufficient, and as
+\[ \bb{E}_{\theta}[X_{(n)}] = \frac{n}{n + 1}\theta \implies \frac{n + 1}{n}X_{(n)} \text{ is UMVU} \]
+Now, also notice that, if $Z = \frac{X_{(n)}}{\theta} \sim \tt{Beta}(n, 1)$, then
+\begin{align*}
+    \tt{MSE}(\theta; cX_{(n)}) &= \bb{E}_{\theta}[(cX_{(n)} - \theta)^2]\\
+    &= \theta^2\bb{E}[(cZ - 1)^2]\\
+    &= \theta^2\tt{MSE}(1; cZ)
+\end{align*}
+Where the latter is something independent on $\theta$. Thus, there is some optimal $c$. Well, we see that
+\begin{align*}
+    \tt{MSE}(1; cZ) = c^2\bb{E}[Z^2] - 2c \bb{E}[Z] + 1
+\end{align*}
+So minimizing $c$, we get the best possible $c$ is $c = \frac{n + 2}{n + 1}$. Notice that we don't get the same $c$ as above, namely $\frac{n}{n + 1}$, so our UMVU above doesn't not minimize MSE across all estimators, but also notice that $\frac{n + 2}{n + 1}X_{(n)}$ is unbiased. Thus, going towards unbiasedness does not necessarily mean going towards minimizing MSE.\\
+
+Here is another example where restricting to unbiased estimators is not a good idea. Let $X \sim N_{d}(\mu_i, I_{d})$ for $\mu \in \R^{d}$ and suppose we want to estimate $g(\mu) = \norm{\mu}^2$. It turns out that $X$ is a complete sufficient statistic. Now, we see that, defining $Z = N(0, I_{d})$, 
+\begin{align*}
+    \bb{E}_{\mu}\norm{X}^2 &= \sum_{j = 1}^{d} \bb{E}[(\mu_{j} + Z_{j})^2] \\
+    &= \sum_{j = 1}^{d} \mu_j^2 + 1 = \norm{\mu}^2 + d
+\end{align*}
+Thus, our estimator should be $\delta(X) = \norm{X}^2 - d$, which is the best unbiased, but this is a bad idea as we might get some negative observations. Thus, we see that $\delta^{*}(X) = (\norm{X}^2 - d)_{+}$ is better for all $\mu$ and all $X$.\\
+
+Finally, here's one more absurd example. Let $X \sim \Binom(1000, \theta)$, and we want to estimate $g(\theta) = \bb{P}_{\theta}(X \geq 500)$. Consider the following estimator
+\[ \delta(X) = 1\{X \geq 500\} \]
+This is unbiased and is a function of the complete sufficient statistic (which is $X$), but this is a crazy estimator! It means that if we observe 499 heads, then we estimate that $\bb{P}_{\theta}(X \geq 500) = 0$, and if we observe 500 heads, then we estimate that $\bb{P}_{\theta}(X \geq 500) = 1$. That's insane!\\
+
+The idea behind why these all suck is that it's too easy to be a UMVU. All you need is that your estimator is a function of the complete sufficient statistic and is unbiased, which can lead to easily constructing many examples where this sucks.
+\clearpage
+
+\subsection*{Score Function}
+\sectionspace
+
+Assume $\cal{P}$ has densities $p_{\theta}$ with respect to $\mu$, and $\Theta \subseteq \R^{d}$, and assume that $p_{\theta}$ hsa a common support for all $\theta$. Now, we have
+\[ \ell(\theta, X) = \log p_{\theta}(X) \]
+is a random function of $\theta$. Then, notice that $\ell(\cdot, X) - \ell(\theta_0, X)$ is minimal sufficient for any fixed reference value $\theta_0 \in \Theta$.\\
+
+In the asymptotic picture; that is when we have a lot of data and we can narrow the possible $\theta$ down to a small neighborhood of the true value, and if $\theta_0$ is the true value, the ''effective model'' is $\{P_{\theta_0 + \eta} \col \eta \approx 0\}$. Then, via a Taylor approximation,
+\[ \ell(\theta_0 + \eta, X) - \ell(\theta_0, X) \approx \eta'\nabla_{\theta}\ell(\theta_0, X) + O(\norm{\eta}^2) \]
+Since we know the LHS is minimal sufficient, $\nabla_{\theta}\ell(\theta_0, X)$ should be close to being minimal sufficient locally. 
+
+\begin{definition}[\textbf{Definition 10.1:} Score]
+    The \emph{score} at $\theta_0$ is 
+    \[ S_{\theta_0}(X) = \nabla_{\theta} \ell(\theta_0, X) \]
+\end{definition}
+
+Now, note from the score we also have
+\[ p_{\theta_0 + \eta}(x) = e^{\ell(\theta_0 + \eta, x)} \approx e^{\eta'S_{\theta_0}(x) + O(\norm{\eta}^2)}p_{\theta_0}(x) \]
+Thus, we see that the score locally transforms $p_{\theta}$ into an exponential family!
+
+\subsection*{Differential Identities}
+
+Now, assuming that everything is regular and extends smoothly, we see that
+\begin{align*}
+    1 &= \int_{\cal{X}} e^{\ell(\theta, X)}d\mu(x)\\
+    0 &= \int_{\cal{X}} \frac{\del}{\del \theta_i}\ell(\theta, x)e^{\ell(\theta, x)}d\mu(x) && (\tt{differentiate wrt } \theta_i)\\
+\end{align*}
+Thus, collecting this into a vector, we have that
+\[ 0 = \bb{E}_{\theta}[\nabla \ell(\theta, X)] = \bb{E}_{\theta}[S_{\theta}(X)] \]
+Then, taking another derivative, we have
+\begin{align*}
+    0 &= \int_{\cal{X}}\left(\frac{\del^2 \ell}{\del \theta_j \del \theta_k} + \frac{\del \ell}{\del \theta_j}\frac{\del \ell}{\del \theta_k}\right)e^{\ell(\theta, x)}d\mu(x)\\
+    &= \bb{E}_{\theta}\left[\frac{\del^2 \ell}{\del \theta_i \del \theta_k}(\theta, X)\right] + \bb{E}_{\theta}\left[\frac{\del \ell}{\del \theta_j}(\theta, X) \frac{\del \ell}{\del \theta_k}(\theta, X)\right]\\
+    &= \bb{E}_{\theta}\left[\frac{\del^2 \ell}{\del \theta_i \del \theta_k}(\theta, X)\right] + \Cov\left(\frac{\del \ell}{\del \theta_i}, \frac{\del \ell}{\del \theta_k}\right) && (\tt{as the expectation of single derivatives is 0})
+\end{align*}
+Thus, we see that
+\[ \Var_{\theta}\left(\nabla \ell(\theta, X)\right) = \bb{E}_{\theta}\left[-\nabla^2 \ell(\theta, X)\right] \]
+
+\begin{definition}[\textbf{Definition 10.2:} Fisher Information]
+    We call $J(\theta) = \Var_{\theta}(S_{\theta}(X))$ the \emph{Fisher information}.
+\end{definition}
+
+Here's an example
+
+\begin{example}{Example}
+    Let $X_1, \ldots, X_n \iidsim p_{\theta}^{(i)}(x)$ for $\theta \in \Theta \subseteq \R^d$. Then, suppose that $p_{\theta}$ has nice regular qualities, like common supports and that $\bb{E}_{\theta}\norm{\nabla_{\theta} \ell(\theta, X)}^2 < \infty$. Then, we see that
+    \[ X \sim p_{\theta}(X) = \prod p_{\theta}^{(i)}(x_i) \]
+    Then if
+    \[ \ell_i(\theta_i, x_i) := \log p_{\theta}^{(i)}(x_i) \]
+    we see that
+    \[ \ell(\theta, x) = \sum_{i} \ell_i(\theta_i, x_i) \]
+    Thus, we have that
+    \[ S_{\theta}(x) = \nabla \ell(\theta, X) = \sum_{i} S_{\theta}^{(i)}(x_i) \]
+    Additionally, we have that
+    \begin{align*}
+        J(\theta) &= \Var_{\theta} S_{\theta}(X)\\
+        &= n\Var_{\theta} S_{\theta}^{(i)}(X_i)\\
+        &= nJ_{1}(\theta)
+    \end{align*}
+    by the fact the $X_i$ are iid. 
+\end{example}
+
+Now, in ``asymptopia'', we see that
+\[ \frac{1}{n}\nabla^2\ell(\theta, X) = \frac{1}{n}\sum_{i = 1}^{n} \nabla^2\ell(\theta_i, X_i) \rightarrow -J_{1}(\theta) \]
+Thus, we see that
+\[ O(\norm{\eta}^2) = \frac{1}{2}\eta'(nJ_{1}(\theta))\eta' \]
+since we have, by a Taylor expansion,
+\begin{align*}
+    \ell\left(\theta_0 + \frac{\eta}{\sqrt{n}}, X\right) - \ell(\theta_0, X) &\approx \frac{\eta}{\sqrt{n}}'S_{\theta_0}S(X) + \frac{1}{2}\eta'\left(\frac{\sum \nabla^2 \ell(\theta_i, X_i)}{n}\right)\eta\\
+    &\approx \eta' \frac{S_{\theta_0}(X)}{\sqrt{n}} - \frac{1}{2}\eta'J_{1}(\theta)\eta\\
+    &\approx \eta'Z_{\theta_0}(X) - \frac{1}{2}\eta'J_{1}(\theta)\eta
+\end{align*}
+Then as
+\[ \frac{1}{\sqrt{n}}\sum_{i = 1}^{n} S_{\theta_0}^{(i)}(X_i) \approx N(0, J_{1}(\theta)) \]
+Thus, looking back at our representation as an exponential family, we see that the minimal sufficient statistic is
+\[ Z_{\theta_0}(X) \sim N(0, J_{1}(\theta)) \]

@@ -1,0 +1,84 @@
+\tocsection{\textbf{9/9/26 Lecture 6:} More Topological Properties}
+
+We will come back to our function $f : [0, 1] \to \triangle$ and show that it is really space filling, but before that we will look at some other topological properties.
+
+\begin{definition}[\textbf{Definition 6.1: }Hausdorff Spaces]
+    A topological space $X$ is \emph{Hausdorff} if, for all $x \ne y \in X$, there exist disjoint open set $U, V$ such that $x \in U$ and $y \in V$.
+\end{definition}
+
+It is clear that all metric spaces are Hausdorff, and that if a space has more than one point, then with the indiscrete topology, the space is not Hausdorff.\\
+
+\begin{definition}[\textbf{Definition 6.2: }Distance to a Set]
+    Let $X$ be a metric space and $A \subseteq X$, Then, we define 
+    \[ d(x, A) := \inf\{d(x, a) \col a \in A\} \]
+\end{definition}
+
+\begin{lemma}[\textbf{Proposition 6.3}]
+    The function $d(x, A)$ is continuous in $x$. In other words, the function $d_{A} : X \to \R$ by $d_{A}(x) = d(x, A)$ is continuous.
+\end{lemma}
+\begin{proof}{Proof:}
+    We will use the $\epsilon-\delta$ definition of continuity. Pick $x \in X$ and $\epsilon > 0$. Let $\delta = \epsilon/2$. Then, by the definition of $d(x, A)$, pick an $a$ such that $d(x, a) < d(x, A) + \epsilon/2$. Then, for $z$ such that $d(x, z) < \delta = \epsilon/2$, we have that
+    \begin{align*}
+        d(z, a) \leq d(z, x) + d(x, a) < d(x, A) + \epsilon 
+    \end{align*}
+    Thus, since $d(z, A) < d(z, a)$, we see that $d(z, A) < d(x, A) + \epsilon$. By a similar argument, we can get the other direction, which shows that $\abs{d(x, A) - d(z, A)} < \epsilon$. 
+
+    $\qed$
+\end{proof}
+
+\begin{lemma}[\textbf{Lemma 6.4}]
+    $d(x, A) = 0$ if, and only if, $x \in \overline{A}$. 
+\end{lemma}
+\begin{proof}{Proof:}
+    Suppose that $d(x, A) = 0$. Then, for all $\epsilon > 0$, there exists an $a \in A$ such that $d(x, a) < \epsilon$. Thus, either $x \in A$, or $x \notin A$ and every neighborhood of $x$ intersects $A \backslash \{x\}$, which implies that $x \in \overline{A}$.\\
+
+    Similarly, if $x \in \overline{A}$, then either $x \in A$ for which $d(x, A)$ holds trivially, or that for all $\epsilon > 0$, there exists an $a \in A$ such that $a \in B(x, \epsilon)$, which implies that $d(x, a) < \epsilon$. Thus, $d(x, A) = 0$. 
+
+    $\qed$
+\end{proof}
+
+\begin{lemma}[\textbf{Proposition 6.5}]
+    If $X$ is a metric space and $A, B \subseteq X$ are disjoint closed sets, then there exists a continuous function $f : X \to [-1, 1]$ such that $f \res{A} = 1$ and $ \res{B} = -1$. 
+\end{lemma}
+\begin{proof}{Proof:}
+    Let 
+    \[ f(x) = \frac{d(x, B) - d(x, A)}{d(x, B) + d(x, A)} \]
+    Now, if $x \in B$, then $x \notin A = \overline{A}$, so
+    \[ f(x) = \frac{-d(x, A)}{d(x, A)} = -1 \]
+    and if $x \in A$, then $x \notin B = \overline{B}$, so
+    \[ f(x) = \frac{d(x, B)}{d(x, B)} = 1 \]
+    Now, we need to make sure this function is continuous. Since it is just the combination of continuous functions, we just need to show that $d(x, A) + d(x, B) = 0$. However, this only occurs if $d(x, A) = 0$ and $d(x, B) = 0$, which only occurs when $x \in A \cap B$, which doesn't happen.
+
+    $\qed$
+\end{proof}
+
+\begin{theorem}[\textbf{Theorem 6.6:} Tietze Extension Theorem]
+    If $X$ is a metric space, $A \subseteq X$ is closed, and $f : A \to \R$ is continuous, then there exists a continuous $F : X \to \R$ such that $F \res{A} = f$. 
+\end{theorem}
+
+\begin{definition}[\textbf{Definition 6.7:} Covers]
+    Let $X$ be a topological space. An \emph{open cover} of $X$ is a family $\cal{F}$ of open subsets so that
+    \[ X = \bigcup_{\cal{O} \in \cal{F}} \cal{O} \]
+    A \emph{subcover} of $\cal{F}$ is a subfamily $\cal{F}' \subseteq \cal{F}$ such that we still have $X = \bigcup_{\cal{O} \in \cal{F}'} \cal{O}$. 
+\end{definition}
+
+\begin{definition}[\textbf{Definition 6.8:} Compactness]
+    A set $X$ is \emph{compact} if every open cover has a finite subcover.
+\end{definition}
+An example of a non-compact set is $\R$, as the cover $\cal{F} = \{(i, i + 2)\}_{i \in \Z}$. This is an open cover of $X$ with no finite subcover. Thus, $\R$ is not compact.\\
+
+\begin{theorem}[\textbf{Theorem 6.9:} Heine-Borel Theorem]
+    The set $[a, b]$ is compact.
+\end{theorem}
+
+\textbf{Warning:} For a general metric space, if a subset is compact in the subspace topology, then it is closed and bounded. However, not all closed and bounded sets are compact (usually).\\
+
+Here is such an example. Let $X = \Z$ and $d(x, y) = \left\{\begin{matrix} 0 & \text{ if } x = y \\ 1 & \text{ if } x \ne y\end{matrix}\right.$. We see this induces the discrete topology on $\Z$. Then, we see that $\Z$ is closed and bounded under this metric, but $\Z = \bigcup_{z \in \Z}\{z\}$ is an open cover with no finite subcover.\\
+
+\begin{lemma}[\textbf{Lemma 6.10}]
+    Let $f : X \to Y$ be a function. Then,
+    \begin{enumerate}
+        \item $A \subseteq X \implies f^{-1}(f(A)) \supset A$ with equality when $f$ is injective.
+        \item $B \subseteq Y \implies f(f^{-1}(B)) \subseteq B$ with equality when $f$ is surjective.
+    \end{enumerate}
+\end{lemma}

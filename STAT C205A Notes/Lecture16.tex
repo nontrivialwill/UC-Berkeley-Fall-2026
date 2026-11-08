@@ -1,0 +1,111 @@
+\tocsection{\textbf{10/22/26 Lecture 16:} Zero-One Laws}
+
+\begin{definition}[\textbf{Definition 16.1:} $P$-Trivial $\sigma$-Fields and Degenerate Random Elements]
+    A $\sigma$-field $\cal{F}$ is said to be \emph{$P$-trivial} if $PA = 0$ or $1$ for every $A \in \cal{F}$. A random element is \emph{a.s.\ degenerate} if its distribution is a degenerate probability measure; that is,
+    \[ P\{\xi \in A\} = \left\{\begin{matrix} 1, & x \in A \\ 0, & \tt{else} \end{matrix}\right. \]
+    for some $x \in S$. In other words, the distribution of $\xi$ is $\delta_x$.
+\end{definition}
+
+\begin{lemma}[\textbf{Lemma 16.2:} Triviality and Degeneracy]
+    A $\sigma$-field $\cal{F}$ is $P$-trivial iff $\cal{F} \perp\!\!\!\perp \cal{F}$. In that case, any $\cal{F}$-measurable random element $\xi$ taking values in a separable metric space is a.s.\ degenerate.
+\end{lemma}
+\begin{proof}{Proof:}
+    If $\cal{F} \perp\!\!\!\perp \cal{F}$, then for $A \in \cal{F}$, $PA = P(A \cap A) = (PA)^2$, so $PA = 0$ or $PA = 1$.\\
+
+    Conversely, if $\cal{F}$ is $P$-trivial, then for $A, B \in \cal{F}$, $P(A \cap B) = \min\{PA, PB\} = PA \cdot PB$, so $\cal{F} \perp\!\!\!\perp \cal{F}$ (if $PA = PB = 1$, then $P(A \cap B) = 1$, as otherwise $P(A \cup B) > 1$).\\
+
+    Now, assume $\cal{F}$ is $P$-trivial and let $\xi$ be a random element in a separable metric space. For each $n$, partition $S$ into countably many disjoint Borel sets $B_{nj}$ of diameter $< n^{-1}$.\\
+
+    We can do this by taking a countable dense set $D = \{x_1, x_2, \ldots\}$ and writing, for $\epsilon < 1/(2n)$,
+    \[ B_{n1} = B_{\epsilon}(x_1),\ B_{n2} = B_{\epsilon}(x_2) \setminus B_{n1},\ \ldots,\ B_{nj} = B_{\epsilon}(x_j) \setminus \bigcup_{i = 1}^{j - 1} B_{ni} \]
+    This gives us the desired construction.\\
+
+    Since $P\{\xi \in B_{nj}\} = 0$ or $1$ and the $B_{nj}$ are disjoint, we have $\xi \in B_{nj}$ a.s.\ for exactly one $j = j_n$. Then, we have
+    \[ \xi \in \bigcap_{n = 1}^{\infty} B_{nj_n} \]
+    which is a set of zero diameter, so it must be a single point. Thus, $\xi = x$ a.s., so it is a.s.\ degenerate.
+
+    $\qed$
+\end{proof}
+
+\begin{lemma}[\textbf{Lemma 16.3:} Product Measures]
+    Let $\xi_1, \ldots, \xi_n$ be random elements in measurable spaces $S_1, \ldots, S_n$ with distributions $\mu_1, \ldots, \mu_n$. Then, the $\xi_k$ are independent iff $\xi = (\xi_1, \ldots, \xi_n)$ has distribution $\mu_1 \otimes \cdots \otimes \mu_n$.
+\end{lemma}
+\begin{proof}{Proof:}
+    Assuming independence, we get for $B = B_1 \times \cdots \times B_n$,
+    \[ P\{\xi \in B\} = \prod_{k \leq n} P\{\xi_k \in B_k\} = \prod_{k \leq n} \mu_kB_k = \bigotimes_{k \leq n} \mu_kB \]
+    by definition of product measure. Then, use $\pi$-$\lambda$ to extend. The opposite direction uses the same equality above. 
+
+
+    $\qed$
+\end{proof}
+
+\begin{lemma}[\textbf{Lemma 16.4:} Conditioning]
+    Let $\xi$ and $\eta$ be independent random elements in some measurable spaces $S$ and $T$, and let the function $f : S \times T \to \R$ be measurable with $\mathbb{E}(\mathbb{E}\abs{f(s, \eta)})_{s = \xi} < \infty$. Then,
+    \[ \mathbb{E}f(\xi, \eta) = \mathbb{E}(\mathbb{E}f(s, \eta))_{s = \xi} \]
+    That is, for each $s \in S$, let $g(s) = \mathbb{E}[f(s, \eta)]$. Then, $\mathbb{E}[f(\xi, \eta)] = \mathbb{E}[g(\xi)]$.
+\end{lemma}
+\begin{proof}{Proof:}
+    Let $\mu$ and $\nu$ denote the distributions of $\xi$ and $\eta$, respectively. Assuming $f \geq 0$, and writing $g(s) = \bb{E}[F(s, \eta)]$, we see that by Fubini's theorem and the properties of the product measure,
+    \begin{align*}
+        \bb{E} f(\xi, \eta) &= \int f(s, t)(\mu \otimes \nu)(ds, dt)\\
+        &= \int \mu(ds) \int f(s, t)\nu(dt)\\
+        &= \int g(s) \mu(ds)\\
+        &= \bb{E}[g(\xi)]
+    \end{align*}
+    For general $f$, this applies to the function $\abs{f}$, and so $\bb{E}[\abs{f(\xi, \eta)}] < \infty$, so the desired relation holds.
+
+    $\qed$
+\end{proof}
+
+In particular, for independent random variables $\xi_1, \ldots, \xi_n$,
+\[ \mathbb{E}\left(\prod_{k} \xi_k\right) = \prod_{k} \mathbb{E}\xi_k \quad \tt{and} \quad \tt{var}\sum_{k} \xi_k = \sum_{k} \tt{var}\,\xi_k \]
+whenever the expressions on the right exist. We then get that if $\xi_1, \xi_2$ are independent, $\tt{cov}(\xi_1, \xi_2) = 0$.
+
+\begin{definition}[\textbf{Definition 16.5:} Tail $\sigma$-Fields]
+    Given any sequence of $\sigma$-fields $\cal{F}_1, \cal{F}_2, \ldots$, introduce the associated \emph{tail $\sigma$-field}
+    \[ \cal{T} = \bigcap_{n} \bigvee_{k \geq n} \cal{F}_k = \bigcap_{n} \sigma\{\cal{F}_k \col k \geq n\} \]
+\end{definition}
+
+\begin{theorem}[\textbf{Theorem 16.6:} Kolmogorov's 0-1 Law]
+    Let $\cal{F}_1, \cal{F}_2, \ldots$ be independent $\sigma$-fields. Then, the tail $\sigma$-field $\cal{T} = \bigcap_{n} \bigvee_{k \geq n} \cal{F}_k$ is $P$-trivial.
+\end{theorem}
+\begin{proof}{Proof:}
+    For each $n \in \N$, define $\cal{T}_n = \bigvee_{k > n} \cal{F}_k$, and note that $\cal{F}_1, \ldots, \cal{F}_n, \cal{T}_n$ are independent. Hence, so are the $\sigma$-fields $\cal{F}_1, \ldots, \cal{F}_n, \cal{T}$ (as $\cal{T} \subseteq \cal{T}_n$), so then also $\cal{F}_1, \cal{F}_2, \ldots, \cal{T}$ by induction. Then, $\cal{T}_0 \perp\!\!\!\perp \cal{T}$, so $\cal{T} \perp\!\!\!\perp \cal{T}$, as $\cal{T} \subseteq \cal{T}_0$. Thus, $\cal{T}$ is $P$-trivial.
+
+    $\qed$
+\end{proof}
+
+\begin{lemma}[\textbf{Corollary 16.7:} Sums and Averages]
+    Let $\xi_1, \xi_2, \ldots$ be independent random variables, and let $S_n = \xi_1 + \cdots + \xi_n$. Then, each of the sequences $(S_n)$ and $(S_n/n)$ is either a.s.\ convergent or a.s.\ divergent. For the latter sequence, the possible limit is a.s.\ degenerate.
+\end{lemma}
+\begin{proof}{Proof:}
+ 
+    $\{S_n \tt{ converges}\}$ and $\{S_n/n \tt{ converges}\}$ are measurable with respect to the tail $\sigma$-field.\\
+
+    Now, $\{\lim S_n = x\}$ is not in the tail $\sigma$-field, but $\{\lim S_n/n = x\}$ is in the tail $\sigma$-field, so $\lim S_n/n$ must be a.s.\ degenerate.
+
+    $\qed$
+\end{proof}
+
+\begin{definition}[\textbf{Definition 16.8:} Finite Permutations]
+    A \emph{finite permutation} of $\N$ is a bijective map $p : \N \to \N$ such that $p_n = n$ for all but finitely many $n$.
+\end{definition}
+
+For any space $S$, a finite permutation $p$ of $\N$ induces a permutation $T_p$ on $S^{\infty}$ given by
+\[ T_p(s) = s \circ p = (s_{p_1}, s_{p_2}, \ldots), \quad s = (s_1, s_2, \ldots) \in S^{\infty} \]
+
+\begin{definition}[\textbf{Definition 16.9:} Symmetric Sets]
+    A set $I \subseteq S^{\infty}$ is said to be \emph{symmetric} (under finite permutations) if
+    \[ T_p^{-1}(I) \equiv \{s \in S^{\infty} \col s \circ p \in I\} = I \]
+    for every finite permutation $p$ of $\N$.
+\end{definition}
+
+\begin{definition}[\textbf{Definition 16.10:} Permutation Invariant $\sigma$-Field]
+    If $(S, \cal{S})$ is a measurable space, the symmetric sets $I \in \cal{S}^{\infty}$ form a sub-$\sigma$-field $\cal{I} \subseteq \cal{S}^{\infty}$, called the \emph{permutation invariant $\sigma$-field} in $S^{\infty}$.
+\end{definition}
+
+\textbf{Notation:} A sequence of random elements that are independent with identical distributions is said to be \emph{i.i.d.}
+
+\begin{lemma}[\textbf{Theorem 16.11:} Hewitt-Savage 0-1 Law]
+    Let $\xi$ be an infinite sequence of i.i.d.\ random elements in some measurable space $(S, \cal{S})$, and let $\cal{I}$ denote the permutation invariant $\sigma$-field in $S^{\infty}$. Then, the $\sigma$-field $\xi^{-1}\cal{I}$ is $P$-trivial.
+\end{lemma}

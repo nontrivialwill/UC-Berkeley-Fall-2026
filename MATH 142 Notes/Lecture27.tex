@@ -1,0 +1,57 @@
+\tocsection{\textbf{10/30/26 Lecture 27:} Edge Paths and the Edge Group}
+
+\begin{definition}[\textbf{Definition 27.1:} Edge Paths]
+    An \emph{edge path} is a sequence of vertices $v_0, \ldots, v_k$ in $K$ so that each $\{v_i, v_{i + 1}\}$ is a simplex. We allow $v_i = v_{i + 1}$, and if $v_0 = v_k = v$, we call the edge path an \emph{edge loop}.
+\end{definition}
+
+\begin{definition}[\textbf{Definition 27.2:} Equivalent Edge Paths]
+    Two edge paths are \emph{equivalent} if one differs from the other by a finite number of the following moves:
+    \fig{0.4}{Lecture27Fig1}{}
+    That is, $(v_1, v_2, v_3) \equiv (v_1, v_3)$ if $\{v_1, v_2, v_3\}$ spans a simplex, and $(v_2, v_3, v_2) \equiv (v_2)$. We write the equivalence class of $(v_0, \ldots, v_k)$ as $\{v_0, \ldots, v_k\}$, and the equivalence classes of edge loops at $v$ form a group $E(K, v)$ under concatenation.
+\end{definition}
+
+\begin{theorem}[\textbf{Theorem 27.3:} Equivalence of $E(K, v)$ and $\pi_1(\abs{K}, v)$]
+    \[ E(K, v) \cong \pi_1(\abs{K}, v) \]
+\end{theorem}
+\begin{proof}{Proof:}
+    We will construct a homomorphism
+    \[ \phi : E(K, v) \to \pi_1(\abs{K}, v) \]
+    Given an edge loop $v v_1 \cdots v_{k - 1} v$, divide $[0, 1]$ into $k$ equal segments. Let $\alpha : [0, 1] \to \abs{K}$ be the piecewise linear path so that $\alpha(0) = \alpha(1) = v$ and $\alpha(i/k) = v_i$ for $1 \leq i \leq k - 1$. Then, as $\alpha$ is a loop in $\abs{K}$ based at $v$ and equivalent edge loops give homotopic $\alpha$'s, the map
+    \[ \phi(\{v, v_1, \ldots, v_{k - 1}, v\}) = \brac{\alpha} \]
+    is well defined and is a homomorphism.\\
+
+    We now show $\phi$ is surjective. Think of $[0, 1]$ as a simplicial complex $L$. By the simplicial approximation theorem, there is a simplicial map $S : \abs{L^m} \to \abs{K}$ which is homotopic to $\alpha$ with $S(0) = S(1) = v$.\\
+
+    Now, $L^m$ has $2^m + 1$ vertices $\{i/2^m\}_{i = 0}^{2^m}$, so pick $v_i = S(i/2^m)$ ($S$ is simplicial). Then, we see
+    \[ \phi(\{v, v_1, \ldots, v_{2^m - 1}, v\}) = \brac{\alpha} \]
+
+    We will now show $\phi$ is injective. Suppose $v v_1 \cdots v_{k - 1} v$ is an edge loop based at $v$ so
+    \[ \phi(\{v v_1 \cdots v_{k - 1} v\}) = e \in \pi_1(\abs{K}, v) \]
+    so the edge loop can be continuously deformed in $\abs{K}$ to the constant loop. We have to show that $v, v_1, \ldots, v_{k - 1}, v$ is equivalent to the point edge loop $v$ using our moves. Say $\alpha$ is the path corresponding to $v v_1 \cdots v_{k - 1} v$. We know there exists a homotopy $F : I \times I \to \abs{K}$ so that
+    \[ F(s, 0) = \alpha(s), \quad F(s, 1) = v, \quad F(0, t) = F(1, t) = v \]
+    Say that $L$ is the simplicial complex on $I \times I$ given by
+    \fig{0.7}{Lecture27Fig2}{}
+    where $a, b, c, d$ are the vertices of the square and $a_i = (i/k, 0)$. Note $F(a_i) = v_i$.\\
+
+    Note that the edge paths $a a_1 \cdots a_{k - 1} d$ and $a b c d$ are equivalent in $L$. Subdivide $L$ to get $L^m$ and take the corresponding edge paths $E_1, E_2$, which are still equivalent in $L^m$.\\
+
+    
+    By the simplicial approximation theorem, if $m$ is sufficiently large, we can find a simplicial approximation $S : \abs{L^m} \to K$ to $F : \abs{L^m} \to \abs{K}$. Now, as $E_1$ and $E_2$ were still equivalent, $S(E_1)$ and $S(E_2)$ are equivalent in $K$. Now, note $S$ sends $E_2$ to the constant path $v$ as $F$ does.\\
+
+    
+    Then, as $F([a_i, a_{i + 1}]) = [v_i, v_{i + 1}]$, if $x \in [a_i, a_{i + 1}]$, the carrier of $F(x)$ is $[v_i, v_{i + 1}]$ (or $\{v_i\}$ if they are the same). Thus, if $u$ is a vertex in $L^m$ between $a_i$ and $a_{i + 1}$, $S$ sends $u$ to $v_i$ or $v_{i + 1}$. Thus, using our equivalences,
+    \[ S(E_1) \sim \{v v_1 \cdots v_{k - 1} v\} \]
+    in $E(K, v)$. Thus, $\{v, v_1 \cdots v_{k - 1} v\} = \{v\}$ in $E(K, v)$.\\
+
+    Thus, $\phi$ is bijective, so we have an isomorphism between $E(K, v)$ and $\pi_1(\abs{K}, v)$.
+
+    $\qed$
+\end{proof}
+
+\begin{definition}[\textbf{Definition 27.4:} The Group $G(K, L)$]
+    Say $K$ is a connected simplicial complex and $L$ is a maximal tree. Let the vertices of $K$ be $V = \{v_0, \ldots, v_s\}$. Define $G(K, L)$ to be the group formed by the generators $g_{ij}$, one for each ordered pair $(v_i, v_j)$ that spans a simplex, with relations
+    \begin{enumerate}[label = (\alph*)]
+        \item $g_{ij} = 1$ if $v_i v_j$ spans a simplex of $L$
+        \item $g_{ij}g_{jk} = g_{ik}$ if $v_i, v_j, v_k$ span a simplex of $K$
+    \end{enumerate}
+\end{definition}

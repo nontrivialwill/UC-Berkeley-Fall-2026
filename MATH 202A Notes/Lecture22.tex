@@ -1,0 +1,111 @@
+\tocsection{\textbf{10/19/26 Lecture 22:} Lebesgue Decomposition and Differentiation}
+
+\begin{theorem}[\textbf{Theorem 22.1:} Lebesgue Decomposition Theorem]
+    Let $\mu$ be positive and $\sigma$-finite and $\nu$ positive and finite. Then, there exists $\rho$ positive satisfying $\rho \perp \mu$ and $f \geq 0$ integrable such that
+    \[ \nu(A) = \int_{A} f d\mu + \rho(A) \]
+\end{theorem}
+\begin{proof}{Proof:}
+    Assume $\mu$ is finite and let $f$ be as in the proof of the Radon-Nikodym theorem; that is, such that $\int f d\mu = L = \sup\{\int g d\mu \col g \in F\}$, where
+    \[ F = \left\{g : X \to [0, \infty) \col \int_{A} g\ d\mu \leq \nu(A)\ \forall A \in \cal{A}\right\} \]
+    Define $\rho(A) = \nu(A) - \int_{A} f d\mu$. We see that $\rho(A)$ is positive from the fact $f \in F$.\\
+
+    We want $\rho \perp \mu$. If not, by Lemma 21.5 we can find a set $A$ and $\epsilon > 0$ such that $\mu(A) > 0$ and $A$ is positive for $\rho - \epsilon\mu$. Then, for $B \subseteq A$,
+    \[ \epsilon\mu(B) \leq \nu(B) - \int_{B} f d\mu \]
+    Now, consider $f + \epsilon\chi_A$. Given $B$, we see that
+    \begin{align*}
+        \int_{B} f + \epsilon\chi_A d\mu &= \int_{B \setminus A} f d\mu + \int_{B \cap A} f + \epsilon\chi_A d\mu\\
+        &\leq \nu(B \setminus A) + \nu(B \cap A)\\
+        &= \nu(B)
+    \end{align*}
+    where for the second term we used that $\nu(B) \geq \int_{B} f d\mu + \epsilon\mu(B)$ for $B \subseteq A$.\\
+
+    Thus, $f + \epsilon \chi_{A} \in F$, which contradicts that $\int f d\mu = L$ is the sup over integrals in $F$. Thus, we must have $\rho \perp \mu$, which was to be shown.
+
+    $\qed$
+\end{proof}
+
+\begin{example}{\textbf{Example:} Necessity of Absolute Continuity}
+    We need absolute continuity to have R-N derivatives. For instance, if we wanted $\frac{d\delta_0}{d\mu}$, where $\mu$ is the Lebesgue measure, we would want an $f$ such that
+    \[ \delta_0(\{0\}) = \int_{\{0\}} f d\mu = 1 \]
+    but no $f$ exists since $\{0\}$ has measure $0$.
+\end{example}
+
+\begin{lemma}[\textbf{Corollary 22.2}]
+    Let $\nu$ be a finite measure and $\mu$ $\sigma$-finite with $\nu \ll \mu$. If $f$ is integrable with respect to $\nu$, then $f \frac{d\nu}{d\mu}$ integrable also with respect to $\mu$ with
+    \[ \int f d\nu = \int f \frac{d\nu}{d\mu} d\mu \]
+\end{lemma}
+\begin{proof}{Proof:}
+    For a simple function $\chi_A$,
+    \[ \int \chi_A \frac{d\nu}{d\mu} d\mu = \int_{A} \frac{d\nu}{d\mu} d\mu = \nu(A) = \int \chi_A d\nu \]
+    By linearity, we get simple functions and by monotone convergence, we get non-negative and integrable functions.
+
+    $\qed$
+\end{proof}
+
+\begin{definition}[\textbf{Definition 22.3:} Lipschitz Functions]
+    $f : \R \to \R$ is \emph{Lipschitz} if there exists $L$ such that $\abs{f(x) - f(y)} \leq L\abs{x - y}$ for $x, y \in \R$.
+\end{definition}
+
+\begin{example}{\textbf{Example:} $C^1$ Functions}
+    If $f \in C^1$ and $\abs{f'} \leq L$, then $f$ is $L$-Lipschitz. The converse is not true. For example, $\abs{x}$ is $1$-Lipschitz.
+\end{example}
+
+\begin{lemma}[\textbf{Proposition 22.4}]
+    Let $f : \R \to \R$ be Lipschitz. Then, $f$ is differentiable a.e.
+\end{lemma}
+\begin{proof}{Proof:}
+    We will soon prove the following fact that we will use here: If $f(x) = \int_{a}^{x} g(y) dy$, then $f$ is differentiable a.e. and $f' = g$.\\
+
+    Let $L$ be such that $\abs{f(x) - f(y)} \leq L\abs{x - y}$. First, suppose $f$ is increasing and let $m$ be its L-S measure. Then
+    \begin{align*}
+        m((a, b]) &= f(b) - f(a)\\
+        &\leq L(b - a)
+    \end{align*}
+    This implies $m \ll \lambda$. Then, $m(A) = \int_{A} g(y) dy$ for some $g$. Thus,
+    \[ m((a, x]) = \int_{a}^{x} g(y) dy = f(x) - f(a) \]
+    so $f(x) - f(a)$ is differentiable a.e.\\
+
+    If $f$ is not increasing, then $f + Lx$ must be. This is because if $x > y$,
+    \begin{align*}
+        (f(x) + Lx) - (f(y) + Ly) &= (f(x) - f(y)) + L(x - y)\\
+        &\geq 0 \quad \tt{as } f(x) - f(y) \geq -L(x - y)
+    \end{align*}
+    Thus, we see $f + Lx$ is differentiable a.e. by above, so $f$ must be as well.
+
+    $\qed$
+\end{proof}
+
+\subsection*{Differentiation}
+\sectionspace
+
+In this section, we want to show that the derivative of $\int_{a}^{x} f(y) d\mu(y)$ is equal to $f(x)$ $\mu$-a.e. Even stronger, we want to study
+\[ f_r(x) = \frac{1}{\lambda(B_r(x))} \int_{B_r(x)} f(y) dy \]
+where $B_r(x) = \{y \col d(x, y) < r\}$.\\
+
+\textbf{Q:} Does $f_r \to f$ as $r \to 0$? In 1d, we have
+\[ f_r = \frac{1}{2r} \int_{x - r}^{x + r} f(y) dy \]
+
+First, suppose $g$ is continuous. Then,
+\begin{align*}
+    \abs{g_r(x) - g(x)} &= \abs{\frac{1}{\lambda(B_r(x))} \int_{B_r(x)} g(y) - g(x) dy}\\
+    &\leq \frac{1}{\lambda(B_r(x))} \int_{B_r(x)} \abs{g(y) - g(x)} dy
+\end{align*}
+Since $g$ is continuous, we see that for any $\epsilon > 0$, there exists $r$ such that $y \in B_r(x) \implies \abs{g(y) - g(x)} < \epsilon$. Then, for such $r$,
+\[ \abs{g_r(x) - g(x)} \leq \frac{1}{\lambda(B_r(x))} \int_{B_r(x)} \abs{g(y) - g(x)} dy < \epsilon \]
+so taking $\epsilon \to 0$, we see $g_r(x) \to g(x)$. Thus, if $g$ is continuous, we are done.\\
+
+For general integrable $f$, we want to pick $g$ that is continuous and compactly supported such that
+\[ \int \abs{f - g} dy < \epsilon \]
+Thus,
+\[ \abs{f_r(x) - f(x)} \leq \abs{f_r(x) - g_r(x)} + \abs{g_r(x) - g(x)} + \abs{g(x) - f(x)} \]
+We want to study the measure of the set where $\abs{f_r(x) - f(x)} > \frac{1}{n}$. 
+Note that we can control $\abs{g(x) - f(x)}$ by Chebyshev's and $\abs{g_r(x) - g(x)}$ by above, so we really want to study $\abs{f_r(x) - g_r(x)}$, which is at most
+\[ \frac{1}{\lambda(B_r(x))} \int_{B_r(x)} \abs{f(y) - g(y)} dy \]
+We want to show that this is large on a small set using the fact that $\abs{f(y) - g(y)}$ is small.
+
+\begin{definition}[\textbf{Definition 22.5:} Hardy-Littlewood Maximal Function]
+    We define
+    \[ M(h(x)) = \sup_{r > 0} \frac{1}{\lambda(B_r(x))} \int_{B_r(x)} \abs{h(y)} dy \]
+\end{definition}
+
+We want to show that $Mh$ is controlled by $\int \abs{h}$.

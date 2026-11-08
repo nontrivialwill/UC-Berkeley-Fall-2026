@@ -1,0 +1,98 @@
+\tocsection{\textbf{10/5/26 Lecture 17:} The Fundamental Group}
+
+If $A \subseteq X$ and $f \res{A} = g \res{A}$, then we may want a homotopy that preserves the values on $A$. That is, for our homotopy $F$, we want $F(a, t) = f(a) = g(a)$ for all $t \in I$. In this case, we say that $f, g$ are \emph{homotopic relative to }$A$, and we write $f \overset{F}{\simeq} g\ (\tt{rel } A)$.\\
+
+For instance, if $\alpha, \beta : I \to X$ are two loops based at $p$, then we can ask if they are homotopic relative to $\{0, 1\}$. If so, then we have a map $F : I \times I \to X$ with
+\[ F(s, 0) = \alpha(s),\ F(s, 1) = \beta(s),\ F(0, t) = p\ F(1, t) = p \]
+for all $s \in [0, 1]$ and $t \in [0, 1]$.\\
+
+\fig{0.6}{Lecture17Fig1}{}
+
+\begin{example}{\textbf{Example:} Convex Sets}
+    Suppose that $C \subseteq \R^n$ is convex; that is, for any $p, q \in C$, the straight line segment joining them lies in $C$. Then, any two maps $f, g : X \to C$ are homotopic.
+\end{example}
+\begin{solution}{Proof:}
+    Take $F(x, t) = (1 - t)f(x) + tg(x)$. Then, we see that $F(x, 0) = f(x)$ and $F(x, 1) = g(x)$ for all $x$, and as $C$ is convex, $F$ is indeed a map into $C$. Thus, $f$ is homotopic to $g$. 
+\end{solution}
+
+\begin{example}{\textbf{Example:} Maps into the Sphere}
+    Let $f,g : X \to S^n$ and $\{f(x), g(x)\}$ are never antipodal points. Then, $f$ is homotopic to $g$. 
+\end{example}
+\begin{solution}{Proof:}
+    Consider $f, g : X \to S^n \subseteq \R^{n + 1}$. By assumption, for all $x \ne 0$, we have that
+    \[ f(x) + g(x) \ne 0 \]
+    as $f(x)$ and $g(x)$ are never antipodal points. Now, in $\R^{n + 1}$, we have the homotopy
+    \[ (1 - t)f(x) + tg(x) \]
+    which is never $0$ for all $x$, as $f(x)$ and $g(x)$ are never antipodal points. Thus, we can consider the homotopy
+    \[ F(x, t) = \frac{(1 - t)f(x) + tg(x)}{\abs{(1 - t)f(x) + tg(x)}} \in S^{n} \]
+    which is well defined. Thus, $f$ is homotopic to $g$. 
+\end{solution}
+
+\begin{lemma}[\textbf{Lemma 17.1}]
+    Homotopy is an equivalence relation on maps from $X$ to $Y$. 
+\end{lemma}
+\begin{proof}{Proof:}
+    For reflexivity, if taking $F(x, t) = f(x)$ for all $t, x$, then we see that $f \overset{F}{\simeq} f$.\\
+
+    Now, if $f \overset{F}{\simeq} g$, then if $F(x, t)$ is such a homotopy, letting
+    \[ G(x, t) = F(x, 1 - t) \]
+    we get the reverse homotopy $g \overset{G}{\simeq} f$.\\
+
+    Finally, suppose that $f \overset{F}{\simeq} g$ and $g \overset{G}{\simeq} h$. Then, letting $F$ and $G$ be the corresponding homotopies, we can let
+    \[ H(x, t) = \left\{\begin{matrix} F(x, 2t) & 0 \leq t \leq 1/2 \\ G(x, 2t - 1) & 1/2 \leq t \leq 1 \end{matrix}\right. \]
+    we see that $f \overset{H}{\simeq} h$. 
+
+    $\qed$
+\end{proof}
+
+\begin{lemma}[\textbf{Lemma 17.2}]
+    If $A \subseteq X$, then homotopy relative to $A$ is an equivalence relation on maps $f : X \to Y$ with a given value on $A$. 
+\end{lemma}
+\begin{proof}{Proof:}
+    Same as before. 
+\end{proof}
+
+\begin{lemma}[\textbf{Lemma 17.3}]
+    If $f, g : X \to Y$ are homotopic, and $h : Y \to Z$, then $h \circ f$ is homotopic to $h \circ g$. 
+\end{lemma}
+\begin{proof}{Proof:}
+    If $f \overset{F}{\simeq} g$, then $h \circ f \overset{h \circ F}{\simeq} h \circ g$. 
+\end{proof}
+Note that this extends to homotopies relative to $A$. Also, if $f : X \to Y$ and $g, h : Y \to Z$ are homotopic (rel $B$) for $B \subseteq Y$, then $g \circ f$ and $h \circ f$ are homotopic (rel $f^{-1}(B)$).\\
+
+Going back to loops, let $X$ be a topological space and $p \in X$. 
+
+\begin{definition}[\textbf{Definition 17.3:} Homotopy Classes]
+    Consider all loops based at $p$ and consider the equivalence relation given by homotopy (rel $\{0, 1\}$). We call the equivalence classes of this relation the \emph{homotopy classes} of loops based at $p$. If $\alpha$ is a loop based at $p$, then denote it's homotopy class $\brac{a}$. 
+\end{definition}
+
+\begin{definition}[\textbf{Definition 17.4:} Multiplication of Homotopy Classes]
+    Define $\brac{\alpha} \cdot \brac{\beta} = \brac{\alpha \circ \beta}$ where
+    \[ (\alpha \circ \beta)(s) = \left\{\begin{matrix} \alpha(2s) & 0 \leq s \leq 1/2 \\ \beta(2s - 1) & 1/2 \leq s \leq 1\end{matrix}\right. \]
+\end{definition}
+We need to show that the above definition is well defined. 
+
+\begin{lemma}[\textbf{Lemma 17.5}]
+    The above definition is well-defined.
+\end{lemma}
+\begin{proof}{Proof:}
+    Suppose that $\alpha' \overset{F}{\simeq} \alpha$ (rel $\{0, 1\}$) and $\beta' \overset{G}{\simeq} \beta$ (rel $\{0, 1\}$). Then, $\alpha' \circ \beta' \overset{H}{\simeq} \alpha \circ \beta$ where
+    \[ H(s, t) = \left\{\begin{matrix} F(2s, t) & 0 \leq s \leq 1/2 \\ G(2s - 1, t) & 1/2 \leq s \leq \end{matrix}\right. \]
+\end{proof}
+
+\begin{lemma}[\textbf{Theorem 17.6:} Homotopy Classes form a Group]
+    The homotopy classes of loops based at $p$ form a group. 
+\end{lemma}
+\begin{proof}{Proof:}
+    We need to show that this product is associative, and that we have inverses. We will prove this next lecture.
+\end{proof}
+
+\begin{definition}[\textbf{Definition 17.7:} The Fundamental Group]
+    The \emph{fundamental group} of $X$ at $p$ is
+    \[ \pi_{1}(X, p) = \{\tt{homotopy classes of loops at } p\} \]
+\end{definition}
+This is similar notation to $\pi_{0}(X) = \{\tt{path components of } X\}$, but not that one is a set but the other is a group.\\
+
+\begin{example}{\textbf{Example}}
+    If $X = S^1$ and $\alpha(s) = 1$ and $\beta(s) = e^{2\pi i s}$ we will show that these are not homotopic relative to $\{0, 1\}$. 
+\end{example}

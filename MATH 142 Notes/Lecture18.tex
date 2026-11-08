@@ -1,0 +1,137 @@
+\tocsection{\textbf{10/7/26 Lecture 18:} The Fundamental Group (cont.)}
+
+\begin{theorem}[\textbf{Theorem 18.1: }Homotopy Classes form a Group]
+    The homotopy classes of loops based at $p$ form a group.
+\end{theorem}
+\begin{proof}{Proof:}
+    Let $\brac{\alpha}, \brac{\beta}, \brac{\gamma}$. We first need to show that
+    \[ (\brac{\alpha} \cdot \brac{\beta}) \cdot \brac{\gamma} = \brac{\alpha} \cdot (\brac{\beta} \cdot \brac{\gamma}) \]
+    which is to show that
+    \[ \brac{(\alpha \cdot \beta) \cdot \gamma} = \brac{\alpha \cdot (\beta \cdot \gamma)} \]
+    To do this, notice that
+    \[ (\alpha \cdot \beta) \cdot \gamma = (\alpha \cdot (\beta \cdot \gamma)) \circ f \]
+    where $f : I \to I$ by
+    \[ f(s) = \left\{\begin{matrix} 2s & 0 \leq s \leq 1/4 \\ s + 1/4 & 1/4 \leq s \leq 1/2 \\ \frac{s + 1}{2} & 1/2 \leq s \leq 1\end{matrix}\right. \]
+    Now, since $I \subseteq \R$ is convex, and $f(0) = 0$ with $f(1) = 1$, we see that $f \simeq 1_{I}$ (rel $\{0, 1\}$). Thus, as
+    \[ (\alpha \cdot \beta) \cdot \gamma = (\alpha \cdot (\beta \cdot \gamma)) \circ f \simeq (\alpha \cdot (\beta \cdot \gamma)) \circ 1_{I} \]
+    so
+    \[ (\alpha \cdot \beta) \cdot \gamma \simeq \alpha \cdot (\beta \cdot \gamma) \]\\
+
+    Now, we want to show that the identity of $\pi_1(X, p)$ is $\brac{e}$ where $e(s) = p$ for all $s \in I$. It is clear that by reparameterization, $\brac{e} \cdot \brac{a} = \brac{a} \cdot \brac{e} = \brac{a}$.\\
+
+    Finally, we need to show that $\brac{\alpha^{-1}}$ is the inverse of $\brac{\alpha}$. That is, we want to show
+    \[ \brac{\alpha^{-1}} \cdot \brac{\alpha} = \brac{\alpha} \cdot \brac{\alpha^{-1}} = \brac{e} \]
+    which is equivalent to
+    \[ \brac{\alpha^{-1} \cdot \alpha} = \brac{\alpha \cdot \alpha^{-1}} = \brac{e} \]
+    Now, we see that $\alpha \cdot \alpha^{-1} = \alpha \circ f$ where
+    \[ f(s) = \left\{\begin{matrix} 2s & 0 \leq s \leq 1/2 \\ 2 - 2s & 1/2 \leq s \leq 1\end{matrix}\right. \]
+    Now, we see that $f(0) = f(1) = 0$, so $f \simeq 0_{I}$ (rel $\{0, 1\}$), so
+    \[ \alpha \cdot \alpha^{-1} = \alpha \circ f \simeq \alpha \circ 0_{I} = e \]
+    so $\brac{\alpha \cdot \alpha^{-1}} = \brac{e}$. 
+
+    $\qed$
+\end{proof}
+
+\begin{lemma}[\textbf{Proposition 18.2}]
+    If $X$ is path connected, then for any $p, q \in X$, $\pi_1(X, p)$ is isomorphic to $\pi_1(X, q)$. 
+\end{lemma}
+\begin{proof}{Proof:}
+    Let $\gamma$ be a path between $p$ and $q$. Then, if $\alpha$ is a loop at $p$, then $\gamma^{-1} \cdot \alpha \cdot \gamma$ is a loop at $q$. Thus, define $\pi_1(X, p) \to \pi_1(X, q)$ by $\brac{\alpha} \mapsto \brac{\gamma^{-1} \alpha \gamma}$. Now, this is well defined in the sense that if $\alpha \simeq \alpha'\ (\tt{rel }\{0, 1\})$ then $\gamma^{-1} \alpha \gamma \simeq \gamma^{-1} \alpha' \gamma\ (\tt{rel }\{0, 1\})$, which can be shown by just applying the homotopy after $\gamma^{-1}$ and before $\gamma$.\\
+
+    \fig{0.6}{Lecture18Fig1}{}
+
+    Now, this is a homomorphism since 
+    \[ \brac{\gamma^{-1} \alpha \alpha' \gamma} = \brac{\gamma^{-1} \alpha \gamma \gamma^{-1} \alpha' \gamma} = \brac{\gamma^{-1}\alpha \gamma} \cdot \brac{\gamma^{-1} \alpha' \gamma} \]
+
+    Finally, since we have the inverse homomorphism $\pi_1(X, q) \to \pi_1(X, p)$ by $\brac{\beta} \mapsto \brac{\gamma \beta \gamma^{-1}}$. 
+
+    $\qed$
+\end{proof}
+
+
+
+\begin{lemma}[\textbf{Proposition 18.3}]
+    Suppose that $f : X \to Y$ is a map. Then, given $\alpha : I \to X$, then we see that $f \circ \alpha : I \to Y$. Thus, we get a homomorphism $f_{*} : \pi_1(X, p) \to \pi_1(Y, f(p))$ by $f_{*}(\brac{\alpha}) = \brac{f \circ \alpha}$. 
+\end{lemma}
+\begin{proof}{Proof:}
+    We see that
+    \begin{align*}
+        f_{*}(\brac{\alpha} \cdot \brac{\beta}) &= f_{*}(\brac{\alpha \cdot \beta})\\
+        &= \brac{f \circ (\alpha \cdot \beta)}\\
+        &= \brac{(f \circ \alpha) \cdot (f \circ \beta)}\\
+        &= \brac{f \circ \alpha} \cdot \brac{f \circ \beta}\\
+        &= f_{*}(\brac{\alpha}) \cdot f_{*}(\brac{\beta})
+    \end{align*}
+
+    $\qed$
+\end{proof}
+
+\begin{lemma}[\textbf{Proposition 18.4}]
+    Given maps $f : X \to Y$ and $g : Y \to Z$, 
+    \[ (g \circ f)_{*} = g_{*} \circ f_{*} \]
+    So the diagram below commutes
+    \begin{center}
+        \begin{tikzcd}
+            \pi_1(X, p) \arrow[r, "f_{*}"] \arrow[rr, out = -15, in = 195, "(g \circ f)_{*}"'] & \pi_1(Y, f(p)) \arrow[r, "g_{*}"] & \pi_1(Z, g(f(p)))
+        \end{tikzcd}
+    \end{center}
+\end{lemma}
+
+\begin{lemma}[\textbf{Corollary 18.5}]
+    If $h : X \to Y$ is a homeomorphism, then $h_{*} : \pi_1(X, p) \to \pi_1(Y, h(p))$ is a isomorphism.
+\end{lemma}
+\begin{proof}{Proof:}
+    Starting with the diagrams
+    \begin{multicols}{2}
+        \begin{center}
+            \begin{tikzcd}
+                X \arrow[r, "h"] \arrow[rr, out = -15, in = 195, "\id_{X}"'] & Y \arrow[r, "h^{-1}"] & X
+            \end{tikzcd}
+        \end{center}
+        \columnbreak
+
+        \begin{center}
+            \begin{tikzcd}
+                Y \arrow[r, "h^{-1}"] \arrow[rr, out = -15, in = 195, "\id_{Y}"'] & X \arrow[r, "h"] & Y
+            \end{tikzcd}
+        \end{center}
+    \end{multicols}
+    and applying the chain rule as above, we get the diagrams
+    \begin{multicols}{2}
+        \begin{center}
+            \begin{tikzcd}
+                \pi_1(X, p) \arrow[r, "h_{*}"] \arrow[rr, out = -15, in = 195, "(\id_{X})_{*}"'] & \pi_1(Y, h(p)) \arrow[r, "h^{-1}_{*}"] & \pi_1(X, p)
+            \end{tikzcd}
+        \end{center}
+        \columnbreak
+
+        \begin{center}
+            \begin{tikzcd}
+                \pi_1(Y, h(p)) \arrow[r, "h^{-1}_{*}"] \arrow[rr, out = -15, in = 195, "(\id_{Y})_{*}"'] & \pi_1(X, p) \arrow[r, "h_{*}"] & \pi_1(Y, h(p))
+            \end{tikzcd}
+        \end{center}
+    \end{multicols}
+    and from the definition, since we have that $(\id_{X})_{*} = \id_{\pi_1(X, p)}$ and $(\id_{Y})_{*} = \id_{\pi_1(Y, h(p))}$, we see that $h_{*}$ and $h_{*}^{-1}$ are inverses, and thus, we have an isomorphism. 
+
+    $\qed$
+\end{proof}
+
+Now, we will quickly prove some useful facts about metric spaces. 
+
+\begin{definition}[\textbf{Definition 18.6:} Diameter]
+    Let $X$ be a metric space and $S \subseteq X$. Then, the diameter of $S$ is
+    \[ \tt{diam}(S) = \sup_{s_1, s_2 \in S}d(s_1, s_2) \]
+\end{definition}
+
+\begin{theorem}[\textbf{Lemma 18.7:} Lebesgue Lemma]
+    If $X$ is a compact metric space and $\cal{F}$ is an open cover, then there exists a $\delta > 0$ called the \emph{Lebesgue number} of $\cal{F}$ so that any subset $A \subseteq X$ with $\tt{diam}(A) < \delta$ is contained in some member of $\cal{F}$. 
+\end{theorem}
+\begin{proof}{Proof:}
+    Suppose not. Then, there exists $A_1, A_2, \cdots$ with diameter $\tt{diam}(A_n) < 1/n$ but $A_n$ is not contained in any member of the cover.\\
+
+    For all $n$, choose an $x_n \in A_n$. Then, as $X$ is a compact metric space, we can find a subsequence $x_{n_{k}}$ converging to some $p \in X$. Now, $p$ must be inside an element of $\cal{F}$, so let $p \in U \in \cal{F}$. Then, there exists an $\epsilon > 0$ for which $p \in B(p, \epsilon) \subseteq U$. Then, pick sufficiently large $k$ so that $\tt{diam}(A_{n_{k}}) < 1/2 \epsilon$, and $x_{n_k} \in B(p, 1/2 \epsilon)$. Then, for all $y \in A_{n_{k}}$, we see that $d(y, x_{n_k}) < \epsilon/2$ and $d(x_{n_k}, p) < 1/2\epsilon$, so
+    \[ d(y, p) < \epsilon \]
+    by the triangle inequality. Thus, $A_{n_k} \subseteq B(p, \epsilon) \subseteq U$, which is a contradiction.
+
+    $\qed$
+\end{proof}

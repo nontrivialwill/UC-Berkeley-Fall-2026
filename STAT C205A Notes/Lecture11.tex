@@ -1,0 +1,77 @@
+\tocsection{\textbf{10/6/26 Lecture 11:} Useful Theorems about Integration}
+
+We will finish the proof of Theorem 10.4.
+\vspace{0.4cm}
+
+\begin{proof}{Proof of Theorem 10.4 (cont.):}
+    Now, as we see that $h := f - g$ has norm $d$, we see that for any $l \in M$, since $\norm{h + tl} = \norm{f - (g - tl)}$ and as $g - tl \in M$,  
+    \[ d^2 \leq \norm{h + tl}^2 = d^2 + 2t\brac{h, l} + t^2\norm{l}^2,\ \forall t \in \R \]
+    Now, we have two cases. If $\brac{h, l} > 0$, then for $t < 0$ sufficiently close to $0$ so that $\abs{2t\brac{h, l}} > \abs{t^2\norm{l}^2}$, which implies that
+    \[ d^2 + 2t\brac{h, l} + t^2\norm{l}^2 < d^2 \]
+    as $2t\brac{h, l} < 0$ which is a contradiction. Similarly, if $\brac{h, l} < 0$, then do the same thing by taking $t > 0$ sufficiently close to $0$. Thus, we must have that $\brac{h, l} = 0$, so $h \perp M$ as desired. \\
+
+    To prove uniqueness, let $g' + h'$ be another decomposition with the stated properties. Then $g - g' \in M$, and also $g - g' = h' - h \perp M$, so $g - g' \perp g - g'$, which implies $\norm{g - g'}^2 = \brac{g - g', g - g'} = 0$, so $g = g'$ almost everywhere. 
+
+    $\qed$
+\end{proof}
+
+\begin{example}{\textbf{Example}}
+    Suppose $\mu$ is a probability measure and $M$ is the closed subspace of constant functions. This is clearly in $L^2$ since $\mu$ is a probability measure. Now, for $f \in L^2(\mu)$, what is the orthogonal projection of $f$ onto $M$?\\
+
+    Thus, will be the unique constant function $c$ such that $\norm{f - c}_{2}^{2}$ is minimized. Notice that
+    \begin{align*}
+        \norm{f - c}^2 &= \norm{f}_{2}^{2} - 2\brac{f, c} + \norm{c}_{2}^{2}\\
+        &= \norm{f}_{2}^{2} - 2c\mu f + c^2\\
+    \end{align*}
+    Differentiating with respect to $c$ and setting this to zero, we see clearly that
+    \[ c = \mu f \]
+
+    Now, what if we let $M = \{\tt{functions in }L^2 \tt{ that are measureable wrt to some } \sigma-\tt{field } \cal{F} \subseteq \cal{A}\}$.\\
+
+\end{example}
+We see that random variables are just functions and expectations are just integrals. Thus, we will call the orthogonal projection the ``conditional expectation''
+
+\begin{lemma}[\textbf{Lemma 11.1: }Regularity]
+    Let $\mu$ be a bounded measure on some metric space $S$ with Borel $\sigma$-field $\cal{S}$. Then, 
+    \[ \mu B = \sup_{F \subseteq B} \mu F = \inf_{G \supseteq B} \mu G,\ B \in \cal{S} \]
+    with $F$ and $G$ restricted to the classes of closed and open subsets of $S$, respectively. 
+\end{lemma}
+\begin{proof}{Proof:}
+    For any open set $G$, let 
+    \[ F_n = \{x \in G \col \overline{B}(x, 1/n) \subseteq G\} \]
+    these are closed sets $F_n \uparrow G$, so by a previous lemma, $\mu F_n \uparrow \mu G$. This proves the statement for $B$ belonging to the $\pi$-system $\cal{G}$ of open sets. Letting $\cal{D}$ denote the class of all sets $B$ with the stated property, we can show that $\cal{D}$ is a $\lambda$-system containing $\cal{G}$, which implies that $\cal{S} = \sigma(\cal{G}) \subseteq \cal{D}$.\\
+
+    A similar result shows that $B = \inf_{G \supseteq B} \mu G$, by showing it holds for closed sets (using open balls at each point), and then applying $\pi$-$\lambda$. 
+\end{proof}
+
+\begin{lemma}[\textbf{Lemma 11.2:} Approximation]
+    Given a metric space $S$ with Borel $\sigma$-field $\cal{S}$ and a bounded measure $\mu$ on $(S, \cal{S})$ and a constant $p > 0$, the set of bounded continuous functions on $S$ is dense in $L^{p}(S, \cal{S}, \mu)$. Thus, for any $f \in L^{p}$, there exist some bounded continuous functions $f_1, f_2, \ldots \col S \to \R$ with $\norm{f_n - f}_{p} \to 0$. 
+\end{lemma}
+\begin{proof}{Proof:}
+    If $f = 1_{A}$ with $A \subseteq S$ open, then let
+    \[ f_{n}(x) = (n\inf\{d(x, y) \col y \in A^{c}\}) \wedge 1 \]
+    These are continuous functions with $0 \leq f_n \uparrow 1_{A}$, so $\norm{f_{n} \to f}_{p} \to 0$ by dominated convergence. By regularity, this result extends to arbitrary $A \in \cal{S}$. By linearity this extends to simple measurable function. Then, for general $f \in L^{p}$ we may choose some simple measurable functions $f_n \to f$ with $\abs{f_n} \leq \abs{f}$. Since $\abs{f_n - f}^{p} \leq 2^{p + 1}\abs{f}^{p}$, we get $\norm{f_n - f}_{p} \to 0$ by dominated convergence, and the theorem follows.
+
+    $\qed$
+\end{proof}
+
+\begin{theorem}[\textbf{Theorem 11.3:} Egorov's Theorem]
+    Let $f, f_1, f_2, \ldots$ be measurable functions on some finite measure space $(\Omega, \cal{A}, \mu)$ such that $f_n \to f$ on $\Omega$. Then, for any $\epsilon > 0$, there exists some $A \in \cal{A}$ with $\mu A^{c} < \epsilon$ such that $f_n \to f$ uniformly on $A$. 
+\end{theorem}
+
+\begin{theorem}[\textbf{Theorem 11.4:} Lusin's Theorem]
+    Let $f$ be a measurable function on some compact metric space $S$ with Borel $\sigma$-field $\cal{S}$ and a bounded measure $\mu$. Then, there exist some continuous functions $f_1, f_2, \ldots$ on $S$ such that $\mu\{x \col f_{n}(x) \not \to f(x)\} \to 0$. 
+\end{theorem}
+
+\begin{definition}[\textbf{Definition 11.5:} Outer Measure]
+    An \emph{outer measure} on $\Omega$, is a nondecreasing and countable subadditive function $\mu \col 2^{\Omega} \to \overline{\R}_{+}$ with $\mu \emptyset = 0$. We say a set $A \subseteq \Omega$ is \emph{$\mu$-measurable} if
+    \[ \mu(E) = \mu(E \cap A) + \mu(E \cap A^{c}),\quad E \subseteq \Omega \]
+\end{definition}
+
+We will ignore most of these results as we will never hear about this again, but the important result is as follows: Denote the length of an interval $I \subseteq \R$ as $\abs{I}$. Then, there exists a unique measure on $\R$ for which $\lambda(I) = \abs{I}$ for every interval.\\
+
+From a previous theorem, we also know that we can construct the product measure $\lambda^{d} = \lambda \otimes \cdots \otimes \lambda$ on $\R^{d}$ for every $d \in \N$. We call $\lambda^{d}$ the \emph{d-dimensional Lebesgue measure}. Note that, by how we defined it, $\lambda^{d}$ generalizes the ordinary notion of area when $d = 2$ and volume when $d \geq 3$.\\
+
+Interestingly, it turns out that the Lebesgue measure $\lambda$ is the unique measure that is invariant under translation and such that $\lambda((0, 1)) = 1$.\\
+
+A useful result related to this is that, if we have a measureable space $(S, \cal{S})$ and a measure $\mu$ on $\R^{d} \times S$ with $\sigma$-finite projection $\nu = \mu((0, 1]^{d} \times \cdot)$ onto $S$. Then, $\mu$ is invariant under shifts in $\R^{d}$ iff $\mu = \lambda^{d} \otimes \nu$, in which case $\mu$ remains invariant under arbitrary rigid motions of $\R^{d}$.\\

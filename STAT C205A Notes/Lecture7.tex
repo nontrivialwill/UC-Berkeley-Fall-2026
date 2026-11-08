@@ -1,0 +1,103 @@
+\tocsection{\textbf{9/17/26 Lecture 7: }The Lebesgue Integral}
+
+\begin{lemma}[\textbf{Corollary 7.1}]
+    Let $\mu_1, \mu_2, \ldots$ be a measure on $(\Omega, \cal{A})$ such that $\mu_n \uparrow \mu$ or $\mu_n \downarrow \mu$ with $\mu_1$ bounded. Then, $\mu$ is a measure on $(\Omega, \cal{A})$. 
+\end{lemma}
+\begin{proof}{Proof:}
+    For increasing, use the fact that if $0 \leq c_{nj} \uparrow c_j$ for all $j$, then $\sum_{j} c_{nj} \uparrow \sum_{j} c_j$, which allows us to conclude $\mu$ satisfies measure properties.\\
+
+    For the decreasing direction, show that $\mu_1 - \mu_n$ is a measure and that $\mu_1 - \mu_n \uparrow \mu_1 - \mu$. 
+
+    $\qed$
+\end{proof}
+
+\begin{lemma}[\textbf{Lemma 7.2}]
+    Let $\mu$ and $\nu$ be bounded measures on some measurable space $(\Omega, \cal{A})$ and let $\cal{C}$ be a $\pi$-system in $\Omega$ such that $\Omega \in \cal{C}$ and $\sigma(\cal{C}) = \cal{A}$. Then $\mu = \nu$ if, and only if, $\nu(A) = \mu(A)$ for all $A \in \cal{C}$.
+\end{lemma}
+\begin{proof}{Proof:}
+    Let $\cal{D}$ be the collection of all $A \in \cal{A}$ such that $\mu(A) = \nu(A)$. Then, show that $\cal{D}$ is a $\lambda$-system, so as $\cal{C}$ is a $\pi$-system contained in $\cal{D}$ we see that $\sigma(\cal{C}) \subseteq \cal{D}$ by the $\pi-\lambda$ theorem. Thus, we see that $\cal{A} \subseteq \cal{D}$, so $\mu = \nu$. 
+
+    $\qed$
+\end{proof}
+
+\begin{definition}[\textbf{Definition 7.3: }Push-Forward Measures]
+    Let $f : S \to T$ be measurable on two spaces $(S, \cal{S}), (T, \cal{T})$. Given any measure $\mu$ on $(S, \cal{S})$, we can define a measure $\mu \circ f^{-1}$ on $(T, \cal{T})$ by
+    \[ (\mu \circ f^{-1})(B) = \mu(f^{-1}(B)) = \mu\{s \in S \col f(s) \in B\} \]
+    for $B \in \cal{T}$. We call $\mu \circ f^{-1}$ the \emph{push-forward measure of $\mu$ by $f$}. 
+\end{definition}
+
+An example that motivates this definition is if we let $(\Omega, 2^{\Omega})$ be the class of students, and let $\mu$ be a measure defined by $\mu(\{s\}) = \frac{1}{\abs{\Omega}}$. That is, $\mu$ is uniform on the collection of students and gives a proportion. Then, if $f : \Omega \to \{\tt{male, female}\}$, then we see that the push-forward measure has the property that
+\[ \mu \circ f^{-1}(\{\tt{male}\}) = \frac{\# \text{ of males}}{\# \text{ of students}} \]
+so it gives the measure you would expect!\\
+
+Now, we want to define the integral of a real valued measurable function $f$ on some measure space $(\Omega, \cal{A}, \mu)$ which we denote in any of these ways
+\[ \mu f = \int f d\mu = \int f(\omega) d\mu(\omega) \]
+We will build up. First, we assume that $f$ is simple and nonnegative, so hence of the form $f = c_11_{A_1} + \cdots + c_n1_{A_n}$ for some $z \in \Z_{+}$, $A_1, \ldots, A_n \in \cal{A}$ and $c_1, \ldots, c_n \in \R_{+}$. Then, we define
+\[ \mu f = c_1\mu(A_1) + \cdots + c_n\mu(A_n) \]
+using the convention that $0 \cdot \infty = 0$. It can be shown that $\mu f$ is independent of choice of representation of $f$. It can also be shown that, on such simple functions, $f \mapsto \mu f$ is linear and non-decreasing; that is
+\begin{align*}
+    \mu(af + bg) &= a\mu f + b\mu g\quad (a, b \geq 0)\\
+    f \leq g &\implies \mu f \leq \mu g
+\end{align*}
+Now, let's extend this to more general functions. For any non-negative measurable function, let $\mu f = \lim_{n} \mu f_n$ where $f_1, f_2, \ldots$ are measurable simple functions with $0 \leq f_n \uparrow f$ (recall these exist!). Now, the problem is that this definition may not be unique; does it agree with any other increasing $0 \leq g_n \uparrow f$?\\
+
+\begin{lemma}[\textbf{Lemma 7.4}]
+    Let $f \geq 0$ be measurable on a measure space $(\Omega, \cal{A}, \mu)$ and let $f_1, f_2, \ldots$ and $g$ be simple measurable functions such that $f_n \uparrow f$ and $0 \leq g \leq f$. Then $\lim_{n} \mu f_n \geq \mu g$. 
+\end{lemma}
+\begin{proof}{Proof:}
+    By linearity of $\mu$, we just need to consider when $g = 1_{A}$. Fix $\epsilon > 0$ and let
+    \[ A_n = \{\omega \in A \col f_{n}(\omega) \geq 1 - \epsilon\} \]
+    Now, as $A_n \uparrow A$ (since $f \geq 1_{A}$), then, as
+    \[ \mu f_n \geq (1 - \epsilon)\mu(A_n) \text{ and } \mu(A_n) \uparrow \mu(A) \]
+    We see that as $\lim_{n} \mu f_n \geq (1 - \epsilon)\mu(A) = (1 - \epsilon)\mu g$. Thus, taking $\epsilon \to 0$, we see that $\lim_{n} \mu f_n \geq \mu g$. 
+
+    $\qed$
+\end{proof}
+
+\begin{lemma}[\textbf{Corollary 7.5}]
+    If $f_1, f_2, \ldots, g_1, g_2, \ldots \geq 0$ are measurable simple functions with $f_n \uparrow f$ and $g_n \uparrow f$, then $\lim_{n} \mu f_n = \lim_{n} \mu g_n$.
+\end{lemma}
+\begin{proof}{Proof:}
+    Since $g_n \leq f$ for all $n$, we see that $\lim_{n} \mu f_n \geq \mu g_n$ for all $n$, so $\lim_{n} \mu f_n \geq \lim_{n} \mu g_n$. Then, by symmetry equality holds.
+
+    $\qed$
+\end{proof}
+Now, we know how to extend $\mu$ to all measurable functions $f : \Omega \to \overline{\R}_{+}$ with monotonicity and linearity properties. Now, we will prove some useful lemmas about this integral.\\
+
+\begin{theorem}[\textbf{Theorem 7.6: }Monotone Convergence Theorem]
+    Let $f, f_1, f_2, \ldots$ be measurable functions on $(\Omega, \cal{A}, \mu)$ with $0 \leq f_n \uparrow f$. Then, $\mu f_n \uparrow \mu f$. 
+\end{theorem}
+\begin{proof}{Proof:}
+    For each $n$, choose simple measurable $0 \leq g_{n, k} \uparrow f_n$. Now, let 
+    \[ h_{n, k} = g_{1, k} \vee \cdots \vee g_{n, k} \]
+    We see that $h_{n, k}$ has the same properties as $g_{n, k}$ since it's positive and also non decreasing in both indices as
+    \[ h_{n, k} \leq h_{n + 1, k} \text{ since } g_{1, k} \vee \cdots \vee g_{n, k} \leq g_{1, k} \vee \cdots \vee g_{n, k} \vee g_{n + 1, k} \]
+    and
+    \[ h_{n, k} \leq h_{n, k + 1} \text{ since } g_{1, k} \vee \cdots \vee g_{n, k} \leq g_{1, k + 1} \vee \cdots \vee g_{n, k + 1} \]
+    Also, we see that $h_{n, k} \uparrow f_{n}$ as $k \to \infty$ $g_{i, k} \leq f_{i} \leq f_{n}$ for $i < n$. Since $h_{k, k}\leq f$, we see that
+    \[ f \geq \lim_{k \to \infty} h_{k, k} \geq \lim_{k \to \infty} h_{n, k} = f_n \]
+    However, as $f_n \uparrow f$, we see that $0 \leq h_{k, k} \uparrow f$. Then, as $\mu f_n \leq \mu f$ for all $n$, 
+    \[ \mu f = \lim_{k \to \infty} \mu h_{k, k} \leq \lim_{k \to \infty} \mu f_{k} \leq \mu f \]
+    So we see that $\mu f_{k} \uparrow \mu f$. 
+
+    $\qed$
+\end{proof}
+
+\begin{theorem}[\textbf{Lemma 7.7:} Fatou's Lemma]
+    For any measurable function $f_1, f_2, \cdots \geq 0$ on $(\Omega, \cal{A}, \mu)$, we have
+    \[ \liminf_{n \to \infty} \mu f_n \geq \mu \liminf_{n \to \infty} f_n \]
+\end{theorem}
+\begin{proof}{Proof:}
+    Since $f_m \geq \inf_{k \geq n} f_k$ for all $m \geq n$ so we have
+    \[ \inf_{k \geq n} \mu f_k \geq \mu \inf_{k \geq n} f_n \]
+    since $\mu f_m \geq \mu \inf_{k \geq n} f_n$ for all $m \geq n$. Letting $n \to \infty$, 
+    \[ \liminf_{k \to \infty} \mu f_k \geq \lim_{n \to \infty} \mu \inf_{k \geq n} f_{k} = \mu\liminf_{k \to \infty} f_{k} \]
+    by the Monotone Convergence Theorem, and as $\inf_{k \geq n} f_{k} \uparrow \liminf_{k \to \infty} f_{k}$. 
+
+    $\qed$
+\end{proof}
+
+\begin{definition}[\textbf{Definition 7.8: }Integrability]
+    A measurable function $f$ on $(\Omega, \cal{A}, \mu)$ is said to be \emph{integrable} if $\mu\abs{f} < \infty$. Then, we can write $f$ as the difference of two non-negative integrable functions $g$ and $h$ $f = g - h$, and define $\mu f = \mu g - \mu h$. 
+\end{definition}
+Typically, we choose $f = f_{+} - f_{-}$ with $f_{\pm} = (\pm f) \vee 0$, but it can be shown that this is independent of choice of representation, and $\mu f$ is still linear (now allowing all coefficients!) and monotone.

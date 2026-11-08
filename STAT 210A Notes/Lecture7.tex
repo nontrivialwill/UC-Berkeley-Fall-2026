@@ -1,0 +1,133 @@
+\tocsection{\textbf{9/17/26 Lecture 7: }Exponential Families}
+
+Recall, an exponential family looks like $\cal{P} = \{p_{\eta} \col \eta \in \Xi\}$ with
+\[ p_{\eta}(x) = e^{\eta'T(x) - A(\eta)}h(x) \]
+These give nice forms for moments, which are the differential identities
+\[ \nabla A(\eta) = \E_{\eta}[T(X)], \quad \nabla^2 A(\eta) = \Var_{\eta}(T(X)), M_{\eta}^{T(X)}(u) = e^{A(\eta + u) - A(\eta)} \]
+The reason these are nice is that a product of exponential family is an exponential family, so these moments are easy to compute.\\
+
+Also, one last note, we may also find it convenient to parameterize our exponential families in a different form, like
+\[ p_{\eta}(x) = e^{\eta(\theta)'T(x) -B(\theta)}h(x) \]
+where $B(\theta) = A(\eta(\theta))$, so we may have to ``massage'' these forms into the canonical form. Here are some examples.
+
+\begin{example}{\textbf{Example}}
+    Let $X \sim \cal{N}(\mu, \sigma^2)$ with $\mu \in \R$ and $\sigma^2 > 0$ unknown. Then, we see that when $\theta = (\mu, \sigma)$, we have
+    \[ p_{\theta}(x) = \frac{1}{\sqrt{2\pi \sigma^2}}e^{-\frac{1}{2\sigma^2}(x - \mu)^2} \]
+    but by expanding, we can write this like
+    \[ p_{\theta}(x) = e^{\frac{\mu}{\sigma^2}x - \frac{x^2}{2\sigma^2} - \frac{\mu^2}{2\sigma^2} - \frac{1}{2}\log(2\pi \sigma^2)} \]
+    In this case, we see that
+    \[ \eta(\theta) = \begin{bmatrix} \frac{\mu}{\sigma^2} \\ -\frac{1}{2\sigma^2}\end{bmatrix}, \quad T(x) = \begin{bmatrix} x \\ x^2 \end{bmatrix}, \quad B(\theta) = \frac{\mu^2}{2\sigma^2} + \frac{1}{2}\log(2\pi\sigma^2), \quad h(x) = 1 \]
+    where we can put it back in canonical form writing
+    \[ A(\eta(x)) = \frac{-\eta_1^2}{4\eta_2} + \frac{1}{2}\log(-\frac{\pi}{\eta_2}) \]
+    so
+    \[ p_{\eta}(x) = e^{\eta'\begin{pmatrix} x \\ x^2\end{pmatrix} - A(\eta)}h(x) \]
+
+    Notice something interesting. $T(X)$, the sufficient statistic, was supposed to be a data reduction, but now we turned it into a vector that has arguably (not really) more data! Where this helps however is when you have multiple variables; then, the sufficient statistic is still just a vector whereas the data is a $n$-tuple. 
+\end{example}
+
+\begin{example}{\textbf{Example}}
+    Let $X \sim \Binom(n, \theta)$ with $\theta$ unknown, then, we can write
+    \begin{align*}
+        p_{\theta}(x) &= \theta^x(1 - \theta)^{n - x}{n \choose x}
+    \end{align*}
+    Now, it seems like we will need a sufficient statistic consisting of $x$ and $n - x$, but notice that these have a very intimate relation; their sum must be $n$! Thus, we can reduce the dimension by writing
+    \begin{align*}
+        p_{\theta}(x) &= \left(\frac{\theta}{1 - \theta}\right)^{x}(1 - \theta)^{n}{n \choose x}\\
+        &= e^{x\log\frac{\theta}{1-\theta} - n\log\frac{1}{1 - \theta}}{n \choose x}
+    \end{align*}
+    so we have
+    \[ \eta = \log\frac{\theta}{1 - \theta},\quad x = T(x),\quad A(\eta) = n\log\frac{1}{1 - \theta},\quad h(x) = {n\choose x} \]
+\end{example}
+
+One way we can think of exponential families is as ``exponential tilting'' of the carrier $h(x)$. That is, we start with our carrier distribution $h(x)$, then we tilt by $e^{\eta'T(x)}$, and then we renormalize using $e^{-A(\eta)}$. What this does is that it tilts the density towards points for which $\eta'T(x)$ is large, and away from points where $\eta'T(x)$ is small.\\
+
+For example, consider the exponential family
+\[ p_{\eta}(x) \propto e^{\eta_1x + \eta_2x^2 + \eta_3\cos(100x)}(1 - \abs{x}) \]
+Increasing $\eta_1$ pushes the distribution to the right, increasing $\eta_2$ pushing the distribution to the edges, and increasing $\eta_3$ makes $p_{\eta}$ oscillate ``like cosine''.\\
+
+Also, note that decomposition of an exponential family into $\eta, T, A, h$ is very not unique. Firstly, it only matters what the span of $T(x)$ is, as choosing $\eta$ allows us to map any element of the span of $T$ to another. Additionally, we can always add constants to the terms in $T(x)$, because that can be taken out and absorbed into the $A(\eta)$ term.\\
+
+Now, we will prove a quick result which will reinforce the notion that the sufficient statistic is what we should care about.
+
+\begin{lemma}[\textbf{Proposition 7.1}]
+    Suppose $X \sim p_{\eta}(x) = e^{\eta'T(x) - A(\eta)}$ with respect to $\mu$. Then, 
+    \[ T(x) \sim q_{\eta}(t) = e^{\eta't - A(\eta)} \]
+    with respect to $\nu = \mu \circ T^{-1}$. 
+\end{lemma}
+\begin{proof}{Proof:}
+    We see that
+    \begin{align*}
+        \bb{P}_{\eta}(T(X) \in B) &= \int_{\chi} 1_{B}(T(x))e^{\eta'T(x) - A(\eta)}d\mu(x)\\
+        &= \int_{t} 1_{B}(t)e^{\mu't - A(\eta)}d\nu(t)
+    \end{align*}
+    where we are basically doing a change of coordinates, $x \to T(x)$. This can be easier seen with the counting measure
+    \[ \sum_{x \col T(x) \in B} e^{\eta'T(x) - A(\eta)}\mu(\{x\}) = \sum_{t \in B} e^{\eta't - A(\eta)}\mu(T^{-1}(t)) \]
+    In words, $p_{\eta}(x)$ is a density for each $x$, $q_{\eta}(t)$ is a density for each slice $\{x \col T(x) = t\}$. 
+\end{proof}
+
+Through these lens, exponential tilt is taking a carrier density and tilting it on the slices $\{x \col T(x) = t\}$. This makes sense to do because tilting by $e^{\eta'T(x)}$ does not depend on $x$, but on where $T$ sends $x$. Also, this is nice because if $X$ is an exponential family, $T(X)$ is also an exponential family, but it actually is of a special kind.
+
+\begin{definition}[\textbf{Definition 7.2:} Canonical Form]
+    If the densities of our exponential family are of the form
+    \[ p_{\eta}(x) = e^{\eta'x - A(\eta)} \]
+    we say this exponential family is in \emph{canonical form.} 
+\end{definition}
+
+From the remarks above, notice we can always put an exponential family in canonical form by absorbing $h$ into our measure, and performing a sufficiency reduction $x \to T(x)$.\\
+
+\subsection*{Minimal Form}
+\sectionspace
+
+\begin{definition}[\textbf{Definition 7.3:} Minimal Form]
+    We say an exponential family
+    \[ p_{\eta}(x) = e^{\eta'T(x) - A(\eta)}h(x) \]
+    is in \emph{minimal form} if $\eta \in \Xi$ and $T(x)$ satisfy no linear constraints. That is, there are no $a \ne 0$ and $b \in \R$ such that $\eta'a = b$ or $T(x)'a = b$ $\cal{P}$ almost surely. (where $\cal{P}$ almost surely means this holds on a set of full measure for some $\eta$). 
+\end{definition}
+The reason we care about minimal form is because, if an exponential family is not in minimal form, we can use the linear constrains to reduce the dimension from a $s$-dimensional exponential form to an $r$-dimensional exponential form with $r < s$. 
+
+\begin{lemma}[\textbf{Lemma 7.4}]
+    If $p_{\eta}$ is minimal (in minimal form), then $T(x)$ is minimal sufficient.
+\end{lemma}
+\begin{proof}{Proof:}
+    We want to show that if $\ell(\cdot, x) = \ell(\cdot, y)$ up to scalar, then $T(x) = T(y)$. Notice that since $T$ is sufficient, the converse of this statement holds.\\
+
+    First, we see that
+    \[ \ell(\eta, x) - \ell(\eta, y) = \eta'(T(x) - T(y)) + \log(h(x)) - \log(h(y)) \]
+    letting $a = T(x) - T(y)$, then if $\ell(\eta, x) - \ell(\eta, y) = C$ for a constant $C$, then we see that
+    \[ C - \log(h(x) - \log(h(y))) = \eta'a \]
+    Then, as the LHS is constant in $\eta$, then if $a \ne 0$, this contradicts the fact that $p_{\eta}$ is minimal. Thus, we must have that $a = 0$, so $T(x) = T(y)$. 
+
+    $\qed$
+\end{proof}
+
+Consider the following diagram
+
+\fig{0.8}{Lecture7Fig1}{}
+where $(A), (B)$ and $(C)$ are exponential families living inside $\Xi_{1}$. Which ones are minimal? Firstly, we can definitely see that $A$ and $B$ are not minimal, because there is no way to write the $\eta$ that belong to those families as a solution to a linear equation. However, for $(C)$, we can.\\
+
+that is, what we can do is pick a base point $\eta_0$ on that line, and for any other $\eta$ on that line, we can write $\eta = \eta_0 + \theta \gamma$ for $\gamma$ the unit vector in the direction of the line. Then, we see that we have
+\begin{align*}
+    e^{\eta'T(x) - A(\eta)}h(x) &= e^{(\eta_0 + \theta \gamma)'T(x) - A(\eta_0 + \theta \gamma)}h(x)\\
+    &= e^{\theta \cdot \gamma'T(x) - A(\eta_0 + \theta \gamma)}e^{\eta_0'T(x)}h(x)
+\end{align*}
+Thus, our new, lower dimensional natural parameter is $\theta$, our new sufficient statistic is $\gamma'T(x)$, and our new normalizing factor is $A(\eta_0 + \theta \gamma) = B(\theta)$. We also have $h(x) = e^{\eta_0'T(x)}h(x)$. \\
+
+Also, interestingly, on $B$ which is a $1$-dimensional manifold, we can locally linearize so if we can restrict our family in question to a small subset, we see that it can be locally minimal in a sense. 
+
+\subsection*{Completeness}
+
+\begin{definition}[\textbf{Definition 7.5:} Completeness of a Sufficient Statistic]
+    We say a sufficient statistic $T(X)$ is \emph{complete} for the family $\cal{P} = \{P_{\theta} \col \theta \in \Theta\}$ if $\E_{\theta}[f(T(X))] = 0$ for all $\theta$ implies that $f(T(X)) \overset{\tt{a.s.}}{=} 0$. 
+\end{definition}
+
+\begin{example}{Example}
+    Consider the Laplace location family with minimal sufficient statistic $S(X) = (X_{(1)}, \ldots, X_{(n)})$ with $X_i \iidsim \tt{Lap}(\theta)$. Is $S(X)$ complete?\\
+
+    The answer is no! Notice that $\bb{E}_{\theta}[X_{(n)} - X_{(1)}] = \bb{E}_{\theta}[Z_{(n)} - Z_{(1)}]$ where $Z_i = X_i - \theta \sim \tt{Lap}(0)$. Thus, we see that for 
+    \[ f(S(X)) = (X_{(n)} - X_{(1)}) - \bb{E}[Z_{(n)} - Z_{(1)}] \]
+    we have that
+    \[ \bb{E}(f(S(X))) = 0 \]
+    but $f(S(X)) \ne 0$ for all $\theta$!\\
+
+    What this means is that $S(X)$, despite being sufficient, still has a lot of ``fluff''. It gives more information than needed in a sense. 
+\end{example}

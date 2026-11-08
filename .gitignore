@@ -1,0 +1,22 @@
+*.aux
+*.log
+*.out
+*.toc
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.synctex(busy)
+*.bbl
+*.blg
+*.bcf
+*.run.xml
+*.nav
+*.snm
+*.lof
+*.lot
+*.xdv
+*.pdf
+MATH 142 Homework/
+MATH 202A Homework/
+STAT 210A Homework/
+STAT C205A Homework/

@@ -1,0 +1,111 @@
+\tocsection{\textbf{9/30/26 Lecture 14:} Riemann and Lebesgue Integrals}
+\vspace{0.2cm}
+
+\begin{proof}{Proof of 13.4 cont.}
+    Recall that, if $a \in [b, c]$ we had
+    \[ \int_{b}^{c}f(y)dy = \int_{b}^{a} f(y)dy + \int_{a}^{c} f(y) dy = 0 \]
+    for all $b, c$ by our assumption. If $a \notin [b, c]$, then we get a similar identity that shows $\int_{b}^{c} f(y)dy = 0$.\\
+ 
+    Now, if $U$ is open, then we can written as $U = \bigcup_{i= 1}^{\infty} (b_n, c_n)$ with the intervals taken to be disjoint, which tells us that
+    \begin{align*}
+        \int_{U} f dy &= \int \sum_{n} f(y)\chi_{b_n, c_n}dy\\
+        &= \sum_{n} \int_{b_n}^{c_n} f(y)dy\\
+        &= 0
+    \end{align*}
+
+    Then, for any measurable $A$, then we can write $A = \left(\bigcap_{n = 1}^{\infty} U_n \right) \cup E$ where $U_n$ is open and $E$ is a null set. Thus, we have
+    \[ \int_{A} f d\mu = \int_{\bigcap_{n = 1}^{\infty} U_n} f(y) dy + \int_{E} f dy = 0\]
+    as $E$ is a null set, and as $\bigcap_{n = 1}^{\infty} U_n$ is in an open set. Thus, we see that $f$ is zero almost everywhere by $2)$. 
+
+    $\qed$
+\end{proof}
+
+\begin{lemma}[\textbf{Proposition 14.1}]
+    For any Lebesgue integrable function $f$, for all $\epsilon > 0$, there exists a continuous $g$ with a compact support so that
+    \[ \int \abs{f - g}dy < \epsilon \]
+\end{lemma}
+\begin{proof}{Proof:}
+    Let's start with simple functions. Consider $\chi_{A}$, where $A$ is a bounded set. By inner and outer regularity, we can find compact $K$ and open $U$ with $K \subseteq A \subseteq U$ so that
+    \[ \lambda(A \setminus K) < \epsilon/2 \quand \lambda(U \setminus A) < \epsilon/2 \]
+    Then, let
+    \[ g(x) = \frac{d(x, U^{c})}{d(x, K) + d(x, U^{c})} \]
+    This function is continuous and is $1$ on $K$ and $0$ on $U^{c}$.\\
+
+    Now, we see that $\abs{\chi_{A} - g} \leq 1$, and is supported on $(A \setminus K) \cup (U \setminus A)$, which is a set with measure zero, so
+    \[ \int \abs{\chi_{A} - g}dx \leq \epsilon \]
+    Additionally, we see that the support of $g$ is the closure of $U$, which is what we want.\\
+
+    Now, let's do simple functions. Let $f$ be a simple function with compact support
+    \[ f = \sum_{j = 1}^{n} a_j\chi_{A_j} \]
+    with $A_j$ bounded. We can also take $a_j \ne 0$. For each $j$, by the previous step, we can find $g_j$ so that
+    \[ \int \abs{\chi_{A_j} - g_j} < \frac{\epsilon}{na_j} \]
+    Now, consider
+    \[ g = \sum_{j = 1}^{n} a_jg_j \]
+    then, we see that
+    \begin{align*}
+        \int \abs{\sum_{j} a_j\chi_{A_j} - g}dx &\leq \sum_{j} \int \abs{a_j\chi_{j} - a_jg_j} dx\\
+        &\leq \sum_{j} a_j\left(\frac{\epsilon}{na_j}\right)dx\\
+        &\leq \epsilon
+    \end{align*}
+
+    Now, let $f$ be nonnegative with compact support. By the definition of the Lebesgue integral, we can find a simple $s$ such that $s \leq f$ and
+    \[ \int f \leq \int s + \epsilon/2 \]
+    Then, applying the above step to $s$, we can find $g$ so that $\int\abs{s - g} dx < \epsilon/2$, which gives us that
+    \begin{align*}
+        \int \abs{f - g}dx &\leq \int \abs{f - s}dx + \int \abs{s - g}dx\\
+        &= \int (f - s)dx + \int \abs{s - g}dx\\
+        &< \epsilon 
+    \end{align*}
+
+    Now, let $f$ be nonnegative but with a support that is not necessarily bounded. Now, we know that
+    \[ f_n = f \chi_{[-n, n]} \uparrow f \]
+    by the MCT, we have that $\int f_n dx \uparrow \int f$. Thus, we can pick $n$ large enough so that
+    \[ \int f dx - \int f_n dx < \epsilon / 2 \]
+    then we can apply the previous step to the $f_n$ (which now is nonnegative with compact support).\\
+
+    Finally, consider a general Lebesgue integrable $f$. Then, we can apply step 4 to $f^{+}$ and $f^{-}$ and use the triangle inequality on $f = f^{+} - f^{-}$. 
+
+    $\qed$
+\end{proof}
+
+Now that we've defined a new notion of integration, let's go back and see if it coincides with the Riemann integral. Consider a bounded function $f : [a, b] \to \R$. If $P$ is a partition of $[a, b]$,
+\[ \{x_0, \ldots, x_n\} \tt{ with } a = x_0 < x_1 < x_2 < \cdots < x_n = b \]
+we have
+\[ U(P, f) = \sum_{j = 1}^{n} \sup_{x \in [x_{j - 1}, x_j]}f(x) \cdot \lambda[x_{j - 1}, x_{j}] \]
+\[ L(P, f) = \sum_{j = 1}^{n} \inf_{x \in [x_{j - 1}, x_j]}f(x) \cdot \lambda[x_{j - 1}, x_{j}] \]
+When $\inf_{P} U(P, f) = \sup_{P} L(P, f)$ we say that $f$ is Riemann integrable with the integral being either of these values. Consider the simple function
+\[ s_{P} = \sum_{i = 1}^{n} (\sup_{x \in [x_{j - 1}, x_{j}]}f(x) )\chi_{[x_{j - 1}, x_{j}]}(x) \]
+\fig{0.8}{Lecture14Fig1}{}
+
+Notice that $\int s_{P}(x)dx = U(P, f)$ (where we are taking the Lebesgue integral).\\
+
+Thus, Riemann integration is like Lebesgue integration, except for the fact that we can only use simple functions over intervals (so strictly weaker). Here are some interesting things to note that will lead us to the following theorem.
+
+\begin{example}{Example}
+    Consider $\chi_{\Q \cap [0, 1]}$. This is not Riemann integrable, but it isn't continuous anywhere (importantly, not continuous on a full measure set).\\
+
+    Now, consider the Thomae's function, which is $0$ on the irrationals, and equal to the denominator on any rational (in lowest terms). This is Riemann integrable, and is continuous on $[0, 1] \setminus \Q$, a full measure set. 
+\end{example}
+
+\begin{theorem}[\textbf{Theorem 14.2: }Equivalence of Riemann and Lebesgue Integrals]
+    Let $f : [a, b] \to \R$ be bounded. 
+    \begin{enumerate}
+        \item If $f$ is Riemann integrable then it is continuous Lebesgue almost everywhere and its Riemann integrable is equal to it's Lebesgue integrable.
+        \item If $f$ is measurable and bounded almost everywhere, then it is Riemann integrable.
+    \end{enumerate}
+\end{theorem}
+\begin{proof}{Proof:}
+    Let $P$ be any partition and define
+    \begin{align*}
+        T_{P} &= \sum_{j = 1}^{n} \left(\sup_{x \in [x_{j - 1}, x_{j}]} f(x)\right) \chi_{[x_{j - 1}, x_{j}]}(x) \\
+        S_{P} &= \sum_{j = 1}^{n} \left(\inf_{x \in [x_{j - 1}, x_{j}]} f(x)\right) \chi_{[x_{j - 1}, x_{j}]}(x)
+    \end{align*}
+    Let $R(f)$ denote the Riemann integral of $f$. By it's definition, we can find partitions $Q_j$ and $Q_j'$ so that
+    \[ U(Q_j, f) \downarrow R(f) \quand L(Q', f) \uparrow R(f) \]
+    Now, recall that if $P \subseteq P'$, then
+    \[ U(P', f) \leq U(P, f) \quand L(P', f) \geq L(P, f) \]
+    So if we define
+    \[ P_{j} := \bigcup_{i \leq j} (Q_i \cup Q_{i}') \]
+    then we still have that
+    \[ U(P_j, f) \downarrow R(f) \quand L(P_j, f) \downarrow R(f) \]
+\end{proof}

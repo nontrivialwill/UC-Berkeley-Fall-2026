@@ -1,0 +1,98 @@
+\tocsection{\textbf{9/18/26 Lecture 9: }Measurable Functions}
+
+\begin{lemma}[\textbf{Proposition 9.1}]
+    The following are equivalent.
+    \begin{enumerate}
+        \item $f$ is measurable.
+        \item $f^{-1}((-\infty, a]) \in \cal{A}$ for all $a$.
+        \item $f^{-1}((-\infty, a)) \in \cal{A}$ for all $a$.
+        \item $f^{-1}([a, \infty)) \in \cal{A}$ for all $a$. 
+    \end{enumerate}
+\end{lemma}
+\begin{proof}{Proof:}
+    The idea is that $f^{-1}$ preserves complements, unions, and intersections.\\
+
+    $1) \to 2)$ Since $f^{-1}((a, \infty))^{c} = f^{-1}((-\infty, a])$, we see that $f^{-1}((-\infty, a]) \in \cal{A}$.\\
+
+    $2) \to 3)$ Writing $(-\infty, a) = \bigcup_{n = 1}^{\infty} (-\infty, a - 1/n]$, we see that
+    \[ f^{-1}((-\infty, a)) = \bigcup_{n = 1}^{\infty} f^{-1}((-\infty, a - 1/n]) \in \cal{A} \]
+
+    $3) \to 4)$ Since $f^{-1}((-\infty, a))^{c} = f^{-1}([a, -\infty))$, we see that $f^{-1}([a, \infty)) \in \cal{A}$.\\
+
+    $4) \to 1)$ Writing $(a, \infty) = \bigcup_{n = 1}^{\infty} [a + 1/n, \infty)$, we see that
+    \[ f^{-1}((a, \infty)) = \bigcup_{n = 1}^{\infty} f^{-1}([a + 1/n, \infty)) \in \cal{A} \]
+
+    $\qed$
+\end{proof}
+
+\begin{lemma}[\textbf{Proposition 9.2}]
+    Suppose that $X$ is a metric space and let $\cal{A}$ be a $\sigma$-algebra on $X$ that contains every open set. Then, every continuous function $f : X \to \R$ is measurable.
+\end{lemma}
+\begin{proof}{Proof:}
+    Since $(a, \infty)$ is open, $f^{-1}((a, \infty))$ is open, so it lies in $\cal{A}$. 
+
+    $\qed$
+\end{proof}
+
+\begin{lemma}[\textbf{Proposition 9.3}]
+    Suppose that $f, g : X \to \R$ are measurable. Then, so are the following:
+    \begin{enumerate}
+        \item $f + g$
+        \item $cf$ for $c \in \R$
+        \item $fg$
+        \item $\max(f, g)$
+        \item $\min(f, g)$
+    \end{enumerate}
+\end{lemma}
+\begin{proof}{Proof:}
+    
+    $1)$ We will show that
+    \[ (f + g)^{-1}(-\infty, a) = \bigcup_{r \in \Q}(f^{-1}(-\infty, a - r) \cap g^{-1}(-\infty, r]) \]
+    which is sufficient as the LHS lies in $\cal{A}$. First, it is quite clear that we have the backwards inclusion. Now, let $x \in (f + g)^{-1}(-\infty, a)$. Then $f(x) + g(x) < a$, so $f(x) < a - g(x)$. Then, by density of $\Q$, we see there exists an $r \in \Q$ for which $f(x) < a - r \leq a - g(x)$, from which we can also include that $g(x) \leq r$. Thus, we see that $x \in f^{-1}(-\infty, a - r) \cap g^{-1}(-\infty, r]$, so we have the forward inclusion.\\
+
+    $2)$ If $c = 0$, this is trivial, so suppose not. Then, we see that
+    \[ (cf)^{-1}(-\infty, a) = \{x \col cf(x) < a\} = \left\{\begin{matrix} \{x \col f(x) < \frac{a}{c}\} & c > 0 \\ \{x \col f(x) > \frac{a}{c}\} & c < 0\end{matrix}\right. \]
+    which are measurable sets in all cases.\\
+
+    $3)$ First, notice that $f^2$ is measurable since, for $a < 0$, $(f^2)^{-1}(a, \infty) = X$, and for $a \geq 0$, 
+    \[ (f^2)^{-1}(a, \infty) = \{x \col f(x) > \sqrt{a}\} \cup \{x \col f(x) < -\sqrt{a}\} \]
+    Then, $fg$ is measurable as we can write
+    \[ fg = \frac{1}{2}\left[(f + g)^2 - f^2 - g^2\right] \]
+
+    $4)$ We see that
+    \[ (\max(f, g))^{-1}(a, \infty) = f^{-1}(a, \infty) \cup g^{-1}(a, \infty) \in \cal{A} \]
+
+    $5)$ We see that
+    \[ (\min(f, g))^{-1}(-\infty, a) = f^{-1}(-\infty, a) \cup g^{-1}(-\infty, a) \in \cal{A} \]
+
+    $\qed$
+
+\end{proof}
+
+\begin{lemma}[\textbf{Proposition 9.4}]
+  If $f_n$ is a sequence of measurable functions, then $\sup_{n}f_n, \inf_{n}f_n, \limsup_{n}f_n$ and $\liminf_{n}f_n$ are measurable.  
+\end{lemma}
+\begin{proof}{Proof:}
+    We can write
+    \[ (\sup_{n} f_n)^{-1}(a, \infty) = \bigcup_{n \geq 1} f_{n}^{-1}(a, \infty) \in \cal{A} \]
+    Then, as $\inf_{n}f_n = -\sup_{n}(-f_n)$, we see that $\inf_{n} f_n$ is also measurable. Then, as 
+    \[ \limsup_{n} f_n = \inf_{n} \sup_{k \geq n} f_k \quand \liminf_{n} f_n = \sup_{n} \inf_{k \geq n} f_k \]
+    we see that $\limsup_{n} f_n$ and $\liminf_{n}f_n$ are measurable. 
+\end{proof}
+
+Also, note that if $\lim_{n} f_n$ exists, then it is equal to $\limsup_{n} f_n$, so it is also measurable.\\
+
+\begin{definition}[\textbf{Definition 9.5:} Equality Almost Everywhere]
+    We say that two measurable functions $f$ and $g$ are \emph{equal almost everywhere}, denoted $f \overset{\tt{a.e.}}{=} g$, if $\{x \col f(x) \ne g(x)\}$ has measure $0$. 
+\end{definition}
+Note that the above set is measurable as it is equal to $\{x \col (f - g)(x) \geq 0\} \cap \{x \col (f - g)(x) \leq 0\}$. An example of the above definition is that $\chi_{\Q}$ is equal to $0$ almost everywhere because $\Q$ is the set on which they differ.\\
+
+\begin{definition}[\textbf{Definition 9.6:} Convergence Almost Everywhere] 
+    If $f_n$ is a sequence of measurable functions, we say \emph{$f_n$ converges to $f$ almost everywhere}, denoted $f_n \to f \tt{ a.e.}$, if
+    \[ \{x \col \lim_{n \to \infty} f_n(x) \ne f(x)\} \]
+    has measure zero. 
+\end{definition}
+
+\begin{definition}[\textbf{Definition 9.7:} Borel Measurability]
+    Let $X$ be a metric space and $\cal{B}(X)$ be it's Borel $\sigma$-algebra. Then, $f : X \to \R$ is \emph{Borel measurable} if it is measurable with respect to $\cal{B}(X)$. That is, $f^{-1}(a, \infty) \in \cal{B}(X)$ for all $a$. 
+\end{definition}

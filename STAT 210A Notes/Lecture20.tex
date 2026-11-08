@@ -1,0 +1,98 @@
+\tocsection{\textbf{11/3/26 Lecture 20:} Likelihood Ratio Tests and the Neyman-Pearson Lemma}
+
+\begin{example}{\textbf{Example:} $z$-test}
+    Suppose we have $X$ and a summary statistic $Z(X) \sim N(\theta, 1)$. Define the upper $\alpha$ quantile
+    \[ z_{\alpha} = \Phi^{-1}(1 - \alpha) \quad \tt{where } \Phi \tt{ is the } N(0, 1) \tt{ c.d.f.} \]
+    \underline{1-sided $z$-test}: $H_0 \col \theta \leq 0$ vs.\ $H_1 \col \theta > 0$ and our test function is
+    \[ \phi_1(X) = 1\{Z(X) > z_{\alpha}\} \]
+    \underline{2-sided $z$-test}: $H_0 \col \theta = 0$ vs.\ $H_1 \col \theta \neq 0$ with test function
+    \[ \phi_2(X) = 1\{\abs{Z(X)} > z_{\alpha/2}\} \]
+    Note that $\phi_1$ rejects for large values of $Z(X)$ and $\phi_2$ rejects for large values of $\abs{Z(X)}$.
+    % NOTE (check): the left tick in the figure is labeled z_{alpha/2}; it should be -z_{alpha/2} (phi_2 also rejects when Z(X) < -z_{alpha/2}).
+    \fig{0.4}{Lecture20Fig1}{}
+    \textbf{Power:}
+    \fig{0.45}{Lecture20Fig2}{}
+    If we are testing $H_0 \col \theta \leq 0$, $\beta_{\phi_1}$ is valid but not $\beta_{\phi_2}$.\\
+
+    If we are testing $H_0 \col \theta = 0$, both $\beta_{\phi_1}$ and $\beta_{\phi_2}$ are valid, but $\beta_{\phi_2}$ is better for $\theta < 0$.
+\end{example}
+
+% NOTE (check): "best" here means uniformly most powerful among level-alpha tests of H_0: theta <= 0 vs H_1: theta > 0. For the two-sided problem no test is uniformly best: phi_1 has more power for theta > 0 and phi_2 for theta < 0 (that's the plot above).
+It turns out $\phi_1$ is the best test (in the sense it maximizes $\beta_{\phi}$ on $H_1$). How do we show this?
+
+\subsection*{Likelihood Ratio Test}
+\sectionspace
+
+Start with simple vs.\ simple:
+\[ H_0 \col X \sim P_0 \qquad H_1 \col X \sim P_1 \]
+Assume WLOG $P_0$ and $P_1$ have densities $p_0, p_1$ with respect to a dominating measure $\mu$ (they are absolutely continuous with respect to $P_0 + P_1$).
+
+\begin{definition}[\textbf{Definition 20.1:} Likelihood Ratio]
+    The \emph{likelihood ratio} is
+    \[ \tt{LR}(X) = \frac{p_1(X)}{p_0(X)} \]
+    with $\tt{LR}(X) = \infty$ if $p_1 > 0$ and $p_0 = 0$ (and define it to be whatever if they are both $0$).
+\end{definition}
+
+\begin{definition}[\textbf{Definition 20.2:} Likelihood Ratio Test]
+    The \emph{likelihood ratio test} is
+    \[ \phi_{\alpha}^{*}(X) = \left\{\begin{matrix} 1 & \tt{LR}(X) > c_{\alpha} \\ \gamma_{\alpha} & \tt{LR}(X) = c_{\alpha} \\ 0 & \tt{LR}(X) < c_{\alpha} \end{matrix}\right. \]
+    where $c_{\alpha}, \gamma_{\alpha}$ are chosen to make $\E_0\phi_{\alpha}^{*}(X) = \alpha$.
+\end{definition}
+
+\textbf{Intuition for LRT:}
+% FIXED: page has "< alpha" for the significance budget; changed to <= alpha (a level-alpha test only needs P_0(reject) <= alpha).
+\begin{align*}
+    \tt{Power under } H_1 &\col \max_{R} \int_{R} p_1(x) d\mu(x)\\
+    \tt{Significance budget} &\col \int_{R} p_0(x) d\mu(x) \leq \alpha
+\end{align*}
+
+\begin{theorem}[\textbf{Theorem 20.3:} Neyman-Pearson Lemma]
+    % NOTE (check): "optimal" = most powerful among level-alpha tests: E_1 phi <= E_1 phi*_alpha for every phi with E_0 phi <= alpha.
+    $\phi_{\alpha}^{*}$ is optimal for testing $H_0 \col X \sim P_0$ vs.\ $H_1 \col X \sim P_1$.
+\end{theorem}
+\begin{proof}{Proof:}
+    We want to show $\phi_{\alpha}^{*}$ solves
+    \[ \underset{\phi \col \cal{X} \to [0, 1]}{\tt{maximize}}\ \E_1[\phi(X)] \quad \tt{subject to} \quad \E_0[\phi(X)] \leq \alpha \]
+    In Lagrange form,
+    \begin{align*}
+        \underset{\phi \col \cal{X} \to [0, 1]}{\tt{maximize}}\left(\E_1[\phi(X)] - \lambda\E_0\phi(X)\right) &= \int_{\cal{X}} \phi(x)(p_1(x) - \lambda p_0(x)) d\mu\\
+        &= \int_{\{p_0 > 0\}} \phi(x)\left(\frac{p_1(x)}{p_0(x)} - \lambda\right) dP_0(x) + \int_{\{p_0 = 0\}} \phi(x)p_1(x) d\mu
+    \end{align*}
+    % FIXED: page has "phi(x) = 1 on {p_0 > 0}"; changed to {p_0 = 0}. That's where the second integral lives (and LR = infinity > lambda there, so it agrees with the rule below).
+    To maximize this, we want $\phi(x) = 1$ on $\{p_0 = 0\}$, and $\phi(x) = 1$ if $\tt{LR}(x) > \lambda$, and $\phi(x) = 0$ if $\tt{LR}(x) < \lambda$, so
+    \[ \phi(x) = \left\{\begin{matrix} 1 & \tt{LR} > \lambda \\ 0 & \tt{LR} < \lambda \\ \tt{arbitrary} & \tt{LR} = \lambda \end{matrix}\right. \]
+    Thus, $\phi_{\alpha}^{*}$ maximizes the Lagrangian if we take $\lambda = c_{\alpha}$.\\
+
+    % FIXED: page has "- c_alpha alpha" at the end of the first line (with a "?" next to it); changed to + c_alpha alpha, and wrote out the second step.
+    % NOTE (check): the first inequality is E_1 phi~ <= E_1 phi~ - c_alpha (E_0 phi~ - alpha), which holds because c_alpha >= 0 and E_0 phi~ <= alpha. The second is phi*_alpha maximizing the Lagrangian with lambda = c_alpha, and the last equality uses E_0 phi*_alpha = alpha.
+    For any other $\tilde{\phi}$ with $\E_0\tilde{\phi}(X) \leq \alpha$,
+    \begin{align*}
+        \E_1[\tilde{\phi}(X)] &\leq \E_1[\tilde{\phi}] - c_{\alpha}\E_0[\tilde{\phi}] + c_{\alpha}\alpha\\
+        &\leq \E_1[\phi_{\alpha}^{*}] - c_{\alpha}\E_0[\phi_{\alpha}^{*}] + c_{\alpha}\alpha\\
+        &= \E_1\phi_{\alpha}^{*}
+    \end{align*}
+
+    $\qed$
+\end{proof}
+
+\begin{example}{\textbf{Example:} Binomial}
+    $X \sim \Binom(n, \theta)$,
+    \[ H_0 \col \theta = 0.5 \quad \tt{vs} \quad H_1 \col \theta = 0.51 \quad \tt{at level } \alpha = 0.05 \]
+    We have
+    \[ p_{\theta}(x) = \binom{n}{x}\theta^{x}(1 - \theta)^{n - x} \]
+    so
+    \[ \tt{LR}(X) = \frac{0.51^{X}0.49^{n - X}}{0.5^{n}} \]
+    Since we reject for large LR, we just need to consider $0.51^{x}0.49^{-x} = \left(\frac{0.51}{0.49}\right)^{x}$, and as this is increasing in $x$, we just need to reject when $x$ is large.\\
+
+    % FIXED: page has "c_alpha should be the lowest 95th percentile of Binom(x, 0.5)"; changed c_alpha to c_0 (c_0 is the threshold for X; c_alpha is the matching threshold for LR) and Binom(x, 0.5) to Binom(n, 0.5).
+    Thus, our test statistic is just $X$ and we need to choose a threshold $c_0$. Thus, $c_0$ should be the lowest 95th percentile of $\Binom(n, 0.5)$. That is,
+    \[ c_0 = \min\{c \col \bb{P}_{\theta_0}(X > c) \leq \alpha\} \]
+    % FIXED: page writes gamma_0 in the test below; changed to gamma_alpha to match.
+    Since $\bb{P}_{\theta_0}(X > c_0) < \alpha$ as $0.05$ is not dyadic, we can set
+    \[ \gamma_{\alpha} = \frac{\alpha - \bb{P}_{\theta_0}(X > c_0)}{\bb{P}_{\theta_0}(X = c_0)} \]
+    and we get the test
+    \[ \phi(X) = \left\{\begin{matrix} 1 & X > c_0 \\ \gamma_{\alpha} & X = c_0 \\ 0 & X < c_0 \end{matrix}\right. \]
+    % NOTE (check): more precisely, the choices only used that theta_1 > 0.5 (so that (theta_1/(1 - theta_1))^x is increasing), not the value of theta_1. So the same test is most powerful against every theta_1 > 0.5, i.e. it's UMP for H_1: theta > 0.5.
+    Note that as all of our choices were independent of $H_1$, it also works for $H_0 \col \theta = 0.5$, $H_1 \col \theta = 0.52$, and generally, this would be the test for
+    \[ H_0 \col \theta = 0.5 \qquad H_1 \col \theta > 0.5 \]
+\end{example}

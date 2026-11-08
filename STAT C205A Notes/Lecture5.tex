@@ -1,0 +1,67 @@
+\tocsection{\textbf{9/10/26 Lecture 5:} Measurable Functions (cont.)}
+
+\begin{definition}[\textbf{Definition 5.1: }Indicator and Simple Functions]
+    For any $A \subseteq \Omega$, define the \emph{associated indicator function} $1_{A} : \Omega \to \R$ to be equal to $1$ on $A$, and $0$ on $A^{c}$. Finite linear combinations of indicator functions, such as
+    \[ f = c_11_{A_1} + \cdots + c_n1_{A_n} \]
+    are called \emph{simple functions}.
+\end{definition}
+
+Taking $c_1, \ldots, c_n$ to be the distinct nonzero values of $f$, we can always define $A_{k} = f^{-1}\{c_k\}$ and write
+\[ f = c_11_{A_1} + \cdots c_n1_{A_n} \]
+for disjoint $A_1, \ldots, A_n$. Then, we see that $f$ is measurable with respect to a $\sigma$-field $\cal{A}$ if, and only if, $A_1, \ldots, A_n \in \cal{A}$. Notice that the representation of $f$ above is unique if we force simple functions to be represented as finite linear combinations ``disjoint'' indicators.
+
+\begin{lemma}[\textbf{Lemma 5.2}]
+    Let $f_1, f_2, \ldots,$ be measurable functions from $(\Omega, \cal{A}) \to \overline{\R}$. Then, $\sup_{n} f_n$, $\inf_{n} f_n$, $\limsup_{n} f_n$ and $\liminf_{n} f_n$ are all measurable.
+\end{lemma}
+\begin{proof}{Proof:}
+    Notice that we can write
+    \[ (\sup_{n} f_n)^{-1}[-\infty, t] = \bigcap_{n} f_{n}^{-1}[-\infty, t] \in \cal{A} \]
+    so we see that $\sup_{n}f_n$ is measurable. Now, since $(-f_n)^{-1}[-\infty, x] = f_{n}^{-1}[-x, \infty]$, we see that $-f_n$ is measurable, so as $\inf_{n} f_n = -\sup_{n}(-f_n)$, we see that $\inf_{n}f_n$ is also measurable. Finally, as
+    \[ \limsup_{n} f_n = \inf_{n} \sup_{k \geq n} f_k \quand \liminf_{n} f_n = \sup_{n} \inf_{n \geq k} f_{k} \]
+    we see that these are also measurable.
+
+    $\qed$
+\end{proof}
+
+\begin{lemma}[\textbf{Lemma 5.3}]
+    Let $f_1, f_2, \ldots,$ be measurable functions from $(\Omega, \cal{A})$ into some metric space $(S, \rho)$. Then,
+    \begin{enumerate}
+        \item $\{\omega \col f_{n}(\omega) \text{ converges}\} \in \cal{A}$ when $S$ is complete.
+        \item $f_n \to f$ on $\Omega$ implies that $f$ is measurable.
+    \end{enumerate}
+\end{lemma}
+\begin{proof}{Proof:}
+    To prove (1), we see that $S$ is complete implies that $f_{n}(\omega)$ coverges if, and only if, $f_{n}(\omega)$ is Cauchy. Thus, we see that $f_{n}(\omega)$ converges iff
+    \[ \lim_{n \to \infty} \sup_{m \geq n} \rho(f_m, f_n) = 0 \]
+    Since $\rho(f_m, f_n)$ is measurable as $(f_m, f_n) : \Omega \to S \times S$ is measurable (both $f_n$ and $f_m$ are measurable), and $\rho : S \times S \to \R^{\geq 0}$ is measurable as $\rho^{-1}(\infty, a) = \bigcup_{s \in S}(\{s\} \times B(s, a))$, which is in $\cal{B}(S \times S)$. Thus, we see that $\rho(f_n, f_m)$ is measurable, so the LHS is measurable by Lemma 5.2. Thus, we see that
+    \[ \{\omega \col f_{n}(\omega) \text{ converges}\} = (\lim_{n \to \infty}\sup_{m \geq n} \rho(f_m, f_n))^{-1}\{0\} \in \cal{A} \]
+
+    To prove (2), we see that if $f_n \to f$, then $g \circ f_n \to g \circ f$ for any continuous $g : S \to \R$. Thus, by Lemma 5.2 and Lemma 4.4, we see that $g \circ f$ is measurable. Now, for any open set $G \subseteq S$, we see that we can find continuous functions $g_n$ so that $g_n \uparrow 1_{G}$, which implies that $1_{G} \circ f$ is measurable. Thus, we see that $f^{-1}(G) \in \cal{A}$ for all open $G \subseteq S$, which implies that $f$ is measurable. 
+\end{proof}
+
+Now, here is one of the most important theorems, especially going into integration.
+
+\begin{theorem}[\textbf{Theorem 5.4:} Simple Approximation of Measurable Functions]
+    For any measurable function $f : (\Omega, \cal{A}) \to \R_{+}$, there exists measurable simple functions $f_1, f_2, \ldots : \Omega \to \R_{+}$ with $0 \leq f_n \uparrow f$. 
+\end{theorem}
+\begin{proof}{Proof:}
+    Let $\floor{g(\omega)}$ be the function $\floor{g(\omega)} = \sum_{i \in \N_{+}} i1_{A_i}$ where $A_i = \{\omega : g(\omega) \in [i, i + 1)\}$. Then, for
+    \[ f_{n}(\omega) = 2^{-n}\floor{2^{n}f(\omega)} \wedge n \]
+    for $\omega \in \Omega$ and $n \in \N$ (where $\wedge$ is the minimum operator to ensure that $f_{n}$ is actually a simple function by controlling it's number of terms), we can see that $f_n \uparrow f$. 
+\end{proof}
+We can see this construction in some sense here:
+
+\fig{0.8}{Lecture5Fig1}{}
+
+\begin{lemma}[\textbf{Lemma 5.5}]
+    Fix measurable functions $f, g : (\Omega, \cal{A}) \to \R$ and let $a, b \in \R$. Then, $af + bg$ and $fg$ are measurable, and so is $f/g$ if $g \ne 0$ on $\Omega$. 
+\end{lemma}
+\begin{proof}{Proof:}
+    If we apply Theorem 5.4 to $f_{\pm} = (\pm f) \vee 0$, and $g_{\pm} = (\pm g) \vee 0$, then we get simple functions $f_n \to f$ and $g_n \to g$.\\
+
+    Now, as $af_n + bg_n$ and $f_ng_n$ are simple measurable functions, and as $af_n + bg_n \to af + bg$ and $f_ng_n \to fg$, we see that $af + bg$ and $fg$ are measurable. The same argument holds for $f/g$ if we force $g_n \ne 0$ (by adding an ``error'' term that dissapears as $n \to \infty$).\\
+
+    Alternatively, we can prove this by writing $af + bg$, $fg$, and $f/g$ as a composition $\psi \circ \phi$ where $\phi = (f, g)$ and $\psi$ is either $\psi(x, y) = ax + by$, $\psi(x, y) = xy$ or $\psi(x, y) = x/y$. Then, it amounts to showing that $\psi$ is measurable, which is not a difficult task.
+
+    $\qed$
+\end{proof}

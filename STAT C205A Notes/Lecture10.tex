@@ -1,0 +1,104 @@
+\tocsection{\textbf{10/1/26 Lecture 10:} More on $L^{p}$ Spaces}
+
+\vspace{0.2cm}
+
+\begin{proof}{Proof of Minkowski's Inequality:}
+    If $p \leq 1$, then by the concavity of $x^{p}$ on $\R_{+}$, we we have
+    \[ \norm{f + g}_{p}^{p} = \mu (\abs{f + g}^{p}) \leq \mu((\abs{f} + \abs{g})^{p}) \leq \mu(\abs{f}^{p}) + \mu(\abs{g}^{p}) = \norm{f}_{p}^{p} + \norm{g}_{p}^{p} \]
+    Remark: This is because if $h$ is concave, non-decreasing, and $h(0) = 0$, then $h(a + b) \leq h(a) + h(b)$, and this true about $x^{p}$ for $0 < p \leq 1$. Now, for $p > 1$, then we see that using H\"older's inequality with $r = 1$ and $q = \frac{p}{p - 1}$, 
+    \begin{align*}
+        \norm{f + g}_{p}^{p} &\leq \int \abs{f}\abs{f + g}^{p - 1}d\mu + \int \abs{g}\abs{f + g}^{p - 1}d\mu && (\tt{factoring})\\
+        &\leq \norm{f}_{p}\norm{f + g}_{p}^{p - 1} + \norm{g}_{p}\norm{f + g}_{p}^{p - 1} && (\tt{H\"older's inequality})\\
+    \end{align*}
+    Thus, dividing both sides by $\norm{f + g}_{p}^{p - 1}$ (if this is zero, inequality is obvious), we get
+    \[ \norm{f + g}_{p} \leq \norm{f}_{p} + \norm{g}_{p} \]
+
+    $\qed$
+\end{proof}
+
+Because of this above results, this shows that $(f, g) \mapsto \norm{f - g}_{p}^{p \wedge 1}$ is a metric on $L^{p}$, as it satisfies all the requirements. Thus, we can say that $g_n \to g$ in $L^{p}$ if $\norm{g_n - g}_{p}^{p - 1} \to 0$. This also let's us define Cauchy sequences in the normal way, which is used in the next lemma. 
+
+\begin{lemma}[\textbf{Lemma 10.1: }Completeness]
+    Let $(f_n)$ be a Cauchy sequence in $L^{p}$, where $p > 0$. Then $\norm{f_n - f}_{p} \to 0$ for some $f \in L^{p}$. 
+\end{lemma}
+\begin{proof}{Proof:}
+    Choose a subsequence $(n_k) \subseteq \N$ with $\sum_{k} \norm{f_{n_{k + 1}} - f_{n_{k}}}_{p}^{p \wedge 1} < \infty$. By Minkowski's inequality and monotone convergence applied to finite sums, we see that
+    \[ \norm{\sum_{k} \abs{f_{n_{k + 1}} - f_{n_{k}}}}_{p}^{p \wedge 1} < \infty \]
+    so $\sum_{k} \abs{f_{n_{k + 1}} - f_{n_{k}}} < \infty$ almost everywhere. Hence, we must have that $(f_{n_{k}})$ is Cauchy almost everywhere in $\R$, so by the completeness of $\R$, we see that $f_{n_{k}} \to f$ for some measurable function $f$. Then, by Fatou's lemma, and using the fact that $f = \liminf_{k \to \infty} f_{n_k}$,
+    \begin{align*}
+        \norm{f - f_n}_{p} &= \left(\int \abs{\liminf_{k \to \infty} f_{n_{k}} - f_{n}}^{p}\right)^{1/p}\\
+        &= \left(\int \liminf_{k \to \infty}  \abs{f_{n_{k}} - f_{n}}^{p}\right)^{1/p}\\
+        &\leq \left(\liminf_{k \to \infty} \int \abs{f_{n_k} - f_n}^{p}\right)^{1/p}\\
+        &\leq \liminf_{k \to \infty}\norm{f_{n_k} - f_n}_{p}\\
+        &\leq \sup_{m \geq n} \norm{f_m - f_n}
+    \end{align*}
+
+    which is assumed to go to $0$ as $n \to \infty$. Thus, we see that $f_n \to f$ in $L^{p}$. 
+
+    $\qed$
+\end{proof}
+
+\begin{lemma}[\textbf{Lemma 10.2:} Useful Inequality]
+    If $a, b \geq 0$, then
+    \[ (a + b)^{p} \leq \left\{\begin{matrix} a^{p} + b^{p} & 0 < p \leq 1 \\ 2^{p - 1}(a^{p} + b^{p}) & p \geq 1 \end{matrix}\right. \]
+\end{lemma}
+\begin{proof}{Proof:}
+    For $0 < p \leq 1$, this is obvious by the concavity of $x^{p}$ for $0 < p \leq 1$. For $p \geq 1$, we know that $x \mapsto x^{p}$ is convex. This can be checked because the second derivative of $x^{p}$ is greater than or equal to zero for all $x$.\\
+
+    Then, we see that
+    \[ \left(\frac{a + b}{2}\right)^{p} = \left(\frac{a}{2} + \frac{b}{2}\right)^{p} \leq \frac{1}{2}a^{p} + \frac{1}{2}b^{p} \]
+    Then, rearranging, we get that
+    \[ (a + b)^{p} \leq 2^{p - 1}\left(a^{p} + b^{p}\right) \]
+
+    $\qed$
+\end{proof}
+
+\begin{lemma}[\textbf{Lemma 10.3: }$L^{p}$-convergence]
+    For any $p > 0$, let $f, f_1, f_2, \ldots \in L^{p}$ with $f_n \to f$ almost everywhere. Then, $f_n \to f$ in $L^{p}$ iff $\norm{f_n}_{p} \to \norm{f}_{p}$.
+\end{lemma}
+\begin{proof}{Proof:}
+    If $f_n \to f$ in $L^{p}$, then by Minkowski's
+    \[ \abs{\norm{f_n}_{p}^{p \wedge 1} - \norm{f}_{p}^{p \wedge 1}} \leq \norm{f_n - f}_{p}^{p \wedge 1} \to 0 \]
+    and so $\norm{f_n}_{p} \to \norm{f}_{p}$. Now, assume the other condition, define
+    \[ g_{n} = 2^{p}\left(\abs{f_n}^{p} + \abs{f}^{p}\right) \quand g = 2^{p + 1}\abs{f}^{p} \]
+    Then, we see that $g_n \to g$ almost everywhere, and $\mu g_n \to \mu g < \infty$  by our hypotheses (since $g_n < (2f)^{p}$). Since we see that $\abs{g_n} \geq \abs{f_n - f}^{p}$, which must go to zero almost everywhere. Thus, $\norm{f_n - f}_{p}^{p} = \mu \abs{f_n - f}^{p} \to 0$ by the dominated convergence theorem.
+    
+    $\qed$
+\end{proof}
+
+Now, we will consider the special case where $p = q = 2$ and $r = 1$. Using H\"older's inequality, we get the special case which is known as the \emph{Cauchy-Buniakowsky} or \emph{Schwarz} inequality
+\[ \norm{fg}_{1} \leq \norm{f}_{2}\norm{g}_{2} \]
+In particular, note that for any $f, g \in L^{2}$, the inner product $\brac{f, g} = \mu(fg)$ exists (not infinity) and satisfies $\abs{\brac{f, g}} \leq \norm{f}_{2}\norm{g}_{2}$. Quickly, to make our foundations solid, lets make sure that $\brac{f, g}$ is actually an inner product.\\
+
+First, it is clear that $\brac{f, f} \geq 0$, and $\brac{f, f} = 0 \iff f = 0\ (\tt{a.e.})$. Also, $\brac{fg} = \brac{gf}$ and from linearity of the integral,
+\[ \brac{af + bg, h} = a\brac{f, h} + b\brac{g, h} \]
+Bilinearity follows from symmetry. We also see that $\norm{f} = \sqrt{\brac{f, f}} = \sqrt{\mu f^2} = \norm{f}_{2}$, so we will interchange between using $\norm{\cdot}$ and $\norm{\cdot}_{2}$. \\
+
+
+Going back, we see that from the bilinearity of inner products, we ge the parallelogram identity
+\[ \norm{f + g}^2 + \norm{f - g}^2 = 2\norm{f}^2 + 2\norm{g}^2,\quad f, g \in L^2 \]
+Now, we say that two functions $f, g \in L^2$ are said to be \emph{orthogonal}, written $f \perp g$, if $\brac{f, g} = 0$. Orthogonality between two subsets $A, B \subseteq L^2$ implies that $f \perp g$ for all $f \in A$ and $g \in B$.\\
+
+Finally, a subspace $M \subseteq L^2$ is said to be \emph{linear} of $af + bg \in M$ for any $f, g \in M$ and $a, b \in \R$. Also, a subspace $M \subseteq L^2$ is said to be \emph{closed} if $f \in M$ whenever $f$ is the $L^2$-limit of a sequence in $M$. 
+
+\begin{theorem}[\textbf{Theorem 10.4:} Existence of Orthononal Decomposition]
+    Let $M$ be a closed linear subspace of $L^2$. Then, any function $f \in L^2$ has any almost everywhere unique decomposition $f = g + h$ with $g \in M$ and $h \perp M$. 
+\end{theorem}
+\begin{proof}{Proof:}
+    Let $f \in L^2$ and define $d = \inf\{\norm{f - g} \col g \in M\}$. Now, choose $g_1, g_2, \ldots \in M$ so that $\norm{f - g_n} \to d$. Using the linearity of $M$, the definition fo $d$, we see that for $m, n \to \infty$, we first have that, as $(g_n + g_m)/2 \in M$, and
+    \[ \norm{2f - g_n - g_m} = 2\norm{f - \frac{g_n + g_m}{2}} \]
+    which by the definition of $d$, implies that
+    \[ \norm{2f - g_n - g_m} \geq 2d\]
+    Then, the parallelogram identity using $u = f - g_m$ and $v = f - g_n$, 
+    \[ \norm{2f - g_m - g_n}^2 + \norm{g_m - g_n}^2 = 2\norm{f - g_m}^2 + 2\norm{f - g_n}^2 \leq 4d^2 \]
+    Thus, 
+    \begin{align*}
+        4d^2 + \norm{g_m - g_n}^2 &= (2d)^2 + \norm{g_m - g_n}^2\\
+        &\leq \norm{2f - g_m - g_n}^2 + \norm{g_m - g_n}^2\\
+        &= 2\norm{f - g_m}^2 + 2\norm{f - g_n}^2 \to 4d^2
+    \end{align*}
+    Thus, $\norm{g_m - g_n} \to 0$, so the sequence $(g_n)$ is Cauchy in $L^2$, which means it converges to some $g \in L^2$ and as $M$ is closed, $g \in M$. We will finish the proof later. 
+
+    $\qed$
+\end{proof}
+

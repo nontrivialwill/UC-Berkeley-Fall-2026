@@ -1,0 +1,124 @@
+\tocsection{\textbf{10/28/26 Lecture 26:} Functions of Bounded Variation}
+
+\textbf{Recall:} If $F : \R \to \R$ is increasing, $F$ is differentiable a.e.\\
+
+For $F : \R \to \R$, consider
+\[ T_F(x) = \sup\left\{\sum_{j = 1}^{n} \abs{F(x_j) - F(x_{j - 1})} \col n \in \N,\ x_0 < x_1 < \cdots < x_n = x\right\} \]
+and if $T_F(\infty) < \infty$, $F \in \tt{BV}$.\\
+
+Now, if $x_{j - 1} < x' < x_j$,
+\[ \abs{F(x_j) - F(x_{j - 1})} \leq \abs{F(x_j) - F(x')} + \abs{F(x') - F(x_{j - 1})} \]
+and if $a < b$,
+\[ T_F(b) = T_F(a) + \sup\left\{\sum \abs{F(x_j) - F(x_{j - 1})} \col a = x_0 < \cdots < x_n = b\right\} \]
+
+\begin{definition}[\textbf{Definition 26.1:} Bounded Variation on an Interval]
+    We say $F$ is of \emph{bounded variation on $[a, b]$} if
+    \[ T_F(b) - T_F(a) < \infty \]
+    and we write $F \in \tt{BV}([a, b])$.
+\end{definition}
+
+\begin{lemma}[\textbf{Proposition 26.2}]
+    If $F \in \tt{BV}$, then $T_F + F$ and $T_F - F$ are increasing.
+\end{lemma}
+\begin{proof}{Proof:}
+    Fix $x < y$. By definition, choose $x_0 < \cdots < x_n = x$ so that $\sum_{j} \abs{F(x_j) - F(x_{j - 1})} \geq T_F(x) - \epsilon$. Then,
+    \begin{align*}
+        T_F(y) + F(y) &\geq \sum_{j = 1}^{n} \abs{F(x_j) - F(x_{j - 1})} + \abs{F(y) - F(x)} + F(y)\\
+        &\geq T_F(x) - \epsilon + F(x)
+    \end{align*}
+    so taking $\epsilon \to 0$, we get what we want. A similar argument works for $T_{F} - F$. 
+
+    $\qed$
+\end{proof}
+
+\begin{theorem}[\textbf{Theorem 26.3:} Classification of BV]
+    A function $F : \R \to \R$ is BV iff it may be written as a difference of bounded increasing functions. In particular, $F \in \tt{BV} \implies F$ is differentiable almost everywhere and $F$ is bounded.
+\end{theorem}
+\begin{proof}{Proof:}
+    $(\Rightarrow)$ By the proposition, we can write
+    \[ F = \frac{1}{2}(T_F + F) - \frac{1}{2}(T_F - F) \]
+    and both are increasing. To show boundedness, we see that, for $x < y$,
+
+    \[ F(x) - F(y) \leq T_F(y) - T_F(x) \leq T_F(\infty) - T_F(-\infty) < \infty \]
+    and similarly
+    \[ F(y) - F(x) \leq T_F(y) - T_F(x) \leq T_F(\infty) - T_F(-\infty) < \infty \]
+    so we see $F$ is bounded, so $T_F + F$ and $T_F - F$ are bounded.\\
+
+
+    $(\Leftarrow)$ Bounded increasing functions have bounded variation, and as $T_{H - G} \leq T_{H} + T_{G}$ by the triangle inequality, we see that the difference also has bounded variation.
+
+    $\qed$
+\end{proof}
+
+Recall if $F$ is increasing and right-continuous, we get the LS measure $m_F$ by $m_F((a, b]) = F(b) - F(a)$.
+
+\begin{lemma}[\textbf{Proposition 26.4}]
+    Let $m$ be a positive Borel measure with the property that $m(A) < \infty$ if $A$ is bounded. Then, if
+    \[ F(x) = \left\{\begin{matrix} m((0, x]) & x > 0 \\ 0 & x = 0 \\ -m((x, 0]) & x < 0 \end{matrix}\right. \]
+    then $F$ is increasing, right continuous, and $m = m_F$.
+\end{lemma}
+\begin{proof}{Proof:}
+
+    Increasing follows from $A \subseteq B \implies m(A) \leq m(B)$, and right continuity comes from
+    \[ m((0, x]) = \lim_{h \to 0^{+}} m((0, x + h]) \]
+    It is then clear that $m = m_F$.
+
+    $\qed$
+\end{proof}
+
+\begin{lemma}[\textbf{Corollary 26.5}]
+    If $m$ is a Borel measure with $m(A) < \infty$ for bounded $A$, then $m$ is regular!
+\end{lemma}
+
+This gives us a correspondence $m_F \longleftrightarrow F$, but not quite, as if $G = F + C$ for a constant $C$, then $m_F = m_G$.\\
+
+To fix this, we will normalize as follows: let
+\[ \tt{NBV} = \{F \in \tt{BV} \col F \tt{ is right continuous and } F(-\infty) = 0\} \]
+
+\begin{theorem}[\textbf{Theorem 26.6:} NBV Functions and Signed Borel Measures]
+    If $\mu$ is a finite signed measure on $\R$, then $F(x) = \mu((-\infty, x])$ is NBV. Conversely, if $F \in \tt{NBV}$, then there is a unique signed Borel measure $\mu$ with $\mu((a, b]) = F(b) - F(a)$.
+\end{theorem}
+
+Before we prove this, we need a lemma.
+
+\begin{lemma}[\textbf{Lemma 26.7}]
+    If $F \in \tt{BV}$ and is right-continuous, then so is $T_F(x)$. \
+\end{lemma}
+\begin{proof}{Proof:}
+    Fix $x$ and let $\alpha = T_F(x^{+}) - T_F(x)$. We want to show $\alpha = 0$. Given $\epsilon > 0$, choose $\delta$ so that
+    \[ \abs{F(x + h) - F(x)} < \epsilon \quand T_F(x + h) - T_F(x^{+}) < \epsilon \]
+    for $0 < h < \delta$ by right-continuity and the definition of limits. Find a partition $x = x_0 < \cdots < x_n = x + h$ so that
+    \begin{align*}
+        \sum_{j = 1}^{n} \abs{F(x_j) - F(x_{j - 1})} &\geq \frac{3}{4}\abs{T_F(x + h) - T_F(x)}\\
+        &\geq \frac{3}{4}\alpha
+    \end{align*}
+    \[ \sum_{j = 2}^{n} \abs{F(x_j) - F(x_{j - 1})} \geq \frac{3}{4}\alpha - \abs{F(x_1) - F(x)} \geq \frac{3}{4}\alpha - \epsilon \]
+
+    Now, find $x = y_0 < \cdots < y_m = x_1$ so that
+    \[ \sum_{j = 1}^{m} \abs{F(y_j) - F(y_{j - 1})} \geq \frac{3}{4}\abs{T_F(x_1) - T_F(x)} \geq \frac{3}{4}\alpha \]
+    Thus,
+    \[ \sum_{j = 1}^{m} \abs{F(y_j) - F(y_{j - 1})} + \sum_{j = 2}^{n} \abs{F(x_j) - F(x_{j - 1})} \geq \frac{3}{2}\alpha - \epsilon \]
+    But as this is just a partition (of $[x, x + h]$),
+    \begin{align*}
+        \sum_{j = 1}^{m} \abs{F(y_j) - F(y_{j - 1})} + \sum_{j = 2}^{n} \abs{F(x_j) - F(x_{j - 1})} &\leq T_F(x + h) - T_F(x)\\
+        &= (T_F(x + h) - T_F(x^{+})) + (T_F(x^{+}) - T_F(x))\\
+        &< \epsilon + \alpha
+    \end{align*}
+    so
+    \[ \frac{3}{2}\alpha - \epsilon \leq T_F(x + h) - T_F(x) < \epsilon + \alpha \]
+    so taking $\epsilon \to 0$, we must see $\alpha = 0$. Since $T_F(x)$ is increasing and bounded, $T_F \in \tt{BV}$.
+
+    $\qed$
+\end{proof}
+
+\begin{proof}{Proof of Theorem 26.6:}
+    $(\Rightarrow)$ If $\mu$ is a finite signed Borel measure, write $\mu = \mu^{+} - \mu^{-}$ and let
+    \[ F^{\pm}(x) = \mu^{\pm}((-\infty, x]) \]
+    Each of these are BV and $F^{\pm}(-\infty) = 0$ by continuity. They are also right continuous by continuity.\\
+
+    $(\Leftarrow)$ Write $F = F^{+} - F^{-} = \frac{1}{2}(T_F + F) - \frac{1}{2}(T_F - F)$. $F^{\pm}$ are both increasing and right continuous from above, so we get the LS measures $m_{F^{+}}$ and $m_{F^{-}}$, and it can be checked that
+    \[ m = m_{F^{+}} - m_{F^{-}} \]
+    has the property we want.
+
+    $\qed$
+\end{proof}

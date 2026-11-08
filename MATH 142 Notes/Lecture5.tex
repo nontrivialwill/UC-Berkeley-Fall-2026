@@ -1,0 +1,43 @@
+\tocsection{\textbf{9/4/26 Lecture 5:} Homeomorphisms and Space Filling Curves}
+
+First, fun fact: $x \in \overline{A}$ if, and only if, for a neighborhood $N$ of $x$, we have that $N \cap A \ne \emptyset$.\\
+
+Now, recall from last time that continuous functions are those such that the preimage of an open set under that function is open as well. This seems different than the definition in real analysis, but it turns out they are equivalent! Let $X, Y$ be metric spaces and let $f : X \to Y$ be a continuous map in the topological sense. Now, given $\epsilon > 0$, we see that $B(f(x), \epsilon)$ is open in $Y$, so as $f$ is continuous, 
+\[ f^{-1}(B(f(x), \epsilon)) = \cal{U} \]
+is open in $X$. Then, as $x \in \cal{U}$, there exists a $\delta > 0$ such that $B(x, \delta) \subseteq \cal{U}$. In summary, for all $y$ with $d(y, x) < \delta$, we see that $d(f(y), f(x)) < \epsilon$. The opposite direction (metric continuity to topological continuity) is quite simple as well.\\
+
+Now, a definition:
+
+\begin{definition}[\textbf{Definition 5.1: }Homeomorphisms]
+    A \emph{homeomorphism} $f : X \to Y$ is a continuous bijection whose inverse is also continuous. 
+\end{definition}
+Here are some examples:
+
+\fig{0.6}{Lecture5Fig1}{These knots in $\R^3$ are homeomorphic under the subspace topology}
+
+\fig{0.6}{Lecture5Fig2}{A coffee cup and a donut are actually homeomorphic!}
+
+Here's another important one: Let $f : X \to Y$ be a bijection with $Y$ being a topological space. Then, we can induce a topology on $X$ by saying that $\cal{U} \subseteq X$ is open iff $f(\cal{U})$ is open in $Y$. This makes $f$ a homemorphism as well.\\
+
+Now, let $S^n = \{x \in \R^{n + 1} \col \abs{x} = 1\}$, and let $p \in S^n$. Then, we claim that $S^n \backslash \{p\}$ is homeomorphic to $\R^n$. To prove this, first assume that $p$ is the north pole (we can always reorient), and consider the map $\pi : S^n \backslash \{p\} \to \R^n$, called stereographic projection, as depicted below. It turns out this is a homeomorphism.
+
+\fig{0.6}{Lecture5Fig3}{Projecting $S^n$ onto $R^n$ by ``casting a light'' at the north pole.}
+
+\subsection*{Space Filling Curves}
+\sectionspace
+
+The question we will answer with this section is: How weird can continuous functions be?\\
+
+Let $\triangle$ be the solid equilateral triangle with side length $1/2$. We will construct a continuous function $f : [0, 1] \to \triangle$ that is onto! To do this, define $f_n : [0, 1] \to \triangle$ for $n = 1, 2, 3$ as follows:
+
+\fig{0.6}{Lecture5Fig4}{The $f_n$ zig-zag through smaller and smaller triangles breaking up $\triangle$}
+
+First, say $n \geq m$. From our construction, we have that for $t \in [0, 1]$, $f_{n}(t)$ and $f_{m}(t)$ are both in a triangle of length $2^{-m}$, so $\norm{f_{n}(t) - f_{m}(t)}_{\R^2} \leq 2^{-m}$. Thus, we see that $f_{n}(t)$ is Cauchy, so it has a limit which we call $f(t)$. Now, as
+\[ \norm{f_{n}(t) - f_{m}(t)}_{C^{0}} = \max_{t \in [0, 1]} \norm{f_{n}(t) - f_{m}(t)}_{\R^2} \leq 2^{-m} \]
+we see that $f_{n}$ is uniformly continuous. Thus, we see that $\lim_{n \to \infty} f_{n}(t) = f(t)$ is continuous. Now, we need to show that $f(t)$ is space filling. First, we show that $f([0, 1])$ is dense in $\triangle$.\\
+
+Let $x \in \triangle$. Suppose $x \notin f[0, 1]$ and $\cal{U}$ is a neighborhood of $x$. Taking $N$ sufficiently large, we can have
+\[ B(x, 2^{-(N - 2)}) \subseteq \cal{U} \]
+Now, choose $t_0 \in [0, 1]$ such that $\norm{x - f_{N}(t_0)}_{\R^2} \leq 2^{-N}$. Passing to an $N$ large enough so that $\norm{f_{N} - f}_{C^0} \leq 2^{-N}$, we see that, by the triangle equality
+\[ \norm{x - f(t_0)} \leq 2^{-(N - 1)} \implies f(t_0) \in B(x, 2^{-(N - 2)}) \]
+thus, we see that $\cal{U} \cap f([0, 1]) \ne \emptyset$, so $\overline{f[0, 1]} = \triangle$. Now, we just need to prove that $f$ is onto. 

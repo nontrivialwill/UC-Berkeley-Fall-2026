@@ -1,0 +1,191 @@
+\tocsection{\textbf{10/29/26 Lecture 17:} Hewitt-Savage, Borel-Cantelli, and Convergence in Probability}
+
+\begin{theorem}[\textbf{Theorem 17.1:} Hewitt-Savage 0-1 Law]
+    If $\xi$ is an infinite sequence of i.i.d.\ random variables in $(S, \cal{S})$, and $\cal{I}$ is the permutation invariant $\sigma$-field in $\cal{S}^{\infty}$, then the $\sigma$-field $\xi^{-1}(\cal{I})$ is $P$-trivial.
+\end{theorem}
+
+Recall
+\[ A \triangle B = (A \setminus B) \cup (B \setminus A) \]
+and
+\[ P(A \triangle B) = P(A^{c} \triangle B^{c}) = \mathbb{E}\abs{1_A - 1_B}, \quad A, B \in \cal{A} \]
+We prove a quick lemma.
+
+\begin{lemma}[\textbf{Lemma 17.2:} Approximation]
+    Given $\sigma$-fields $\cal{F}_1 \subseteq \cal{F}_2 \subseteq \cdots$ and a set $A \in \bigvee_{n} \cal{F}_n$, there exist $A_1, A_2, \ldots \in \bigcup_{n} \cal{F}_n$ with $P(A \triangle A_n) \to 0$.
+\end{lemma}
+\begin{proof}{Proof:}
+    Let $\cal{C} = \bigcup_{n} \cal{F}_n$ and let $\cal{D}$ denote the class of sets $A \in \bigvee_{n} \cal{F}_n$ with the property. $\cal{C}$ is a $\pi$-system and $\cal{D}$ is a $\lambda$-system, so $\bigvee_{n} \cal{F}_n \subseteq \cal{D}$.\\
+
+    
+    Proving that $\cal{C}$ is a $\pi$-system is easy, but proving $\cal{D}$ is a $\lambda$-system can be hard. For complements, $A \subseteq B$ with $P(A \triangle A_n) \to 0$ and $P(B \triangle B_n) \to 0$,
+    \[ P((B \setminus A) \triangle (B_n \setminus A_n)) \leq P(B \triangle B_n) + P(A \triangle A_n) \]
+    so we get the desired result.\\
+
+   
+    Now, suppose that $A^{j} \in \cal{D}$ with $A^{j} \uparrow A$. Let $\epsilon > 0$. Since $A \triangle A^{j} \downarrow \emptyset$, we see there exists a $j$ such that $P(A \triangle A^{j}) < \epsilon/2$. Also, since $A^{j} \in \cal{D}$, we can find a $C \in \cal{C}$ with $P(A^{j} \triangle A) < \epsilon /2$, so
+    \[ P(A \triangle C) \leq P(A \triangle A^{j}) + P(A^{j} \triangle C) < \epsilon \]
+    Thus, taking $\epsilon = 1/k$ for each $k$ we can find sets $C^{k} \in \cal{C}$ with $P(A \triangle C^{k}) \to 0$. Thus, $A \in \cal{D}$.\\
+
+    Thus, $\cal{D}$ is a $\lambda$-system.
+
+    $\qed$
+\end{proof}
+Now, we can prove the Hewitt-Savage 0-1 Law.
+\vspace{0.6cm}
+
+\begin{proof}{Proof of Hewitt-Savage:}
+    Let $\mu = \cal{L}(\xi)$. Let $\cal{F}_n = \cal{S}^{n} \times S^{\infty}$ and note $\cal{I} \subseteq \cal{S}^{\infty} = \bigvee_{n} \cal{F}_n$. For any $I \in \cal{I}$, there exist $B_n \in \cal{S}^{n}$ so that $I_n = B_n \times S^{\infty}$ satisfies $\mu(I \triangle I_n) \to 0$.\\
+
+
+    Now, let $\tilde{I}_n = S^{n} \times B_n \times S^{\infty}$. By symmetry of $\mu$ and $I$, $\mu\tilde{I}_n = \mu I_n \to \mu I$. Then $\mu(I \triangle \tilde{I}_n) = \mu(I \triangle I_n) \to 0$. Then,
+    \[ \mu(I \triangle (I_n \cap \tilde{I}_n)) \leq \mu(I \triangle I_n) + \mu(I \triangle \tilde{I}_n) \to 0 \]
+    Since $I_n \perp\!\!\!\perp \tilde{I}_n$ under $\mu$,
+    \[ \mu I \leftarrow \mu(I_n \cap \tilde{I}_n) = (\mu I_n)(\mu\tilde{I}_n) \to (\mu I)^2 \]
+    so $\mu I = 0$ or $1$, so $P(\xi^{-1}(I)) = 0$ or $1$.
+
+    $\qed$
+\end{proof}
+
+\begin{lemma}[\textbf{Corollary 17.3:} Random Walk]
+    Let $\xi_1, \xi_2, \ldots$ be i.i.d.\ non-degenerate random variables, and let $S_n = \xi_1 + \cdots + \xi_n$. Then,
+    \begin{enumerate}[label = (\roman*)]
+        \item $P\{S_n \in B \tt{ i.o.}\} = 0$ or $1$ for any $B \in \cal{B}$.
+        \item $\limsup_{n} S_n = \infty$ a.s.\ or $-\infty$ a.s.
+        \item $\limsup_{n}(\pm S_n) = \infty$ if the $\xi_n$ are symmetric; that is, $\xi_n \overset{d}{=} -\xi_n$.
+    \end{enumerate}
+\end{lemma}
+\begin{proof}{Proof:}
+    \textbf{(i)} $\{S_n \in B \tt{ i.o.}\}$ is permutation invariant in the sense for HS.\\
+
+   
+    \textbf{(ii)} We know $\limsup_{n} S_n = c$ a.s.\ by HS and a.s.\ degeneracy. Then, as
+    \[ c = \limsup_{n} S_{n + 1} = \limsup_{n}(S_{n + 1} - \xi_1) + \xi_1 = c + \xi_1 \]
+    so if $\abs{c} < \infty$, then $\xi_1 = 0$ a.s., which contradicts non-degeneracy of $\xi_1$. Thus, $\abs{c} = \infty$.\\
+
+    \textbf{(iii)} We see
+    \[ c = \limsup_{n} S_n \geq \liminf_{n} S_n = -\limsup_{n}(-S_n) = -c \]
+    so $-c \leq c \in \{\pm\infty\}$, so $c = \infty$.
+
+    $\qed$
+\end{proof}
+
+\begin{theorem}[\textbf{Theorem 17.4:} Borel-Cantelli]
+    Let $A_1, A_2, \ldots \in \cal{A}$. Then
+    \begin{enumerate}[label = (\roman*)]
+        \item $\sum_{n} PA_n < \infty$ implies $P\{A_n \tt{ i.o.}\} = 0$.
+        \item If the $A_n$ are independent, then $\sum_{n} PA_n = \infty \implies P\{A_n \tt{ i.o.}\} = 1$
+    \end{enumerate}
+\end{theorem}
+\begin{proof}{Proof:}
+    \textbf{(i)}
+    \[ \mathbb{E}\left(\sum_{n} 1_{A_n}\right) = \sum_{n} \mathbb{E}1_{A_n} = \sum_{n} PA_n < \infty \]
+    so $\sum_{n} 1_{A_n} < \infty$ almost surely. Thus, $P\{A_n \tt{ i.o.}\} = 0$.\\
+
+    \textbf{(ii)} Assume the $A_n$ are independent and $\sum_{n} PA_n = \infty$. Using that $1 - x \leq e^{-x}$ for all $x$,
+    \begin{align*}
+        P\left(\bigcup_{k \geq n} A_k\right) &= 1 - P\left(\bigcap_{k \geq n} A_k^{c}\right)\\
+        &= 1 - \prod_{k \geq n} PA_k^{c}\\
+        &= 1 - \prod_{k \geq n}(1 - PA_k)\\
+        &\geq 1 - \prod_{k \geq n} e^{-PA_k}\\
+        &= 1 - e^{-\sum_{k \geq n} PA_k} = 1 - e^{-\infty} = 1
+    \end{align*}
+    Hence, as $n \to \infty$,
+    \[ P\{A_n \tt{ i.o.}\} = \lim_{n \to \infty} P\left(\bigcup_{k \geq n} A_k\right) = 1 \]
+
+    $\qed$
+\end{proof}
+
+\begin{example}{\textbf{Example:} Independence is Needed}
+    Let $U \sim \tt{Unif}(0, 1)$ and $A_n = \{U \in (0, 1/n)\}$. Note we see $P(A_n) = 1/n$, so $\sum_{n} PA_n = \infty$, but $P\{A_n \tt{ i.o.}\} = 0$. Thus, independence is important.
+\end{example}
+
+\begin{theorem}[\textbf{Lemma 17.5:} Bienaym\'e-Chebyshev-Paley-Zygmund Inequality]
+    Let $\xi$ be an $\R_{+}$-valued random variable with $0 < \mathbb{E}\xi < \infty$. Then,
+    \[ \frac{(\mathbb{E}\xi)^2}{\mathbb{E}[\xi^2]}\left[(1 - r)_{+}\right]^2 \leq P\{\xi > r\mathbb{E}\xi\} \leq \frac{1}{r}, \quad r \geq 0 \]
+    The upper bound is also known as Markov's inequality.
+\end{theorem}
+\begin{proof}{Proof:}
+    Assume WLOG $\mathbb{E}\xi = 1$ (we can redefine $\eta = \xi/\mathbb{E}\xi$).\\
+
+    Since $r1\{\xi \geq r\} \leq \xi$, we see that $rP\{\xi \geq r\} \leq \mathbb{E}[\xi]$, so $P\{\xi \geq r\} \leq \frac{\mathbb{E}[\xi]}{r}$, and just redefine $r$.\\
+
+    To get the lower bound, note
+    \begin{align*}
+        1 = \mathbb{E}[\xi] &= \mathbb{E}[\xi 1\{\xi \leq r\}] + \mathbb{E}[\xi 1\{\xi > r\}]\\
+        &\leq r + \mathbb{E}[\xi^2]^{1/2}P\{\xi > r\}^{1/2}
+    \end{align*}
+    so for $r' := r\mathbb{E}[\xi]$,
+
+    \begin{align*}
+        \mathbb{E}[\xi] &\leq r\mathbb{E}[\xi] + \mathbb{E}[\xi^2]^{1/2}P\{\xi > r\mathbb{E}[\xi]\}^{1/2}\\
+        \mathbb{E}[\xi](1 - r) &\leq \mathbb{E}[\xi^2]^{1/2}P\{\xi > r\mathbb{E}\xi\}^{1/2}\\
+        \frac{(\mathbb{E}[\xi])^2}{\mathbb{E}[\xi^2]}\left[(1 - r)_{+}\right]^2 &\leq P\{\xi > r\mathbb{E}\xi\}
+    \end{align*}
+
+    $\qed$
+\end{proof}
+
+\begin{definition}[\textbf{Definition 17.6:} Convergence in Probability]
+    Given random elements $\xi$ and $\xi_1, \xi_2, \ldots$ in a metric space $(S, \rho)$, say that $\xi_n$ \emph{converges in probability} to $\xi$, written $\xi_n \xrightarrow{P} \xi$, if
+    \[ \lim_{n \to \infty} P\{\rho(\xi_n, \xi) > \epsilon\} = 0, \quad \epsilon > 0 \]
+\end{definition}
+By Chebyshev's inequality, this is equivalent to $\mathbb{E}[\rho(\xi_n, \xi) \wedge 1] \to 0$. This is because, for $\epsilon < 1$
+\[ P\{\rho(\xi_{n}, \xi) > \epsilon\} = P\{\rho(\xi_n, \xi) \wedge 1 > \epsilon\} \leq \frac{\bb{E}[\rho(\xi_{n}, \xi) \wedge 1]}{\epsilon} \]
+aso the LHS goes to zero as $\bb{E}[\rho(\xi_{n}, \xi) \wedge 1] \to 0$. Similarly, because
+\[ \bb{E}[\rho(\xi_n, \xi) \wedge 1] \leq \epsilon + P\{\rho(\xi_n, \xi) > \epsilon\} \]
+so taking $n \to \infty$, we see that $\lim_{n \to \infty} \bb{E}[\rho(\xi_n, \xi) \wedge 1] \leq \epsilon$ for all $\epsilon$.\\
+
+
+Here is a more useful definition.
+
+\begin{theorem}[\textbf{Lemma 17.7:} Subsequence Criterion]
+    Let $\xi, \xi_1, \xi_2, \ldots$ be random elements in a metric space $(S, \rho)$. Then $\xi_n \xrightarrow{P} \xi$ iff every subsequence $\xi_{n_m}$ has a further subsequence $\xi_{n_{m_k}}$ such that $\xi_{n_{m_k}} \to \xi$ a.s. In particular, $\xi_n \to \xi$ a.s.\ implies $\xi_n \xrightarrow{P} \xi$.
+\end{theorem}
+\begin{proof}{Proof:}
+    $(\Rightarrow)$ Assume $\xi_n \xrightarrow{P} \xi$ and let $\xi_{n_m}$ be a subsequence. Since $\mathbb{E}[\rho(\xi_{n_m}, \xi) \wedge 1] \to 0$, pick a further subsequence so that $\mathbb{E}[\rho(\xi_{n_{m_k}}, \xi) \wedge 1] < 2^{-k}$. Then
+    \[ \mathbb{E}\sum_{k}\{\rho(\xi_{n_{m_k}}, \xi) \wedge 1\} \overset{\tt{MCT}}{=} \sum_{k} \mathbb{E}[\rho(\xi_{n_{m_k}}, \xi) \wedge 1] < \infty \]
+    Then, $\sum_{k} \rho(\xi_{n_{m_k}}, \xi) \wedge 1$ is finite a.s., so $\rho(\xi_{n_{m_k}}, \xi) \to 0$ a.s.\\
+
+    $(\Leftarrow)$ Assume the subsequence condition. Now, if $\xi_n \not\xrightarrow{P} \xi$, there exists $\epsilon > 0$ such that $\mathbb{E}[\rho(\xi_{n_m}, \xi) \wedge 1] > \epsilon$ along a subsequence $\xi_{n_m}$. By hypothesis, we know $\xi_{n_{m_k}} \to \xi$ a.s.\ for some further subsequence, so by DCT, we know
+    \[ \mathbb{E}[\rho(\xi_{n_{m_k}}, \xi) \wedge 1] \to 0 \]
+    which is a contradiction.
+
+    $\qed$
+\end{proof}
+
+\begin{lemma}[\textbf{Lemma 17.8:} Continuous Mapping]
+    For any metric spaces $S, T$, let $\xi, \xi_1, \xi_2, \ldots$ be random elements in $S$ with $\xi_n \xrightarrow{P} \xi$ and let $f : S \to T$ be measurable and a.s.\ continuous at $\xi$. Then, $f(\xi_n) \xrightarrow{P} f(\xi)$.
+\end{lemma}
+\begin{proof}{Proof:}
+    Let $\xi_{n_m}$ be a subsequence. Then, find a further subsequence $\xi_{n_{m_k}} \to \xi$ a.s. Then, by continuity,
+    \[ f(\xi_{n_{m_k}}) \to f(\xi) \quad \tt{a.s.} \]
+    Thus, $f(\xi_{n_m})$ has an a.s.\ convergent subsequence, so $f(\xi_n) \xrightarrow{P} f(\xi)$ by above.
+
+    $\qed$
+\end{proof}
+
+Consider a sequence of metric spaces $(S_k, \rho_k)$ and consider the product space $S = \bigtimes_{k} S_k = S_1 \times S_2 \times \cdots$ with the product topology. It turns out a convenient metrization is given by
+\[ \rho(x, y) = \sum_{k} 2^{-k}\{\rho_k(x_k, y_k) \wedge 1\}, \quad x, y \in \bigtimes_{k} S_k \]
+
+Note for $x, x^{(1)}, x^{(2)}, \ldots \in \bigtimes_{k} S_k$, $\lim_{n} \rho(x^{(n)}, x) = 0$ iff $\lim_{n} \rho_k(x_k^{(n)}, x_k) = 0$ for all $k$.\\
+
+If each $S_k$ is separable, recall $\cal{B}(S) = \bigotimes_{k} \cal{B}(S_k)$, so a random element in $S$ is simply a sequence of random elements in $S_k$, $k \in \N$.
+
+\begin{lemma}[\textbf{Lemma 17.9:} Random Sequences]
+    For any separable metric spaces $S_1, S_2, \ldots$, let $\xi = (\xi_1, \xi_2, \ldots)$ and $\xi^{n} = (\xi_1^{n}, \xi_2^{n}, \ldots)$, $n \in \N$ be random elements in $\bigtimes_{k} S_k$. Then,
+    \[ \xi^{n} \xrightarrow{P} \xi \quad \tt{iff} \quad \xi_k^{n} \xrightarrow{P} \xi_k \tt{ in } S_k \tt{ for each } k \]
+\end{lemma}
+
+\begin{lemma}[\textbf{Corollary 17.10:} Elementary Operations]
+    Let $\xi, \xi_1, \xi_2, \ldots$ and $\eta, \eta_1, \eta_2, \ldots$ be random variables with $\xi_n \xrightarrow{P} \xi$ and $\eta_n \xrightarrow{P} \eta$. Then,
+    \begin{enumerate}[label = (\roman*)]
+        \item $a\xi_n + b\eta_n \xrightarrow{P} a\xi + b\eta$ for all $a, b \in \R$.
+        \item $\xi_n\eta_n \xrightarrow{P} \xi\eta$.
+        \item $\xi_n/\eta_n \xrightarrow{P} \xi/\eta$ whenever $\eta \neq 0$ and $\eta_n \neq 0$ a.s.\ for all $n$.
+    \end{enumerate}
+\end{lemma}
+\begin{proof}{Proof:}
+    $(\xi_n, \eta_n) \xrightarrow{P} (\xi, \eta)$, and as the operations are continuous, it follows.
+
+    $\qed$
+\end{proof}

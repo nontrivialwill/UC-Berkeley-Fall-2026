@@ -1,0 +1,85 @@
+\tocsection{\textbf{9/3/26 Lecture 3: }Probability Spaces and Statistics}
+
+\begin{definition}[\textbf{Definition 3.1: }Absolute Continuity with respect to a Measure]
+    Given a measurable space $(X, \mathcal{F}$) and two measures $P, \mu$, we say that $P$ is \emph{absolutely continuous with respect to }$\mu$ if $\mu(A) = 0 \implies P(A) = 0$. We write $P \ll \mu$ and often say that $\mu$ \emph{dominates} $P$. 
+\end{definition}
+Recall from before the counting measure, Lebesgue measure, and Standard Gaussian. Then, we see that $P_{Z} \ll \lambda$, $P_{Z} \not \ll \#$ as $\#(0.5, 0.75) = 0$ but $P_{Z}(0.5, 0.75) \ne 0$, and $\# \not \ll \lambda$ as $\lambda\{1\} = 0$ but $\#\{1\} = 1$.\\
+
+With this definition, we can introduce the following theorem that allows us to define what a density is!
+
+\begin{theorem}[\textbf{Theorem 3.2: }Radon-Nikodym Theorem]
+    If $P \ll \mu$, then we can, under mild conditions, define a \emph{density function} $p : X \to [0, \infty)$ such that
+    \begin{align*}
+        P(A) = \int_{A} p(x) d\mu(x) &= \int 1_{A}(x) p(x)d\mu(x)\\
+        &= \int 1_{A}(x) dP
+    \end{align*}
+    for all measurable $A$. Thus, we also have that
+    \[ \int f dP = \int f \cdot p d\mu \]
+    Often, we denote $p(x) := \frac{dP}{d\mu}(x)$ and call it the \emph{Radon-Nikodym derivative.}
+\end{theorem}
+\textbf{Remark}: $p$ is not unique, there are many such density functions. For example, with the standard normal, the functions $\phi(x)$ and $\rho(x) = \left\{\begin{matrix} \phi(x) & x \ne 0 \\ 0 & x = 0 \end{matrix}\right.$ are density functions. However, they are unique up to almost everywhere equivalence, which we define next.
+
+\begin{definition}[\textbf{Definition 3.3: }Almost Everywhere Equivalence]
+    We say $f$ is \emph{equal to $g$ almost everywhere} with respect to $\mu$ if $\mu(\{x \col f(x) \ne g(x)\}) = 0$. We denote this
+    \[ f \overset{\mu \text{ a.e.}}{=} g \]
+\end{definition}
+
+Now, some common terminology. We say that $P$ is \emph{absolutely continuous} when we mean $P << \lambda$ ($\lambda$ is the Lebesgue measure). Also, if $P$ is a probability measure, it's density function is called a \emph{probability density function}, and if $P$ is absolutely continuous with respect to the counting measure, then we call the corresponding density function the \emph{probability mass function}.
+\clearpage
+
+\subsection*{Probability Spaces and Random Vairables}
+Let $X, Y, Z$ be random variables. What do we mean when we ask ``what is $\bb{P}(XY \leq Z^2)$?''\\
+
+The way we formalize this equation is by assuming these is some probability space $(\Omega, \cal{F}, \bb{P})$ such that $X = X(\omega)$, $Y = Y(\omega)$, and $Z = Z(\omega)$. We call $\omega \in \Omega$ an \emph{outcome} and an $A \in \cal{F}$ an \emph{event}. We then say $\cal{P}(A)$ the \emph{probability} of $A$. Then, from this
+\begin{definition}[\textbf{Definition 3.4:} Random Variables]
+    A \emph{random variable} is a function $X : \Omega \to \cal{X}$. Then, we say that $X$ has a \emph{distribution} $Q$, denoted $X \sim Q$, if
+    \[ \bb{P}(X \in B) = Q(B) \]
+    where 
+    \[ \bb{P}(X \in B) := \bb{P}(\{\omega \col X(\omega) \in B\}) \]
+    Thus, notice that $Q(B) = \bb{P}(X^{-1}(B))$, so $Q$ is the push-forward measure of $\bb{P}$ through $X$.
+\end{definition}
+
+Thus, we can then say that
+\[ \bb{P}(XY \leq Z^2) = \bb{P}(\{\omega \col X(\omega)Y(\omega) \leq Z(\omega)^2\}) \]
+
+Here's an example to make this more understandable. Let $\Omega = \{1, 2, 3, 4, 5, 6\}^2$, $\cal{F}$ be the discrete $\sigma$-field, and $\cal{P}$ be the counting measure (divided by 36 to normalize). Then, if $X : \Omega \to \{1, 2, 3, 4, 5, 6\}$ is the function that takes the first entry of a pair $(i, j) \in \{1, 2, 3, 4, 5, 6\}^2$, then notice that $X$ induces the uniform distribution on $\{1, 2, 3, 4, 5, 6\}$! If $U$ is the induced measure on $\{1, 2, 3, 4, 5, 6\}$, we see that
+\[ \bb{P}(U = 1) = \bb{P}\{(i, j) \col i = 1\} = 6/36 = 1/6 \]
+which is as we expect! Notice that $X$ in this example is the ``result of the first die'' function on the set of ``all possible rolls with two die''.\\
+
+\subsection*{Statistical Models}
+
+\begin{definition}[\textbf{Definition 3.5: }Statistical Models]
+    A \emph{statistical model} $\cal{P}$ is a family of candidate probability distributions for a random variable $X$. That is, we assume $X \sim P$ for some $P \in \cal{P}$. 
+\end{definition}
+
+Recall the coin flip example. We will restate it here with this new definition.\\
+
+\textbf{Model 1:} Assume $X \sim \tt{Binom}(n, \theta)$. Then, this means our statistical model is $\cal{P} = \{\tt{Binom}(n, \theta) \col \theta \in [0, 1]\}$. Note that $\tt{Binom}(n, \theta)$ has pmf $p_{\theta}(x) = {n \choose x} \theta^{x}(1 - \theta)^{n - x}$, which is a density with respect to the counting measure.\\
+
+\textbf{Model 2:} Assume $X_i \overset{\tt{ind}}{\sim} \tt{Binom}(n, \theta_i)$ for $i = 1, \ldots, 48$ with $\theta_i \in [0, 1]$. Then, the parameter space is $[0, 1]^{48}$, instead of just $[0, 1]$ as before.\\
+
+\textbf{Model 3:} Assume $X_{i, t} \overset{tt{ind}}{\sim} \tt{Bern}(\theta_{i, t})$ with $i = 1, \ldots, 48$ and $t = 1, \ldots, n_{i}$. If we also require that $\theta_{i, 1} \geq \theta_{i, 2} \geq \cdots \geq \theta_{i, n_{i}}$, this makes the parameter space smaller, but it is still massive. Because of this, it becomes effectively non-parametric, which we will define now.\\
+
+\begin{definition}[\textbf{Definition 3.6: }Parametric Models]
+    A \emph{parametric model} $\cal{P}$ is a collection of distributions that are indexed by a parameter $\theta \in \Theta$ ($\Theta$ is the parameter space). Typically, $\Theta \subseteq \R^{d}$, in which case we call $d$ the \emph{model dimension}. We then will use $\bb{P}_{\theta}( \cdot ) \in \cal{P}$ to be a probability distribution, and $\bb{E}_{\theta}[ \cdot ]$ for expectation.
+\end{definition}
+
+\begin{definition}[\textbf{Definition 3.7: }Non-parametric Models]
+    A \emph{nonparametric model} $\cal{P}$ is a collection of distributions that are not naturally indexed by some parameter space. For instance, we can say $\cal{P} = \{P \col P \tt{is a distribution on } \R\}$. 
+\end{definition}
+
+\subsection*{Estimation}
+
+Ne question, given $350,000$ flips and $178,000$ heads, what is a good way to estimate $\theta$, the chance that a given flip lands heads.\\
+
+\textbf{Bayesian Answer:} Assume $\theta \sim U(0, 1)$, and use conditionals to find $\theta$ that is most likely.\\
+
+\textbf{Frequentist Answer:} Find a map $E : X \to \Theta$ that maps data to a value for $\theta$, and analyze how good $E$, called the \emph{estimator} is.\\
+
+Let's start by analyzing the frequentist methodology. Start with a model $\cal{P} = \{P_{\theta} \col \theta \in \Theta\}$ that we assume $X$ to follow. Suppose we want to guess a value of interest $g(\theta)$ called the \emph{estimand}. The guess we make is $\delta(X)$, called the \emph{estimate}, and the function that generates this estimate, $\delta(\cdot)$ is called the \emph{estimator}.\\
+
+Now, how do we tell if an estimator is good? We define what is called a \emph{loss function} $L(\theta, d)$, which measures the \emph{disutility} of guessing $g(\theta) = d$. This function is typically nonnegative with the property that $L(\theta, d) = 0 \iff d = g(\theta)$. Typically, we will use the \emph{squared error loss}, which is defined to be $L(\theta, d) = (g(\theta), d)^2$.\\
+
+Now, this is just a function on a given guess, but in reality we want to measure how well $\delta$ does as $X$ varies over it's distribution. This, we introduce the \emph{risk function}, which is defined as
+\[ R(\theta; \delta(\cdot)) = \bb{E}_{\theta}[L(\theta, \delta(X))] \]
+Note that this notation implies we know $\theta$, and we are calculating expectation with respect to the random variable $X$. 

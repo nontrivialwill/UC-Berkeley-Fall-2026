@@ -1,0 +1,115 @@
+\tocsection{\textbf{8/28/26 Lecture 2: }More Topology}
+In this lecture, we prove some more results about the metric topology.
+
+\begin{lemma}[\textbf{Proposition 2.1:} Properties of Open Sets]
+    Let $(X, d)$ be a metric space. Then, the following hold. 
+    \begin{enumerate}
+        \item $X$ and $\emptyset$ are open.
+        \item $B(a, r)$ is open for $a \in X$ and $r \in \R$. 
+        \item $\{x \in X \col d(x, a) > r\}$ is open for any $a \in X$ and $r \in \R$. 
+    \end{enumerate}
+\end{lemma}
+\begin{proof}{Proof:}
+    
+        \textbf{1)} Obvious.\\
+
+        \textbf{2)} Let $x \in B(a, r)$. Since $d(a, x) < r$, we can consider the ball $B(x, r - d(a, x))$. For $y \in B(x, r - d(a, x))$
+        \begin{align*}
+            d(a, y) &\leq d(a, x) + d(x, y)\\
+            &< d(a, x) + r - d(a, x)\\
+            &= r
+        \end{align*}
+        Thus, we see that $y \in B(a, r)$. Thus, $B(a, r)$ is open.\\
+
+        \textbf{3)} Let $S(a, r) = \{x \in X \col d(x, a) > r\}$, and let $x \in S$. Now, $d(x, a) > r$, so consider $B(x, d(x, a) - r)$. Then, for $y \in B(x, d(x, a) - r)$, we see that
+        \begin{align*}
+			d(y, a) &\geq d(s, a) - d(s, y)\\
+			&> d(s, a) - (d(s, a) - r)\\
+			&= r
+		\end{align*}
+		Thus, we see that $y \in S(a, r)$, so $S(a, r)$ is open. 
+
+		$\qed$
+\end{proof}
+
+\begin{lemma}[\textbf{Corollary 2.2}]
+	A subset $S \subseteq X$ is open if, and only if, it is the union of open balls. 
+\end{lemma}
+\begin{proof}{Proof:}
+	The $(\Rightarrow)$ direction is obvious. The $(\Leftarrow)$ direction follows by noticing that for each point in $S$, we can find an open ball containing that point contained in $S$, so just take the union of all such balls.
+
+	$\qed$
+\end{proof}
+
+\begin{definition}[\textbf{Definition 2.3:} Closed Sets]
+	A subset $F \subseteq X$ is \emph{closed} if the complement, $X \backslash F$, is open. 
+\end{definition}
+
+\begin{lemma}[\textbf{Proposition 2.4}]
+	The following are true about open and closed sets.
+	\begin{enumerate}
+		\item A union of open sets is open.
+		\item A finite intersection of open sets is open.
+		\item An intersection of closed sets is closed.
+		\item A finite union if closed sets is closed.
+	\end{enumerate}
+\end{lemma}
+\begin{proof}{Proof:}
+	
+	\textbf{1)} Obvious.\\
+
+	\textbf{2)} For each point $x$, take the minimum over the $\delta_i$ for which $B(x, \delta_i) \subseteq A_i$.\\
+
+	\textbf{3, 4)} This follows from De Morgan's Laws.
+
+	$\qed$
+\end{proof}
+
+\begin{definition}[\textbf{Definition 2.5:} Metric Subspaces]
+	Let $(X, d)$ be a metric space, and suppose $X_1 \subseteq X$. The metric $d$ induces a metric $d_1$ on $X_1$ by
+	\[ d_1(a, b) = d(a, b) \]
+	for $a, b \in X_1$. We see that $(X_1, d_1)$ is indeed a metric space, and we call $(X_1, d_1)$ a \emph{subspace} of $(X, d)$. 
+\end{definition}
+
+Now, notice that if $(X_1, d_1) \subseteq (X, d)$; that is, $(X_1, d_1)$ is a subspace of $(X, d)$, then $B_1(a, \delta) = B(a, \delta) \cap X_1$. Thus, the metric balls in $X_1$ are the intersections of metric balls in $X$ with $X_1$. This fact will be useful in the following proposition.
+
+\begin{lemma}[\textbf{Proposition 2.6}]
+	Let $(X_1, d_1) \subseteq (X, d)$. Then, the following are true.
+	\begin{enumerate}
+		\item If $G_1 \subseteq X_1$ is open, then $G_1 = G \cap X_1$ for some open $G \subseteq X$. 
+		\item If $F_1 \subseteq X_1$ is closed, then $F_1 = F \cap X_1$ for some closed $F \subseteq X$. 
+	\end{enumerate}
+\end{lemma}
+\begin{proof}{Proof:}
+	
+	\textbf{1)} Suppose $G_1 \subseteq X_1$ is open. Write $G_1 = \cup_{x \in G_1} B_1(x, \delta_x)$ so that $G_1$ is the union of open balls. Then, we see that
+	\begin{align*}
+		G_1 &= \bigcup_{x \in G_1} B_1(x, \delta_x)\\
+		&= \bigcup_{x \in G_1} B(x, \delta_x) \cap X_1\\
+		&= \left(\bigcup_{x \in G_1} B(x, \delta_x)\right) \cap X_1
+	\end{align*}
+	Letting $G = \cup_{x \in G_1} B(x, \delta_x)$, we see that $G$ is open in $X$ and $G_1 = G \cap X$.\\
+
+	\textbf{2)} Suppose $F_1 \subseteq X_1$ is closed. Then, $X_1 \backslash F_1$ is open, so write $X_1 \backslash F_1 = G_1$. Then, writing $G_1 = G \cap X_1$ for a open $G$, let $F = X \backslash G$. We see that $F$ is closed, and that
+	\begin{align*}
+		F \cap X_1 &= (X \backslash G) \cap X_1\\
+		&= X_1 \cap G_1^{c}\\
+		&= X_1 \backslash G_1\\
+		&= F_1
+	\end{align*}
+	which was to be shown.
+
+	$\qed$
+\end{proof}
+
+\begin{definition}[\textbf{Definition 2.7: }Product Spaces]
+	Let $(X_1, d_1)$ and $(X_2, d_2)$ be metric spaces. If we consider the Cartesian product $X_1 \times X_2$, $d_1$ and $d_2$ induce a metric $d$ on $X_1 \times X_2$ (there are many such induced metrics), and we call the metric space $(X_1 \times X_2, d)$ the \emph{product space.}
+\end{definition}
+
+Some examples of induced metrics on $X_1 \times X_2$ are:
+\begin{enumerate}
+	\item $d((x_1, x_2), (x_1', x_2')) = \sqrt{d(x_1, x_1')^2 + d(x_2, x_2')^2}$\\
+	\item $d((x_1, x_2), (x_1', x_2')) = d(x_1, x_1') + d(x_2, x_2')$\\
+	\item $d((x_1, x_2), (x_1', x_2')) = \max\{d(x_1, x_1'), d(x_2, x_2')\}$
+\end{enumerate}
+Interestingly, all of these metrics give the same open sets! (a fun way to think about this is that you can always fit a ball/square/diamond in a ball/square/diamond). 

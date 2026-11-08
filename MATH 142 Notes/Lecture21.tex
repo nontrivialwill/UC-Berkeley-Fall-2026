@@ -1,0 +1,142 @@
+\tocsection{\textbf{10/14/26 Lecture 21:} Fundamental Groups of Quotients and Products}
+
+\begin{lemma}[\textbf{Proposition 21.1}]
+    Suppose $G$ is a discrete group acting on a simply connected space $X$ so that every $x \in X$ has a neighborhood $\cal{U}$ so that $g\cal{U} \cap \cal{U} = \emptyset$ whenever $g \neq e$. Then, $\pi_1(X / G) \simeq G$.
+\end{lemma}
+\begin{proof}{Proof Idea:}
+    Given $g \in G$, join $x_0$ to $gx_0$ by a path $\gamma_g$. If $\pi : X \to X/G$ is the quotient map, then $\pi \circ \gamma_g$ is a loop based at $\pi(x_0)$, since
+    \[ (\pi \circ \gamma_g)(0) = \pi(x_0) \quand (\pi \circ \gamma_g)(1) = \pi(\gamma_g(1)) = \pi(gx_0) = \pi(x_0) \]
+    Then, define $\phi : G \to \pi_1(X/G, \pi(x_0))$ by sending $g \in G$ to $\brac{\pi \circ \gamma_g}$.\\
+
+
+    First, we should show this is independent of the choice of $\gamma_g$. If $\gamma_g'$ is another path from $x_0$ to $gx_0$, then $\gamma_g' \cdot \gamma_g^{-1}$ is a loop at $x_0$, so as $X$ is simply connected, $\brac{\gamma_g' \cdot \gamma_g^{-1}} = \brac{e}$, so
+    \[ \gamma_g' \cdot \gamma_g^{-1} \simeq e_{x_0} \quad (\tt{rel } \{0, 1\}) \]
+
+    Say $\{\eta_{\tau}\}_{\tau \in [0, 1]}$ is a family of loops based at $x_0$ going from $\gamma_g' \cdot \gamma_g^{-1}$ to $e_{x_0}$. Then, $\{\eta_{\tau} \cdot \gamma_g\}_{\tau \in [0, 1]}$ is a family of paths from $\gamma_g'$ to $\gamma_g$ (rel $\{0, 1\}$), so $\gamma_g' \simeq \gamma_g$, so $\brac{\pi \circ \gamma_g} = \brac{\pi \circ \gamma_g'}$. Thus, the map is well defined.\\
+
+    \textbf{Strategy:} We want to show $\phi$ is a homomorphism, onto, and one-to-one.\\
+
+    We won't show this in detail, but the proof is similar to what we did with $S^1$. We would need to show the path lifting lemma, which is to show that if $\sigma$ is a path in $X/G$ that starts at $\pi(x_0)$, then there exists a unique $\tilde{\sigma}$ in $X$ starting at $x_0$ so that $\pi \circ \tilde{\sigma} = \sigma$. This is to show $\phi$ is onto.\\
+
+    Similarly, to show $\phi$ is one-to-one, we would need a homotopy lifting lemma, which says that if $F : I \times I \to X/G$ is such that $F(0, t) = \pi(x_0)$ for all $t \in [0, 1]$, then there exists a unique lift
+    \[ \tilde{F} : I \times I \to X \tt{ so that } \tilde{F}(0, t) = x_0\ \forall t \in [0, 1] \]
+    which shows $\phi$ is one-to-one.
+
+    $\qed$
+\end{proof}
+
+\begin{example}{\textbf{Example:} Torus}
+    Consider $\Z^n$ acting on $\R^n$ by $(n, x) \mapsto (x + n)$. Balls of radius $1/2$ are moved off of themselves. Thus, as $\R^n$ is simply connected,
+
+    \[ \pi_1(\R^n / \Z^n) \simeq \Z^n \]
+    where $\R^n / \Z^n = T^n$.
+\end{example}
+
+\begin{example}{\textbf{Example:} Projective Space}
+    Consider $\Z_2$ acting on $S^n$ with $n > 1$. Since $S^n$ is simply connected and $-1$ acts on $S^n$ by the antipodal map. This clearly satisfies our requirements, so
+    \[ \pi_1(S^n / \Z_2) \simeq \Z_2 \]
+    where $S^n / \Z_2 = P^n$.
+\end{example}
+
+\begin{example}{\textbf{Example:} Lens Space}
+    $\Z_p$ acts on $S^3$ by choosing $q < p$ relatively prime positive integers, and letting $1 \in \Z_p$ send $(z_1, z_2)$ to
+    \[ \left(e^{\frac{2\pi i}{p}}z_1, e^{\frac{2\pi qi}{p}}z_2\right) \]
+    for $\abs{z_1}^2 + \abs{z_2}^2 = 1$. By our theorem,
+
+    \[ \pi_1(S^3 / \Z_{p}) \simeq \Z_p \]
+    where $S^3 / \Z_p = L(p, q)$.
+\end{example}
+
+\textbf{Note:} In all these cases, $\pi_1(X)$ is abelian, but this isn't always true. We will see that
+\[ \pi_1(\infty) = F_2 \]
+, the free group on two elements, where $\infty$ is the figure 8.
+
+\begin{theorem}[\textbf{Theorem 21.2: }Fundamental Group of a Product Space]
+    If $X$ and $Y$ are path connected, then
+    \[ \pi_1(X \times Y) \simeq \pi_1(X) \times \pi_1(Y) \]
+\end{theorem}
+\begin{proof}{Proof:}
+    Choose $x_0 \in X$ and $y_0 \in Y$. Then, $(x_0, y_0) \in X \times Y$. Recall the projections $p_1$ and $p_2$. Now, ignoring base points for brevity,
+    \[ (p_1)_{*} : \pi_1(X \times Y) \to \pi_1(X) \quand (p_2)_{*} : \pi_1(X \times Y) \to \pi_1(Y) \]
+    These are homomorphisms, so we get a homomorphism
+    \[ \psi : \pi_1(X \times Y) \to \pi_1(X) \times \pi_1(Y) \]
+    by $\psi = ((p_1)_{*}, (p_2)_{*})$, so $\psi(\brac{\alpha}) = (\brac{p_1 \circ \alpha}, \brac{p_2 \circ \alpha})$.\\
+
+    First, we claim $\psi$ is one-to-one. If $\alpha$ is a loop in $X \times Y$ such that $p_1 \circ \alpha \underset{F}{\simeq} e_1$ and $p_2 \circ \alpha \underset{G}{\simeq} e_2$, then $\alpha \underset{H}{\simeq} e_{(x_0, y_0)}$ by the homotopy
+    \[ H(s, t) = (F(s, t), G(s, t)) \]
+    so $\brac{\alpha} = \brac{e_{(x_0, y_0)}}$, so $\Psi$ is one-to-one.\\
+
+    Now, we show $\psi$ is onto. Given loops $\beta$ in $X$ and $\gamma$ in $Y$, put $\alpha(s) = (\beta(s), \gamma(s))$, so
+    \[ \psi(\brac{\alpha}) = (\brac{\beta}, \brac{\gamma}) \]
+
+
+    $\qed$
+\end{proof}
+
+\begin{example}{\textbf{Example:} Torus}
+    We see that
+    \[ \pi_1(T^2) = \pi_1(S^1 \times S^1) = \pi_1(S^1) \times \pi_1(S^1) = \Z \times \Z = \Z^2 \]
+    Consider the trefoil knot:
+    \fig{0.5}{Lecture21Fig1}{}
+    This is a \emph{torus knot}, as it can be drawn on the torus, and it represents the $(2, 3)$ class in $\pi_1(T^2)$.
+\end{example}
+
+Recall we've seen that if $X$ and $Y$ are homeomorphic, then $\pi_1(X) \simeq \pi_1(Y)$. In fact, we can weaken this and only require a ``homotopy equivalence'', which we define next.
+
+\begin{definition}[\textbf{Definition 21.3:} Homotopy Equivalence]
+    $X$ and $Y$ are \emph{homotopy equivalent} if there exist maps $f : X \to Y$ and $g : Y \to X$ such that $g \circ f \simeq \id_X$ and $f \circ g \simeq \id_Y$. Then, we say $g$ is the \emph{homotopy inverse} to $f$ and $f$ is a \emph{homotopy equivalence}, and write $X \simeq Y$.
+\end{definition}
+
+\begin{lemma}[\textbf{Lemma 21.4}]
+    Homotopy equivalence is an equivalence relation on topological spaces.
+\end{lemma}
+\begin{proof}{Proof Idea:}
+    \begin{enumerate}
+        \item \textbf{Reflexive:}
+        \begin{center}
+            \begin{tikzcd}
+                X \arrow[r, bend left, "\id_X"] & X \arrow[l, bend left, "\id_X"]
+            \end{tikzcd}
+        \end{center}
+        \item \textbf{Symmetric:}
+        \begin{center}
+            \begin{tikzcd}
+                X \arrow[r, bend left, "f"] & Y \arrow[l, bend left, "g"]
+            \end{tikzcd}
+            $\sim$
+            \begin{tikzcd}
+                Y \arrow[r, bend left, "g"] & X \arrow[l, bend left, "f"]
+            \end{tikzcd}
+        \end{center}
+        \item \textbf{Transitive:}
+        \begin{center}
+            \begin{tikzcd}
+                X \arrow[r, bend left, "f"] & Y \arrow[l, bend left, "g"] \arrow[r, bend left, "u"] & Z \arrow[l, bend left, "v"]
+            \end{tikzcd}
+            $\rightsquigarrow$
+            \begin{tikzcd}
+                X \arrow[r, bend left, "u \circ f"] & Z \arrow[l, bend left, "g \circ v"]
+            \end{tikzcd}
+        \end{center}
+       where transitivity holds because
+        \begin{align*}
+            (g \circ v) \circ (u \circ f) &= g \circ (v \circ u) \circ f\\
+            &\simeq g \circ \id_Y \circ f\\
+            &= g \circ f\\
+            &\simeq \id_X
+        \end{align*}
+        and
+        \begin{align*}
+            (u \circ f) \circ (g \circ v) &= u \circ (f \circ g) \circ v\\
+            &\simeq u \circ \id_Y \circ v\\
+            &= u \circ v\\
+            &\simeq \id_Z
+        \end{align*}
+    \end{enumerate}
+
+    $\qed$
+\end{proof}
+
+\begin{definition}[\textbf{Definition 21.5:} Algebraic Topology]
+    \emph{Algebraic topology} is the study of topological spaces up to homotopy equivalence.
+\end{definition}

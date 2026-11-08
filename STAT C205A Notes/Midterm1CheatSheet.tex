@@ -1,0 +1,1067 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{array}
+\usepackage{bookmark}
+\usepackage{bm}
+\usepackage[justification = centering]{caption}
+\usepackage{changepage}
+\usepackage{color, soul}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{float}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage[all]{hypcap}
+\usepackage[utf8]{inputenc}
+\usepackage{longtable}
+\usepackage[version=4]{mhchem}
+\usepackage{multicol}
+\usepackage{mathrsfs}
+\usepackage{pgfplots}
+\usepackage[most]{tcolorbox}
+\usepackage{titlesec}
+\usepackage{tikz-cd}
+\usepackage{wrapfig}
+\usepackage[usenames,dvipsnames]{xcolor}
+
+% ---------- Header / Footer ----------
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \fancyhead[L]{STAT C205A: Probability Theory}
+    \fancyhead[R]{William Nguyen}
+    \fancyfoot[C]{\thepage}
+}
+
+\definecolor{pen}{HTML}{212120}
+\definecolor{theoremFont}{HTML}{030303}
+\definecolor{theoremBg}{HTML}{ffffff}
+\definecolor{exampleFont}{HTML}{000000}
+\definecolor{exampleBg}{HTML}{ffffff}
+\definecolor{definitionFont}{HTML}{000000}
+\definecolor{definitionBg}{HTML}{ffffff}
+\definecolor{proofBg}{HTML}{FEFDFB}
+\definecolor{proofFont}{HTML}{000000}
+\definecolor{solutionFont}{HTML}{000000}
+\definecolor{solutionBg}{HTML}{FFFBEF}
+\definecolor{remarkFont}{HTML}{000000}
+\definecolor{remarkBg}{HTML}{ECFAEB}
+
+
+\color{pen}
+
+\newtcolorbox{theoremBox}[1]{
+  enhanced,
+  skin=enhancedmiddle,
+  colback=theoremBg,
+  sharp corners = all,
+  boxrule=0pt,
+  arc=5pt,
+  left=8pt,
+  right=8pt,
+  top=8pt,
+  bottom=8pt,
+  grow to left by=11pt,    
+  grow to right by=11pt,
+  frame hidden,
+  borderline west= {1mm}{0mm}{theoremFont},
+  fonttitle=\large\sffamily,
+  coltitle=theoremFont,
+  title={#1},
+  attach title to upper,
+  after title = {\\ \vspace{-8pt} \\}  
+}
+
+\newtcolorbox{definitionBox}[1]{
+  enhanced,
+  skin=enhancedmiddle,
+  colback=definitionBg,
+  sharp corners = all,
+  boxrule=0pt,
+  arc=5pt,
+  left=8pt,
+  right=8pt,
+  top=8pt,
+  bottom=8pt,
+  grow to left by=11pt,    
+  grow to right by=11pt,
+  frame hidden,
+  borderline west= {1mm}{0mm}{definitionFont},
+  fonttitle=\large\sffamily,
+  coltitle=definitionFont,
+  title={#1},
+  attach title to upper,
+  after title = {\\ \vspace{-8pt} \\}  
+}
+
+\newtcolorbox{remarkBox}[1]{
+  enhanced,
+  skin=enhancedmiddle,
+  colback=remarkBg,
+  sharp corners = all,
+  boxrule=0pt,
+  arc=5pt,
+  left=8pt,
+  right=8pt,
+  top=8pt,
+  bottom=8pt,
+  grow to left by=11pt,    
+  grow to right by=11pt,
+  frame hidden,
+  borderline west= {1mm}{0mm}{remarkFont},
+  fonttitle=\bfseries\large\sffamily,
+  coltitle=remarkFont,
+  title={#1},
+  attach title to upper,
+  after title = {\\ \vspace{-8pt} \\}  
+}
+
+\newtcolorbox{proofBox}[1]{
+  enhanced,
+  skin=enhancedmiddle,
+  colback=proofBg,
+  sharp corners = all,
+  boxrule=0pt,
+  arc=5pt,
+  left=8pt,
+  right=8pt,
+  top=8pt,
+  bottom=8pt,
+  grow to left by=11pt,    
+  grow to right by=11pt,
+  frame hidden,
+  borderline west= {1mm}{0mm}{proofFont},
+  fonttitle=\bfseries\fontsize{11pt}{13pt}\selectfont\sffamily,
+  coltitle=proofFont,
+  title={#1},
+  attach title to upper,
+  after title = { },
+  breakable
+}
+
+\newtcolorbox{solutionBox}[1]{
+  enhanced,
+  skin=enhancedmiddle,
+  colback=solutionBg,
+  sharp corners = all,
+  boxrule=0pt,
+  arc=5pt,
+  left=8pt,
+  right=8pt,
+  top=8pt,
+  bottom=8pt,
+  grow to left by=11pt,    
+  grow to right by=11pt,
+  frame hidden,
+  borderline west= {1mm}{0mm}{solutionFont},
+  fonttitle=\bfseries\fontsize{11pt}{13pt}\selectfont\sffamily,
+  coltitle=solutionFont,
+  title={#1},
+  attach title to upper,
+  after title = { },
+  breakable
+}
+
+\newtcolorbox{exampleBox}[1]{
+  enhanced,
+  skin=enhancedmiddle,
+  colback=exampleBg,
+  sharp corners = all,
+  boxrule=0pt,
+  arc=5pt,
+  left=8pt,
+  right=8pt,
+  top=8pt,
+  bottom=8pt,
+  grow to left by=11pt,    
+  grow to right by=11pt,
+  frame hidden,
+  borderline west= {1mm}{0mm}{exampleFont},
+  fonttitle=\large\sffamily,
+  coltitle=exampleFont,
+  title={#1},
+  attach title to upper,
+  after title = {\\ \vspace{-8pt} \\}  
+}
+
+\renewenvironment{proof}[1][]{\vspace{-16pt}\begin{proofBox}}{\end{proofBox}\vspace{4pt}}
+\newenvironment{solution}[1][]{\vspace{-16pt}\begin{solutionBox}}{\end{solutionBox}\vspace{4pt}}
+\newenvironment{theorem}[1][]{\boxsubsection{#1}\begin{theoremBox}{#1}}{\end{theoremBox}\vspace{4pt}}
+\newenvironment{definition}[1][]{\boxsubsection{#1}\begin{definitionBox}{#1}}{\end{definitionBox}\vspace{4pt}}
+\newenvironment{remark}[1][]{\begin{remarkBox}}{\end{remarkBox}\vspace{4pt}}
+\newenvironment{example}[1][]{\begin{exampleBox}}{\end{exampleBox}\vspace{4pt}}
+\newenvironment{lemma}[1][]{\begin{theoremBox}{#1}}{\end{theoremBox}\vspace{4pt}}
+
+\titleformat{\chapter}
+  [display]
+  {}
+  {\huge\bfseries Chapter \thechapter}
+  {1ex}
+  {\raggedright\Huge\bfseries}
+
+
+
+
+
+
+\hypersetup{
+    hypertexnames=false,
+    hidelinks
+}
+
+\pgfplotsset{compat=1.18}
+
+\pgfplotsset{
+    every axis/.style={
+        axis lines=middle,   % axes through the origin
+        ticks=none,          % no tick marks or numbers
+        xlabel={}, ylabel={}, % no axis labels
+        clip=true,          % allow plots beyond axes
+    },
+}
+
+
+\graphicspath{{./Images/}}
+\newcommand{\defcolor}{Goldenrod!35!white}
+\newcommand{\theoremcolor}{Cerulean!15!white}
+
+\newcommand{\A}{\mathcal{A}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\C}{\mathbb{C}}
+\renewcommand{\P}{\mathcal{P}}
+\newcommand{\lda}{\lambda}
+\newcommand{\norm}[1]{\lVert {#1} \rVert}
+\newcommand{\abs}[1]{\left\lvert {#1} \right\rvert}
+\newcommand{\dist}{\text{dist}}
+\newcommand{\proj}{\text{proj}}
+\newcommand{\Span}{\text{Span}}
+\newcommand{\brac}[1]{\left\langle {#1} \right\rangle}
+\newcommand{\Nul}{\text{Nul}\,}
+\newcommand{\Col}{\text{Col}\,}
+\newcommand{\Row}{\text{Row}\,}
+\newcommand{\rank}{\text{rank}\,}
+\newcommand{\quand}{\quad \text{and} \quad}
+\newcommand{\qqquad}{\qquad \qquad}
+\renewcommand{\div}{\mid}
+\newcommand{\ndiv}{\nmid}
+\renewcommand{\mod}[1]{\ (\text{mod } {#1})}
+\renewcommand{\hat}[1]{\overline{#1}}
+\newcommand{\Rel}{\ R\ }
+\newcommand{\id}{\text{id}}
+\newcommand{\del}{\partial}
+\newcommand{\res}[1]{\left|_{#1}\right.}
+\newcommand{\col}{\, :\, }
+\newcommand{\codim}{\text{codim}\mkern1mu}
+\renewcommand{\H}{\mathbb{H}}
+\newcommand{\Int}{\text{Int}\mkern1mu}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\V}{\mathcal{V}}
+\renewcommand{\cal}[1]{\mathcal{#1}}
+\newcommand{\bigtimes}{\mathop{\scalebox{1.5}{\raisebox{-0.2ex}{$\times$}}}}
+\newcommand{\floor}[1]{\lfloor {#1} \rfloor}
+\renewcommand{\tt}[1]{\text{#1}}
+\newcommand{\scr}[1]{\mathscr{#1}}
+\newcommand{\bb}[1]{\mathbb{#1}}
+
+
+\renewcommand\arraystretch{}
+
+\newcommand{\defspace}{\phantom{0} \vspace{0.2cm}\\}
+\newcommand{\sectionspace}{\vspace{0.2cm}}
+\newcommand{\chapterspace}{\vspace{2.4cm}}
+\renewcommand{\indent}{\hspace{0.4cm}}
+\newcommand{\exspace}{\vspace{0.6cm}}
+
+\newcommand{\tocchapter}[1]{\chapter{#1}}
+\newcommand{\tocsection}[1]{\section*{#1} \phantomsection \addcontentsline{toc}{section}{#1} \sectionspace}
+\newcommand{\tocsubsection}[1]{\subsection*{#1} \phantomsection \addcontentsline{toc}{subsection}{#1} \sectionspace}
+\newcommand{\tocsubsubsection}[1]{\subsubsection*{#1} \phantomsection \addcontentsline{toc}{subsubsection}{#1}}
+\newcommand{\boxsubsection}[1]{\phantomsection \addcontentsline{toc}{subsection}{#1}}
+\newcommand{\fig}[3]{\begin{figure}[H] \centering \includegraphics[scale = {#1}]{{#2}} \caption*{#3} \end{figure}}
+\renewcommand{\qed}{\hfill$\blacksquare$\\}
+\newcommand{\miniqed}{\hfill$\square$\\}
+\newcommand{\longline}{\noindent\makebox[\linewidth]{\rule{\paperwidth - 2in}{0.4pt}}\vspace{0.4cm}}
+\newcommand{\grid}[2]{\draw[step=1, gray!30] (-{#2},-{#1}) grid ({#2},{#1}); \filldraw (0, 0) circle (2pt);}
+\newcommand{\commutes}{\arrow[phantom]{ul}{\circlearrowleft}}
+\newcommand{\torus}[4]{\begin{scope}[shift = {(#1, #2)}, scale = {0.5*#3}, rotate = {#4}] \draw[thick] (-2, 0) to[out = 90, in = 180] (0, 1) to[out = 0, in = 90] (2, 0) to[out = -90, in = 0] (0, -1) to[out = 180, in = -90] cycle; \draw[thick] (-1, 0.1) to[out = -20, in = 200] (1, 0.1); \draw[thick] (-0.7, -0) to[out = 20, in = 160] (0.7, -0); \end{scope}}
+\newcommand{\sphere}[4]{\begin{scope}[shift = {(#1, #2)}, scale = {#3}, rotate = {#4}] \draw[thick] (0, 0) circle (1); \draw[thick] (-1, -0.03) to[out = -25, in = 205] (1, -0.03); \draw[thick, dotted] (-1, 0.03) to[out = 15, in = 165] (1, 0.03); \end{scope}}
+\newcommand{\transv}{\mathrel{\text{\tpitchfork}}}
+\makeatletter
+\newcommand{\tpitchfork}{%
+  \vbox{
+    \baselineskip\z@skip
+    \lineskip-.52ex
+    \lineskiplimit\maxdimen
+    \m@th
+    \ialign{##\crcr\hidewidth\smash{$-$}\hidewidth\crcr$\pitchfork$\crcr}
+  }%
+}
+\makeatother
+
+
+\let\vect\mathbf
+\let\cal\mathcal
+
+\titleformat*{\subsection}{%
+    \fontsize{14}{15}\bfseries%
+}
+\titleformat*{\section}{%
+    \fontsize{16}{19}\bfseries\filcenter%
+}
+
+\setlength{\parindent}{0px}
+\setcounter{tocdepth}{2}
+
+
+
+
+\begin{document}
+
+
+
+\newpage
+\pagenumbering{arabic}
+
+\clearpage
+\pagestyle{plain}
+
+
+\tocsection{Definitions}
+
+\begin{definition}[\textbf{Definition 1.5: }$\pi$-systems]
+    A class $\mathcal{C} \subseteq \P(\Omega)$ is called a \emph{$\pi$-system} if it is closed under finite intersections.
+\end{definition}
+
+\begin{definition}[\textbf{Definition 1.6: }$\lambda$-systems]
+    A class $\mathcal{D} \subseteq \P(\Omega)$ is called a \emph{$\lambda$-system} if it contains $\Omega$ and is closed under proper differences and increasing limits. That is, if $A, B \in \cal{D}$ with $B \subseteq A$, then $A \backslash B \in \cal{D}$, and if $A_1, A_2, \ldots \in \cal{D}$ with $A_1 \uparrow A$ (that is; $A_1 \subseteq A_2 \subseteq \cdots \subseteq A = \cup_{i} A_i$), then $A \in \cal{D}$. 
+\end{definition}
+
+\begin{definition}[\textbf{Definition 2.4:} Cartesian Product]
+    Suppose for some index set $T$, we have sets $X_{t}$, $t \in T$. If $\sqcup_{t \in T} X_{t}$ is the disjoint union of these sets, then the \emph{Cartesian product}, $\bigtimes_{t \in T} X_{t}$ is the set of maps $f$ from $T$ to $\sqcup_{t \in T} X_{t}$ such that $f(t) \in X_{t}$ for all $t \in T$. 
+\end{definition}
+
+\begin{definition}[\textbf{Definition 2.5:} Product Topology / Tychonoff Topology]
+    Given topological spaces $S_{t}$, $t \in T$ for some index set $T$, the \emph{product topology} (or \emph{Tychonoff topology}) on $\bigtimes_{t \in T} S_{t}$ is such that open sets in $\bigtimes_{t \in T} S_{t}$ can be written as the union of sets of the form $\bigtimes_{t \in T} \cal{U}_{t}$ where $\cal{U}_{t}$ are open in $S_{t}$ and $\cal{U}_{t} = S_{t}$ for all but finitely many $t \in T$.\\
+
+    In other words, the product topology are generated by sets of the form $\bigtimes_{t \in T} \cal{U}_{t}$ with the properties mentioned.
+\end{definition}
+
+\begin{definition}[\textbf{Definition 2.7:} Product $\sigma$-Field]
+    Let $\Omega_{t}$, $t \in T$ be measurable spaces, each with a $\sigma$-field $\cal{A}_{t}$. Then, for the Cartesian product, $\bigtimes_{t \in T} \Omega_{t}$, the \emph{product $\sigma$-field} on $\bigtimes_{t \in T} \Omega_{t}$, denoted $\bigotimes_{t \in T} \cal{A}_{t}$ is the $\sigma$-field generated by the \emph{cylinder sets} $A_{t} \times \bigtimes_{s \ne t} \Sigma_{s}$ for $A_{t} \in \cal{A}_{t}$. 
+\end{definition}
+
+\begin{definition}[\textbf{Definition 4.2: }Measurability of Functions]
+    Given two measurable spaces $(S, \cal{S})$ and $(T, \cal{T})$, a map $f : S \to T$ is said to be \emph{$\cal{S} \backslash \cal{T}$-measurable} if $f^{-1}(\cal{T}) \subseteq \cal{S}$
+\end{definition}
+
+\begin{definition}[\textbf{Definition 6.1:} $f$-measurable]
+    Let $f : \Omega \to X$ and $g : \Omega \to Y$ be maps. Then, we say $g$ is \emph{$f$-measurable} if $g$ is $\sigma(f)$-measurable. 
+\end{definition}
+
+\begin{definition}[\textbf{Definition 6.2:} Borel Isomorphims and Borel Spaces]
+    Two measurable spaces $S$ and $T$ are \emph{Borel isomorphic} if there exists a bijection $f : S \to T$ such that $f$ and $f^{-1}$ are measurable. A measurable space that is Borel isomorphic to a Borel subset of $[0, 1]$ is called a \emph{Borel space}.
+\end{definition}
+
+\begin{definition}[\textbf{Definition 6.3: }Polish Spaces]
+    A \emph{Polish space} is a topological space that has a separable and complete metrization.
+\end{definition}
+
+\begin{definition}[\textbf{Definition 7.3: }Push-Forward Measures]
+    Let $f : S \to T$ be measurable on two spaces $(S, \cal{S}), (T, \cal{T})$. Given any measure $\mu$ on $(S, \cal{S})$, we can define a measure $\mu \circ f^{-1}$ on $(T, \cal{T})$ by
+    \[ (\mu \circ f^{-1})(B) = \mu(f^{-1}(B)) = \mu\{s \in S \col f(s) \in B\} \]
+    for $B \in \cal{T}$. We call $\mu \circ f^{-1}$ the \emph{push-forward measure of $\mu$ by $f$}. 
+\end{definition}
+
+\begin{definition}[\textbf{Definition 8.5: }$\mu$-completions]
+    Given a measure space $(\Omega, \cal{A}, \mu)$ and a $\sigma$-field $\cal{F} \subseteq \cal{A}$, define the \emph{$\mu$-completion} of $\cal{F}$ in $\cal{A}$ as the $\sigma$-field $\cal{F}^{\mu} = \sigma(\cal{F}, \cal{N}_{\mu})$, where $\cal{N}_{\mu}$ denotes the class of all subsets of arbitrary $\mu$-null sets in $\cal{A}$. 
+\end{definition}
+
+\begin{definition}[\textbf{Definition 9.2:} $\sigma$-finiteness]
+    A measure $\mu$ on a measurable space $(\Omega, \cal{A})$ is \emph{$\sigma$-finite} if $\Omega = \bigcup_{i = 1}^{\infty} A_n$ with $A_i \cap A_j = \emptyset$ for $i \ne j$ such that $\mu A_n < \infty$ for all $n$. Equivalently, $\mu$ is $\sigma$-finite if, and only if, there is a measurable strictly positive function $f$ such that $\mu f < \infty$. 
+\end{definition}
+
+\begin{definition}[\textbf{Definition 9.5:} $L^{p}$ Spaces]
+    Given a measure space $(\Omega, \cal{A}, \mu)$ and a $p > 0$, write $L^{p} = L^{p}(\Omega, \cal{A}, \mu)$ for the class of all measurable functions $f : \Omega \to \R$ with
+    \[ \norm{f}_{p} := \left[\int \abs{f}^{p} d\mu\right]^{1/p} < \infty \]
+\end{definition}
+
+\begin{definition}[\textbf{Definition 12.1:} Bounded Signed Measures]
+    A \emph{bounded signed measure} on a measurable space $(\Omega, \cal{A})$ is a bounded function $\nu : \cal{A} \to \R$ such that
+    \[ \nu\left(\bigcup_{n} A_n\right) = \sum_{n} \nu A_n \]
+    for disjoint $A_i \in \cal{A}$, where this series converges absolutely.
+\end{definition}
+
+\begin{definition}[\textbf{Definition 12.2:} Mutually Singular Measures]
+    We say $\mu$ and $\nu$ on $(\Omega, \cal{A})$ are \emph{mutually singular} or \emph{orthogonal}, and write $\mu \perp \nu$, if there exists $A \in \cal{A}$ with $\mu A = \nu A^{c} = 0$.
+\end{definition}
+
+\begin{definition}[\textbf{Definition 12.6:} Absolute Continuity]
+    For any two measures $\mu$ and $\nu$ on $(\Omega, \cal{A})$, $\nu$ is said to be \emph{absolutely continuous with respect to $\mu$} if $\mu A = 0$ implies $\nu A = 0$ for all $A \in \cal{A}$, in which case we write $\nu \ll \mu$.
+\end{definition}
+
+\begin{definition}[\textbf{Definition 13.2:} Probability Spaces]
+    Fix a probability space $(\Omega, \cal{A}, P)$, where $P$ is a \emph{probability measure}; that is, a measure with total mass $1$. We call the sets $A \in \cal{A}$ \emph{events}, and $PA = P(A)$ is the \emph{probability} of $A$.
+\end{definition}
+
+\begin{definition}[\textbf{Definition 13.3:} Infinitely Often and Ultimately]
+    Given a sequence of events $A_1, A_2, \ldots \in \cal{A}$, define
+    \begin{align*}
+        \{A_n \tt{ i.o.}\} &= \left\{\omega \in \Omega \col \sum_{n} 1_{A_n}(\omega) = \infty\right\} = \bigcap_{n} \bigcup_{k \geq n} A_k\\
+        \{A_n \tt{ ult.}\} &= \left\{\omega \in \Omega \col \sum_{n} 1_{A_n^{c}}(\omega) < \infty\right\} = \bigcup_{n} \bigcap_{k \geq n} A_k
+    \end{align*}
+    which we call ``$A_n$ \emph{infinitely often}'' and ``$A_n$ \emph{ultimately}''.
+\end{definition}
+
+\begin{definition}[\textbf{Definition 13.5:} Random Elements and Distributions]
+    Any measurable mapping $\xi$ of $\Omega$ into some measurable space $(S, \cal{S})$ is called a \emph{random element} in $S$. If $B \in \cal{S}$, then $\{\xi \in B\} = \xi^{-1}B \in \cal{A}$, so we can define the push-forward probability measure
+    \[ P\{\xi \in B\} = P(\xi^{-1}B) = (P \circ \xi^{-1})B, \quad B \in \cal{S} \]
+    The probability measure $\cal{L}(\xi) = P \circ \xi^{-1}$ on $S$ induced by $\xi$ is called the \emph{distribution} or \emph{law} of $\xi$.
+\end{definition}
+
+\begin{definition}[\textbf{Definition 14.1:} Evaluation Maps]
+    Fixing a measurable space $(S, \cal{S})$ and an abstract index set $T$, write $S^{T}$ for the class of functions $f : T \to S$, and let $\cal{S}^{T}$ denote the $\sigma$-field in $S^{T}$ generated by all \emph{evaluation maps} $\pi_t : S^{T} \to S$, $t \in T$, given by
+    \[ \pi_t f = f(t) \]
+\end{definition}
+
+\begin{definition}[\textbf{Definition 14.3:} Random Processes]
+    A mapping $X$ as above is called an \emph{$S$-valued random process on $T$ with paths in $\cal{U}$}. By the lemma, we can regard $X$ as a collection of random elements $X_t$ in the \emph{state space} $S$.
+\end{definition}
+
+\begin{definition}[\textbf{Definition 14.4:} Finite-Dimensional Distributions]
+    For any random elements $\xi$ and $\eta$ in a common measurable space, the equality $\xi \overset{d}{=} \eta$ means that $\xi$ and $\eta$ have the same distribution, or $\cal{L}(\xi) = \cal{L}(\eta)$. If $X$ is a random process on some index set $T$, the associated \emph{finite-dimensional distributions} are given by
+    \[ \mu_{t_1, \ldots, t_n} = \cal{L}(X_{t_1}, \ldots, X_{t_n}), \quad t_1, \ldots, t_n \in T,\ n \in \N \]
+\end{definition}
+
+\begin{definition}[\textbf{Definition 14.6:} Distribution Functions]
+    For any random vector $\xi = (\xi_1, \ldots, \xi_d)$ in $\R^{d}$, we define the associated \emph{distribution function} $F$ by
+    \[ F(x_1, \ldots, x_d) = P\left(\bigcap_{k \leq d} \{\xi_k \leq x_k\}\right), \quad x_1, \ldots, x_d \in \R \]
+\end{definition}
+
+\begin{definition}[\textbf{Definition 14.8:} Expected Value]
+    The \emph{expected value}, \emph{expectation}, or \emph{mean} of a random variable $\xi$ is defined as
+    \[ \mathbb{E}[\xi] = \int_{\Omega} \xi dP = \int_{\R} x (P \circ \xi^{-1})(dx) \]
+    That is, we can either integrate $\xi$ over $\Omega$, or integrate the possible images with respect to the push-forward measure.
+\end{definition}
+
+\begin{definition}[\textbf{Definition 14.9:} Absolute Moments]
+    For any random variable $\xi$ and constant $p > 0$, the integral $\mathbb{E}\abs{\xi}^{p} = \norm{\xi}_{p}^{p}$ is called the \emph{$p$th absolute moment} of $\xi$.
+\end{definition}
+
+\begin{definition}[\textbf{Definition 14.10:} Moments]
+    If $\xi \in L^{p}$ and either $p \in \N$ or $\xi \geq 0$, define the \emph{$p$th moment} of $\xi$ as $\mathbb{E}[\xi^{p}]$.
+\end{definition}
+
+\begin{definition}[\textbf{Definition 15.1:} Integrable Random Vectors and Processes]
+    A random vector $\xi = (\xi_1, \ldots, \xi_d)$ or process $X = (X_t)$ is said to be \emph{integrable} if integrability holds for every $\xi_k$ or $X_t$. Then, we write
+    \[ \mathbb{E}\xi = (\mathbb{E}\xi_1, \ldots, \mathbb{E}\xi_d) \quad \tt{or} \quad \mathbb{E}X = (\mathbb{E}X_t) \]
+\end{definition}
+
+\begin{definition}[\textbf{Definition 15.2:} Convex Functions]
+    A function $f : \R^d \to \R$ is said to be \emph{convex} if
+    \[ f(px + (1 - p)y) \leq pf(x) + (1 - p)f(y), \quad x, y \in \R^d,\ p \in [0, 1] \]
+\end{definition}
+
+\begin{definition}[\textbf{Definition 15.4:} Covariance]
+    The \emph{covariance} of two random variables $\xi, \eta \in L^2$ is given by
+    \[ \tt{cov}(\xi, \eta) = \mathbb{E}[(\xi - \mathbb{E}\xi)(\eta - \mathbb{E}\eta)] = \mathbb{E}[\xi\eta] - \mathbb{E}[\xi]\mathbb{E}[\eta] \]
+\end{definition}
+
+\begin{definition}[\textbf{Definition 15.5:} Variance]
+    For $\xi \in L^2$, we define the \emph{variance}
+    \[ \tt{var}(\xi) = \tt{cov}(\xi, \xi) = \mathbb{E}((\xi - \mathbb{E}\xi)^2) = \mathbb{E}\xi^2 - (\mathbb{E}\xi)^2 \]
+\end{definition}
+
+\begin{definition}[\textbf{Definition 15.7:} Covariance Functions]
+    For any collection of random variables $\xi_t \in L^2$, $t \in T$, the associated \emph{covariance function} $\rho_{s, t} = \tt{cov}(\xi_s, \xi_t)$, $s, t \in T$, is \emph{non-negative definite}, in the sense that
+    \[ \sum_{i, j} a_ia_j\rho_{t_i, t_j} \geq 0 \quad \tt{for any } n \in \N,\ t_1, \ldots, t_n \in T, \tt{ and } a_1, \ldots, a_n \in \R \]
+\end{definition}
+
+\begin{definition}[\textbf{Definition 15.8:} Mutually Independent Events]
+    Events $A_t \in \cal{A}$, $t \in T$ are said to be \emph{mutually independent} if, for any distinct $t_1, \ldots, t_n \in T$,
+    \[ P\left(\bigcap_{k \leq n} A_{t_k}\right) = \prod_{k \leq n} P(A_{t_k}) \]
+\end{definition}
+
+\begin{definition}[\textbf{Definition 15.9:} Independent Families]
+    More generally, the families $\cal{C}_t \subseteq \cal{A}$, $t \in T$ are \emph{independent} if independence holds between events $A_t$ for arbitrary $A_t \in \cal{C}_t$, $t \in T$.
+\end{definition}
+
+\begin{definition}[\textbf{Definition 15.10:} Independent Random Elements]
+    Random elements $\xi_t$, $t \in T$ are \emph{independent} if independence holds between the $\sigma$-fields $\sigma(\xi_t)$, $t \in T$.
+\end{definition}
+
+\begin{definition}[\textbf{Definition 15.13:} Separating Classes]
+    Given any set $T$, we say a class $\cal{T} \subseteq 2^{T}$ is \emph{separating} if, for any $s \neq t$ in $T$, there exists $S \in \cal{T}$ such that exactly one of $s$ and $t$ lies in $S$.
+\end{definition}
+
+\begin{definition}[\textbf{Definition 16.1:} $P$-Trivial $\sigma$-Fields and Degenerate Random Elements]
+    A $\sigma$-field $\cal{F}$ is said to be \emph{$P$-trivial} if $PA = 0$ or $1$ for every $A \in \cal{F}$. A random element is \emph{a.s.\ degenerate} if its distribution is a degenerate probability measure; that is,
+    \[ P\{\xi \in A\} = \left\{\begin{matrix} 1, & x \in A \\ 0, & \tt{else} \end{matrix}\right. \]
+    for some $x \in S$. In other words, the distribution of $\xi$ is $\delta_x$.
+\end{definition}
+
+\begin{definition}[\textbf{Definition 16.8:} Finite Permutations]
+    A \emph{finite permutation} of $\N$ is a bijective map $p : \N \to \N$ such that $p_n = n$ for all but finitely many $n$.
+\end{definition}
+
+\begin{definition}[\textbf{Definition 16.9:} Symmetric Sets]
+    A set $I \subseteq S^{\infty}$ is said to be \emph{symmetric} (under finite permutations) if
+    \[ T_p^{-1}(I) \equiv \{s \in S^{\infty} \col s \circ p \in I\} = I \]
+    for every finite permutation $p$ of $\N$.
+\end{definition}
+
+\begin{definition}[\textbf{Definition 16.10:} Permutation Invariant $\sigma$-Field]
+    If $(S, \cal{S})$ is a measurable space, the symmetric sets $I \in \cal{S}^{\infty}$ form a sub-$\sigma$-field $\cal{I} \subseteq \cal{S}^{\infty}$, called the \emph{permutation invariant $\sigma$-field} in $S^{\infty}$.
+\end{definition}
+
+\tocsection{Theorems}
+
+\begin{theorem}[\textbf{Theorem 2.1: }Dynkin's $\pi$-$\lambda$ Theorem]
+    If $\cal{C}$ is a $\pi$-system and $\cal{D}$ is a $\lambda$-system such that $\cal{C} \subseteq \cal{D}$, then $\sigma(\cal{C}) \subseteq \cal{D}$. 
+\end{theorem}
+\begin{proof}{Proof Idea:}
+    Show that $S$ is a $\sigma$-algebra if, and only if, it is both a $\pi$ and $\lambda$ system. Now, show $\lambda(\cal{C})$ is a $\sigma$-algebra by showing it is closed under intersections. 
+
+    To do this, first show that it is closed under intersections between elements in $\cal{C}$ (obvious), then between an element in $\cal{C}$ and an element in $\lambda(\cal{C})$ by showing it is a $\lambda$-system. Then, show that it is closed under intersections by showing that is a $\lambda$-system.
+\end{proof}
+
+\begin{lemma}[\textbf{Lemma 2.6}]
+    If $S_1, S_2, \ldots$ are second-countable topological spaces, then so is $\bigtimes_{t = 1}^{\infty} S_{t}$. 
+\end{lemma}
+
+\begin{lemma}[\textbf{Lemma 2.7}]
+    If $S_1, S_2, \ldots$ are second-countable topological spaces, then
+    \[ \cal{B}(S_1 \times S_2 \times \cdots) = \cal{B}(S_1) \otimes \cal{B}(S_2) \otimes \cdots \]
+    where $\cal{B}(X)$ gives the Borel $\sigma$-algebra on a topological space $X$. 
+\end{lemma}
+
+\begin{lemma}[\textbf{Lemma 2.8}]
+    Let $f : S \to T$ where $(S, \cal{S})$ and $(T, \cal{T})$ are measurable spaces. Then,
+    \begin{enumerate}
+        \item $\cal{S}' = f^{-1}(\cal{T})$ is a $\sigma$-field on $S$.
+        \item $\cal{T}' = \{B \subseteq T \col f^{-1}(B) \in \cal{S}\}$ is a $\sigma$-field on $T$. 
+    \end{enumerate}
+\end{lemma}
+\begin{proof}{Proof Idea:}
+    Show that preimages behave nicely with set operations.
+\end{proof}
+
+\begin{lemma}[\textbf{Lemma 4.3}]
+    Considering a mapping $f$ between two measurable spaces $(S, \cal{S})$ and $(T, \cal{T})$ and let $\cal{C} \subseteq \cal{P}(T)$ with $\sigma(\cal{C}) = T$, then $f$ is $\cal{S}\backslash \cal{T}$ measurable if, and only if, $f^{-1}(\cal{C}) \subseteq \cal{S}$
+\end{lemma}
+\begin{proof}{Proof Idea:}
+    Let $\cal{T'}$ be the sets in $T$ for which the preimage under $f$ is an element of $S$. We see that $\cal{T'} \supseteq \sigma(\cal{T'}) \supseteq \sigma{\cal{C}}$ as $\cal{T'}$ is a $\sigma$-algebra.
+\end{proof}
+
+\begin{lemma}[\textbf{Lemma 4.4}]
+    Let $f$ be a continuous map between two topological spaces $S$ and $T$ with their Borel $\sigma$-fields $\cal{S}$ and $\cal{T}$. Then, $f$ is $\cal{S} \backslash \cal{T}$ measurable.
+\end{lemma}
+
+\begin{lemma}[\textbf{Lemma 4.6}]
+    Consider any set of functions $f_{t} : \Omega \to S_{t}$, $t \in T$ where $(\Omega, \cal{A})$ and $(S_{t}, \cal{S}_{t})$, $t \in T$ are measure spaces, and define $f = (f_{t}) : \Omega \to \bigtimes_{t} S_{t}$. Then, $f$ is $\cal{A} \backslash \bigotimes_{t} \cal{S}_{t}$-measurable if, and only if, $f_{t}$ is $\cal{A} \backslash \cal{S}_{t}$-measurable for all $t \in T$. 
+\end{lemma}
+\begin{proof}{Proof Idea:}
+    Recall that preimages under products are intersections; leverage this fact and it follows simply.
+\end{proof}
+
+\begin{lemma}[\textbf{Lemma 5.2}]
+    Let $f_1, f_2, \ldots,$ be measurable functions from $(\Omega, \cal{A}) \to \overline{\R}$. Then, $\sup_{n} f_n$, $\inf_{n} f_n$, $\limsup_{n} f_n$ and $\liminf_{n} f_n$ are all measurable.
+\end{lemma}
+\begin{proof}{Proof Idea:}
+    Show this holds for $\sup_{n} f_n$, and then use properties to relate to the other functions.
+\end{proof}
+
+\begin{lemma}[\textbf{Lemma 5.3}]
+    Let $f_1, f_2, \ldots,$ be measurable functions from $(\Omega, \cal{A})$ into some metric space $(S, \rho)$. Then,
+    \begin{enumerate}
+        \item $\{\omega \col f_{n}(\omega) \text{ converges}\} \in \cal{A}$ when $S$ is complete.
+        \item $f_n \to f$ on $\Omega$ implies that $f$ is measurable.
+    \end{enumerate}
+\end{lemma}
+\begin{proof}{Proof Idea:}
+    Since $S$ is complete, $f_n$ converges if
+    \[ \lim_{n \to \infty} \sup_{m \geq n} \rho(f_m(\omega), f_n(\omega)) = 0 \]
+    use that $\rho$ is measurable to show that this is a measurable set.
+\end{proof}
+
+\begin{theorem}[\textbf{Theorem 5.4:} Simple Approximation of Measurable Functions]
+    For any measurable function $f : (\Omega, \cal{A}) \to \R_{+}$, there exists measurable simple functions $f_1, f_2, \ldots : \Omega \to \R_{+}$ with $0 \leq f_n \uparrow f$. 
+\end{theorem}
+\begin{proof}{Proof Idea:}
+    Consider
+    \[ f_{n}(\omega) = 2^{-n} \floor{2^{n}f(\omega)} \wedge n \]
+\end{proof}
+
+\begin{lemma}[\textbf{Lemma 5.5}]
+    Fix measurable functions $f, g : (\Omega, \cal{A}) \to \R$ and let $a, b \in \R$. Then, $af + bg$ and $fg$ are measurable, and so is $f/g$ if $g \ne 0$ on $\Omega$. 
+\end{lemma}
+\begin{proof}{Proof Idea:}
+    Write these as limits.
+\end{proof}
+
+\begin{theorem}[\textbf{Lemma 6.5:} Doob-Dynkin Lemma]
+    Fix two measurable functions $f$ and $g$ on $\Omega$ into measurable spaces $(S, \cal{S})$ and $(T, \cal{T})$ where the former, $(S, \cal{S})$ is Borel. Then, $f$ is $g$-measurable if, and only if, there exists a measurable $h : T \to S$ such that $f = h \circ g$. 
+\end{theorem}
+
+\begin{lemma}[\textbf{Lemma 6.7}]
+    Let $\mu$ be a measure on $(\Omega, \cal{A})$ and assume that $A_1, A_2, \ldots \in \cal{A}$. Then, 
+    \begin{enumerate}
+        \item $A_n \uparrow A$ implies $\mu(A_n) \uparrow \mu(A)$.
+        \item $A_n \downarrow A$ with $\mu(A_1) < \infty$ implies $\mu(A_n) \downarrow \mu(A)$
+    \end{enumerate}
+\end{lemma}
+\begin{proof}{Proof Idea:}
+    Use differences to write disjointly, and then use complements in $A_1$ with 1. to prove 2.
+\end{proof}
+
+\begin{lemma}[\textbf{Corollary 7.1}]
+    Let $\mu_1, \mu_2, \ldots$ be a measure on $(\Omega, \cal{A})$ such that $\mu_n \uparrow \mu$ or $\mu_n \downarrow \mu$ with $\mu_1$ bounded. Then, $\mu$ is a measure on $(\Omega, \cal{A})$. 
+\end{lemma}
+
+\begin{lemma}[\textbf{Lemma 7.2}]
+    Let $\mu$ and $\nu$ be bounded measures on some measurable space $(\Omega, \cal{A})$ and let $\cal{C}$ be a $\pi$-system in $\Omega$ such that $\Omega \in \cal{C}$ and $\sigma(\cal{C}) = \cal{A}$. Then $\mu = \nu$ if, and only if, $\nu(A) = \mu(A)$ for all $A \in \cal{C}$.
+\end{lemma}
+\begin{proof}{Proof Idea:}
+    Show that the set on which they agree is a $\lambda$-system. 
+\end{proof}
+
+\begin{lemma}[\textbf{Lemma 7.4}]
+    Let $f \geq 0$ be measurable on a measure space $(\Omega, \cal{A}, \mu)$ and let $f_1, f_2, \ldots$ and $g$ be simple measurable functions such that $f_n \uparrow f$ and $0 \leq g \leq f$. Then $\lim_{n} \mu f_n \geq \mu g$. 
+\end{lemma}
+\begin{proof}{Proof Idea:}
+    Prove for indicators by considering
+    \[ A_{n} = \{\omega \in A \col f_{n}(\omega) \geq 1 - \epsilon\} \]
+\end{proof}
+
+\begin{lemma}[\textbf{Corollary 7.5}]
+    If $f_1, f_2, \ldots, g_1, g_2, \ldots \geq 0$ are measurable simple functions with $f_n \uparrow f$ and $g_n \uparrow f$, then $\lim_{n} \mu f_n = \lim_{n} \mu g_n$.
+\end{lemma}
+
+\begin{theorem}[\textbf{Theorem 7.6: }Monotone Convergence Theorem]
+    Let $f, f_1, f_2, \ldots$ be measurable functions on $(\Omega, \cal{A}, \mu)$ with $0 \leq f_n \uparrow f$. Then, $\mu f_n \uparrow \mu f$. 
+\end{theorem}
+\begin{proof}{Proof Idea:}
+    Letting $0 \leq g_{n, k} \uparrow f_n$, let
+    \[ h_{n, k} = g_{1, k} \vee \cdots \vee g_{n, k} \]
+\end{proof}
+
+\begin{theorem}[\textbf{Lemma 7.7:} Fatou's Lemma]
+    For any measurable function $f_1, f_2, \cdots \geq 0$ on $(\Omega, \cal{A}, \mu)$, we have
+    \[ \liminf_{n \to \infty} \mu f_n \geq \mu \liminf_{n \to \infty} f_n \]
+\end{theorem}
+\begin{proof}{Proof Idea:}
+    Use the fact that $\mu f_m \geq \mu \inf_{k \geq n} f_n$ for $m \geq n$, and use $\inf_{k \geq n} f_k \uparrow \liminf_{k \to \infty} f_k$ for MCT.
+\end{proof}
+
+\begin{theorem}[\textbf{Theorem 8.1: }Dominated Convergence Theorem]
+    Let $f, f_1, f_2, \ldots$ and $g, g_1, g_2, \ldots$ be measurable functions on $(\Omega, \cal{A}, \mu)$ with $\abs{f_n} \leq g_n$ for all $n$ and such that $f_n \to f$, $g_n \to g$ and $\mu g_n \to \mu g < \infty$. Then, $\mu f_n \to \mu f$. 
+\end{theorem}
+\begin{proof}{Proof Idea:}
+    Apply Fatou to $\mu g_n \pm \mu f_n \geq 0$. 
+\end{proof}
+
+\begin{lemma}[\textbf{Lemma 8.2: }Substitution Lemma]
+    Consider a measure space $(\Omega, \cal{A}, \mu)$, a measurable space $(S, \cal{S})$ and two measurable mappings $f : \Omega \to S$ and $g : S \to \R$. Then, 
+    \[ \mu(g \circ f) = (\mu \circ f^{-1})(g) \]
+    whenever either side exists; that is, when one side exists then so does the other and they are equal.\\
+
+    Thus, the integral of $g \circ f$ with respect to $\mu$ is equal to the integral of $g$ with respect to the push-forward measure $\mu \circ f^{-1}$. 
+\end{lemma}
+\begin{proof}{Proof Idea:}
+    Prove for indicators and then apply linearity and MCT.
+\end{proof}
+
+\begin{lemma}[\textbf{Lemma 8.4:} Null Sets and Functions]
+    For any measurable function $f \geq 0$ on some measure space $(\Omega, \cal{A}, \mu)$, then $\mu f = 0$ iff $f = 0$ $\mu$-a.e.
+\end{lemma}
+
+\begin{lemma}[\textbf{Lemma 9.1:} Completion]
+    Consider a measure space $(\Omega, \cal{A}, \mu)$, a $\sigma$-field $\cal{F} \subseteq \cal{A}$, and a Borel space $(S, \cal{S})$. Then, a function $f : \Omega \to S$ is $\cal{F}^{\mu}$-measurable if, and only if, there exists some $\cal{F}$-measurable function $g$ such that $f = g$ a.e. $\mu$. 
+\end{lemma}
+
+\begin{lemma}[\textbf{Lemma 9.3:} Sections]
+    Fix two measurable spaces $(S, \cal{S})$ and $(T, \cal{T})$, a measurable function $f : S \times T \to \R_{+}$, and a $\sigma$-finite measure $\mu$ on $S$. Then,
+    \begin{enumerate}
+        \item $f(s, t)$ is $\cal{S}$ measurable in $s \in S$ for each $t \in T$.
+        \item $\int f(s, t)\mu(ds)$ is $\cal{T}$-measurable in $t \in T$. 
+    \end{enumerate}
+\end{lemma}
+\begin{proof}{Proof Idea:}
+    Monotone class argument to show for indicators, then use linearity and MCT.
+\end{proof}
+
+\begin{theorem}[\textbf{Theorem 9.4:} Lebesgue-Fubini-Tonelli Theorem]
+    For any $\sigma$-finite measure spaces $(S, \cal{S}, \mu)$ and $(T, \cal{T}, \nu)$, there exists a unique measure $\mu \otimes \nu$ on $(S \times T, \cal{S} \otimes \cal{T})$ satisfying
+    \[ (\mu \otimes \nu)(B \times C) = \mu(B) \cdot \nu(C),\quad B \in \cal{S}, C \in \cal{T} \]
+    Furthermore, for any non-negative measureable function $f : S \times T \to \R_{+}$, 
+    \[ (\mu \otimes \nu)v = \int \mu(ds)\int f(s, t)\nu(dt) = \int \nu(dt) \int f(s, t) \mu(ds) \]
+    The last relation remains valid for any measurable function $f : S \times T \to \R$ with $(\mu \otimes \nu)\abs{f} < \infty$.\\
+    
+    Note that these integrals are well defined by the lemma above, and although the inner integrals $\nu f(s, \cdot)$ and $\mu f(\cdot, t)$ may fail to exist on some null sets in $S$ and $T$, when everything works, everything agrees. 
+\end{theorem}
+\begin{proof}{Proof:}
+    Uniqueness from monotone class argument and Caratheodory.
+\end{proof}
+
+\begin{theorem}[\textbf{Theorem 9.6:} H\"older and Minkowski Inequalities]
+    For any measurable functions $f$ and $g$ on some measure space $(\Omega, \cal{A}, \mu)$, we have
+    \begin{enumerate}
+        \item $\norm{fg}_{r} \leq \norm{f}_{p}\norm{g}_{q}$ for all $p, q, r > 0$ with $p^{-1} + q^{-1} = r^{-1}$.
+        \item $\norm{f + g}_{p}\leq \norm{f}_{p} + \norm{g}_{p}$ for all $p \geq 1$, and $\norm{f + g}_{p}^{p} \leq \norm{f}_{p}^{p} + \norm{g}_{p}^{p}$ for $0 < p < 1$. 
+    \end{enumerate}
+\end{theorem}
+\begin{proof}{Proof:}
+    Take $r = 1$ and $\norm{f}_{p} = \norm{f}_{q} = 1$. Use Young's inequality
+    \[ ab \leq \int_{0}^{a} h(x)dx + \int_{0}^{b} h^{-1}(y)dy \]
+    to the bijective function $y = x^{p - 1}$.\\
+
+    For Minkowski, use concavity of $x^{p}$. 
+\end{proof}
+
+\begin{lemma}[\textbf{Lemma 10.1: }Completeness]
+    Let $(f_n)$ be a Cauchy sequence in $L^{p}$, where $p > 0$. Then $\norm{f_n - f}_{p} \to 0$ for some $f \in L^{p}$. 
+\end{lemma}
+\begin{proof}{Proof:}
+    Choose a subsequence $(n_k) \subseteq \N$ with $\sum_{k} \norm{f_{n_{k + 1}} - f_{n_{k}}}_{p}^{p \wedge 1} < \infty$. By Minkowski's inequality and monotone convergence applied to finite sums, we see that
+    \[ \norm{\sum_{k} \abs{f_{n_{k + 1}} - f_{n_{k}}}}_{p}^{p \wedge 1} < \infty \]
+    so $\sum_{k} \abs{f_{n_{k + 1}} - f_{n_{k}}} < \infty$ almost everywhere. Hence, we must have that $(f_{n_{k}})$ is Cauchy almost everywhere in $\R$, so by the completeness of $\R$, we see that $f_{n_{k}} \to f$ for some measurable function $f$. Then, by Fatou's lemma, and using the fact that $f = \liminf_{k \to \infty} f_{n_k}$,
+    \begin{align*}
+        \norm{f - f_n}_{p} &= \left(\int \abs{\liminf_{k \to \infty} f_{n_{k}} - f_{n}}^{p}\right)^{1/p}\\
+        &= \left(\int \liminf_{k \to \infty}  \abs{f_{n_{k}} - f_{n}}^{p}\right)^{1/p}\\
+        &\leq \left(\liminf_{k \to \infty} \int \abs{f_{n_k} - f_n}^{p}\right)^{1/p}\\
+        &\leq \liminf_{k \to \infty}\norm{f_{n_k} - f_n}_{p}\\
+        &\leq \sup_{m \geq n} \norm{f_m - f_n}
+    \end{align*}
+
+    which is assumed to go to $0$ as $n \to \infty$. Thus, we see that $f_n \to f$ in $L^{p}$. 
+
+    
+\end{proof}
+
+
+\begin{lemma}[\textbf{Lemma 10.2:} Useful Inequality]
+    If $a, b \geq 0$, then
+    \[ (a + b)^{p} \leq \left\{\begin{matrix} a^{p} + b^{p} & 0 < p \leq 1 \\ 2^{p - 1}(a^{p} + b^{p}) & p \geq 1 \end{matrix}\right. \]
+\end{lemma}
+
+\begin{lemma}[\textbf{Lemma 10.3: }$L^{p}$-convergence]
+    For any $p > 0$, let $f, f_1, f_2, \ldots \in L^{p}$ with $f_n \to f$ almost everywhere. Then, $f_n \to f$ in $L^{p}$ iff $\norm{f_n}_{p} \to \norm{f}_{p}$.
+\end{lemma}
+\begin{proof}{Proof:}
+    If $f_n \to f$ in $L^{p}$, then by Minkowski's
+    \[ \abs{\norm{f_n}_{p}^{p \wedge 1} - \norm{f}_{p}^{p \wedge 1}} \leq \norm{f_n - f}_{p}^{p \wedge 1} \to 0 \]
+    and so $\norm{f_n}_{p} \to \norm{f}_{p}$. Now, assume the other condition, define
+    \[ g_{n} = 2^{p}\left(\abs{f_n}^{p} + \abs{f}^{p}\right) \quand g = 2^{p + 1}\abs{f}^{p} \]
+    Then, we see that $g_n \to g$ almost everywhere, and $\mu g_n \to \mu g < \infty$  by our hypotheses (since $g_n < (2f)^{p}$). Since we see that $\abs{g_n} \geq \abs{f_n - f}^{p}$, which must go to zero almost everywhere. Thus, $\norm{f_n - f}_{p}^{p} = \mu \abs{f_n - f}^{p} \to 0$ by the dominated convergence theorem.
+    
+
+\end{proof}
+
+\begin{theorem}[\textbf{Theorem 10.4:} Existence of Orthononal Decomposition]
+    Let $M$ be a closed linear subspace of $L^2$. Then, any function $f \in L^2$ has any almost everywhere unique decomposition $f = g + h$ with $g \in M$ and $h \perp M$. 
+\end{theorem}
+
+\begin{lemma}[\textbf{Lemma 11.1: }Regularity]
+    Let $\mu$ be a bounded measure on some metric space $S$ with Borel $\sigma$-field $\cal{S}$. Then, 
+    \[ \mu B = \sup_{F \subseteq B} \mu F = \inf_{G \supseteq B} \mu G,\ B \in \cal{S} \]
+    with $F$ and $G$ restricted to the classes of closed and open subsets of $S$, respectively. 
+\end{lemma}
+
+\begin{lemma}[\textbf{Lemma 11.2:} Approximation]
+    Given a metric space $S$ with Borel $\sigma$-field $\cal{S}$ and a bounded measure $\mu$ on $(S, \cal{S})$ and a constant $p > 0$, the set of bounded continuous functions on $S$ is dense in $L^{p}(S, \cal{S}, \mu)$. Thus, for any $f \in L^{p}$, there exist some bounded continuous functions $f_1, f_2, \ldots \col S \to \R$ with $\norm{f_n - f}_{p} \to 0$. 
+\end{lemma}
+
+\begin{theorem}[\textbf{Theorem 12.4:} Hahn Decomposition]
+    Any bounded signed measure $\nu$ can be written uniquely as a difference of two bounded, non-negative, and mutually singular measures $\nu_{+}$ and $\nu_{-}$.
+\end{theorem}
+
+\begin{lemma}[\textbf{Corollary 12.5:} Maximum and Minimum]
+    For any $\sigma$-finite measures $\mu$ and $\nu$ on a common measurable space, there exists a largest measure $\mu \wedge \nu$ bounded by $\mu$ and $\nu$ (i.e. $\mu \wedge \nu \leq \min\{\mu, \nu\}$) and a smallest measure $\mu \vee \nu$ bounding $\mu$ and $\nu$ (i.e. $\mu \vee \nu \geq \max\{\mu, \nu\}$). Furthermore,
+    \[ \mu - \mu \wedge \nu \perp \nu - \mu \wedge \nu \quand \mu \wedge \nu + \mu \vee \nu = \mu + \nu \]
+\end{lemma}
+
+\begin{theorem}[\textbf{Theorem 12.7:} Radon-Nikodym and Lebesgue Decomposition Theorem]
+    For any $\sigma$-finite measures $\mu$ and $\nu$ on $\Omega$, there exist some unique measures $\nu_{a} \ll \mu$ and $\nu_{s} \perp \mu$ such that $\nu = \nu_{a} + \nu_{s}$. Furthermore, $\nu_{a} = f \cdot \mu$ (that is, $\nu_{a}(A) = \mu(f1_{A})$) for some $\mu$-a.e. unique measurable function $f \geq 0$ on $\Omega$.
+\end{theorem}
+
+
+\begin{lemma}[\textbf{Lemma 12.8:} Closure]
+    Fix two measures $\mu$ and $\nu$ on $\Omega$ and some measurable functions $f_1, f_2, \ldots \geq 0$ on $\Omega$ with $f_n \cdot \mu \leq \nu$. Then $f \cdot \mu \leq \nu$, where $f = \sup_{n} f_n$.
+\end{lemma}
+
+\begin{lemma}[\textbf{Lemma 13.1:} Partial Density]
+    Let $\mu$ and $\nu$ be bounded measures on $\Omega$ with $\mu \not\perp \nu$. Then, there exists a measurable function $f \geq 0$ on $\Omega$ such that $\mu f > 0$ and $f \cdot \mu \leq \nu$.
+\end{lemma}
+
+Note that
+\[ 1\{A_n \tt{ i.o.}\} = \limsup_{n \to \infty} 1_{A_n} \quand 1\{A_n \tt{ ult.}\} = \liminf_{n \to \infty} 1_{A_n} \]
+and by Fatou's lemma,
+\[ P\{A_n \tt{ i.o.}\} \geq \limsup_{n \to \infty} PA_n \quand P\{A_n \tt{ ult.}\} \leq \liminf_{n \to \infty} PA_n \]
+Furthermore,
+\[ P\{A_n \tt{ i.o.}\} = \lim_{n \to \infty} P\left(\bigcup_{k \geq n} A_k\right) \leq \lim_{n \to \infty} \sum_{k \geq n} PA_k \]
+which gives us the following result.
+
+\begin{lemma}[\textbf{Lemma 13.4:} First Borel-Cantelli Lemma]
+    If $\sum_{n} PA_n < \infty$, then $P\{A_n \tt{ i.o.}\} = 0$.
+\end{lemma}
+
+\begin{lemma}[\textbf{Lemma 14.2}]
+    Fix a measurable space $(S, \cal{S})$, an index set $T$, and a subset $\cal{U} \subseteq S^{T}$. Then, a function $X : \Omega \to \cal{U}$ is $\cal{U} \cap \cal{S}^{T}$-measurable if, and only if, $X_t : \Omega \to S$ is $\cal{S}$-measurable for all $t \in T$.
+\end{lemma}
+
+\begin{lemma}[\textbf{Proposition 14.5:} Finite-Dimensional Distributions]
+    Fix $S$, $T$, and $\cal{U} \subseteq S^{T}$, and let $X$ and $Y$ be processes on $T$ with paths in $\cal{U}$. Then, $X \overset{d}{=} Y$ if, and only if,
+    % FIXED: page has X_{t_0} as the first entry; changed to X_{t_1} to match t_1, ..., t_n.
+    \[ (X_{t_1}, \ldots, X_{t_n}) \overset{d}{=} (Y_{t_1}, \ldots, Y_{t_n}), \quad t_1, \ldots, t_n \in T,\ n \in \N \]
+\end{lemma}
+
+\begin{lemma}[\textbf{Lemma 14.7:} Distribution Functions]
+    Let $\xi$ and $\eta$ be random vectors in $\R^{d}$ with distribution functions $F$ and $G$. Then, $\xi \overset{d}{=} \eta$ if, and only if, $F = G$.
+\end{lemma}
+
+For any random element $\xi$ in some measurable space $S$ and an arbitrary measurable function $f : S \to \R$,
+\begin{align*}
+    \mathbb{E}[f(\xi)] &= \int_{\Omega} f(\xi) dP = \int_{S} f(s)(P \circ \xi^{-1})(ds)\\
+    &= \int_{\R} x (P \circ (f \circ \xi)^{-1})(dx)
+\end{align*}
+provided one of these three integrals exists. Integrals over a measurable subset $A \subseteq \Omega$ are often denoted by
+\[ \mathbb{E}[\xi; A] = \mathbb{E}[\xi 1_{A}] = \int_{A} \xi dP, \quad A \in \cal{A} \]
+
+By H\"older's inequality (or Jensen's, using the convexity of $x^{p}$), we see that $\norm{\xi}_{p} \leq \norm{\xi}_{q}$ for $p \leq q$, so the corresponding $L^{p}$-spaces are non-increasing in $p$.\\
+
+Here is why. We want to show that $(\mathbb{E}\abs{\xi}^{p})^{1/p} \leq (\mathbb{E}\abs{\xi}^{q})^{1/q}$. Let $\eta = \abs{\xi}^{p}$. So, we want to show that $\mathbb{E}[\abs{\eta}] \leq \mathbb{E}[\abs{\eta}^{q/p}]^{p/q}$, or $\mathbb{E}[\abs{\eta}] \leq \mathbb{E}[\abs{\eta}^{r}]^{1/r}$ where $r = q/p \geq 1$. Then, by H\"older's,
+\[ \mathbb{E}[\abs{\eta}] = \mathbb{E}[\abs{\eta} \cdot 1] \leq \norm{\eta}_{r}\norm{1}_{s} = \norm{\eta}_{r} = \mathbb{E}[\abs{\eta}^{r}]^{1/r} \]
+where $\norm{1}_{s} = 1$ as we have a probability space, and where we use $p \leq q$ to ensure $r = \frac{q}{p} \geq 1$, so that there exists $s$ with $\frac{1}{r} + \frac{1}{s} = 1$.\\
+
+\begin{lemma}[\textbf{Lemma 14.11:} Moments and Tails]
+    For any random variable $\xi \geq 0$,
+    \[ \mathbb{E}[\xi^{p}] = p\int_{0}^{\infty} P\{\xi > t\}t^{p - 1}dt = p\int_{0}^{\infty} P\{\xi \geq t\}t^{p - 1}dt, \quad p > 0 \]
+\end{lemma}
+\begin{proof}{Proof Idea:}
+    Fubini Tonelli swap!
+\end{proof}
+
+\begin{theorem}[\textbf{Lemma 15.3:} Jensen's Inequality]
+    For any integrable random vector $\xi$ in $\R^d$ and convex $f : \R^d \to \R$, we have
+    \[ \mathbb{E}[f(\xi)] \geq f(\mathbb{E}[\xi]) \]
+\end{theorem}
+\begin{proof}{Proof Idea:}
+    Tangent line must lie beneath the graph, including the tangent line at $\bb{E}[f]$. 
+\end{proof}
+
+\begin{lemma}[\textbf{Lemma 15.11:} Extension]
+    If the $\pi$-systems $\cal{C}_t$, $t \in T$ are independent, so are the $\sigma$-fields $\cal{F}_t = \sigma(\cal{C}_t)$, $t \in T$.
+\end{lemma}
+
+\begin{lemma}[\textbf{Corollary 15.12:} Grouping]
+    Let $\cal{F}_t$, $t \in T$ be independent $\sigma$-fields, and let $\cal{T}$ be a disjoint partition of $T$. Then, the $\sigma$-fields $\cal{F}_S = \bigvee_{t \in S} \cal{F}_t$, $S \in \cal{T}$ are again independent.
+\end{lemma}
+
+\begin{lemma}[\textbf{Lemma 15.14:} Pairwise Independence]
+    \vspace{-0.5cm}
+    \begin{enumerate}[label = \roman*)]
+        \item The $\sigma$-fields $\cal{F}_1, \cal{F}_2, \ldots$ are independent iff $\bigvee_{k \leq n} \cal{F}_k \perp\!\!\!\perp \cal{F}_{n + 1}$ for all $n$.
+        \item The $\sigma$-fields $\cal{F}_t$, $t \in T$ are independent iff $\cal{F}_S \perp\!\!\!\perp \cal{F}_{S^{c}}$ for all sets $S$ in some separating class $\cal{T} \subseteq 2^{T}$.
+    \end{enumerate}
+\end{lemma}
+
+\begin{lemma}[\textbf{Lemma 16.2:} Triviality and Degeneracy]
+    A $\sigma$-field $\cal{F}$ is $P$-trivial iff $\cal{F} \perp\!\!\!\perp \cal{F}$. In that case, any $\cal{F}$-measurable random element $\xi$ taking values in a separable metric space is a.s.\ degenerate.
+\end{lemma}
+
+\begin{lemma}[\textbf{Lemma 16.3:} Product Measures]
+    Let $\xi_1, \ldots, \xi_n$ be random elements in measurable spaces $S_1, \ldots, S_n$ with distributions $\mu_1, \ldots, \mu_n$. Then, the $\xi_k$ are independent iff $\xi = (\xi_1, \ldots, \xi_n)$ has distribution $\mu_1 \otimes \cdots \otimes \mu_n$.
+\end{lemma}
+
+\begin{lemma}[\textbf{Lemma 16.4:} Conditioning]
+    Let $\xi$ and $\eta$ be independent random elements in some measurable spaces $S$ and $T$, and let the function $f : S \times T \to \R$ be measurable with $\mathbb{E}(\mathbb{E}\abs{f(s, \eta)})_{s = \xi} < \infty$. Then,
+    \[ \mathbb{E}f(\xi, \eta) = \mathbb{E}(\mathbb{E}f(s, \eta))_{s = \xi} \]
+    That is, for each $s \in S$, let $g(s) = \mathbb{E}[f(s, \eta)]$. Then, $\mathbb{E}[f(\xi, \eta)] = \mathbb{E}[g(\xi)]$.
+\end{lemma}
+
+\begin{theorem}[\textbf{Theorem 16.6:} Kolmogorov's 0-1 Law]
+    Let $\cal{F}_1, \cal{F}_2, \ldots$ be independent $\sigma$-fields. Then, the tail $\sigma$-field $\cal{T} = \bigcap_{n} \bigvee_{k \geq n} \cal{F}_k$ is $P$-trivial.
+\end{theorem}
+
+\begin{lemma}[\textbf{Corollary 16.7:} Sums and Averages]
+    Let $\xi_1, \xi_2, \ldots$ be independent random variables, and let $S_n = \xi_1 + \cdots + \xi_n$. Then, each of the sequences $(S_n)$ and $(S_n/n)$ is either a.s.\ convergent or a.s.\ divergent. For the latter sequence, the possible limit is a.s.\ degenerate.
+\end{lemma}
+
+\tocsection{Homework Key Ideas}
+ 
+One line per part: the move that unlocks it.
+ 
+\tocsubsection{HW1: Generating Classes}
+\begin{itemize}[leftmargin=1.5em, itemsep=4pt]
+\item \textbf{1(a)} Each $\lambda$-axiom survives intersection, so $\lambda(\mathcal C)$ is a $\lambda$-system.
+  \textbf{1(b)} $\lambda(\mathcal I)\subseteq\sigma(\mathcal I)$ always (a $\sigma$-field is a $\lambda$-system). Dynkin's two-pass argument makes $\lambda(\mathcal I)$ a $\pi$-system, hence a $\sigma$-field, so $\sigma(\mathcal I)\subseteq\lambda(\mathcal I)$.
+ 
+\item \textbf{2(a)} $\mathbf 1_\Omega$ is constant (ii); $\mathbf 1_{A\setminus B}=\mathbf 1_A-\mathbf 1_B$ for $B\subseteq A$ (i); $\mathbf 1_{A_n}\uparrow\mathbf 1_A$ for increasing unions (iii).
+  \textbf{2(b)} $\mathcal I\subseteq\mathcal D$ by (iv), then $\pi$-$\lambda$: $\mathcal F=\sigma(\mathcal I)\subseteq\mathcal D$.
+  \textbf{2(c)} $f_n=2^{-n}\floor{2^nf}\wedge n=\sum_{j=1}^{n2^n}2^{-n}\mathbf 1_{\{f\ge j2^{-n}\}}$ uses only indicators of $\mathcal F$-sets, so $f_n\in\mathcal H$ by (b) and (i).
+  \textbf{2(d)} By (iii).
+  \textbf{2(e)} $f+\norm{f}_\infty\ge0$ is in $\mathcal H$ by (d); subtract the constant using (i), (ii).
+ 
+\item \textbf{3(a)} $\mathcal C'=\Span(\mathcal C\cup\{1\})\subseteq\mathcal H$ because $\mathcal C$ is closed under products. % FIX: added, so Zorn has a starting point
+  Zorn: among algebras between $\mathcal C'$ and $\mathcal H$, ordered by $\subseteq$, a chain's union is an algebra in $\mathcal H$, hence an upper bound.
+  \textbf{3(b)} The uniform closure of $\A$ is an algebra (bounded functions, so products converge uniformly) and lies in $\mathcal H$ by (iv); maximality.
+  \textbf{3(c)} Weierstrass: polynomials $p_n\to|x|$ uniformly on $[-\norm{f}_\infty,\norm{f}_\infty]$; $p_n(f)\in\A$ and $p_n(f)\to|f|$ uniformly; use (b).
+  \textbf{3(d)} $f\vee g=\tfrac12(f+g+|f-g|)$, $f\wedge g=\tfrac12(f+g-|f-g|)$.
+  % FIX 3(e): the old line ("the monotone closure of A is again an algebra in H")
+  % is hard to justify. This is the direct argument.
+  \textbf{3(e)} The algebra generated by $\A$ and $f$ is $\{\sum_{k\le m}a_kf^k: a_k\in\A\}$. Each $a_k^\pm f_n^k\in\A$ is $\ge0$ and increases to $a_k^\pm f^k$ (with $a_k^\pm\in\A$ by (d)), so $a_kf^k\in\mathcal H$ by (iii), (i). Hence this algebra lies in $\mathcal H$, and maximality gives $f\in\A$.
+  \textbf{3(f)} $\mathbf 1_{A^c}=1-\mathbf 1_A$, $\mathbf 1_{A\cap B}=\mathbf 1_A\mathbf 1_B$; countable unions are increasing limits of finite unions, so use (e).
+  \textbf{3(g)} Simple $\mathcal G$-functions lie in $\A$; a bounded $f\ge0$ is an increasing limit of them, so use (e); for general bounded $f$, shift by a constant.
+  \textbf{3(h)} $g=(f\wedge1)\vee0\in[0,1]$, and $g^n\downarrow\mathbf 1_{\{f\ge1\}}$ since $g=1$ on $\{f\ge1\}$ and $g<1$ elsewhere.
+  % FIX 3(i): (h) gives a DECREASING limit but (e) only covers increasing ones; pass to 1-g^n.
+  \textbf{3(i)} For $f\in\mathcal C$, $c\in\R$: $\{f\ge c\}=\{f-c+1\ge1\}$. With $g$ from (h) for $f-c+1\in\A$, $0\le1-g^n\uparrow\mathbf 1_{\{f<c\}}$, so (e) gives $\{f\ge c\}\in\mathcal G$. These sets generate $\mathcal F$.
+  \textbf{3(j)} Bounded $\mathcal F$-measurable $\subseteq$ bounded $\mathcal G$-measurable $\subseteq\A\subseteq\mathcal H$, by (i) and (g).
+ 
+\item \textbf{4} If $\{C_n\}$ generates $\Sigma$, let $D$ be the union of the countable sets among the $C_n$ and $C_n^c$; $D$ is countable. Each $C_n$ contains or misses $\Omega\setminus D$; such sets form a $\sigma$-field, so all of $\Sigma$ would. But $\{x\}$ with $x\notin D$ does neither.
+ 
+\item \textbf{5} Good sets: $\{B\in\sigma(\A): B\in\sigma(\A')\text{ for some countable }\A'\subseteq\A\}$ contains $\A$ and is a $\sigma$-field (a countable union of countable families is countable).
+\end{itemize}
+ 
+\tocsubsection{HW2: Atoms, Measurability, Tightness}
+\begin{itemize}[leftmargin=1.5em, itemsep=4pt]
+% FIX 1: spelled out why the classes are exactly the atoms.
+\item \textbf{1(a)--(b)} $\omega'\in\operatorname{atom}(\omega)\iff\operatorname{atom}(\omega')=\operatorname{atom}(\omega)$: if some $A_k\ni\omega'$ missed $\omega$, then $A_k^c\ni\omega$ would exclude $\omega'$. So the classes are the atoms, each in $\A$ (countable intersection).
+  \textbf{1(c)} Every $A\in\A$ is a union of atoms. Finitely many atoms $\Rightarrow\A$ finite. Infinitely many (countably many, each in $\A$) $\Rightarrow$ the $2^{\aleph_0}$ unions of atoms are distinct sets in $\A$, a contradiction.
+ 
+\item \textbf{2} Dyadic cells $I_{n,k}=[k2^{-n},(k+1)2^{-n})$ (the last one closed). $f(I_{n,k})$ is an interval (IVT), hence Borel. $N_n(y)=\sum_k\mathbf 1\{y\in f(I_{n,k})\}$ counts cells containing a solution: it is measurable, nondecreasing in $n$, and $N_n\uparrow N$ as the solutions get separated.
+ 
+\item \textbf{3(a)} $e_t$ is continuous since $|f(t)-g(t)|\le\rho(f,g)$, so $\A\subseteq\mathcal B$.
+  \textbf{3(b)} By continuity, $\rho(f,g)=\sup_t|e_t(f)-g(t)|$ with $t$ ranging over $\Q\cap[0,1]$, a countable sup.
+  \textbf{3(c)} Open balls are in $\A$ by (b); in a separable space every open set is a countable union of balls (or use the hint: closed $F=\{\inf_n\rho(f,g_n)=0\}$).
+ 
+\item \textbf{4(a)} $\bigcup_kB(x_k,1/n)=S$ by density; continuity from below.
+  \textbf{4(b)} $\bigcap_n\bigcup_{k\le N_n}B(x_k,1/n)$ is totally bounded, so its closure is too; closed and totally bounded in a complete space $\Rightarrow$ compact.
+  \textbf{4(c)} $\mathbb P(K^c)\le\sum_n\epsilon2^{-n}=\epsilon$.
+\end{itemize}
+ 
+\tocsubsection{HW3: \texorpdfstring{$\Delta$}{Symmetric Difference}, DCT Failure, Completion, Projections}
+\begin{itemize}[leftmargin=1.5em, itemsep=4pt]
+\item \textbf{1(a)} Check the four cases of $(\mathbf 1_A,\mathbf 1_B)$.
+  \textbf{1(b)} $|\mathbf 1_A-\mathbf 1_C|\le|\mathbf 1_A-\mathbf 1_B|+|\mathbf 1_B-\mathbf 1_C|$; integrate.
+\item \textbf{2} Counting measure on $\N$, $f_n=\mathbf 1_{\{n\}}\to0$ but $\mu f_n=1$.
+\item \textbf{3} $B\in\mathcal T^\nu\iff B\,\Delta\,B_0\subseteq N$ with $B_0,N\in\mathcal T$, $\nu N=0$. Then $f^{-1}B\,\Delta\,f^{-1}B_0\subseteq f^{-1}N$ and $\mu(f^{-1}N)=\nu N=0$, so $f^{-1}B\in\mathcal S^\mu$.
+\item \textbf{4(a)} $h\in N$ and $g-h=(f-h)-(f-g)\perp N$ (since $f-g\perp M\supseteq N$), so $h$ is the projection of $g$ onto $N$.
+  \textbf{4(b)} $\brac{\widehat f,g}=\brac{\widehat f,\widehat g}+\brac{\widehat f,g-\widehat g}$ and $g-\widehat g\perp M\ni\widehat f$; same for $\brac{f,\widehat g}$.
+\end{itemize}
+ 
+\tocsubsection{HW4: Convergence and Second Moments}
+\begin{itemize}[leftmargin=1.5em, itemsep=4pt]
+\item \textbf{1} Fatou on $f_n-g_n\ge0$ and $h_n-f_n\ge0$; $|f|\le|g|+|h|$ gives integrability.
+\item \textbf{2} $\operatorname{var}|f_n|\le\operatorname{var}f_n\le M\mu|f_n|$ (since $|\mu f_n|\le\mu|f_n|$). Let $a_n=\mu|f_n|$.
+  \emph{Case $\limsup a_n<\infty$:} with $C=\sup_na_n$, Chebyshev gives $\mu(|f_n|>K)\le MC/(K-C)^2$, so $\mu\{|f_n|>K\text{ ult.}\}\le MC/(K-C)^2\to0$ as $K\to\infty$; hence $\liminf|f_n|<\infty$ a.e.
+  \emph{Case $a_{n_k}\to\infty$:} $\mu(|f_{n_k}|\le a_{n_k}/2)\le4M/a_{n_k}\to0$, so $\mu\{|f_{n_k}|>a_{n_k}/2\text{ i.o.}\}\ge\limsup=1$; hence $\limsup|f_n|=\infty$ a.e.
+\item \textbf{3} With $A=\{|f|\ge\lambda\norm{f}_1\}$: $\norm{f}_1=\mu(|f|;A^c)+\mu(|f|;A)\le\lambda\norm{f}_1+\norm{f}_p\,\mu(A)^{1/q}$ (H\"older on $A$); rearrange.
+\item \textbf{4} Problem 3 with $p=q=2$: $\mu\{|f_n|\ge\lambda\norm{f_n}_1\}\ge(1-\lambda)^2\beta^{-2}$, and $\lambda\norm{f_n}_1\ge\lambda\alpha\beta^{-1}$. Finish with $\mu\{A_n\text{ i.o.}\}\ge\limsup\mu A_n$.
+\end{itemize}
+ 
+\tocsubsection{HW5: Total Variation, Hellinger, Binary Expansions}
+\begin{itemize}[leftmargin=1.5em, itemsep=4pt]
+\item \textbf{1(a)} $\lambda=\mu+\nu$ and Radon--Nikodym; the densities can be taken in $[0,1]$.
+  % FIX 1(b): made the "1-homogeneous" remark precise.
+  \textbf{1(b)} Compare any $\lambda$ with $\kappa=\mu+\nu$: $\kappa=h\cdot\lambda$ with $h=f+g$, and $f=f_\kappa h$, $g=g_\kappa h$ $\lambda$-a.e. Both integrands $\phi(f,g)$ are 1-homogeneous, so $\lambda\,\phi(f,g)=\lambda\big(h\,\phi(f_\kappa,g_\kappa)\big)=\kappa\,\phi(f_\kappa,g_\kappa)$.
+  \textbf{1(c)} They are the $L^1(\lambda)$ distance of $f,g$ and the $L^2(\lambda)$ distance of $\sqrt f,\sqrt g$; use one $\lambda$ dominating all three measures for the triangle inequality.
+  \textbf{1(d)} $(\mu-\nu)_\pm=(f-g)^\pm\cdot\lambda$; the sup is attained at $A=\{f\ge g\}$.
+  \textbf{1(e)} $(\sqrt f-\sqrt g)^2\le|\sqrt f-\sqrt g|(\sqrt f+\sqrt g)=|f-g|$. Other side: Cauchy--Schwarz on $|f-g|=|\sqrt f-\sqrt g|(\sqrt f+\sqrt g)$, then Minkowski: $\norm{\sqrt f+\sqrt g}_2\le(\mu\Omega)^{1/2}+(\nu\Omega)^{1/2}$.
+\item \textbf{2(a)} $|\mu_nh-\mu h|\le\norm{h}_\infty\,d_{\mathrm{TV}}(\mu_n,\mu)$.
+  \textbf{2(b)} $\nu A=0\Rightarrow\mu_nA=0\Rightarrow\mu A\le d_{\mathrm{TV}}(\mu_n,\mu)\to0$.
+  \textbf{2(c)} $\lambda=\sum_n2^{-n}\mu_n/(1+\mu_n\Omega)$ dominates every $\mu_n$; the densities are Cauchy in $L^1(\lambda)$, which is complete; the limit $f\ge0$ gives $\mu=f\cdot\lambda$.
+\item \textbf{3(a)} The preimage of a length-$k$ cylinder is a dyadic interval $[m2^{-k},(m+1)2^{-k})$; cylinders generate $\Sigma$, so Lemma~4.3 applies.
+  \textbf{3(b)} $2^{-k}$.
+\item \textbf{4(a)} $G_f=\varphi^{-1}\{0\}$ with $\varphi(x,y)=y-f(x)$, measurable by Lemmas 4.6, 5.5 and $\mathcal B(\R^{d+1})=\mathcal B(\R^d)\otimes\mathcal B(\R)$.
+  \textbf{4(b)} $0$, by Tonelli: $\lambda^{d+1}(G_f)=\int\lambda^1(\{f(x)\})\,dx=0$.
+\end{itemize}
+ 
+\tocsubsection{HW6: Borel--Cantelli Variants}
+\begin{itemize}[leftmargin=1.5em, itemsep=4pt]
+\item \textbf{1(a)} $\bigcup_{k\ge n}A_k\setminus\bigcup_{k\ge n}(A_k\cap A_{k+1}^c)\subseteq\{A_k\text{ ult.}\}$, and $\mathbb P\{A_k\text{ ult.}\}\le\liminf\mathbb PA_k=0$. So $\mathbb P\{A_n\text{ i.o.}\}\le\sum_{k\ge n}\mathbb P(A_k\cap A_{k+1}^c)\to0$.
+  \textbf{1(b)} If $\mathbb P\{A_n\text{ i.o.}\}<1$, some $A=\bigcap_{k\ge N}A_k^c$ has $\mathbb PA>0$; but $A_n\cap A=\emptyset$ for $n\ge N$, so $\sum_n\mathbb P(A_n\cap A)<\infty$.
+\item \textbf{2(a)} Borel--Cantelli I on $A_n\cap A$: $\mathbb P(\{A_n\text{ i.o.}\}\cap A)=0$.
+  \textbf{2(b)} Pick $N$ with $\mathbb P(\bigcup_{k=n}^NB_k)>1-\epsilon$, and let $K$ be the last $k\in[n,N]$ with $B_k$. Then $\{K=k\}=B_k\cap B_{k+1}^c\cap\dots\cap B_N^c\in\sigma(B_k,B_{k+1},\dots)$ is independent of $A_k$, so $\mathbb P\big(\bigcup_{k=n}^N A_k\cap B_k\big)\ge\sum_k\mathbb PA_k\,\mathbb P(K=k)\ge(\inf_{k\ge n}\mathbb PA_k)(1-\epsilon)$. Let $\epsilon\to0$, then $n\to\infty$.
+\item \textbf{3(a)} Identify $\vartheta$ with its set $S$ of $+1$'s. $S\subsetneq S'$ raises the sum by $2\sum_{S'\setminus S}x_k\ge2>h$, so the $\vartheta$'s landing in $[a,a+h]$ form an antichain; Sperner, and each $\vartheta$ has probability $2^{-n}$.
+  % FIX 3(b): added the hint's decomposition and an explicit interval count.
+  \textbf{3(b)} Symmetric $\xi\overset{d}{=}\vartheta|\xi|$ with $\vartheta=\pm1$ fair and independent of $|\xi|$. Condition on $(|\xi_k|)$ (Lemma~16.4). Since $|\xi_k|>c$, rescale by $c$ and cover $[a,a+h]$ by $\floor{h/c}+1$ intervals of length $c<2c$: the bound is $(\floor{h/c}+1)2^{-n}\binom{n}{\floor{n/2}}\to0$, uniformly in $a$. Take $[a,a+h]=[-r,r]$ for the last claim.
+\item \textbf{4(a)} Cauchy--Schwarz on $N=\sum_k\mathbf 1_{A_k}$: $\mathbb EN=\mathbb E[N;N>0]\le(\mathbb EN^2)^{1/2}\,\mathbb P(N>0)^{1/2}$, with $\mathbb EN=\sum_k\mathbb PA_k$ and $\mathbb EN^2=\sum_k\sum_\ell\mathbb P(A_k\cap A_\ell)$.
+  \textbf{4(b)} For $A_m,\dots,A_n$ with $s=\sum_{k=m}^n\mathbb PA_k$: $\sum_k\sum_\ell\mathbb P(A_k\cap A_\ell)\le s+s^2$, so $\mathbb P\big(\bigcup_{k=m}^nA_k\big)\ge s/(1+s)\to1$ as $n\to\infty$, for every $m$.
+\end{itemize}
+ 
+%===========================================================================
+% Sides 16-17
+%===========================================================================
+\newpage
+\tocsection{Standard Computations and Facts}
+ 
+These are the reusable calculations behind the 2025 exam and HW5--6.
+ 
+\tocsubsection{Coin Tossing and Random Walks}
+\begin{itemize}[leftmargin=1.5em, itemsep=4pt]
+\item \textbf{Fair coin measure on $\{0,1\}^\N$:} $\mathbb P(\text{first $n$ coordinates}=x_1,\dots,x_n)=2^{-n}$; it is determined by cylinders (a $\pi$-system containing $\Omega$). The binary-expansion map pushes Lebesgue measure on $[0,1)$ to it (HW5 \#3), so the binary digits of a uniform point are i.i.d.\ fair bits.
+\item \textbf{Biased coin $P_p$ on $\{\pm1\}^\N$:} one path $x_1,\dots,x_n$ with sum $s$ has probability $(pq)^{n/2}(p/q)^{s/2}$; its likelihood ratio to the fair coin is $(4pq)^{n/2}(p/q)^{s/2}$.
+\item \textbf{Exit from $(-a,a)$:} $T<\infty$ a.s.; $P_p\{S_T=a\}=p^a/(p^a+q^a)$; $T$ and $S_T$ are independent; the law of $T$ under $P_p$ is the tilt of its law under $P_{1/2}$ by $z=2\sqrt{pq}$, and it decreases stochastically as $p$ moves away from $1/2$.
+\item \textbf{Blocks:} disjoint blocks of i.i.d.\ coordinates are independent (grouping, Lemma 15.12); a fixed pattern of length $M$ with probability $p^M>0$ occurs in some block a.s., since $\prod_k(1-p^M)=0$.
+\item \textbf{Symmetry:} $\omega\mapsto-\omega$ preserves the fair-coin measure; check on cylinders, extend by $\pi$-$\lambda$.
+\end{itemize}
+ 
+\tocsubsection{Orders and Tilts}
+\begin{itemize}[leftmargin=1.5em, itemsep=4pt]
+\item \textbf{Tilt} $\pi_z\{i\}\propto z^i\pi\{i\}$: $z'\le z''\Rightarrow\pi_{z'}\preceq\pi_{z''}$ (Harris applied to $f$ and $h(i)=(z''/z')^i$, truncated).
+\item \textbf{Stochastic order:} $\mu\preceq\nu\Rightarrow\mu[x,\infty)\le\nu[x,\infty)$; take $f=\mathbf 1_{[x,\infty)}$.
+\end{itemize}
+ 
+\tocsubsection{Independence Checks}
+\begin{itemize}[leftmargin=1.5em, itemsep=4pt]
+\item \textbf{Discrete variables:} independent $\iff\mathbb P\{X=x,Y=y\}=\mathbb P\{X=x\}\,\mathbb P\{Y=y\}$ for all $x,y$; sum over $x\in A$, $y\in B$ by countable additivity.
+\item \textbf{Random vectors:} independent $\iff$ the joint distribution function factorizes (orthants form a $\pi$-system, and both sides are probability measures).
+\item \textbf{Events:} $A,B$ independent $\Rightarrow A,B^c$ independent (and $A^c,B^c$), since $\{A\}$ and $\{B\}$ are $\pi$-systems and Lemma 15.11 extends independence to $\sigma(A)=\{\emptyset,A,A^c,\Omega\}$ and $\sigma(B)$.
+\end{itemize}
+ 
+\tocsubsection{Null Sets and Measurability Facts}
+\begin{itemize}[leftmargin=1.5em, itemsep=4pt]
+\item Countable sets, graphs of measurable functions (HW5 \#4) and the Cantor set are Lebesgue-null.
+\item \textbf{Vitali:} there is no rotation-invariant probability on all subsets of the circle $S^1$ (circumference $2\pi$). Pick one point $A$ per family $\omega\sim\omega+n$, $n\in\Z$; the disjoint translates $A+n$ cover $S^1$, forcing $1=\sum_{n\in\Z}\mathbb P(A)$, which is impossible.
+\item Atoms of a countably generated $\sigma$-field are measurable; the countable-cocountable $\sigma$-field on $[0,1]$ is not countably generated (HW1 \#4).
+\item On $C[0,1]$ with the sup metric, the Borel $\sigma$-field equals $\sigma(\text{evaluations})$ (HW2 \#3). Probability measures on Polish spaces are tight (HW2 \#4).
+\item \textbf{Tail events:} $\{S_n\text{ converges}\}$, $\limsup S_n/n$, $\{\xi_n\in B\text{ i.o.}\}$. \textbf{Symmetric but not tail:} $\{S_n=0\text{ i.o.}\}$, $\{S_n>0\text{ i.o.}\}$.
+\end{itemize}
+ 
+%---------------------------------------------------------------------------
+\tocsection{2025 Midterm: Solution Sketches}
+ 
+\textbf{Setup.} $\Omega=\{-1,+1\}^\N$, $P_p=\mu_p^{\otimes\N}$ with $\mu_p\{+1\}=p$, $q=1-p$, $\xi_k(\omega)=\omega_k$, $S_n=\sum_{k\le n}\xi_k$, $T=\inf\{n\in\N:S_n\in\{-a,+a\}\}$. $\pi$ is a probability on $\N=\{1,2,\dots\}$ and $\pi_z\{i\}=z^i\pi\{i\}/Z(z)$ with $Z(z)=\sum_jz^j\pi\{j\}$, $z\in(0,1]$. $\mu\preceq\nu$ means $\mu f\le\nu f$ for all bounded, Borel, nondecreasing $f$.
+ 
+\textbf{Answers to remember:} $P_p\{S_T=a\}=p^a/(p^a+q^a)$, and the law of $T$ under $P_p$ is the tilt of its fair-coin law by $z=2\sqrt{pq}$.
+ 
+\begin{itemize}[leftmargin=1.5em, itemsep=6pt]
+\item \textbf{(1) Harris inequality.} For all $x',x''$ the factors $f(x')-f(x'')$ and $g(x')-g(x'')$ have the same sign, so the integrand is $\ge0$. It is bounded and $\mu\otimes\mu$ is a probability, so Fubini lets you expand:
+\[
+0\le\iint\big(f(x')-f(x'')\big)\big(g(x')-g(x'')\big)\,\mu\otimes\mu(dx',dx'')=2\mu(fg)-2\,\mu f\,\mu g .
+\]
+ 
+\item \textbf{(2) Tilting is monotone.} Let $r=z''/z'\ge1$ and $h(i)=r^i$, which is nondecreasing. Then $\pi_{z''}\{i\}=h(i)\pi_{z'}\{i\}/\pi_{z'}h$, so $\pi_{z''}f=\pi_{z'}(fh)/\pi_{z'}h$. Extend $f$ to $\R$ as a nondecreasing step function. Since $h$ may be unbounded, apply (1) to $h_N=h\wedge N$: $\pi_{z'}(fh_N)\ge\pi_{z'}f\cdot\pi_{z'}h_N$. Let $N\to\infty$ by DCT ($|fh_N|\le\norm{f}_\infty h$ and $\pi_{z'}h=Z(z'')/Z(z')<\infty$) to get $\pi_{z''}f\ge\pi_{z'}f$.
+ 
+\item \textbf{(3) Likelihood ratio.} If $s=\sum_kx_k$, the path has $(n+s)/2$ plus signs and $(n-s)/2$ minus signs, so its $P_p$-probability is $p^{(n+s)/2}q^{(n-s)/2}=(pq)^{n/2}(p/q)^{s/2}$. Divide by $P_{1/2}=2^{-n}$.
+ 
+\item \textbf{(4) $T<\infty$ a.s.} Take $M=2a$ and $A_k=\{\text{all $M$ steps in block $k$ are $+1$}\}$. The blocks are disjoint, so the $A_k$ are independent (grouping) with $P_p(A_k)=p^M>0$, and $P_p(\text{no }A_k\text{ with }k\ge m)=\lim_K(1-p^M)^K=0$. On $A_k$: if $T>(k-1)M$ then $|S_{(k-1)M}|<a$, the block adds $2a$, and $\pm1$ steps cannot jump over $+a$, so $T\le kM$.
+ 
+\item \textbf{(5) Symmetry.} $\varphi(\omega)=-\omega$ preserves $P_{1/2}$ (every length-$n$ cylinder has probability $2^{-n}$; extend by $\pi$-$\lambda$). $T\circ\varphi=T$ and $S_T\circ\varphi=-S_T$, so $\{T=n,S_T=a\}$ and $\{T=n,S_T=-a\}$ have equal probability and partition $\{T=n\}$.
+ 
+\item \textbf{(6) Independence.} $\{T=n,S_T=a\}$ is a union of length-$n$ paths with $\sum x_k=a$. Sum (3) over them and use (5):
+\[
+P_p\{T=n,S_T=\pm a\}=\tfrac12(4pq)^{n/2}(p/q)^{\pm a/2}P_{1/2}\{T=n\}.
+\]
+Write $\rho=(p/q)^{a/2}$, $c_n=\tfrac12(4pq)^{n/2}P_{1/2}\{T=n\}$, $C=\sum_nc_n$. Then $P_p\{T=n\}=c_n(\rho+\rho^{-1})$, $P_p\{S_T=\pm a\}=C\rho^{\pm1}$, and (4) forces $C(\rho+\rho^{-1})=1$. So $P_p\{T=n\}\,P_p\{S_T=a\}=c_n\rho=P_p\{T=n,S_T=a\}$, and likewise for $-a$. \emph{State the criterion:} for discrete $X,Y$, a factorizing joint pmf gives $\mathbb P\{X\in A,Y\in B\}=\mathbb P\{X\in A\}\,\mathbb P\{Y\in B\}$ by summing over the countably many points. Also $P_p\{S_T=a\}=\rho^2/(\rho^2+1)=p^a/(p^a+q^a)$.
+ 
+\item \textbf{(7) Stochastic order of $T$.} By (6), $P_p\{T=n\}\propto z^nP_{1/2}\{T=n\}$ with $z=2\sqrt{pq}\in(0,1]$, so the law of $T$ under $P_p$ is $\pi_z$ with $\pi$ the law of $T$ under $P_{1/2}$ (a probability on $\N$ by (4)). $pq$ decreases on $[\tfrac12,1)$, so $\tfrac12\le p''<p'<1$ gives $z'<z''$, and (2) gives $\pi'\preceq\pi''$: the more biased walk exits sooner.
+\end{itemize}
+
+\end{document}

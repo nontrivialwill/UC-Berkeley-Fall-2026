@@ -1,0 +1,35 @@
+\tocsection{\textbf{8/26/26 Lecture 1:} Metric Spaces}
+
+\textbf{Course Overview:} We will be "assigning numbers to shapes", that is; algebraic invariants to topological spaces. We start by introducing metric spaces.
+
+\begin{definition}[\textbf{Definition 1.1:} Metrics]
+    Let $X$ be a set. A \emph{metric} $d : X \times X \to \R$ is a map such that
+    \begin{enumerate}
+        \item $d(x, y) \geq 0$
+        \item $d(x, y) = 0$ iff $x = y$
+        \item $d(x, y) = d(y, x)$
+        \item $d(x, z) \leq d(x, y) + d(y, z)$
+    \end{enumerate}
+	We then call $(X, d)$ a \emph{metric space}.
+\end{definition}
+The example that most people are used to is $\R$ with the metric $d(x, y) = \abs{x - y}$. Another common metric space is $\R^n$ with the metric
+\[ d(\textbf{x}, \textbf{y}) = \sqrt{\sum_{i = 1}^{n} (x_{i} - y_{i})^2} \]
+Here are some other metrics:\\
+
+
+\begin{itemize}
+	\item Let $X = \R^n$ and $d(\vect{x}, \vect{y}) = \sum_{i = 1}^{n} \abs{x_{i} - y_{i}}$. This is often called the taxicab metric, and proving that it is a metric is easy since each term in the sum is $\abs{x - y}$, the usual Euclidean metric on $\R$.
+	\item Let $X = \R^n$ and $d(\vect{x}, \vect{y}) = \max_{i} \abs{x_{i} - y_{i}}$. This is a metric, and is called the $\ell^{\infty}$ metric.
+	\item Let $X = C[a, b] = \{\text{continuous functions on } [a, b]\}$, and $d(f, g) = \max_{x \in [a, b]}\abs{f(x) - g(x)}$. This is a metric.
+\end{itemize}
+
+\begin{definition}[\textbf{Definition 1.2:} Balls]
+	Let $(X, d)$ be a metric space. The \emph{ball} with center $a \in X$ and radius $\delta > 0$ is
+	\[ B(a, \delta) = \{x \in X \col d(a, x) < \delta \} \]
+\end{definition}
+The ball in $\R$ is an open interval, the ball in $\R^n$ with the $\ell^2$ metric is a ball, the ball in $\R^n$ with the taxicab metric is a diamond, and the ball in $\R^n$ with the $\ell^{\infty}$ metric is a square. 
+
+\begin{definition}[\textbf{Definition 1.3: }Open Sets]
+	Let $(X, d)$ be a metric space. A subset $G \subseteq X$ is \emph{open} if $\forall x \in G$, $\exists \delta > 0$ such that $B(x, \delta) \subseteq G$. 
+\end{definition}
+\clearpage

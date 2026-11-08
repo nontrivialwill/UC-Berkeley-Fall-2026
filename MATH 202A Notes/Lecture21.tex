@@ -1,0 +1,109 @@
+\tocsection{\textbf{10/16/26 Lecture 21:} The Radon-Nikodym Theorem}
+
+If $f$ is integrable with respect to $\mu$, we can define
+\[ \nu(A) = \int_{A} f d\mu \]
+In a sense, ``$f$ is the derivative of $\nu$ with respect to $\mu$''.\\
+
+\textbf{Question:} When does $\nu$ have a derivative with respect to $\mu$?\\
+
+\textbf{Answer:} Note that $\mu(A) = 0 \implies \nu(A) = 0$. This is necessary, but it turns out it is sufficient as well.
+
+\begin{definition}[\textbf{Definition 21.1:} Absolute Continuity]
+    We say that $\nu$ is \emph{absolutely continuous with respect to $\mu$} if $\nu(A) = 0$ whenever $\mu(A) = 0$, denoted $\nu \ll \mu$.
+\end{definition}
+
+\begin{lemma}[\textbf{Proposition 21.2}]
+    If $\nu \ll \mu$ and $\nu \perp \mu$, then $\nu = 0$.
+\end{lemma}
+\begin{proof}{Proof:}
+    Find $A, B$ such that $\nu(A) = \mu(B) = 0$. Then, $\nu(B) = 0$. Thus, as $\nu(A) + \nu(B) = \nu(X)$, we see that $\nu(X) = 0$.
+
+    $\qed$
+\end{proof}
+
+\begin{lemma}[\textbf{Proposition 21.3}]
+    Let $\nu$ be a finite measure. Then, $\nu \ll \mu$ if, and only if, for any $\epsilon > 0$, there exists $\delta > 0$ so that
+    \[ \mu(A) < \delta \implies \nu(A) < \epsilon \]
+\end{lemma}
+\begin{proof}{Proof:}
+    $(\Leftarrow)$ If $\mu(A) = 0$, then $\mu(A) < \delta$ for any $\delta$, so $\nu(A) < \epsilon$ for any $\epsilon$, so $\nu(A) = 0$.\\
+
+    $(\Rightarrow)$ Suppose not. Then, for some $\epsilon > 0$ and every $k$, there exists $A_k$ such that $\mu(A_k) < 2^{-k}$ but $\nu(A_k) > \epsilon$. Let
+    \[ B = \bigcap_{n = 1}^{\infty} \bigcup_{k = n}^{\infty} A_k \]
+    Then,
+    \[ \mu(B) = \lim_{n \to \infty} \mu\left(\bigcup_{k = n}^{\infty} A_k\right) \leq \lim_{n \to \infty} \sum_{k = n}^{\infty} 2^{-k} = 0 \]
+    Now, $\mu(B) = 0$, but as $\nu$ is finite,
+    \[ \nu(B) = \lim_{n \to \infty} \nu\left(\bigcup_{k = n}^{\infty} A_k\right) \geq \epsilon \]
+    This contradicts absolute continuity. Note that we used the finiteness of $\nu$ to make sure these descending limits exist. 
+
+    $\qed$
+\end{proof}
+
+
+\begin{theorem}[\textbf{Theorem 21.4:} Radon-Nikodym Theorem]
+    Let $\mu$ be $\sigma$-finite and $\nu$ be a finite measure. Suppose $\nu \ll \mu$. Then, there is an integrable $f \geq 0$ so that
+    \[ \nu(A) = \int_{A} f d\mu \]
+    and $f$ is $\mu$-a.e. unique. We call $f$ the \emph{Radon-Nikodym derivative} of $\nu$, and denote it $\frac{d\nu}{d\mu}$.
+\end{theorem}
+\begin{proof}{Proof:}
+    We need a quick lemma.
+\end{proof}
+
+\begin{lemma}[\textbf{Lemma 21.5}]
+    Let $\mu$ and $\nu$ be finite measures. If $\mu$ and $\nu$ are not mutually singular, then there is some $\epsilon > 0$ and some set $A$ so that $\mu(A) > 0$ and $A$ is a positive set for $\nu - \epsilon\mu$. That is, $\nu(B) \geq \epsilon\mu(B)$ for $B \subseteq A$.
+\end{lemma}
+\begin{proof}{Proof:}
+    Apply the Hahn decomposition to $\nu - \frac{1}{n}\mu$ to get positive sets $F_n$ and negative sets $E_n$. Let $E = \bigcap_{n} E_n$. For each $n$,
+    \[ \nu(E) \leq \nu(E_n) \leq \frac{1}{n}\mu(E_n) \leq \frac{1}{n}\mu(X) \]
+    Taking $n \to \infty$, we see that $\nu(E) = 0$.\\
+
+    Consider $\mu(E^{c})$. We can't have $\mu(E^{c}) = 0$, as this would imply that $\mu$ and $\nu$ are mutually singular. Thus, $\mu(E^{c}) > 0$. We see $E^{c} = \bigcup_{n} E_n^{c}$, so for some $n$, $\mu(E_n^{c}) > 0$. Let $A = E_n^{c} = F_n$ and let $\epsilon = \frac{1}{n}$. Then, $\nu - \frac{1}{n}\mu$ is positive on $A$ and $\mu(A) > 0$.
+
+    $\qed$
+\end{proof}
+\vspace{0.5cm}
+
+\begin{proof}{Proof of Theorem 21.4 (Radon-Nikodym):}
+    Start by assuming $\mu$ is finite. Let
+    \[ F = \left\{g : X \to [0, \infty) \col \int_{A} g d\mu \leq \nu(A)\ \forall A \in \cal{A}\right\} \]
+    $F$ is nonempty because it contains $0$.\\
+
+    Now, let $L = \sup\{\int g d\mu \col g \in F\}$. Choose $f_n$ so that $\int f_n d\mu \to L$, and let $g_n = f_1 \vee \cdots \vee f_n$. We want to show that $g_n \in F$. If $h, g \in F$, then
+    \begin{align*}
+        \int_{A} (h \vee g) d\mu &= \int_{A \cap \{h \geq g\}} (h \vee g) d\mu + \int_{A \cap \{h < g\}} (h \vee g) d\mu\\
+        &\leq \int_{A \cap \{h \geq g\}} h d\mu + \int_{A \cap \{h < g\}} g d\mu\\
+        &\leq \nu(A \cap \{h \geq g\}) + \nu(A \cap \{h < g\})\\
+        &= \nu(A)
+    \end{align*}
+    so $h \vee g \in F$. Thus, by induction, $g_n \in F$ for all $n$. Now, let $f = \lim_{n \to \infty} g_n$. By the MCT,
+    \[ \int_{A} f d\mu = \lim_{n \to \infty} \int_{A} g_n d\mu \leq \nu(A) \]
+    so $f \in F$. Also, $\int_{X} f d\mu = L$, by the MCT.\\
+
+    Now, we want to show that $\nu(A) = \int_{A} f d\mu$. Let
+    \[ \tilde{\nu}(A) = \nu(A) - \int_{A} f d\mu \]
+    We see that $\tilde{\nu}$ is a measure, so we want to show it is zero.\\
+
+    We know $\tilde{\nu} \ll \mu$, so we want to show $\tilde{\nu} \perp \mu$. Suppose not. By our lemma, we can find $A$ and $\epsilon$ so that $A$ is positive for $\tilde{\nu} - \epsilon\mu$ and $\mu(A) > 0$. Then, for $B \subseteq A$,
+    \[ \nu(B) \geq \int_{B} f d\mu + \epsilon\mu(B) \]
+    Because of this, we know that $f + \epsilon\chi_{A} \in F$, as
+    \begin{align*}
+        \int_{B} (f + \epsilon\chi_{A}) d\mu &= \int_{B} f d\mu + \epsilon\mu(A \cap B)\\
+        &\leq \int_{B} f d\mu + \nu(A \cap B) - \int_{A \cap B} f d\mu\\
+        &= \int_{B \setminus A} f d\mu + \nu(A \cap B)\\
+        &\leq \nu(B \setminus A) + \nu(A \cap B) = \nu(B)
+    \end{align*}
+    However,
+    \[ \int (f + \epsilon\chi_{A}) d\mu = \int f d\mu + \epsilon\mu(A) = L + \epsilon\mu(A) > L \]
+    This contradicts the maximality of $L$. Thus, $\tilde{\nu} \perp \mu$, so $\tilde{\nu} = 0$ by Proposition 21.2. Thus,
+    \[ \nu(A) = \int_{A} f d\mu \]
+
+    To show uniqueness, suppose $\nu(A) = \int_{A} g d\mu$. Then,
+    \[ \int_{A} (f - g) d\mu = 0 \]
+    for all $A$. Then, by a previous result (Proposition 13.4), we know $f - g = 0$ a.e., so $f = g$ a.e.\\
+
+    To extend to $\sigma$-finite $\mu$, write $X = \bigsqcup_{n} X_n$ so that each $X_n$ has finite measure. Then, apply the above to $\mu\res{X_n}$. Thus, we get a function $f_n$ on each $X_n$ with $\nu(A) = \int_{A} f_n d\mu$ for $A \subseteq X_n$. Now, defining $f = \sum_{n} f_n \chi_{X_n}$, we have that 
+    \[ \nu(A) = \int_{A} f d\mu \]
+    for any $A$ by countable additivity and the MCT, integrability holds as $\nu$ is finite, and uniqueness one ach $X_n$ extends to uniqueness everywhere. 
+
+    $\qed$
+\end{proof}

@@ -1,0 +1,82 @@
+\tocsection{\textbf{10/12/26 Lecture 19:} Completions and Signed Measures}
+
+Recall the product measure from last time. It is quite clear how to extend it to finitely many measure spaces by
+\[ (\mu_1 \times \cdots \times \mu_n)(A_1 \times \cdots \times A_n) = \prod_{i = 1}^{n} \mu_i(A_i) \]
+Unfortunately, product measures are not complete. Let $A \in \cal{A}_1$ with $A \neq \emptyset$ and $\mu_1(A) = 0$. Take a non-measurable $E \in \P(A_2)$. 
+Now, $A \times E$ is non-measurable (otherwise, $E$ would be measurable by taking restrictions), but $A \times E \subseteq A \times A_2$, and $A \times A_2$ has measure $0$. Thus, $\cal{A}_1 \times \cal{A}_2$ is not complete.\\ 
+
+Recall that, given a measure space $(X, \cal{A}, \mu)$ that is not complete, we can consider its completion $(X, \overline{\cal{A}}, \overline{\mu})$.
+
+\begin{definition}[\textbf{Definition 19.1:} $d$-Dimensional Lebesgue Measure]
+    The \emph{$d$-dimensional Lebesgue measure} is the completion of $(\R^d, \cal{A}^d, \lambda^d)$.
+\end{definition}
+
+\textbf{Note:} We can also define the Lebesgue measure on $\R^d$ using an outer measure with rectangles, and it agrees!
+
+\subsection*{Signed Measures}
+\sectionspace
+
+\textbf{Motivation:} If $f$ is smooth and compactly supported, then
+\[ f(b) - f(a) = \int_{a}^{b} f'(x) dx \]
+Now, as seen in the homework, $\nu_{f'}(E) = \int_{E} f'(x) dx$ is a measure when $f' \geq 0$, so $f(b) - f(a) = \nu_{f'}([a, b])$. This is the Lebesgue-Stieltjes measure for $f$! Thus, the measure acts like $f'$ in the sense that if we integrate, we get $f$ (even if $f'$ doesn't exist!)\\
+
+\textbf{Issue:} This only works for increasing, right-continuous functions, so if we want to be more general, we want to allow signed measures.
+
+\begin{definition}[\textbf{Definition 19.2:} Signed Measures]
+    Given a $\sigma$-algebra $\cal{A}$, a \emph{signed measure} $\mu : \cal{A} \to (-\infty, \infty]$ is a function such that
+    \begin{enumerate}
+        \item $\mu(\emptyset) = 0$
+        \item If $\{A_i\}_{i = 1}^{\infty}$ are disjoint, then
+        \[ \mu\left(\bigcup_{i = 1}^{\infty} A_i\right) = \sum_{i = 1}^{\infty} \mu(A_i) \]
+        and the sum converges absolutely when the LHS is finite.
+    \end{enumerate}
+\end{definition}
+
+\begin{lemma}[\textbf{Proposition 19.3}]
+    Let $\mu$ be a signed measure on $(X, \cal{A})$. Then,
+    \begin{enumerate}
+        \item If $A_1 \subseteq A_2 \subseteq \cdots$ with $A_n \in \cal{A}$, then $\mu\left(\bigcup_{n} A_n\right) = \lim_{n} \mu(A_n)$.
+        \item If $A_1 \supseteq A_2 \supseteq \cdots$ with $A_n \in \cal{A}$ and $\mu(A_1) < \infty$, then $\mu\left(\bigcap_{n} A_n\right) = \lim_{n} \mu(A_n)$.
+    \end{enumerate}
+\end{lemma}
+
+\begin{example}{\textbf{Examples:} Signed Measures}
+    \vspace{-0.5cm}
+    \begin{itemize}
+        \item If $\mu_1$ and $\mu_2$ are measures and $\mu_2$ is finite, then $\nu = \mu_1 - \mu_2$ is a signed measure.
+        \item If $f$ is integrable, then $\nu(E) = \int_{E} f dx$ is a signed measure. Note that this is the same as above if we let $\mu_1(E) = \int_{E} f^{+} dx$ and $\mu_2(E) = \int_{E} f^{-} dx$.
+    \end{itemize}
+\end{example}
+
+\begin{definition}[\textbf{Definition 19.4:} Positive, Negative, and Null Sets]
+    Let $\mu$ be a signed measure. A set $A \in \cal{A}$ is \emph{positive} if $\mu(B) \geq 0$ for any measurable $B \subseteq A$. Similarly, $A$ is \emph{negative} if $\mu(B) \leq 0$ for any measurable $B \subseteq A$. Finally, $A$ is \emph{null} if $\mu(B) = 0$ for any measurable $B \subseteq A$.
+\end{definition}
+
+\begin{lemma}[\textbf{Theorem 19.5:} Hahn Decomposition Theorem]
+    Let $\mu$ be a signed measure on $(X, \cal{A})$.
+    \begin{enumerate}
+        \item There exist disjoint sets $A, B \in \cal{A}$ such that $A$ is positive, $B$ is negative, and $A \cup B = X$. 
+        \item If $A'$ and $B'$ are another pair of sets satisfying 1, then $A \triangle A'$ and $B \triangle B'$ are null sets.
+        \item If $\mu$ is not a positive measure, then $\mu(B) < 0$, and if $-\mu$ is not positive, then $\mu(A) > 0$.
+    \end{enumerate}
+\end{lemma}
+\begin{proof}{Proof:}
+    We need a lemma first.
+\end{proof}
+
+\begin{lemma}[\textbf{Lemma 19.6}]
+    Let $\mu$ be a signed measure. If $\mu(B) < 0$, then we can find $B' \subseteq B$ that is negative such that $\mu(B') < 0$. 
+\end{lemma}
+\begin{proof}{Proof:}
+    Suppose $B$ is not negative (the result is obvious if it is). The idea is that we pull positive pieces off of $B$.\\
+
+    As $B$ is not negative, find the smallest integer $n_1$ such that there exists $A_1 \subseteq B$ with $\mu(A_1) \geq 1/n_1$. Now, let
+    \[ B_1 = B \setminus A_1 \]
+    If $B_1$ is negative, we are done, as $\mu(B_1) = \mu(B) - \mu(A_1) < 0$. If not, iterate. Given $B_j$ not negative, find $A_{j + 1} \subseteq B_j$ such that $\mu(A_{j + 1}) \geq 1/n_{j + 1}$, where $n_{j + 1}$ is the smallest such integer. Then, define % ?? page has \mu(A_{j+1}) = 1/n_{j+1}; I wrote \geq to match the first step
+    \[ B_{j + 1} = B_j \setminus A_{j + 1} \]
+    Now, let $B' = \bigcap_{j} B_j$. Then, $B = B' \cup \left(\bigcup_{j = 1}^{\infty} A_j\right)$. Since this is a disjoint union,
+    \[ \mu(B) = \mu(B') + \sum_{i = 1}^{\infty} \mu(A_i) \]
+    Since $\mu(B) < 0$, we must have $\mu(B') < 0$. Also, as $\mu(B') < 0$, $\mu(A_j) \to 0$, which implies $n_j \to \infty$.\\
+
+    Now, we need to check that $B'$ is a negative set.
+\end{proof}

@@ -1,0 +1,78 @@
+\tocsection{\textbf{10/2/26 Lecture 15:} Modes of Convergence}
+
+\vspace{0.2cm}
+
+\begin{proof}{\textbf{Proof of Theorem 14.2 (cont.)}}
+    Now, recall that we have a sequence $P_1 \subseteq P_2 \subseteq \cdots$ of partitions so that $T_{P_j}$ is decreasing and $S_{P_j}$ is increasing. Also, we have that $T_{P_{j}} \geq f \geq S_{P_{j}}$, and by the monotone convergence theorem, there must be some $T$ and $S$ so that $T_{P_{j}} \to T$ and $S_{P_{j}} \to S$. Also, recall these functions have the property that
+    \[ \int T_{P_{j}} dx = U(P_j, f) \quand \int S_{P_{j}} dx = L(P_{j}, f) \]
+
+    Now, $\abs{T_{P_{j}}} \leq \sup_{x \in [0, 1]}\abs{f(x)} < \infty$ ($f$ bounded) and the same inequality holds for $\abs{S_{P_{j}}}$. Because of this, we can apply the DCT to the following:
+    \begin{align*}
+        \int T - S dx &= \lim_{j \to \infty} \int T_{j} - S_{j} dx \\
+        &= \lim_{j \to \infty} U(P_{j}, f) - L(P_{j}, f)\\
+        &= 0
+    \end{align*}
+    as $f$ is Riemann integrable. Then, because $\int (T - S) dx = 0$, and because $T - S \geq 0$, we see that $T = S$ almost everywhere. Thus, we must have that $T = f = S$ almost everywhere.\\
+
+    Now, we want to show that $f$ is continuous a.e., so what we want to show that if $T(x) = S(x)$ and $x \notin P_{j}$ for any $j$, then $f$ is continuous at $x$. Let $\epsilon > 0$. Then, as $T$ and $S$ agree at $x$, find a $j$ so that
+    \[ T_{P_{j}}(x) - S_{P_{j}}(x) < \epsilon \]
+    and choose $\delta$ so that $x \in (x - \delta, x + \delta) \subseteq [x_{j - 1}, x_{j}]$. On this interval, note that $T_{P_{j}}$ and $S_{P_{j}}$ are constant. Thus, $T_{P_{j}}(y) - S_{P_{j}}(y) < \epsilon$ for all $y \in (x - \delta, x + \delta)$. Notice this implies that $T_{P_{k}}(y) - S_{P_{k}}(y) < \epsilon$ for all $k \geq j$ on $(x - \delta, x + \delta)$, which implies that $f$ is continuous at $x$ (bound the variance of $f$ by the constant values of $T_{P_{j}}$ and $S_{P_{j}}$).\\
+
+    Finally, we see that
+    \[ \int f = \lim_{j \to \infty} \int T_{P_{j}} = \lim_{j \to \infty} U(P_{j}, f) = R(f) \]
+    so the Lebesgue and Riemann integrals of $f$ agree, which was to be shown.\\
+
+    \textbf{(2)} Let $P_1 \subseteq P_2 \subseteq \cdots$ be some increasing sequence of partitions with $\tt{mesh}(P_{j}) \to 0$. For instance, take
+    \[ P_{j} = \{a + n(b - a)2^{-j} \col n = 0, \ldots, 2^{j}\} \]
+    Suppose that $x$ is a point of continuity of $f$ that is not in any of the $P_{j}$. For each $j$, pick $[y_{j}, z_{j}]$ (with endpoints in $P_{j}$) containing $x$. Now $y_{j} \to x$ and $z_{j} \to x$. Then, we see that
+    \[ \sup_{y \in [y_{j}, z_{j}]} f(y) \to f(x) \]
+    because $f$ is continuous as $x$. Thus, we see that $T_{P_{j}}(x) \to f(x)$ and by the same argument, $S_{P_{j}}(x) \to f(x)$ for almost every $x \in [a, b]$. Then, 
+    \[ U(P_{j}, f) = \int T_{P_{j}} dx \to \int f dx\]
+    and
+    \[ L(P_{j}, f) = \int S_{P_{j}} dx \to \int f dx \]
+    Thus, we see that $f$ is Riemann integrable.
+
+\end{proof}
+
+\subsection*{Modes of Convergence}
+
+Let $(X, \cal{A}, \mu)$ be a measure space. 
+
+\begin{definition}[\textbf{Definition 15.1: }Pointwise Almost Everywhere Convergence]
+    Given $f_n : X \to \R$ measurable, we say that $f_n \to f$ \emph{pointwise almost everywhere} if 
+    \[ \mu\{x \col f_{n}(x) \not \to f(x)\} = 0 \]
+    We usually denote this $f_n \to f$ a.e.
+\end{definition}
+
+\begin{definition}[\textbf{Definition 15.2: }Convergence in Measure]
+    Given $f_n : X \to \R$ measureable, we say that $f_n \to f$ \emph{in measure} if, for any $\epsilon > 0$, 
+    \[ \mu\{x \col \abs{f_{n}(x) - f(x)} > \epsilon\} \to 0 \]
+    as $n \to \infty$. 
+\end{definition}
+
+It turns out convergence in measure does not imply convergence pointwise almost everywhere. Consider the following function:\\
+
+\fig{0.6}{Lecture15Fig1}{}
+
+
+Note that if we go far enough, $\mu(\abs{f_n} > 0)$ is $1/n$, so $f_n$ converges in measure to $0$. However, notice that $f_n(x) = 1$ infinitely many times, so $f_n$ never converges pointwise to $0$. \\
+
+
+It also turns out that, when $\mu(X) = \infty$, convergence pointwise does not imply convergence in measure. Consider the functions
+\[ f_n = \chi_{[n, n + 1]} \]
+We see that $f_n \to 0$ almost everywhere (pointwise), but $\mu(\abs{f_n}(x) > 0) = 1$. Convergence pointwise seems stronger, but we have problems when mass escapes to infinity. Thus, if we assume this isn't possible, it turns out we can have one implication.
+
+\begin{lemma}[\textbf{Proposition 15.3}]
+    Let $f_n : X \to \R$ be measurable.
+    \begin{enumerate}
+        \item If $\mu$ is a finite measure, then $f_n \to f$ almost everywhere implies that $f_n \to f$ in measure.
+        \item If $\mu$ is any measure, and if $f_n \to f$ in measure, then there is a subsequence $f_{n_{j}} \to f$ almost everywhere. 
+    \end{enumerate}
+\end{lemma}
+\begin{proof}{Proof}
+    \textbf{(1)} Let
+    \[ A_n = \{x \col \abs{f_{n}(x) - f(x)} > \epsilon\} \]
+    Then, as $f_n(x) \to f(x)$ almost everywhere, this implies that $\chi_{A_n}(x) \to 0$ almost everywhere. Then, we see that
+    \[ \lim_{n \to \infty} \mu(A_n) = \int \lim_{n \to \infty} \chi_{A_n}(x) dx = \int 0 = 0 \]
+    where the dominated convergence theorem was needed for the above equality, using the fact that $\abs{\chi_{A_n}} \leq 1$ and $1$ is integrable when $\mu(X) < \infty$. 
+\end{proof}

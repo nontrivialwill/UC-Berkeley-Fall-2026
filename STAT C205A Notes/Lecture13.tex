@@ -1,0 +1,98 @@
+\tocsection{\textbf{10/13/26 Lecture 13:} Processes, Distributions, and Independence}
+
+\begin{lemma}[\textbf{Lemma 13.1:} Partial Density]
+    Let $\mu$ and $\nu$ be bounded measures on $\Omega$ with $\mu \not\perp \nu$. Then, there exists a measurable function $f \geq 0$ on $\Omega$ such that $\mu f > 0$ and $f \cdot \mu \leq \nu$.
+\end{lemma}
+\begin{proof}{Proof:}
+    For each $n \in \N$, we introduce the signed measure $\chi_n = \nu - n^{-1}\mu$. By the Hahn decomposition, we can find $A_n^{+} \in \cal{A}$ with complement $A_n^{-}$ such that $\pm \chi_n \geq 0$ on $A_n^{\pm}$. Since the $\chi_n$ are non-decreasing, we can assume that $A_1^{+} \subseteq A_2^{+} \subseteq \cdots$ (we get rid of measure $0$ sets). Writing $A = \bigcup_{n} A_n^{+}$, and noting that $A^{c} = \bigcap_{n} A_n^{c} \subseteq A_n^{-}$, we see that
+    \[ \nu A^{c} \leq \nu A_n^{-} = \chi_n A_n^{-} + n^{-1}\mu A_n^{+} \leq n^{-1}\mu\Omega \to 0 \]
+    so $\nu A^{c} = 0$. Since $\mu \not\perp \nu$, we must have $\mu A > 0$. Furthermore, $A_n^{+} \uparrow A$ implies that $\mu A_n^{+} \uparrow \mu A > 0$, so pick $n$ sufficiently large so that $\mu A_n^{+} > 0$. Letting $f = n^{-1}1_{A_n^{+}}$, we see that $\mu f = n^{-1}\mu A_n^{+} > 0$, so
+    \[ f \cdot \mu = n^{-1}1_{A_n} \cdot \mu = 1_{A_n^{+}} \cdot \nu - 1_{A_n^{+}} \cdot \chi_n \leq \nu \]
+
+    $\qed$
+\end{proof}
+Now, we can prove the Radon-Nikodym theorem. 
+\vspace{2cm}
+
+\begin{proof}{Proof of Theorem 12.7 (Radon-Nikodym):}
+    Assume that $\mu$ and $\nu$ are bounded. Let $\cal{C}$ denote the class of nonnegative measurable functions $f$ on $\Omega$ with $f \cdot \mu \leq \nu$, and let $c = \sup\{\mu f \col f \in \cal{C}\}$. Choose $f_1, f_2, \ldots \in \cal{C}$ with $\mu f_n \to c$, and let $f = \sup_{n} f_n$. We see that $\sup_{n} f_n \in \cal{C}$ from last time (Lemma 12.8), and as $\mu f \geq \mu f_n$ and $\mu f_n \to c$, we see that $\mu f \geq c$. Thus, $\mu f = c$\\
+
+    Define $\nu_{a} = f \cdot \mu$ and $\nu_{s} = \nu - \nu_{a}$. Note that $\nu_{a} \ll \mu$ by definition. If $\nu_{s} \not\perp \mu$, then by Lemma 13.1, there exists $g \geq 0$ with $\mu g > 0$ and $g \cdot \mu \leq \nu_{s}$. But then $f + g \in \cal{C}$ (as $(g + f) \cdot \mu \leq \nu$) and $\mu(f + g) > c$, which contradicts the definition of $c$. Thus, $\nu_{s} \perp \mu$.\\
+
+    To prove the uniqueness, suppose that $\nu = \nu_a' + \nu_s'$. Now, pick $A, B \in \cal{A}$ so that $\nu_s(A) = \mu(A^{c}) = \nu_s'(B) = \mu(B^{c}) = 0$. Then, we see that $\nu_a(A^{c}) = \nu_a'(B^{c}) = 0$, so
+    \[ \nu_s(A \cap B) = \nu_s'(A \cap B) = \nu_a(A^{c} \cup B^{c}) = \nu_a'(A^{c} \cup B^{c}) = 0 \]
+    Thus, we see that
+    \[ \nu_a = 1_{A \cap B} \cdot \nu_a = 1_{A \cap B} \cdot \nu = 1_{A \cap B} \cdot \nu_a' = \nu_a' \]
+    and 
+    \[ \nu_s = \nu - \nu_a = \nu - \nu_a' = \nu_s' \]
+    which was to be shown. Then, to show that $f$ is a.e. unique, suppose that $\nu_a = g \cdot \mu$ for some measurable $g \geq 0$. Then, we see that, letting $h = f - g$, we see that $\int_{A} h d\mu = 0$ for all $A$, which implies that $h = 0$ $\mu$-a.e., so $f = g$ $\mu$-a.e.\\
+
+    Now, to extend to the $\sigma$-finite case, write $X = \sqcup X_i$ with $X_i$ having finite measure with respect to both $\mu$ and $\nu$, and then use the above theorem on the restricted measure $\mu \res{X_i}$, $\nu \res{X_i}$. Then, piece the results together. 
+
+    $\qed$
+
+
+\end{proof}
+
+\subsection*{Processes, Distributions, and Independence}
+\sectionspace
+
+\begin{example}{\textbf{Example:} Fair Coin Tosses}
+    Let $\Omega = \{0, 1\}^{\N}$, and let $\cal{A}$ be the product $\sigma$-field, where $\{0, 1\}$ has the discrete $\sigma$-field. Let $\mathbb{P}$ be the probability measure such that
+    \[ \mathbb{P}\{\omega \in \Omega \col (\omega_1, \ldots, \omega_n) = (x_1, \ldots, x_n)\} = 2^{-n} \]
+    for all $n \in \N$. We call this the ``fair coin toss measure''. We want to show that
+    \[ \mathbb{P}\left\{\omega \in \Omega \col \lim_{n \to \infty} \frac{1}{n}(\omega_1 + \cdots + \omega_n) = \frac{1}{2}\right\} = 1 \]
+    By the definition of a limit, this is equivalent to showing that for all $\epsilon > 0$,
+    \[ \mathbb{P}\left\{\omega \in \Omega \col \abs{\frac{1}{n}(\omega_1 + \cdots + \omega_n) - \frac{1}{2}} > \epsilon \tt{ for infinitely many } n\right\} = 0 \]
+    This is also equivalent to showing that
+    \[ \mathbb{P}\left\{\omega \in \Omega \col \exists N_0 \tt{ s.t. } \forall n \geq N_0,\ \abs{\frac{1}{n}(\omega_1 + \cdots + \omega_n) - \frac{1}{2}} \leq \epsilon\right\} = 1 \]
+\end{example}
+
+\begin{definition}[\textbf{Definition 13.2:} Probability Spaces]
+    Fix a probability space $(\Omega, \cal{A}, P)$, where $P$ is a \emph{probability measure}; that is, a measure with total mass $1$. We call the sets $A \in \cal{A}$ \emph{events}, and $PA = P(A)$ is the \emph{probability} of $A$.
+\end{definition}
+
+\begin{definition}[\textbf{Definition 13.3:} Infinitely Often and Ultimately]
+    Given a sequence of events $A_1, A_2, \ldots \in \cal{A}$, define
+    \begin{align*}
+        \{A_n \tt{ i.o.}\} &= \left\{\omega \in \Omega \col \sum_{n} 1_{A_n}(\omega) = \infty\right\} = \bigcap_{n} \bigcup_{k \geq n} A_k\\
+        \{A_n \tt{ ult.}\} &= \left\{\omega \in \Omega \col \sum_{n} 1_{A_n^{c}}(\omega) < \infty\right\} = \bigcup_{n} \bigcap_{k \geq n} A_k
+    \end{align*}
+    which we call ``$A_n$ \emph{infinitely often}'' and ``$A_n$ \emph{ultimately}''.
+\end{definition}
+
+Note that
+\[ 1\{A_n \tt{ i.o.}\} = \limsup_{n \to \infty} 1_{A_n} \quand 1\{A_n \tt{ ult.}\} = \liminf_{n \to \infty} 1_{A_n} \]
+and by Fatou's lemma,
+\[ P\{A_n \tt{ i.o.}\} \geq \limsup_{n \to \infty} PA_n \quand P\{A_n \tt{ ult.}\} \leq \liminf_{n \to \infty} PA_n \]
+Furthermore,
+\[ P\{A_n \tt{ i.o.}\} = \lim_{n \to \infty} P\left(\bigcup_{k \geq n} A_k\right) \leq \lim_{n \to \infty} \sum_{k \geq n} PA_k \]
+which gives us the following result.
+
+\begin{lemma}[\textbf{Lemma 13.4:} First Borel-Cantelli Lemma]
+    If $\sum_{n} PA_n < \infty$, then $P\{A_n \tt{ i.o.}\} = 0$.
+\end{lemma}
+
+\begin{definition}[\textbf{Definition 13.5:} Random Elements and Distributions]
+    Any measurable mapping $\xi$ of $\Omega$ into some measurable space $(S, \cal{S})$ is called a \emph{random element} in $S$. If $B \in \cal{S}$, then $\{\xi \in B\} = \xi^{-1}B \in \cal{A}$, so we can define the push-forward probability measure
+    \[ P\{\xi \in B\} = P(\xi^{-1}B) = (P \circ \xi^{-1})B, \quad B \in \cal{S} \]
+    The probability measure $\cal{L}(\xi) = P \circ \xi^{-1}$ on $S$ induced by $\xi$ is called the \emph{distribution} or \emph{law} of $\xi$.
+\end{definition}
+
+\begin{definition}[\textbf{Definition 13.6:} Types of Random Elements]
+    A random element in $S$ is called
+    \begin{itemize}
+        \item a \emph{random variable} if $S = \R$,
+        \item a \emph{random vector} if $S = \R^{d}$,
+        \item a \emph{random sequence} if $S = \R^{\infty}$,
+        \item a \emph{random} or \emph{stochastic process} when $S$ is a function space,
+        \item a \emph{random measure} or \emph{random set} if $S$ is a class of measures or sets.
+    \end{itemize}
+\end{definition}
+
+We assume that a metric or topological space $S$ is endowed with the Borel $\sigma$-field $\cal{B}(S)$ unless otherwise specified. For any separable metric space $S$, $\xi = (\xi_1, \xi_2, \ldots)$ is a random element in $S^{\infty}$ if, and only if, $\xi_1, \xi_2, \ldots$ are random elements in $S$.
+
+\begin{example}{\textbf{Example:} Random Measures}
+    For random measures, we need a $\sigma$-algebra on the space of measures. Here's one way. Let $S$ be the set of finite measures on some space $(X, \cal{F})$. For every $B \in \cal{F}$, we want the function $f_{B} : S \to \R$ given by $f(\mu) = \mu(B)$ to be measurable. Then, define
+    \[ \cal{A} = \sigma\{f_{B} \col B \in \cal{F}\} \]
+\end{example}

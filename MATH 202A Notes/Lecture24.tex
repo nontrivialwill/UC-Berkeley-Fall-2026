@@ -1,0 +1,125 @@
+\tocsection{\textbf{10/23/26 Lecture 24:} Lebesgue Differentiation and Its Consequences}
+
+\begin{theorem}[\textbf{Theorem 24.1:} Lebesgue Differentiation Theorem]
+    If $f \in L^1_{\tt{loc}}$, then $\lim_{r \to 0} f_r(x) = f(x)$ a.e.
+\end{theorem}
+\begin{proof}{Proof:}
+    Recall that it suffices to take $f \in L^1$. We see
+    \[ \{x \col f_r(x) \not\to f(x)\} \subseteq \bigcup_{n} A_n \]
+    where $A_n = \{x \col \limsup_{r \to 0} \abs{f_r(x) - f(x)} > 1/n\}$. We want to show $\lambda(A_n) = 0$ for all $n$. Given $\epsilon > 0$, there exists $g$ continuous and integrable such that
+    \[ \int \abs{f - g} dx < \epsilon \]
+    Then,
+    \begin{align*}
+        \limsup_{r \to 0} \abs{f_r(x) - f(x)} &\leq \limsup_{r \to 0} \left(\abs{f_r(x) - g_r(x)} + \abs{g_r(x) - g(x)} + \abs{g(x) - f(x)}\right)\\
+        &\leq M\abs{f - g}(x) + 0 + \abs{f(x) - g(x)}
+    \end{align*}
+    Then,
+    \[ A_n \subseteq \left\{x \col M\abs{f - g}(x) > \frac{1}{2n}\right\} \cup \left\{x \col \abs{f(x) - g(x)} > \frac{1}{2n}\right\} \]
+    By the weak 1-1 inequality,
+    \[ \lambda\left\{x \col M\abs{f - g}(x) > \frac{1}{2n}\right\} \leq \frac{C}{1/(2n)}\int \abs{f - g} dx \leq 2nC\epsilon \]
+    and by Chebyshev,
+    \[ \lambda\left\{x \col \abs{f(x) - g(x)} > \frac{1}{2n}\right\} \leq \frac{1}{1/(2n)}\int \abs{f - g} dx \leq 2n\epsilon \]
+    Then, as $\epsilon$ is independent of $n$ and $C$, we see that by taking $\epsilon \to 0$, $\lambda(A_n) = 0$.
+
+    $\qed$
+\end{proof}
+
+Now, we derive some interesting theorems.\\
+
+Recall that, from the homework, if $A \subseteq \R$ such that $\lambda(A) > 0$, then for all $\alpha \in (0, 1)$ there exists an interval $I$ such that $\lambda(A \cap I) > \alpha\lambda(I)$. It turns out this comes for free!
+
+\begin{lemma}[\textbf{Corollary 24.2:} Lebesgue Density Theorem]
+    Suppose $A \subseteq \R$ is measurable such that $\lambda(A) > 0$. Then, for a.e. $x \in A$,
+    \[ \lim_{r \to 0} \frac{\lambda(A \cap B_r(x))}{\lambda(B_r(x))} = 1 \]
+    and for a.e. $x \notin A$,
+    \[ \lim_{r \to 0} \frac{\lambda(A \cap B_r(x))}{\lambda(B_r(x))} = 0 \]
+\end{lemma}
+\begin{proof}{Proof:}
+    Apply the theorem to $f = \chi_A$, as
+    \[ \int_{B_r(x)} \chi_A = \lambda(A \cap B_r(x)) \]
+
+    $\qed$
+\end{proof}
+
+From our theorem, we also see
+\[ \lim_{r \to 0} \frac{1}{\lambda(B_r(x))} \int_{B_r(x)} f(y) - f(x) dy = 0 \]
+
+\begin{lemma}[\textbf{Proposition 24.3}]
+    If $f \in L^1_{\tt{loc}}$, then
+    \[ \lim_{r \to 0} \frac{1}{\lambda(B_r(x))} \int_{B_r(x)} \abs{f(y) - f(x)} dy = 0 \quad \tt{a.e. } x \]
+\end{lemma}
+\begin{proof}{Proof:}
+    For $q \in \Q$, apply the theorem to $\abs{f(x) - q}$ to see
+    \[ \frac{1}{\lambda(B_r(x))} \int_{B_r(x)} \abs{f(y) - q} dy \to \abs{f(x) - q} \]
+    for all $x \notin A_q$ (for a null set $A_q$).\\
+
+
+    If $x \notin A_q$ for any $q$, choose $q_*$ so that $\abs{f(x) - q_*} < \epsilon$. Then,
+    \begin{align*}
+        \limsup_{r \to 0} \frac{1}{\lambda(B_r(x))} \int_{B_r(x)} \abs{f(y) - f(x)} dy &\leq \limsup_{r \to 0} \frac{1}{\lambda(B_r(x))} \int_{B_r(x)} \abs{f(y) - q_*} dy\\
+        &\quad + \limsup_{r \to 0} \frac{1}{\lambda(B_r(x))} \int_{B_r(x)} \abs{q_* - f(x)} dy\\
+        &\leq 2\epsilon
+    \end{align*}
+
+    $\qed$
+\end{proof}
+
+\begin{lemma}[\textbf{Corollary 24.4}]
+    Let $f : \R \to \R$ be integrable and fix some $a \in \R$. Then, let
+    \[ F(x) = \int_{a}^{x} f(y) dy \]
+    then $F$ is differentiable almost everywhere and $F'(x) = f(x)$ a.e.
+\end{lemma}
+\begin{proof}{Proof:}
+
+    Let $h > 0$. Then,
+    \[ F(x + h) - F(x) = \int_{x}^{x + h} f(y) dy \]
+    so
+    \begin{align*}
+        \abs{\frac{F(x + h) - F(x)}{h} - f(x)} &= \abs{\frac{1}{h}\int_{x}^{x + h} f(y) - f(x) dy}\\
+        &\leq \frac{2}{\lambda(B_h(x))}\int_{x - h}^{x + h} \abs{f(y) - f(x)} dy
+    \end{align*}
+    Then, as $h \to 0$, the RHS goes to $0$, so
+    \[ \lim_{h \to 0} \frac{F(x + h) - F(x)}{h} = f(x) \]
+    almost everywhere.
+
+    $\qed$
+\end{proof}
+
+\begin{definition}[\textbf{Definition 24.5:} Regular Borel Measures]
+    We say that a Borel measure $\nu$ on $\R^d$ is \emph{regular} if
+    \begin{enumerate}
+        \item $\nu(K) < \infty$ for any compact set $K$.
+        \item $\nu(A) = \inf\{\nu(\cal{U}) \col \cal{U} \tt{ open and } A \subseteq \cal{U}\}$.
+    \end{enumerate}
+\end{definition}
+
+\begin{example}{\textbf{Example:} Regular Measures}
+    Counting measure is not regular! Lebesgue and Lebesgue-Stieltjes measures are.
+\end{example}
+
+\begin{lemma}[\textbf{Proposition 24.6}]
+    Let $\nu$ be a finite positive regular Borel measure. Let
+    \[ \nu(A) = \int_{A} f d\lambda + \rho(A) \]
+    be its Lebesgue decomposition with respect to Lebesgue measure. Then, for $\lambda$-a.e. $x \in \R^d$,
+    \[ \lim_{r \to 0} \frac{\nu(B_r(x))}{\lambda(B_r(x))} = f(x) \]
+\end{lemma}
+\begin{proof}{Proof:}
+    By Lebesgue differentiation,
+    \[ \lim_{r \to 0} \frac{1}{\lambda(B_r(x))} \int_{B_r(x)} f d\lambda = f(x) \quad \lambda\tt{-a.e.} \]
+    Now, we want to show
+    \[ \lim_{r \to 0} \frac{\rho(B_r(x))}{\lambda(B_r(x))} = 0 \]
+    Choose $A$ so that $\rho(A) = \lambda(A^{c}) = 0$. Notice that $A^{c}$ is a $\lambda$-null set, so we just need to show that this limit holds on $A$. \\
+
+    Let $A_n = \left\{x \in A \col \limsup_{r \to 0} \frac{\rho(B_r(x))}{\lambda(B_r(x))} > 1/n\right\}$. We want to show $\lambda(A_n) = 0$ for all $n$. By regularity, find $\cal{U} \supseteq A$ ($A$ is a $\rho$-null set) such that
+    \[ \rho(\cal{U}) < \epsilon \]
+    If $x \in A_n$, we can find $B_{r_x}(x) \subseteq \cal{U}$ so that $\rho(B_{r_x}(x)) > \frac{1}{n}\lambda(B_{r_x}(x))$. Applying the Wiener covering lemma to $\bigcup_{x} B_{r_x}(x)$, we get disjoint $B_1, \ldots, B_N$ such that
+    \begin{align*}
+        (1 - \delta)\lambda\left(\bigcup_{x} B_{r_x}(x)\right) &\leq 3^d\sum_{j = 1}^{N} \lambda(B_j)\\
+        &\leq 3^d\sum_{j = 1}^{N} n\rho(B_j)\\
+        &\leq 3^d n\rho(\cal{U})\\
+        &\leq 3^d n\epsilon
+    \end{align*}
+    Taking $\delta = \frac{1}{2}$ and $\epsilon \to 0$, we see $\lambda\left(\bigcup_{x} B_{r_x}(x)\right) \to 0$, so $\lambda(A_n) = 0$.
+
+    $\qed$
+\end{proof}

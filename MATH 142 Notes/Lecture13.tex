@@ -1,0 +1,96 @@
+\tocsection{\textbf{9/25/26 Lecture 13:} Identification Spaces (cont.) and Topological Groups}
+
+Here are some more examples of identification spaces:\\
+
+
+\begin{example}{\textbf{Example:} $n$-Spheres and $n$-Balls}
+    Consider $B^{n} / S^{n - 1}$ which consists of $X = B^{n} = \{x \in \R^n \col \abs{x} \leq 1\}$ identified by the partition be
+    \[ \cal{P} = \{\{x \in \R^n \col \abs{x} = 1\}\} \cup \{\{x\} \col \abs{X} < 1\}\]
+    We want to show the identifcation space is homeomorphic to $S^n$. To prove this, we want to produce a map $f : B^n \to S^{n}$ which is onto and the preimage of points are our partition. From our theorem, that would imply that $S^n$ is homeomorphic to our ID space since $B^{n}$ is compact and $S^{n - 1}$ is Hausdorff.\\
+
+    The idea is to send the interior of the $n$-ball onto the sphere minus a point, and then send the boundary of the ball all to a single point.\\
+
+    Let
+    \[ f(x_1, \ldots, x_n) = \left(\pi \frac{\sin r}{r}x_1, \ldots, \pi \frac{\sin r}{r} x_n, \cos r\right) \]
+    where $r = \pi \sqrt{x_1^2 + \cdots + x_n^2}$. Adding up the squares, this is a map $f : B^{n} \to S^{n}$. This visual depicts what it does (don't mind the white background, i forgot my example boxes are yellow).\\
+
+    \fig{0.8}{Lecture13Fig2}{}
+
+    Indeed preimage of the south pole is the boundary of $B^{n}$, and any other point is just a point in the ball.\\
+
+\end{example}
+
+\begin{example}{\textbf{Example: }Projective Space}
+    Now, here is another example. There are three ways to construct it:
+    \begin{enumerate}
+        \item Consider $X = S^{n}$ and let $P = \{\{x, -x\} \col x \in S^n\}$. We are identifying antipodal points on the sphere, and the corresponding identification space is called $n$-dimensional \emph{projective space}, denoted $P^{n}$.
+        \item Another way to construct this is starting with $\R^{n + 1} - \{0\}$, and let $P = \{\text{lines through the origin}\}$. \\
+        \item One more way to construct it is letting $X = B^{n}$ and letting
+        \[ P = \{\{x, -x\} \col \abs{x} = 1\} \cup \{\{x\} \col \abs{x} < 1\} \]
+    \end{enumerate}
+    We want to show that these are equivalent first. To show that $2$ is equivalent to $1$, consider this picture. Notice that our lines intersect antipodal points on the sphere. Thus, there is an obvious homeomorphism between these two identification spaces.
+    \fig{0.8}{Lecture13Fig3}
+
+    Now, we want to show that $1$ is equivalent to $3$. Notice that we can think of $3$ as the upper half of $S^{n}$ where we also identify antipodal points of the equator (consider the idea of the first example). Thus, we can construct a homeomorphism as follows: For antipodal points on $S^n$ that don't lie on the equator, pick the one that lies above the equator
+    \fig{0.8}{Lecture13Fig4}{}
+
+    Then, for antipodal points on $S^n$ that lie on the equator, just pick both of those points (recall that we need to identify antipodal points on the equator)
+    \fig{0.8}{Lecture13Fig5}{}
+\end{example}
+
+Now, we move onto gluing.\\
+
+\begin{definition}[\textbf{Definition 13.1:} Gluing Maps Together]
+    Say $T$ is a topological space and suppose that $X$ and $Y$ are subsets with $T = X \cup Y$. Now, given another topological space $Z$, with maps $f : X \to Z$ and $g : Y \to Z$ such that $f\res{X \cap Y} = g\res{X \cap Y}$. Then, we can glue these maps together to get a function $F : T \to Z$ with
+    \[ F(p) = \left\{\begin{matrix} f(p) & p \in X \\ g(p) & p \in Y \end{matrix}\right. \]
+\end{definition}
+
+\begin{theorem}[\textbf{Lemma 13.2:} The Gluing Lemma]
+    If $X$ and $Y$ are closed in $Y$, then the map $F$ above is continuous.
+\end{theorem}
+\begin{proof}{Proof:}
+    Suppose that $C \subseteq Z$ is closed. Then, we can write
+    \[ F^{-1}(C) = f^{-1}(C) \cup g^{-1}(C) \]
+    Since $f$ is continuous, we have that $f^{-1}(C)$ is closed in $X$, so we can write
+    \[ f^{-1}(C) = X \cap D \]
+    for some closed $D$ in $T$. Thus, $f^{-1}(C)$ is closed in $T$ as it is the intersection of two closed sets. Similarly, $g^{-1}(C)$ is closed in $T$, so $F^{-1}(C)$ is closed in $T$. Thus, $F$ is continuous.\\
+    
+    $\qed$
+\end{proof}
+
+\begin{example}{\textbf{Example:} Gluing Paths Together}
+    Let $T = [0, 1]$, $X = [0, 1/2]$ and $Y = [1/2, 1]$. Then, if $f : [0, 1/2] \to Z$ and $g : [1/2, 1]$ are continuous and $f(1/2) = g(1/2)$, then we have a continuous map $F : [0, 1] \to Z$. 
+\end{example}
+
+\begin{example}{\textbf{Example:} Not an Example!}
+    Let $T = \R$, $X = \Q$, and $Y = \R \backslash \Q$, and let $f : X \to \R$ with $f = 1$ and $g : Y \to \R$ by $g = -1$. They agree on their empty intersection, but there is no gluing map. The problem here is that $X$ and $Y$ are not closed. 
+\end{example}
+
+\subsection*{Topological Groups}
+\sectionspace
+
+Recall that a group is a set with an associative operation $m : G \times G \to G$, an inverse operation $i : G \to G$, and an identity for $m$. 
+
+\begin{definition}[\textbf{Definition 13.3:} Topological Groups]
+    A \emph{topological group} is a Hausdorff space $G$ with a group structure; that is, functions $m, i$ that are continuous. 
+\end{definition}
+
+\begin{example}{\textbf{Example:} Examples of Topological Groups}
+    Here are some examples of topological groups. 
+    \begin{enumerate}
+        \item One basic example is $G = (\R, +)$. Since addition is continuous and taking the negative is continuous, $G$ is a topological group. This also means that $(\R^, +)$ is a topological group with the induced group structure. 
+        \item Another example is $G = S^1$ with the operation $m(e^{i\theta}, e^{i\phi}) = e^{i(\theta + \phi)}$ and $i(e^{i\theta}) = e^{-i\theta}$. We see these operations are continuous (under subspace topology), so this makes $G$ a topological group. This also makes $T^2 = S^1 \times S^1$ a topological group by using the induced group structure on $S^1 \times S^1$.
+        \item A trivial example is any group $G$ with the discrete topology (obviously).
+        \item One interesting example is 
+        \[ S^3 \simeq \{a + bi + cj + dk \in \bb{H} \col a^2 + b^2 + c^2 + d^2 = 1\} \]
+        where $\bb{H}$ are the quaternions. Recall that the quaternions is the set $\{a + bi + cj + dk \col a, b, c, d \in \R\}$ with the relations
+        \[ i^2 = j^2 = k^2 = -1, \quad ij = k,\ ji = -k,\ jk = i,\ kj = -i,\ ik = j,\ ki = -j \]
+        We see that $\bb{H}$ is a non-commutative groups. It turns out $S^3$ is a topological group under this operation with the inverse
+        \[ (a + bi + cj + dk)^{-1} = a - bi - cj - dk \]
+        (for $a^2 + b^2 + c^2 + d^2 = 1$).
+        \item Finally, one useful example is $\tt{GL}(n, \R) = \{\text{invertible } n \times n \tt{ real matrices}\}$, where the topology comes from the subspace topology of $\R^{n^2}$, and the group structure comes from the group structure under matrix multiplication.
+    \end{enumerate}
+ 
+\end{example}
+
+ 

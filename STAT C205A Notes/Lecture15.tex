@@ -1,0 +1,120 @@
+\tocsection{\textbf{10/20/26 Lecture 15:} Jensen's Inequality, Covariance, and Independence}
+
+\begin{definition}[\textbf{Definition 15.1:} Integrable Random Vectors and Processes]
+    A random vector $\xi = (\xi_1, \ldots, \xi_d)$ or process $X = (X_t)$ is said to be \emph{integrable} if integrability holds for every $\xi_k$ or $X_t$. Then, we write
+    \[ \mathbb{E}\xi = (\mathbb{E}\xi_1, \ldots, \mathbb{E}\xi_d) \quad \tt{or} \quad \mathbb{E}X = (\mathbb{E}X_t) \]
+\end{definition}
+
+\begin{definition}[\textbf{Definition 15.2:} Convex Functions]
+    A function $f : \R^d \to \R$ is said to be \emph{convex} if
+    \[ f(px + (1 - p)y) \leq pf(x) + (1 - p)f(y), \quad x, y \in \R^d,\ p \in [0, 1] \]
+\end{definition}
+
+\fig{0.4}{Lecture15Fig1}{}
+
+\begin{theorem}[\textbf{Lemma 15.3:} Jensen's Inequality]
+    For any integrable random vector $\xi$ in $\R^d$ and convex $f : \R^d \to \R$, we have
+    \[ \mathbb{E}[f(\xi)] \geq f(\mathbb{E}[\xi]) \]
+\end{theorem}
+\begin{proof}{Proof:}
+    Convexity implies the existence, for every $s \in \R^d$, of a function $h_s(x) = a^{T}x + b$ with $f \geq h_s$ and $f(s) = h_s(s)$. Then, if $s = \mathbb{E}(\xi)$,
+    \[ \mathbb{E}f(\xi) \geq \mathbb{E}h_s(\xi) = h_s(\mathbb{E}\xi) = f(\mathbb{E}\xi) \]
+    where the second equality comes from linearity.
+    \fig{0.35}{Lecture15Fig2}{}
+
+    $\qed$
+\end{proof}
+
+\begin{definition}[\textbf{Definition 15.4:} Covariance]
+    The \emph{covariance} of two random variables $\xi, \eta \in L^2$ is given by
+    \[ \tt{cov}(\xi, \eta) = \mathbb{E}[(\xi - \mathbb{E}\xi)(\eta - \mathbb{E}\eta)] = \mathbb{E}[\xi\eta] - \mathbb{E}[\xi]\mathbb{E}[\eta] \]
+\end{definition}
+
+Covariance is \emph{bilinear}, so
+\[ \tt{cov}\left(\sum_{j \leq m} a_j\xi_j, \sum_{k \leq n} b_k\eta_k\right) = \sum_{j \leq m}\sum_{k \leq n} a_jb_k\tt{cov}(\xi_j, \eta_k) \]
+
+\begin{definition}[\textbf{Definition 15.5:} Variance]
+    For $\xi \in L^2$, we define the \emph{variance}
+    \[ \tt{var}(\xi) = \tt{cov}(\xi, \xi) = \mathbb{E}((\xi - \mathbb{E}\xi)^2) = \mathbb{E}\xi^2 - (\mathbb{E}\xi)^2 \]
+\end{definition}
+
+By Cauchy-Buniakovsky,
+\[ \abs{\tt{cov}(\xi, \eta)} \leq [\tt{var}(\xi)\tt{var}(\eta)]^{1/2} \]
+which gives that the correlation
+\[ \tt{Corr}(\xi, \eta) = \frac{\tt{cov}(\xi, \eta)}{\sqrt{\tt{var}(\xi)\tt{var}(\eta)}} \in [-1, 1] \]
+
+\begin{definition}[\textbf{Definition 15.6:} Uncorrelated Random Variables]
+    We say $\xi$ and $\eta$ are \emph{uncorrelated} if $\tt{cov}(\xi, \eta) = 0$.
+\end{definition}
+
+\begin{definition}[\textbf{Definition 15.7:} Covariance Functions]
+    For any collection of random variables $\xi_t \in L^2$, $t \in T$, the associated \emph{covariance function} $\rho_{s, t} = \tt{cov}(\xi_s, \xi_t)$, $s, t \in T$, is \emph{non-negative definite}, in the sense that
+    \[ \sum_{i, j} a_ia_j\rho_{t_i, t_j} \geq 0 \quad \tt{for any } n \in \N,\ t_1, \ldots, t_n \in T, \tt{ and } a_1, \ldots, a_n \in \R \]
+\end{definition}
+
+This comes from
+\[ \sum_{i, j} a_ia_j\rho_{t_i, t_j} = \sum_{i, j} a_ia_j\tt{cov}(\xi_{t_i}, \xi_{t_j}) = \tt{var}\left(\sum_{i} a_i\xi_{t_i}\right) \geq 0 \]
+where the last inequality is by Jensen's inequality.
+
+\begin{definition}[\textbf{Definition 15.8:} Mutually Independent Events]
+    Events $A_t \in \cal{A}$, $t \in T$ are said to be \emph{mutually independent} if, for any distinct $t_1, \ldots, t_n \in T$,
+    \[ P\left(\bigcap_{k \leq n} A_{t_k}\right) = \prod_{k \leq n} P(A_{t_k}) \]
+\end{definition}
+
+\begin{definition}[\textbf{Definition 15.9:} Independent Families]
+    More generally, the families $\cal{C}_t \subseteq \cal{A}$, $t \in T$ are \emph{independent} if independence holds between events $A_t$ for arbitrary $A_t \in \cal{C}_t$, $t \in T$.
+\end{definition}
+
+\begin{definition}[\textbf{Definition 15.10:} Independent Random Elements]
+    Random elements $\xi_t$, $t \in T$ are \emph{independent} if independence holds between the $\sigma$-fields $\sigma(\xi_t)$, $t \in T$.
+\end{definition}
+
+Pairwise independence is denoted $A \perp\!\!\!\perp B$, $\xi \perp\!\!\!\perp \eta$, or $\cal{B} \perp\!\!\!\perp \cal{C}$, respectively.
+
+\begin{lemma}[\textbf{Lemma 15.11:} Extension]
+    If the $\pi$-systems $\cal{C}_t$, $t \in T$ are independent, so are the $\sigma$-fields $\cal{F}_t = \sigma(\cal{C}_t)$, $t \in T$.
+\end{lemma}
+\begin{proof}{Proof:}
+    First, assume that $\cal{C}_{t}$ is nonempty for any $t$, and fix arbitrary indices $t_1, \ldots, t_n \in T$. Notice that for a collection $A_{t_k} \in \cal{C}_{t_k}$, independence holds by assumption.\\
+
+    Now, fixing $A_{t_2}, \ldots, A_{t_n}$, let $\cal{D}$ be the collection of sets $A \in \cal{A}$ for which independence holds in the collection $A, A_{t_2}, \ldots, A_{t_n}$. This is a $\lambda$-system that contains $\cal{C}_{t_1}$, so $\cal{F}_{t_1} \subseteq \cal{D}$ by the $\pi$-$\lambda$ theorem.\\
+
+    Thus, independence holds for arbitrary $A_{t_1} \in \cal{F}_{t_1}$ and $A_{t_k} \in \cal{C}_{t_k}$ for $k = 2, \ldots, n$.\\
+
+    Now, apply the same argument fixing instead $A_{t_1} \in \cal{F}_{t_1}$ and $A_{t_k} \in \cal{C}_{t_k}$ for $k = 3, \ldots, n$ to show that $\cal{F}_{t_2} \subseteq \cal{D}$, and proceed inductively.
+
+    $\qed$
+\end{proof}
+
+Let $\cal{F} \vee \cal{G} = \sigma\{\cal{F}, \cal{G}\}$ and $\cal{F}_S = \bigvee_{t \in S} \cal{F}_t = \sigma\{\cal{F}_t \col t \in S\}$.
+
+\begin{lemma}[\textbf{Corollary 15.12:} Grouping]
+    Let $\cal{F}_t$, $t \in T$ be independent $\sigma$-fields, and let $\cal{T}$ be a disjoint partition of $T$. Then, the $\sigma$-fields $\cal{F}_S = \bigvee_{t \in S} \cal{F}_t$, $S \in \cal{T}$ are again independent.
+\end{lemma}
+
+
+\begin{definition}[\textbf{Definition 15.13:} Separating Classes]
+    Given any set $T$, we say a class $\cal{T} \subseteq 2^{T}$ is \emph{separating} if, for any $s \neq t$ in $T$, there exists $S \in \cal{T}$ such that exactly one of $s$ and $t$ lies in $S$.
+\end{definition}
+
+\begin{lemma}[\textbf{Lemma 15.14:} Pairwise Independence]
+    \vspace{-0.5cm}
+    \begin{enumerate}[label = \roman*)]
+        \item The $\sigma$-fields $\cal{F}_1, \cal{F}_2, \ldots$ are independent iff $\bigvee_{k \leq n} \cal{F}_k \perp\!\!\!\perp \cal{F}_{n + 1}$ for all $n$.
+        \item The $\sigma$-fields $\cal{F}_t$, $t \in T$ are independent iff $\cal{F}_S \perp\!\!\!\perp \cal{F}_{S^{c}}$ for all sets $S$ in some separating class $\cal{T} \subseteq 2^{T}$.
+    \end{enumerate}
+\end{lemma}
+\begin{proof}{Proof:}
+    First, the necessary conditions hold by the corollary.\\
+
+    We will show the sufficient condition for (ii), as (i) follows from a similar construction. We want, for any finite $S \subseteq T$, the $\sigma$-fields $\cal{F}_s$, $s \in S$ are independent.\\
+
+    
+    Let $\abs{S} = n + 1$ denote the cardinality of $S$ and assume it holds for all $\abs{S} \leq n$. Choose a separating $U \in \cal{T}$ such that $S' = S \cap U$ and $S'' = S \setminus U$ are nonempty. Then, since $\cal{F}_{S'} \perp\!\!\!\perp \cal{F}_{S''}$, for any sets $A_s \in \cal{F}_s$, $s \in S$,
+    \[ P\bigcap_{s \in S} A_s = \left(P\bigcap_{s \in S'} A_s\right)\left(P\bigcap_{s \in S''} A_s\right) = \prod_{s \in S} PA_s \]
+    where the last relation holds by the induction hypothesis as $\abs{S'}, \abs{S''} < \abs{S} = n + 1$.\\
+
+    We need to check this is true for $\abs{S} = 1$, but this is trivial.
+
+    $\qed$
+\end{proof}

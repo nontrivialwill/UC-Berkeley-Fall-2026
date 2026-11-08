@@ -1,0 +1,96 @@
+\tocsection{\textbf{10/26/26 Lecture 25:} Simplicial Maps and Simplicial Approximation}
+
+Recall that $K'$ is the first barycentric subdivision. We can iterate this to get more.
+
+\begin{definition}[\textbf{Definition 25.1:} Iterated Barycentric Subdivision]
+    If $K$ is a simplicial complex, let $K^{m}$ be the \emph{$m$th barycentric subdivision} of $K$, defined by iterating barycentric subdivision.
+\end{definition}
+
+\begin{definition}[\textbf{Definition 25.2:} Dimension]
+    The \emph{dimension} of a simplicial complex is the maximal dimension of its simplices.
+\end{definition}
+
+\begin{definition}[\textbf{Definition 25.3:} Mesh]
+    The \emph{mesh}, $\mu(K)$, is the maximal diameter of a simplex of $K$. Equivalently, it is the maximal length of an edge.
+\end{definition}
+
+\begin{lemma}[\textbf{Proposition 25.4}]
+    The following are true:
+    \begin{enumerate}[start = 0]
+        \item $K'$ is a simplicial complex.
+        \item Each simplex of $K'$ is contained in a simplex of $K$.
+        \item $\abs{K'} = \abs{K}$.
+        \item If $\dim(K) = n$, then $\mu(K') \leq \frac{n}{n + 1}\mu(K)$.
+    \end{enumerate}
+\end{lemma}
+\begin{proof}{Proof:}
+    See book. For 3,
+    \fig{0.4}{Lecture25Fig1}{}
+\end{proof}
+
+\begin{definition}[\textbf{Definition 25.5:} Simplicial Vertex Maps]
+    If $K, L$ are simplicial complexes, a function $s : \{\tt{vertices of } K\} \to \{\tt{vertices of } L\}$ is \emph{simplicial} if whenever $(v_0, \ldots, v_k)$ are the vertices of a simplex in $K$, then $\{s(v_0), \ldots, s(v_k)\}$ spans a simplex in $L$, possibly with redundancies.
+\end{definition}
+
+\textbf{Example:}
+\fig{0.4}{Lecture25Fig2}{}
+$s$ by $s(v_0) = w_0$, $s(v_1) = w_1$, $s(v_2) = w_2$ is simplicial.\\
+
+\textbf{Non-Example:}
+\fig{0.4}{Lecture25Fig3}{}
+Then $s$ as above is not simplicial in this case.\\
+
+Now, given an $s$, we can extend it to a map $s : \abs{K} \to \abs{L}$ linearly on each simplex. That is,
+\[ s\left(\sum \lambda_iv_i\right) = \sum \lambda_is(v_i) \in \abs{L} \]
+and we call $s$ a \emph{simplicial map}.\\
+
+\textbf{Note:} If $A$ is a simplex in $K$, $s(A)$ may have lower dimension. For example, if $s : K \to L$ and $L$ is a point, $s$ is simplicial.\\
+
+\textbf{Goal:} Approximate any map $f : \abs{K} \to \abs{L}$ by a simplicial map. Thus, we can turn algebraic topology statements into combinatorial statements. To do this, we want our simplicial maps to be homotopic to the original map. Note: to do this, we will have to subdivide $K$.
+
+\begin{definition}[\textbf{Definition 25.6:} Carriers]
+    Say $f : \abs{K} \to \abs{L}$ is any map. Then, given $x \in \abs{K}$, we know $f(x)$ is in the interior of a unique simplex in $\abs{L}$. We call this closed simplex the \emph{carrier} of $f(x)$.
+\end{definition}
+
+\textbf{Example:}
+\fig{0.5}{Lecture25Fig4}{}
+Then the carrier of $f(x)$ is $\{w_0, w_2\}$.
+
+\begin{definition}[\textbf{Definition 25.7:} Simplicial Approximations]
+    Given a map $f : \abs{K} \to \abs{L}$, a simplicial map $s : \abs{K} \to \abs{L}$ is a \emph{simplicial approximation} to $f$ if, for all $x \in \abs{K}$, $s(x)$ is in the carrier of $f(x)$.
+\end{definition}
+
+\textbf{Note:} If $f(x)$ is a vertex in $L$, then $s(x) = f(x)$, as we need $s(x) \in \{f(x)\}$.
+
+\begin{lemma}[\textbf{Lemma 25.8}]
+    If $s$ is a simplicial approximation of $f$, then $f$ and $s$ are homotopic maps.
+\end{lemma}
+\begin{proof}{Proof:}
+    Consider $\R^n$. Let
+    \[ F(x, t) = (1 - t)s(x) + tf(x) \]
+    This is a homotopy in $\R^n$, but as $f(x)$ and $s(x)$ are in the same simplex of $\abs{L}$, it is clear that $F$ is also a homotopy in $\abs{L}$! Thus, $F : \abs{K} \times [0, 1] \to \abs{L}$ is a homotopy from $s$ to $f$.
+
+    $\qed$
+\end{proof}
+
+\begin{definition}[\textbf{Definition 25.9:} Stars]
+    If $v$ is a vertex of a simplicial complex $K$, let $\tt{star}(v, K)$ be the union of the interiors of the simplices containing $v$.
+    \fig{0.55}{Lecture25Fig5}{}
+\end{definition}
+
+\begin{theorem}[\textbf{Theorem 25.10:} Simplicial Approximation Theorem (Alexander)]
+    Suppose $f : \abs{K} \to \abs{L}$ is a map. Then, if $m$ is large enough, there exists a simplicial approximation $s : \abs{K^{m}} \to \abs{L}$ to the map $f : \abs{K^{m}} \to \abs{L}$.
+\end{theorem}
+\begin{proof}{Proof Idea:}
+    Let $\abs{L} = \bigcup_{w \tt{ vertex of } L} \tt{star}(w, L)$ be an open cover of $\abs{L}$. Then, $\{f^{-1}(\tt{star}(w, L))\}$ is an open cover of $\abs{K}$. Let $\delta$ be its Lebesgue number.\\
+
+    Now, subdivide $K$ so that each simplex in $K^{m}$ has diameter at most $\frac{1}{2}\delta$. For any vertex $v$ in $K^{m}$, note $\tt{star}(v, K^{m})$ has diameter $< \delta$, so $\tt{star}(v, K^{m}) \subseteq f^{-1}(\tt{star}(w, L))$ for some vertex $w$ in $L$. Thus,
+    \[ f(\tt{star}(v, K^{m})) \subseteq \tt{star}(w, L) \]
+    for some $w$. Then, define $s(v) = w$, and do this for each vertex $v$ in $K^{m}$. Then, show this is simplicial, extend linearly on simplices, and show it is a simplicial approximation to $f$.
+
+    $\qed$
+\end{proof}
+
+\textbf{Note:} We don't subdivide $L$, but we may have to subdivide $K$ many times.\\
+
+\textbf{Exercise:} Look at Example 6.8 in the book and convince yourself that it's correct.

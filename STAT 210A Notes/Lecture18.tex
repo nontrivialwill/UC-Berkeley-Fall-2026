@@ -1,0 +1,100 @@
+\tocsection{\textbf{10/27/26 Lecture 18:} Beyond James-Stein and Minimax Estimation}
+
+\textbf{Recall:} For $X \sim N_d(\theta, I_d)$, for the shrinkage estimator $(1 - \zeta)X$, we found
+\[ \hat{\zeta}_{\tt{UMVU}} = \frac{d - 2}{\norm{X}^2} \rightsquigarrow \delta_{\tt{JS}} = \left(1 - \frac{d - 2}{\norm{X}^2}\right)X \]
+for $\zeta = \frac{1}{1 + \tau^2}$, but even without a prior on $\tau$, $\delta_{\tt{JS}}$ still is better than $X$. We also had
+\[ \tt{MSE}_{\theta}(\delta_{\tt{JS}}) = d - \E_{\theta}\left[\frac{(d - 2)^2}{\norm{X}^2}\right] \]
+and $\tt{MSE}_0(\delta_{\tt{JS}}) = 2$. Plotting,
+\fig{0.42}{Lecture18Fig1}{}
+
+Now, note that $\frac{d - 2}{\norm{X}^2}$ can be $\geq 1$, so an even better estimator is
+\[ \delta_{\tt{JS}^{+}}(X) = \left(1 - \frac{d - 2}{\norm{X}^2}\right)_{+}X \]
+Another thing you can do is consider
+\[ \delta_{\tt{JS}, 2}(X) = \left(1 - \frac{d - 3}{\norm{X - \overline{X}1_d}^2}\right)(X - \overline{X}1_d) + \overline{X}1_d \]
+for $d \geq 4$.\\
+
+For $d \geq 4$, $\delta_{\tt{JS}, 2}(X)$ strictly dominates $\delta_0$.\\
+
+\textbf{Idea of derivation:} Change of basis so that $\overline{X}1_d$ is a basis vector, and apply JS on the $(d - 1)$-dimensional subspace orthogonal to it, using the projection onto the subspace.
+
+\subsection*{Minimax Risk}
+\sectionspace
+
+The idea is to find
+\[ \underset{\delta}{\tt{minimize}}\left(\sup_{\theta} R(\theta, \delta)\right) \]
+
+\begin{definition}[\textbf{Definition 18.1:} Minimax Risk]
+    The \emph{minimax risk} is $r^{*} = \inf_{\delta}\sup_{\theta} R(\theta, \delta)$. An estimator $\delta^{*}$ is \emph{minimax} if $\sup_{\theta} R(\theta, \delta^{*}) = r^{*}$.
+\end{definition}
+
+In a sense, this is a very pessimistic estimator, but it has some uses. For example, in game theory, if someone was picking a purposely difficult-to-estimate $\theta$, $\delta^{*}$ is good. It can also be used to bound how hard estimation of a problem is.\\
+
+This is also connected to Bayes, as $\delta^{*}$ is okay for all priors. That is, if there is some prior that you don't know, then $\delta^{*}$ is good.\\
+
+\textbf{Note:} For any proper prior $\Lambda$, the Bayes risk is
+\begin{align*}
+    r_{\Lambda} &= \inf_{\delta}\int R(\theta, \delta) d\Lambda(\theta)\\
+    &\leq \inf_{\delta}\sup_{\theta} R(\theta, \delta)\\
+    &= r^{*}
+\end{align*}
+Moreover, if $\delta_{\Lambda}$ is Bayes, then $r_{\Lambda} = \int R(\theta, \delta_{\Lambda}) d\Lambda(\theta)$, so the Bayes risk of any prior lower bounds $r^{*}$.
+
+\begin{definition}[\textbf{Definition 18.2:} Least Favorable Priors]
+    A \emph{least favorable prior} $\Lambda^{*}$ gives the best lower bound
+    \[ r_{\Lambda^{*}} = \sup_{\Lambda} r_{\Lambda} \]
+    so for any $\Lambda$ and any $\delta$,
+    \[ r_{\Lambda} \leq r_{\Lambda^{*}} \leq r^{*} \leq \sup_{\theta} R(\theta, \delta) \]
+\end{definition}
+
+\begin{theorem}[\textbf{Theorem 18.3}: Correspondence between Bayes and Minimax]
+    Let $\Lambda$ be a prior with Bayes estimator $\delta_{\Lambda}$. If $r_{\Lambda} = \sup_{\theta} R(\theta; \delta_{\Lambda})$, then $\delta_{\Lambda}$ is minimax, $\Lambda$ is LF, and $r^{*} = r_{\Lambda}$.\\
+
+    Moreover, if $\delta_{\Lambda}$ is the unique Bayes estimator up to $\overset{\tt{a.s.}}{=}$, it is also the unique minimax estimator.
+\end{theorem}
+\begin{proof}{Proof:}
+    The first statement is obvious from above:
+    \[ \sup_{\theta} R(\theta, \delta_{\Lambda}) = r_{\Lambda} \leq r^{*} \leq \sup_{\theta} R(\theta, \delta_{\Lambda}) \]
+    For any other $\delta$,
+    \begin{align*}
+        \sup_{\theta} R(\theta, \delta) \geq \int R(\theta, \delta) d\Lambda(\theta) &> \int R(\theta, \delta_{\Lambda}) d\Lambda(\theta)\\
+        &= r_{\Lambda} = r^{*}
+    \end{align*}
+    where $>$ comes from uniqueness of $\delta_{\Lambda}$.
+
+    $\qed$
+\end{proof}
+
+\textbf{Note:} The condition $r_{\Lambda} = \sup_{\theta} R(\theta; \delta_{\Lambda})$ implies we have almost everywhere constant risk on the support of $\Lambda$.\\
+
+\textbf{Checkable Conditions:}
+\begin{enumerate}
+    \item $\delta_{\Lambda}$ is a Bayes estimator with constant risk.
+    \item $\delta_{\Lambda}$ is Bayes and its risk attains its max on the support of $\Lambda$.
+\end{enumerate}
+
+\textbf{Example:} $X \sim N(\theta, 1)$, $\abs{\theta} \geq 1$. We want to estimate $g(\theta) = \tt{sgn}(\theta)$.\\
+
+Intuitively, $\Lambda = \tt{Unif}(\{-1, 1\})$ is a pretty unfavorable prior, so let's try to find a Bayes estimator for this.
+\[ \bb{P}_{\Lambda}(\theta = 1 \given X = x) = \frac{\phi(x - 1)}{\phi(x - 1) + \phi(x + 1)} \quand \bb{P}_{\Lambda}(\theta = -1 \given X = x) = \frac{\phi(x + 1)}{\phi(x - 1) + \phi(x + 1)} \]
+so
+\[ \E_{\Lambda}(g(\theta) \given X = x) = \frac{\phi(x - 1) - \phi(x + 1)}{\phi(x - 1) + \phi(x + 1)} = \frac{e^{x} - e^{-x}}{e^{x} + e^{-x}} = \tanh(x) \]
+Then, we see
+\fig{0.42}{Lecture18Fig2}{}
+
+Then, as the risk of $\delta_{\Lambda}$ is constant on the support of $\Lambda$ (and maximized there), we see $\delta_{\Lambda}$ is minimax.\\
+
+\textbf{Example:} $X \sim \Binom(n, \theta)$, estimate $\theta$ using MSE.\\
+
+Consider $\theta \sim \tt{Beta}(\alpha, \beta)$ and $\alpha = \beta$, so $\delta_{\alpha}(X) = \frac{X + \alpha}{n + 2\alpha}$. Now, consider
+\[ \E_{\theta}\delta_{\alpha}(X) = \frac{n\theta + \alpha}{n + 2\alpha} \implies \tt{Bias}(\theta, \delta_{\alpha}) = \frac{\alpha(1 - 2\theta)}{n + 2\alpha} \]
+\[ \Var_{\theta}(\delta_{\alpha}(X)) = \frac{n\theta(1 - \theta)}{(n + 2\alpha)^2} \]
+Then
+
+\begin{align*}
+    \tt{MSE}(\delta_{\alpha}) &= \tt{Bias}^2 + \Var\\
+    &= \frac{1}{(n + 2\alpha)^2}\left(\alpha^2(1 - 2\theta)^2 + n\theta(1 - \theta)\right)\\
+    &= (n + 2\alpha)^{-2}\left(\alpha^2 + (n - 4\alpha^2)\theta(1 - \theta)\right)
+\end{align*}
+
+So we can take $\alpha = \frac{\sqrt{n}}{2}$, which makes this constant in $\theta$. Thus, $\delta_{\alpha}(X) = \frac{X + \sqrt{n}/2}{n + \sqrt{n}}$ is minimax. However, note this isn't very good by this graph:
+\fig{0.45}{Lecture18Fig3}{}

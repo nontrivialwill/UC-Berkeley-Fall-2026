@@ -1,0 +1,105 @@
+\tocsection{\textbf{9/19/26 Lecture 10:} Connectedness}
+
+\begin{lemma}[\textbf{Proposition 10.1}]
+    If $X$ is a topological space and $Z$ is a dense, connected subset, then $X$ is connected. 
+\end{lemma}
+\begin{proof}{Proof:}
+    Suppose that $A \subseteq X$ is a nonempty clopen subset. We want to show that $A = X$. We want to see how $A \cap Z$ sits in $Z$.\\
+
+    First, as $Z$ is dense, it intersects every open set in $X$, so $A \cap Z$ is nonempty. Then, we see that $A \cap Z$ is open and closed in $Z$ as $A$ is open and closed. Thus, $A$ is clopen in $Z$, and as it is nonempty and $Z$ is connected, we must have that $A \cap Z = Z$. Then, as $A$ is a closed set containing $Z$, $A$ must equal $X$ as $Z$ is dense.\\
+
+    Thus, as every nonempty clopen set in $X$ must equal $X$, we see that $X$ is connected.
+
+    $\qed$
+\end{proof}
+
+
+
+\begin{example}{Example}
+    Let $X = \{x \in \R^n \col \abs{x} \leq 1\}$ and $Z = \{x \in \R^n \col \abs{x} < 1\}$. We see that $Z$ is a dense connected subset, so $X$ is connected. 
+\end{example}
+
+\begin{lemma}[\textbf{Corollary 10.2}]
+    If $Z$ is a connected subset of a topological space $X$, then $\overline{Z}$ is connected. 
+\end{lemma}
+\begin{proof}{Proof:}
+    We see that $Z$ is dense in $\overline{Z}$. 
+
+    $\qed$
+\end{proof}
+
+\begin{definition}[\textbf{Definition 10.3:} Separated Sets]
+    We say $A, B \subseteq X$ are \emph{separated} if $\overline{A} \cap \overline{B} = \emptyset$. 
+\end{definition}
+
+
+\begin{lemma}[\textbf{Proposition 10.4}]
+    Suppose that $X$ is a topological space and let $\cal{F}$ be a family of subsets such that $X$ is the union of elements in $\cal{F}$. Then, if each $Z \in \cal{F}$ is connected and no $Z, Z' \in \cal{F}$ are separated, then $X$ is connected. 
+\end{lemma}
+\begin{proof}{Proof:}
+    Suppose $A \subseteq X$ is a clopen set. Now, pick a $Z \in \cal{F}$. Then, $Z$ is connected, so as $A \cap Z$ is clopen in $Z$, then we must have that $A \cap Z = Z$ or $A \cap Z = \emptyset$.\\
+
+    Now, if $A \cap Z = \emptyset$ for all $Z \in \cal{F}$, then $A = \emptyset$.\\
+
+    Now suppose that for some $Z$, we have that $A \cap Z = Z$. Then $Z \subseteq A$. Let $W \in \cal{F}$ be another set (if no other set exists, then $Z = X$ and $A = X$). Now, if $W \cap A = \emptyset$, then we see that $W \subseteq A^{c}$, which is a closed set and $Z \subseteq A$, which is a closed set, so $\overline{W} \subseteq A^{c}$ and $\overline{Z} \subseteq A$. Thus, $\overline{W} \cap \overline{Z} = \emptyset$, so $W$ and $Z$ are separated, which is a contradiction.\\
+
+    Thus, for all $W \in \cal{F}$, we see that $W \cap A = W$, so $X = \bigcup_{W \in \cal{F}} W \subseteq A$, which implies that $A = F$. 
+    
+    $\qed$
+\end{proof}
+The following is a useful application of this above proposition.
+
+\begin{lemma}[\textbf{Proposition 10.5}]
+    If $X$ and $Y$ are connected, then so is $X \times Y$. 
+\end{lemma}
+\begin{proof}{Proof:}
+    If $x \in X$, then $\{x\} \times Y$ is connected as there is a map from $Y$ onto $\{x\} \times Y$. Similarly, $X \times \{y\}$ is connected by the same fact. Then, 
+    \[ Z(x, y) = (\{x\} \times Y) \cup (X \times \{y\}) \]
+    is connected by Proposition 10.4\\
+
+    Now, as we can write
+    \[ X \times Y = \bigcup_{(x, y) \in X \times Y} Z(x, y) \]
+    and the $Z(x_1, y_1)$ intersects $Z(x_2, y_2)$ (namely at $(x_1, y_2)$ and $(x_2, y_1)$), then we see that this is a family of connected sets which are pairwise not separate and whose union is $X \times Y$, so we see that $X \times Y$ is connected.
+
+    $\qed$
+\end{proof}
+
+\begin{definition}[\textbf{Definition 10.6:} Connected Components]
+    A \emph{component} or \emph{connected component} of $X$ is a maximal connected subset $C$. That is, if $C \subseteq Y \subseteq X$ and $Y$ is connected, then $Y = C$. 
+\end{definition}
+\begin{example}{Example}
+    For example, $\R$ has one component as $\R$ is connected.\\
+    
+    Interesting, $\Q$'s connected components are points. Suppose $A \subseteq \Q$ with $A$ a component, and suppose that $x, x' \in A$ with $x \ne x'$. Say $x < x'$. Choose an irrational for which $x < \alpha < x'$. Then, we can write
+    \[ A = \left(A \cap (-\infty, \alpha)\right) \cup (A \cap (\alpha, \infty)) \]
+    These are disjoint open subsets of $A$ which are nonempty, which contradicts the assumption that $A$ is connected. 
+\end{example}
+
+\begin{lemma}[\textbf{Proposition 10.7}]
+    Each component of $X$ is closed, and disjoint components are separated. 
+\end{lemma}
+\begin{proof}{Proof:}
+    Let $C$ be a component. Then, as $C$ is connected, $\overline{C}$ is connected. Now, if $C \ne \overline{C}$, then as $C \subseteq \overline{C}$, this contradicts the maximality of $C$. Thus, we must have that $C = \overline{C}$, so $C$ is closed.\\
+
+    Now, let $D$ be another component. If $D \cap C \ne \emptyset$, then we see that $D \cup C$ is connected, contradicting that $D$ is a component. If $D \cap C = \emptyset$, then, as $D = \overline{D}$ and $C = \overline{C}$, so $\overline{D} \cap \overline{C} = \emptyset$, so they are separated.
+
+    $\qed$
+\end{proof}
+
+\begin{lemma}[\textbf{Proposition 10.8}]
+    Every connected subset of $X$ is in some component. 
+\end{lemma}
+\begin{proof}{Proof:}
+    Let $A \subseteq X$ with $A \ne \emptyset$, and say $A$ is connected.\\
+
+    Now, let $C$ be the union of all nonempty connected sets containing $A$. Then, $C$ is connected by Proposition 10.4. Then, we see that $C$ is a component, so that $C$ is a component containing $A$.
+\end{proof}
+
+\begin{lemma}[\textbf{Corollary 10.9}]
+    $X$ is the disjoint union of it's connected components.
+\end{lemma}
+\begin{proof}{Proof:}
+    Every point is connected, and components are disjoint.
+
+    $\qed$
+\end{proof}

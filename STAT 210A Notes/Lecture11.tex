@@ -1,0 +1,99 @@
+\tocsection{\textbf{10/1/26 Lecture 11:} Cramer-Rao Lower Bound}
+
+One minimal sufficient statistic is $\ell(\theta; x)$, but we can also consider $\ell(\theta; x) - \ell(\theta_0, x)$, which is nice as it forces this statistic to be zero at $\theta_0$.\\
+
+Recall the score and fisher information:
+\[ S_{\theta}(x) = \grad \ell(\theta, x) \]
+\[ \bb{E}_{\theta} S_{\theta}(X) = 0 \]
+and
+\[ J(\theta) = \Var_{\theta}(S_{\theta}(X)) = -\bb{E}_{\theta} \grad^2 \ell(\theta, X) \]
+Given an IID sample, we see that
+\[ S_{\theta}(X) = \sum_{i = 1}^{n} S_{\theta}^{(i)}(X_i) \]
+and
+\[ J(\theta) = nJ_{1}(\theta) \]
+
+Now, if we reparameterize and let $\theta(\eta) = \theta_0 + \frac{\eta}{\sqrt{n}}$, then we see that
+\begin{align*}
+    \ell(\theta(\eta)) - \ell(\theta_0) &= (\theta - \theta_0)S_{\theta}(x) + \frac{1}{2}(\theta - \theta_0)^2 \grad^2 \ell(\theta_0, X)\\
+    &= \eta' \frac{1}{\sqrt{n}}\sum S_{\theta}^{(i)}(X_i) - \frac{1}{2}\eta' \frac{1}{n}\left(nJ_1(\theta) + \sum (\grad^2 \ell(\theta, X) - J_{1}(\theta))\right)\eta\\
+    &= \eta' Z - \frac{1}{2}\eta' J_1(\theta)\eta + \frac{1}{2}\eta'\left(\frac{1}{n}\sum_{i = 1}^{n} \epsilon_i\right)\eta
+\end{align*}
+Taking $n$ to infinity, the error term dissapears and we see that heuristically, the sufficient statistic approximately $S_{\theta}(x)/\sqrt{n}$. Exponentiating, and moving things around, we see that
+\[ p_{\theta_0 + \eta/\sqrt{n}}(x) \approx e^{\eta'\frac{S_{\theta}(x)}{\sqrt{n}} - \frac{1}{2}\eta'J_1(\theta)\eta}p_{\theta_0}(x) \]
+so can approximate $p_{\theta}$ with an exponential family (at least locally).
+
+\subsection*{Cramer-Rao Lower Bound}
+\sectionspace
+Suppose that $\delta(X)$ is unbiased for $g(\theta) \in \R$. Then
+\[ g(\theta) = \int \delta(x)e^{\ell(\theta, x)d\mu(x)} \]
+Taking derivatives, 
+\[ \frac{\del g}{\del \theta_j}(\theta) = \int \delta(X) \frac{\del \ell}{\del \theta_j}(\theta)e^{\ell(\theta, x)}d\mu(x) = \bb{E}_{\theta}[\delta(X) \cdot \frac{\del \ell}{\del \theta_j}(\theta, x)] = \Cov_{\theta}\left(\delta(X), \frac{\del \ell}{\del \theta_i}\right)(\theta, X)\]
+Thus, 
+\[ \grad g(\theta) = \bb{E}_{\theta}[\delta(X) S_{\theta}(X)] = \Cov_{\theta}(\delta(X), S_{\theta}(x)) \]
+Now, we know that, in 1 dimension
+\[ 1 \geq \tt{Corr}_{\theta}(\delta(X), S_{\theta}(X)) = \frac{\Cov_{\theta}^2(\delta, S_{\theta})}{\Var_{\theta}(\delta) \cdot \Var_{\theta}(S_{\theta})} = \frac{(\grad g(\theta))^2}{\Var_{\theta}(\delta)J(\theta)} \]
+Thus, we see that
+\[ \Var_{\theta}(\delta(X)) = \frac{(\dot{g}(\theta))^2}{J(\theta) \tt{Corr}_{\theta}(\delta(X), S_{\theta}(X))} \geq  \frac{(\dot{g}(\theta))^2}{J(\theta)}\]
+If $g(\theta) = \theta$ and $X = (X_1, \ldots, X_n)$ an iid sample, we see that
+\[ Var_{\theta}(\delta(X)) \geq \frac{1}{nJ_{1}(\theta)} \implies \tt{SD}(\delta(X)) \approx \frac{1}{\sqrt{n}} \]
+and if $\theta \in \R^{d}$ and $g(\theta) \in \R$, 
+\[ \Var_{\theta}(\delta(X)) \geq \nabla g(\theta)'J(\theta)^{-1}\grad g(\theta) \]
+and the reason for this is that for $a \in \R^d$, 
+\[ \Cov_{\theta}(\delta, a'S_{\theta}) =  \bb{E}_{\theta}[\delta(a'S_{\theta})] = a'\bb{E}_{\theta}[\delta S_{\theta}] = a'\nabla g(\theta) \]
+so by the 1-dimensional result above, we have that
+\begin{align*}
+    \Var_{\theta}(\delta(X)) &\geq \frac{\Cov_{\theta}(\delta, a'S_{\theta})^2}{\Var_{\theta}(a'S_{\theta})}\\
+    &= \frac{a' \grad g(\theta) \grad g(\theta)' a}{a' \Var_{\theta}(S_{\theta}) a}
+\end{align*}
+Maximizing over $a$, we get the maximal $a$ to be $a^{*} = J^{-1}(\theta)\grad g(\theta)$ so plugging in $a^{*}$, we get the desired result. Now, let's consider the exponential family. Let
+\[ p_{\eta}(x) = e^{\eta'T(x) - A(\eta)}h(x) \]
+then
+\[ \ell(\eta, X) = \eta'T(x) - A(\eta) + \log h(x) \]
+Taking derivatives with respect to $\eta$, 
+\[ \grad \ell(\eta, X) = T(X) - \grad A(\eta) = T(X) - \bb{E}_{\eta}(T(X)) \]
+Thus, the score is playing the role of $T(X)$ (up to forcing unbiasedness), the same as we saw before. Similarly, we see that
+\[ \Var_{\eta}(S_{\eta}(X)) = \Var_{\eta}(T(X)) = \grad^2 A(\eta)\]
+and
+\[ \grad^2 \ell(\eta, X) = -\nabla^2 A(\eta) \]
+Thus, $J(\eta) = -\nabla^2 \ell(\eta, X)$, which was as expected. Now, we can also represent this family as
+\[ e^{(\eta/c)'(cT(x)) - A(\eta/c)} \]
+we see that $\nabla^2\ell(\eta, X) = -c^2\nabla(A\eta) = c^2 \Var_{c \eta}(T(X))$. This seems odd, but notice that we are working in ``different units''. Heuristically, when we parameterize like this, changing the new parameter will change the distribution differently, and this factor accounts for that. \\
+
+\begin{example}{\textbf{Example}}
+    Consider
+    \[ p_{\theta}(x) = e^{\eta(\theta)'T(x) - A(\eta(\theta))}h(x) \]
+    and consider $\theta \in \R$ and $\eta(\theta) \in \R^{d}$ (a curved family). Then, 
+    \[ \ell(\theta, X) = \eta(\theta)'T(X) - A(\eta(\theta)) + \log h(x) \]
+    so
+    \[ \dot{\ell}(\theta, X) = \dot{\eta}(\theta)'T(X) - \dot{\eta}(\theta)'\grad A(\eta(\theta)) = \dot{\eta}(\theta)'(T - \bb{E}_{\theta} T) \]
+    Then, we see that
+    \[ \dot{\eta}(\theta)'(T - \bb{E}_{\theta}(T)) = \dot{\eta}(\theta)'S_{\eta(\theta)}^{(\eta)}(X) \]
+    and we see that
+    \[ \ddot{\ell}(\theta, X) = \ddot{\eta}(\theta)'(T(X) - \bb{E}_{\theta}(T(X))) - \dot{\eta}(\theta)'\nabla^2 A(\eta(\theta)) \dot{\eta}(\theta) \]
+    so 
+    \[ \bb{E}_{\theta}[-\ddot{\ell}(\theta)] = \dot{\eta}(\theta)'\grad^2 A(\eta(\theta))\dot{\eta}(\theta) = \dot{\eta}(\theta)'J^{(\eta)}(\eta(\theta))\dot{\eta}(\theta) \]
+\end{example}
+
+\subsection*{Bayes Estimators}
+\sectionspace
+
+Consider $X \sim P_{\theta}$ and $\cal{P} = \{P_{\theta} \col \theta \in \Theta\}$, with a loss $L(\theta, d)$ and $R(\theta, \delta()) = \bb{E}_{\theta}[L(\theta, \delta(X))]$. 
+
+\begin{definition}[\textbf{Definition 11.1:} Bayes Risk]
+    We define the \emph{Bayes risk}
+    \[ r_{\Lambda}(\delta) = \int_{\Theta} R(\theta, \delta) d\Lambda(\theta) \]
+    where the measure $\Lambda$ is called the \emph{prior}. If $\Lambda(\Theta) = \infty$, we call this prior \emph{improper}, and if $\Lambda(\Theta) < \infty$, we can take WLOG it to be $1$, and we call this prior \emph{proper}.
+\end{definition}
+Notice that
+\[ r_{\Lambda}(\delta) = \bb{E}_{\theta \sim \Lambda}[R(\theta; \delta)] = \bb{E}[L(\theta, \delta(X))] \]
+assuming that $\theta \sim \Lambda$ and $X \given \theta \sim P_{\theta}$. This seems very Bayesian, but this is just mathematical manipulations. Of course, if you were Bayesian, this tells you exactly how good an estimator is, but if you're frequentist, this is just putting an arbitrary distribution and testing $\delta$.\\
+
+\begin{definition}[\textbf{Definition 11.2:} Posterior]
+    The conditional distribution $\Lambda(\theta \given X)$ is called the \emph{posterior}.
+\end{definition}
+
+Assuming that the prior has density $\lambda(\theta)$ and the likelihood is $p_{\theta}(X)$, then the joint density is
+\[ \lambda() \]
+
+
+

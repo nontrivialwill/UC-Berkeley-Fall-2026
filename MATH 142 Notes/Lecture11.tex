@@ -1,0 +1,134 @@
+\tocsection{\textbf{9/21/26 Lecture 11:} Path Connectedness}
+
+\begin{definition}[\textbf{Definition 11.1: }Paths]
+    A \emph{path} in a topological space $X$ is a map $\gamma : [0,1] \to X$. We call $\gamma(0)$ the \emph{beginning} of $\gamma$ and $\gamma(1)$ the \emph{end} of $\gamma$. We say $\gamma$ \emph{joins} $\gamma(0)$ and $\gamma(1)$. 
+\end{definition}
+Here is an example of a path
+\fig{0.6}{Lecture11Fig1}{}
+
+\begin{definition}[\textbf{Definition 11.2: }Path-Connectedness]
+    A topological space $X$ ia \emph{path-connected} if two paths in $X$ can be joined by a path. 
+\end{definition}
+
+\begin{lemma}[\textbf{Proposition 11.3}]
+    A path-connected space is connected.
+\end{lemma}
+\begin{proof}{Proof:}
+    Let $A$ be path-connected. By contradiction, suppose that $A \subseteq X$ is clopen that is nonempty and not equal to $X$. Because of this, we can pick $x \in A$ and $y \in X \backslash A$.\\
+
+    Now, by assumption, let $\gamma : [0, 1] \to X$ be a path joining $x$ and $y$. Then, $\gamma^{-1}(A)$ is clopen in $[0, 1]$, but as $[0, 1]$ is connected, we see that either $\gamma^{-1}(A) = \emptyset$ or $\gamma^{-1}(A) = [0, 1]$. It cannot be empty because $0 \in \gamma^{-1}(A)$. It also cannot be $[0, 1]$ as $y \notin A$, but $y = \gamma(1)$.  
+
+    $\qed$
+\end{proof}
+
+\begin{example}{\textbf{Example}}
+    Let $\{(t, \sin(t)) \col 0 < t < 1\} \cup \{(0, s) \col -1 \leq s \leq 1\}$. We see it is connected as it is the union of two connected sets that intersect on their limit points, but it is not path connected. As any point on the ``sin'' part of the curve has no continuous path to the ``line'' part of the curve.
+
+    
+\end{example}
+Here is a picture of the above example.
+
+\fig{0.6}{Lecture11Fig2}{}
+
+
+Given $x, y, z \in X$, and paths $\alpha$ joining $x$ to $y$ and $\beta$ joining $y$ to $z$. Then, we can join these paths to get a path joining $x$ to $z$ by
+\[ \gamma(t) = \left\{\begin{matrix} \alpha(2t) & 0 \leq t \leq 1/2 \\ \beta(2t - 1) & 1/2 \leq t \leq 1 \end{matrix}\right. \]
+We do need to check $\gamma$ is a map from $x$ to $z$.\\
+
+\begin{lemma}[\textbf{Proposition 11.4}]
+    A connected open subset of $\R^n$ is path-connected.   
+\end{lemma}
+\begin{proof}{Proof:}
+    Assume that $X \ne \emptyset$. Pick $x \in X$. Now, let 
+    \[ U(x) = \{y \in X \col y \text{ can be joined to }x\} \]
+    We want to show that $U(x) = X$, which is to show that $U(x)$ is open and closed in $X$, since $U(x)$ is nonempty.\\
+
+    To show that $U(x)$ is open, let $y \in U(x)$. Now, as $X$ is open, let $B$ be a metric ball such that $y \in B \subseteq X$. Now, for all $z \in B$, then we can join $y$ to $z$ with a straight line, which implies we can join $x \to z$. Thus, we see that $z \in U(x)$. Thus, $U(x)$ is open in $X$.\\
+
+    Now, to show that $U(x)$ is closed, we want to show that
+    \[ X - U(x) = \bigcup_{y \in X - U(x)} U(y) \]
+    First, we see immediately that $X - U(x) \subseteq \bigcup_{y \in X - U(x)}U(y)$. Now, we want to show the other direction, which is to show that for all $y \in X - U(x)$, $U(y) \subseteq X - U(x)$. Suppose not. Then, there is some $z \in U(y) \cap U(x)$. However, this implies there is a path between $x$ and $z$, and a path between $z$ and $y$, which implies that $y \in U(x)$, which is a contradiction. Thus, we have that
+    \[ X - U(x) = \bigcup_{y \in X - U(x)}U(y) \]
+    This implies that $X - U(x)$ is closed, which means it is clopen and nonempty. Thus, as $X$ is connected, we see that $U(x) = X$, which was to be proved. 
+    
+    $\qed$
+\end{proof}
+
+\begin{lemma}[\textbf{Proposition 11.5}]
+    If $X$ is path connected and $f : X \to Y$ is a map, then $f(X)$ is path connectedness. 
+\end{lemma}
+\begin{proof}{Proof:}
+    Let $y_1, y_2 \in f(X)$. Then, pick $x_1, x_2 \in X$ for which $f(x_1) = y_1$ and $f(x_2) = y_2$. Then, as $X$ is path connected, let $\gamma : [0, 1] \to X$ be a path connecting $x_1$ and $x_2$. Then, it is clear that $f \circ \gamma : [0, 1] \to Y$ is a path connecting $y_1$ and $y_2$. 
+\end{proof}
+
+\begin{definition}[\textbf{Definition 11.6:} Path Components]
+    A \emph{path component} of $X$ is a maximal path connected set. 
+\end{definition}
+
+\begin{lemma}[\textbf{Proposition 11.7:}]
+    $X$ is a disjoint union of it's path components.
+\end{lemma}
+\begin{proof}{Proof:}
+    Obvious, any intersection contradicts maximality.
+\end{proof}
+
+\begin{definition}[\textbf{Definition 11.8:} $\pi_0(X)$]
+    Define
+    \[ \pi_{0}(X) = \{\text{path components of } X\} \]
+\end{definition}
+
+\begin{example}{Example}
+    For the topologists sine curve, we have
+    \[ \pi_{0}(S) = \{\{(t, \sin(t)) \col 0 < t < 1\}, \{(0, s) \col -1 \leq s \leq 1\}\} \]
+\end{example}
+
+Now, given a map $f : X \to Y$, this induces a map $f_{*} : \pi_0(X) \to \pi_{0}(Y)$ given as follows: Let $C$ be a path component of $X$. Then $f(X)$ is path connected in $Y$, so it lies in some unique path component $D$ of $Y$. Then, define $f_{*}(C) = D$. \\
+
+\begin{lemma}[\textbf{Proposition 11.9}]
+    If we have $X \overset{f}{\to} Y \overset{g}{\to} Z$, then
+    \[ (g \circ f)_{*} = g_{*} \circ f_{*} \]
+    sending $\pi_{0}(X)$ to $\pi_{0}(Z)$. 
+\end{lemma}
+\begin{proof}{Proof:}
+    Given $C \in \pi_{0}(X)$, choose a point $x \in C$. Now, notice that $f_{*}(C)$ is a path component of $Y$ containing $f(x)$, and so $g_{*}(f_{*}(C))$ is a path component of $Z$ containing $g(f(x))$.\\
+
+    Similarly, we also see that $(g \circ f)_{*}(C)$ is also a path component of $Z$ containing $g(f(x))$. Thus, these must be the same, so
+    \[ (g \circ f)_{*} = g_{*}(f_{*}(C)) \]
+
+    $\qed$
+\end{proof}
+
+\begin{lemma}[\textbf{Proposition 11.10}]
+    If $f : X \to Y$ is a homeomorphism, then $\pi_{0}(X)$ and $\pi_{0}(Y)$ are isomorphic as sets. 
+\end{lemma}
+\begin{proof}{Proof:}
+    Consider $g = f^{-1} : Y \to X$. Then, we see that $g \circ f = \id_{X}$ and $f \circ g = \id_{Y}$. Then, this implies that
+    \[ g_{*} \circ f_{*} = (\id_{X})_{*} = \id_{\pi_0(X)} \quand f_{*} \circ g_{*} = (\id_{Y})_{*} = \id_{\pi_{0}(Y)} \]
+    so $g_{*}$ is the inverse of $f_{*}$. 
+
+    $\qed$
+\end{proof}
+
+\begin{lemma}[\textbf{Corollary 11.11}]
+    If $n > 1$, then $\R$ is not homeomorphic to $\R^n$.
+\end{lemma}
+\begin{proof}{Proof:}
+    Suppose $f : \R \to \R^n$ is a homeomorphism. Then, we see that
+    \[ f\res{\R - \{0\}} : \R - \{0\} \to \R^n - \{f(0)\} \]
+    is also a homeomorphism. However, notice that $\pi_0(\R - \{0\})$ has two elements, but $\pi_0(\R^n - \{f(0)\})$ has only one element. This contradicts the fact that $f \res{\R - \{0\}}$ is a homeomorphism, so no such $f$ can exist.
+
+    $\qed$
+\end{proof}
+
+\begin{lemma}[\textbf{Corollary 11.12}]
+    The interval $[0, 1]$ is not homeomorphic to $\triangle$. 
+\end{lemma}
+\begin{proof}{Proof:}
+    If $f : [0, 1] \to \triangle$ is such a homeomorphism, then
+    \[ f \res{[0, 1] - \{0.5\}} : [0, 1] - \{0.5\} \to \triangle - \{f(0.5)\} \]
+    is also a homeomorphism, but notice that $[0, 1] - \{0.5\}$ has two path components whereas $\triangle - \{f(0.5)\}$ has only two. 
+
+    $\qed$
+\end{proof}
+
+Thus, as we saw above, no space filling curve $f : [0, 1] \to \triangle$ can be injective, as any such function would be a homeomorphism.

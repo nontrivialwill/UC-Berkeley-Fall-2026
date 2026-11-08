@@ -1,0 +1,144 @@
+\tocsection{\textbf{10/22/26 Lecture 17:} The James-Stein Estimator and Stein's Lemma}
+
+\begin{lemma}[\textbf{Proposition 17.1}]
+   
+    If $Y \sim \chi_d^2$, then $\E Y = d$ and $\E[1/Y] = 1/(d - 2)$ for $d \geq 3$.
+\end{lemma}
+\begin{proof}{Proof:}
+    
+    \begin{align*}
+        \E[1/Y] &= \int_{0}^{\infty} \frac{1}{y} \cdot \frac{1}{2^{d/2}\Gamma(d/2)}y^{d/2 - 1}e^{-y/2} dy\\
+        &= \int_{0}^{\infty} \frac{1}{2^{d/2}\Gamma(d/2)}y^{\left(\frac{d - 2}{2}\right) - 1}e^{-y/2} dy\\
+        &= \frac{2^{(d - 2)/2}\Gamma\left(\frac{d - 2}{2}\right)}{2^{d/2}\Gamma(d/2)}\int_{0}^{\infty} \frac{1}{2^{(d - 2)/2}\Gamma\left(\frac{d - 2}{2}\right)}y^{\left(\frac{d - 2}{2}\right) - 1}e^{-y/2} dy\\
+        &= \frac{\Gamma\left(\frac{d}{2} - 1\right)}{2 \cdot \Gamma(d/2)}\\
+        &= \frac{1}{2 \cdot \left(\frac{d}{2} - 1\right)} = \frac{1}{d - 2}
+    \end{align*}
+
+    $\qed$
+\end{proof}
+
+\textbf{Recall:} We had $X \sim N_d(\theta, I_d)$. The obvious estimator $\delta(X) = X$ is pretty good. This is $\delta_0$ for
+\[ \delta_{\zeta}(X) = (1 - \zeta)X \quad (\zeta \in [0, 1]) \]
+If $\theta_i \iidsim N(0, \tau^2)$ ($\tau^2$ known), then $\zeta = \frac{1}{1 + \tau^2}$ is Bayes.\\
+
+If we don't know $\tau^2$, then as $X_i \iidsim N(0, 1 + \tau^2)$, then $\norm{X}^2 \sim (1 + \tau^2)\chi_d^2$, so the HB estimate may be $\delta_{\zeta_{\tt{HB}}}$ for
+\[ \zeta_{\tt{HB}} = \frac{k + d}{s^2 + \norm{X}^2} \]
+If we don't want HB, then we can use EB to get
+\[ \hat{\zeta}_{\tt{MLE}} = \frac{1}{1 + \hat{\tau}^2_{\tt{MLE}}} = \frac{d}{\norm{X}^2} \]
+
+Finally, if we want $\hat{\zeta}_{\tt{UMVUE}}$, since
+\[ \E\left[\frac{d}{\norm{X}^2}\right] = \frac{d}{1 + \tau^2}\E[1/Y] = \frac{d}{d - 2} \cdot \frac{1}{1 + \tau^2} \quad \tt{where } Y = \frac{\norm{X}^2}{1 + \tau^2} \]
+so we see $\E\left[\frac{d - 2}{\norm{X}^2}\right] = \frac{1}{1 + \tau^2}$, so
+\[ \hat{\zeta}_{\tt{UMVUE}} = \frac{d - 2}{\norm{X}^2} \]
+Choosing $\hat{\zeta}_{\tt{UMVUE}}$, we get what is called the \emph{James-Stein estimator}
+\[ \delta_{\tt{JS}}(X) = \left(1 - \frac{d - 2}{\norm{X}^2}\right)X \]
+Incredibly, $\delta_{\tt{JS}}$ dominates $\delta_0$ for all $\theta$! Thus, $X$ is inadmissible! Thus, adaptive shrinkage is fundamentally strong.\\
+
+Let's try to prove this. First,
+\begin{align*}
+    R(\theta, \delta_{\zeta}) &= \norm{\theta - \E\delta_{\zeta}(X)}^2 + \sum_{i} \Var((1 - \zeta)X_i)\\
+    &= \norm{\theta - (1 - \zeta)\theta}^2 + \sum_{i} \Var((1 - \zeta)X_i)\\
+    &= \zeta^2\norm{\theta}^2 + d(1 - \zeta)^2
+\end{align*}
+Taking derivatives,
+\begin{align*}
+    0 = \frac{d}{d\zeta}R &= 2\zeta\norm{\theta}^2 - 2(1 - \zeta)d\\
+    \zeta^{*}(\theta) &= \frac{d}{d + \norm{\theta}^2} = \frac{1}{1 + \norm{\theta}^2/d}
+\end{align*}
+where $\norm{\theta}^2/d = \frac{1}{d}\sum_{i} \theta_i^2$. This is a function of $\theta$, so we can't get a unanimous $\zeta^{*}$. However, let's see if we can get a good value. For example, if we set
+\begin{align*}
+    \frac{d - 2}{\norm{X}^2} &= \frac{d}{d + \norm{\theta}^2}\\
+    (d - 2)(d + \norm{\theta}^2) &= d\norm{X}^2\\
+    \norm{\theta}^2 &= \frac{d(\norm{X}^2 - d + 2)}{d - 2}
+\end{align*}
+so it induces an estimate on $\norm{\theta}^2$.
+
+\begin{theorem}[\textbf{Theorem 17.2:} Stein's Lemma, Univariate]
+    Suppose $X \sim N(\theta, \sigma^2)$ and $h : \R \to \R$ such that $h$ is differentiable and $\E\abs{\dot{h}(X)} < \infty$. Then,
+    \[ \Cov(X, h(X)) = \E[(X - \theta)h(X)] = \sigma^2\E[\dot{h}(X)] \]
+\end{theorem}
+\begin{proof}{Proof:}
+    We can assume WLOG $h(0) = 0$, since we can shift and nothing changes.\\
+
+    We start with when $\theta = 0$ and $\sigma^2 = 1$. Then,
+    \[ \E[Xh(X)] = \int_{0}^{\infty} xh(x)\phi(x) dx + \int_{-\infty}^{0} xh(x)\phi(x) dx \]
+    Then,
+    \begin{align*}
+        \int_{0}^{\infty} xh(x)\phi(x) dx &= \int_{0}^{\infty} x\left[\int_{0}^{x} \dot{h}(y) dy\right]\phi(x) dx\\
+        &= \int_{0}^{\infty}\int_{0}^{\infty} 1\{y < x\}x\dot{h}(y)\phi(x) dx dy\\
+        &= \int_{0}^{\infty} \dot{h}(y)\int_{y}^{\infty} x\phi(x) dx dy\\
+        &= \int_{0}^{\infty} \dot{h}(y)\phi(y) dy
+    \end{align*}
+    since $\frac{d}{dx}\phi(x) = -x\phi(x)$, so $\int_{y}^{\infty} x\phi(x) dx = [-\phi(x)]_{y}^{\infty} = \phi(y)$.
+    So,
+    \[ \E[Xh(X)] = \E[\dot{h}(X)] \]
+    Now, for $X = \theta + \sigma Z$ for standard Gaussian $Z$,
+    \begin{align*}
+        \E[(X - \theta)h(X)] = \E[\sigma Zh(\theta + \sigma Z)] &= \sigma\E[Zh(\theta + \sigma Z)]\\
+        &= \sigma\E[\sigma\dot{h}(\theta + \sigma Z)]\\
+        &= \sigma^2\E[\dot{h}(X)]
+    \end{align*}
+
+    $\qed$
+\end{proof}
+
+\begin{definition}[\textbf{Definition 17.3:} Jacobians]
+    If $h : \R^d \to \R^d$, let $Dh : \R^d \to \R^{d^2}$ be its \textit{Jacobian}. That is, the matrix such that
+    \[ (Dh)_{i,j} = \frac{\del h_i}{\del x_j} \]
+\end{definition}
+
+\begin{definition}[\textbf{Definition 17.4:} Frobenius Norm]
+    If $A \in \R^{d^2}$, let $\norm{A}_F^2 = \sum_{i, j} A_{i, j}^2$ be it's \emph{Frobenius norm}.
+\end{definition}
+
+\begin{theorem}[\textbf{Theorem 17.5:} Stein's Lemma, Multivariate]
+    Let $h : \R^d \to \R^d$, $X \sim N_d(\theta, \sigma^2 I_d)$, $\theta \in \R^d$, and $\E\norm{Dh}_F < \infty$. Then,
+    \[ \E[(X - \theta)'h(X)] = \sigma^2\E[\tt{tr}(Dh(X))] = \sigma^2\sum_{i = 1}^{d} \E\left[\frac{\partial h_i}{\partial x_i}(X)\right] \]
+\end{theorem}
+\begin{proof}{Proof:}
+    \begin{align*}
+        \E[(X_i - \theta_i)h_i(X)] = \E[\E[(X_i - \theta_i)h_i(X) \given X_{-i}]] &= \E\left[\E\left[\sigma^2\frac{\partial h_i}{\partial x_i}(X) \given X_{-i}\right]\right]\\
+        &= \E\left[\sigma^2\frac{\partial h_i}{\partial x_i}(X)\right]
+    \end{align*}
+    Then, we get our result after summing over the $d$ terms.
+
+    $\qed$
+\end{proof}
+
+\subsection*{Stein's Unbiased Risk Estimator (SURE)}
+\sectionspace
+
+Let $h(X) = X - \delta(X)$. Then,
+\begin{align*}
+    R(\theta; \delta) = \E\norm{\theta - \delta(X)}^2 &= \E\norm{X - \theta - h(X)}^2\\
+    &= \E\norm{X - \theta}^2 + \E\norm{h(X)}^2 - 2\E[(X - \theta)'h(X)]\\
+    &= d\sigma^2 + \E\norm{h(X)}^2 - 2\sigma^2\E_{\theta}[\tt{tr}(Dh(X))]
+\end{align*}
+Then, take
+\begin{align*}
+    \hat{R}(X) &= \sigma^2 d + \norm{X - \delta(X)}^2 - 2\sigma^2\tt{tr}(Dh(X))\\
+    &= \sigma^2 d + \norm{X - \delta(X)}^2 - 2\sigma^2\sum_{i = 1}^{d}\left(1 - \frac{\partial}{\partial x_i}\delta_i(X)\right)
+\end{align*}
+Then, $\hat{R}(X)$ is an unbiased estimate of the MSE, so we can find $\delta$ minimizing the expectation of this. We can also use it to graph the MSE by taking its expectation.
+
+\begin{example}{\textbf{Example:} Risk of James-Stein}
+
+    Assume $X \sim N_{d}(\theta, I_{d})$. Recall $\delta_{\tt{JS}}(X) = \left(1 - \frac{d - 2}{\norm{X}^2}\right)X$, so
+    \[ h(X) = \frac{d - 2}{\norm{X}^2}X \implies \norm{h(X)}^2 = \frac{(d - 2)^2}{\norm{X}^2} \]
+    Then,
+    \begin{align*}
+        \frac{\partial h_i}{\partial x_i}(X) = \frac{\partial}{\partial x_i}\frac{(d - 2)x_i}{\norm{x}^2} &= \frac{\partial}{\partial x_i}\frac{(d - 2)x_i}{\sum x_i^2}\\
+        &= (d - 2)\frac{\norm{X}^2 - 2X_i^2}{(\norm{X}^2)^2}
+    \end{align*}
+    Then,
+    \[ \sum_{i = 1}^{d} \frac{\partial h_i}{\partial x_i}(X) = \frac{d - 2}{\norm{X}^4}\left(d\norm{X}^2 - 2\norm{X}^2\right) = \frac{(d - 2)^2}{\norm{X}^2} \]
+    So
+    \begin{align*}
+        \hat{R}(X) &= d + \frac{(d - 2)^2}{\norm{X}^2} - 2\frac{(d - 2)^2}{\norm{X}^2}\\
+        &= d - \frac{(d - 2)^2}{\norm{X}^2}
+    \end{align*}
+    Then,
+    \[ R(\theta, \delta_{\tt{JS}}) = \E[\hat{R}(X)] = d - (d - 2)^2\E\left[\frac{1}{\norm{X}^2}\right] < d = R(\theta, X) \]
+    so $\delta_{\tt{JS}}$ dominates $\delta_0$. In the $\theta = 0$ case,
+    \[ R(0, \delta_{\tt{JS}}) = d - \frac{(d - 2)^2}{d - 2} = 2 \]
+\end{example}

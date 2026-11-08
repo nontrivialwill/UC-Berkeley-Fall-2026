@@ -1,0 +1,98 @@
+\tocsection{\textbf{10/8/26 Lecture 13:} Conjugate Priors}
+
+Recall from last time that if $X \given \theta \sim \Binom(n, \theta)$ and $\theta \sim \tt{Beta}(\alpha, \beta)$, then
+\begin{align*}
+    \lambda(\theta \given X) &\propto_{\theta} \lambda(\theta)p_{\theta}(X)\\
+    &\propto_{\theta} \tt{Beta}(\alpha + X, \beta + n - X)
+\end{align*}
+which is very nice, as it gives us
+\[ \bb{E}[\theta \given X] = \frac{X + \alpha}{n + \alpha + \beta} \]
+
+\begin{example}{\textbf{Example:} Normal Location}
+    Let $X \given \theta \sim N(\theta, \sigma^2)$ and $\theta \sim N(\mu, \tau^2)$, where we assume $\sigma^2$ and $\tau^2$ are known. That is,
+    \[ p_{\theta}(x) \propto e^{-(x - \theta)^2/2\sigma^2} \quand \lambda(\theta) \propto e^{-(\theta - \mu)^2/2\tau^2} \]
+    Then,
+    \begin{align*}
+        \lambda(\theta \given x) &\propto_{\theta} \exp\left\{-\frac{(x - \theta)^2}{2\sigma^2} - \frac{(\theta - \mu)^2}{2\tau^2}\right\}\\
+        &\propto_{\theta} \exp\left\{\frac{x\theta}{\sigma^2} - \frac{\theta^2}{2\sigma^2} - \frac{\theta^2}{2\tau^2} + \frac{\theta\mu}{\tau^2}\right\}\\
+        &\propto_{\theta} \exp\left\{-\left(\theta - \frac{x\sigma^{-2} + \mu\tau^{-2}}{\sigma^{-2} + \tau^{-2}}\right)^2 \Big/ 2(\sigma^{-2} + \tau^{-2})^{-1}\right\}\\
+        &\propto_{\theta} N\left(\frac{x\sigma^{-2} + \mu\tau^{-2}}{\sigma^{-2} + \tau^{-2}}, \frac{1}{\sigma^{-2} + \tau^{-2}}\right)
+    \end{align*}
+    Notice that the posterior mean is a precision weighted average, where $\sigma^{-2}$ is the likelihood precision and $\tau^{-2}$ is the prior precision. The posterior variance is the harmonic sum of $\sigma^2$ and $\tau^2$, so $\sigma^{-2} + \tau^{-2}$ is the posterior precision. Notice that
+    \[ \bb{E}[\theta \given X] = X \cdot \frac{\sigma^{-2}}{\sigma^{-2} + \tau^{-2}} + \mu \cdot \frac{\tau^{-2}}{\sigma^{-2} + \tau^{-2}} \quand \Var(\theta \given X)^{-1} = \sigma^{-2} + \tau^{-2} \]
+    Now, if $\sigma^2 = 1$ and $k = \frac{1}{\tau^2}$, then
+    \[ \bb{E}[\theta \given X] = X \cdot \frac{1}{1 + k} + \mu \cdot \frac{k}{1 + k} \quand \Var(\theta \given X)^{-1} = 1 + k \]
+    so once again, we can think of $\mu$ as ``pseudo-data''.\\
+
+    Now, suppose $X_1, \ldots, X_n \given \theta \iidsim N(\theta, \sigma^2)$ and $\theta \sim N(\mu, \tau^2)$. Since using a minimal sufficient statistic doesn't change the posterior, we can do a sufficiency reduction to
+    \[ \overline{X} \given \theta \sim N(\theta, \sigma^2/n), \quad \theta \sim N(\mu, \tau^2) \]
+    so by the above,
+    \[ \bb{E}[\theta \given X] = \overline{X} \cdot \frac{n\sigma^{-2}}{n\sigma^{-2} + \tau^{-2}} + \mu \cdot \frac{\tau^{-2}}{n\sigma^{-2} + \tau^{-2}} \quand \Var(\theta \given X)^{-1} = n\sigma^{-2} + \tau^{-2} \]
+    Again, if $\sigma^2 = 1$ and $k = \frac{1}{\tau^2}$, then
+    \[ \bb{E}[\theta \given X] = \overline{X} \cdot \frac{n}{n + k} + \mu \cdot \frac{k}{n + k} \quand \Var(\theta \given X)^{-1} = n + k \]
+    which confirms the belief that we are adding ``psuedo data''.
+\end{example}
+
+\begin{remark}{Remark}
+    If $n \gg k$, the data ``swamps'' the prior, and if $k \gg n$, the prior ``swamps'' the data.
+\end{remark}
+
+\begin{remark}{Remark}
+    It seems odd that we always get lucky in the sense that our posterior has the same distribution of the prior. This is because of exponential families, as we will see next!
+\end{remark}
+
+\subsection*{Conjugate Priors}
+\sectionspace
+
+Suppose $X_1, \ldots, X_n \given \eta \iidsim p_{\eta}(x) = e^{\eta'T(x) - A(\eta)}h(x)$, with $\eta \in \Xi \subseteq \R^s$. For a carrier $\lambda_0(\eta)$, define the $(s + 1)$-parameter exponential family by
+\[ \lambda_{\mu, k}(\eta) = e^{k\mu'\eta - kA(\eta) - B(k\mu, k)}\lambda_0(\eta) \]
+This family has sufficient statistic $\begin{pmatrix} \eta \\ -A(\eta) \end{pmatrix} \in \R^{s + 1}$ and natural parameter $\begin{pmatrix} k\mu \\ k \end{pmatrix}$.\\
+
+Now, what is the posterior? We see that
+\begin{align*}
+    \lambda(\eta \given X_1, \ldots, X_n) &\propto_{\eta} e^{k\mu'\eta - kA(\eta)}\lambda_0(\eta) \cdot \prod_{i = 1}^{n} e^{\eta'T(x_i) - A(\eta)}h(x_i)\\
+    &\propto_{\eta} \lambda_{\mu^{+},\, k^{+}}(\eta)
+\end{align*}
+where
+\[ \mu^{+} = \frac{k\mu + \sum T(x_i)}{k + n}, \quad k^{+} = k + n \]
+Thus, the posterior stays in the family of the prior, and the posterior looks like what happens when you add $k\mu$ as pseudo data. 
+
+\begin{definition}[\textbf{Definition 13.1:} Conjugate Priors]
+    We say the family $\lambda_{\mu, k}$ is a \emph{conjugate prior} to $p_{\eta}$ if, whenever we take a prior in $\lambda_{\mu, k}$, the posterior is still in the $\lambda_{\mu, k}$ family.
+\end{definition}
+
+For example,
+\begin{itemize}
+    \item The Beta is conjugate to the Binomial.
+    \item The Normal is conjugate to the Normal location family.
+    \item The Gamma is conjugate to the Poisson.
+\end{itemize}
+
+\begin{remark}{Note}
+    Conjugate priors are not unique! They depend on the carrier you choose. For example, the truncated Gaussian and the Gaussian are both conjugate to the same model!
+\end{remark}
+
+\subsection*{Contrasts of Bayesian and Frequentist}
+\sectionspace
+
+\textbf{Frequentist:} :( We have to prioritize all $\theta$s at once.\\
+
+\textbf{Bayesian:} :) We can prioritize $\theta$ based on a distribution! We can say things have a chance of occurring. It's all computation! The downside is that you actually have to choose a prior, and we will see why that can be hard in a bit.\\
+
+\textbf{Question:} What is probability really? Mathematically, it is a measure, but in real life, it is usually thought of as a long run frequency, or a proportion from a systematic random sample.\\
+
+What about questions like ``What is the chance that $P = NP$?'' This is subjective uncertainty.\\
+
+\textbf{Bayesian Law of Large Numbers:} Different priors converge to the true value given enough observations.\\
+
+\textbf{Question:} Why not always be a Bayesian?
+
+\begin{example}{\textbf{Example}}
+    Let $X_1, \ldots, X_n \iidsim p$, where $p$ is an unknown density on $\R$, and suppose our estimand is $m = \tt{median}(p)$. If $n$ is odd, then $X_{\left(\frac{n + 1}{2}\right)}$ is a good estimator. However, to get a Bayes estimator,
+    \begin{enumerate}
+        \item We need a prior over $p$ (an infinite-dimensional prior!)
+        \item Compute the posterior :(
+        \item Compute $\hat{m} = \bb{E}[m \given X]$
+    \end{enumerate}
+\end{example}
+The problem with Bayes is choice paralysis. Frequentist methods are nice because we don't care what $p$ is.

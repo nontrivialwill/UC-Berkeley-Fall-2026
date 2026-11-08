@@ -1,0 +1,97 @@
+\tocsection{\textbf{9/23/26 Lecture 12:} Monotone Convergence Theorem}
+
+\begin{definition}[\textbf{Defintion 12.1: }Integrability]
+    We say that $f$ is \emph{integrable} if
+    \[ \int \abs{f} d\mu < \infty \]
+\end{definition}
+
+\textbf{Question:} Given a sequence of measurable functions $\{f_n\}$ with $\lim_{n \to \infty} f_{n}(x) = f(x)$, when can we write
+\[ \lim_{n \to \infty} \int f_n d\mu = \int f d\mu \]
+This is not so clear. Consider the function $f_n(x) = \chi_{[n, n + 1]}(x)$. We know that $\lim_{n \to \infty} f_n(x) = 0$, and $\int 0 d\mu = 0$, but for any $n$, we have that $\int f_n d\mu = 1$. Thus, 
+\[ \lim_{n \to \infty} f_n d\mu \ne \int \lim_{n \to \infty} f_n \]
+Here's another problem. Let $f_{n}(x) = n\chi_{(0, 1/n)}$. We see that $\int f_{n} d\mu = 1$, but $f_n \to 0$.\\
+
+Here's a final example. Let $f_{n}(x) = \frac{1}{n}\chi_{[0, n]}$. Then, $\int f_n d\mu = 1$, but $f_n \to 0$. 
+
+\begin{theorem}[\textbf{Theorem 12.2:} Monotone Convergence Theorem]
+    Suppose that $0 \leq f_1 \leq f_2 \leq \cdots$ is a monotone sequence of nonnegative measurable functions. Then, 
+    \[ \lim_{n \to \infty} \int f_n d\mu = \int \lim_{n \to \infty} f_n d\mu \]
+\end{theorem}
+\begin{proof}{Proof:}
+    Let $f(x) = \lim_{n \to \infty} f_n(x)$. Then, $f_{n}(x) \leq f(x)$ for all $x \in X$ and $n$, so we know that
+    \[ \int f_n d\mu \leq \int f d\mu \implies \lim_{n \to \infty} \int f_n d\mu \leq \int f d\mu \]
+    Thus, what is left to show is that $\int f d\mu \leq \lim_{n \to \infty} \int f_n d\mu$, which is to show that if $s = \sum_{j = 1}^{N} a_j\chi_{A_j} \leq f$, then $\int s d\mu \leq \lim_{n \to \infty} \int f_n d\mu$.\\
+
+    Take the $A_j$ to be disjoint and let $0 < \epsilon < 1$. Then, for every $x \in A_j$, we see that $f_{n}(x) > (1 - \epsilon)a_j$ for sufficiently large $n$. Now, let
+    \[ A_{j, n} = \{x \in A_j \col f_{n}(x) > (1 - \epsilon)a_j\} \]
+    Then, notice that $A_{j, n} \uparrow A_{j}$. This implies that
+    \[ \mu(A_j) = \lim_{n \to \infty} \mu(A_{j, n}) \]
+    and as $f_n \geq \sum_{j = 1}^{N} (1 - \epsilon)a_j\chi_{A_{j, n}}$ for all $n$,  we see that
+    \[ \int f_n d\mu \geq \sum_{j = 1}^{N} (1 - \epsilon)a_j\mu(A_{j, n}) \]
+    Taking limits as $n \to \infty$, we see that
+    \[ \lim_{n \to \infty} f_n d\mu \geq \sum_{j = 1}^{N} (1 - \epsilon)a_j\mu(A_j) = (1 - \epsilon)\int s d\mu \]
+    Thus, taking $\epsilon \to 0$, we have that
+    \[ \lim_{n \to \infty} \int f_n d\mu \geq \int s d\mu \]
+    which was to be shown.
+
+    $\qed$
+\end{proof}
+
+\begin{lemma}[\textbf{Corollary 12.3}]
+    If $f$ and $g$ are integrable, then $f + g$ is integrable and
+    \[ \int (f + g) d\mu = \int f d\mu + \int g d\mu \]
+    Additionally, if $f$ and $g$ are non-negative but not necessarily integrable, this equality still holds. 
+\end{lemma}
+\begin{proof}{Proof:}
+    First, suppose $f$ and $g$ are non-negative simple functions $f = \sum_{j = 1}^{n} a_j \chi_{A_j}$ and $g = \sum_{j = 1}^{m} b_j\chi_{B_j}$. Now, $f + g$ is a simple function with
+    \[ \int (f + g)d\mu = \sum_{j = 1}^{n}a_j\mu(A_j) + \sum_{j = 1}^{m} b_j\mu(B_j) = \int f d\mu + \int g d\mu \]
+
+    Now, suppose $f$ and $g$ are non-negative. Then, we can find sequences of non-negative simple functions $s_n, t_n$ with $s_n \uparrow f$ and $t_n \uparrow g$. Then, 
+    \begin{align*}
+        \int f + g d\mu &= \int \lim_{n \to \infty} s_n + t_n d\mu\\
+        &= \lim_{n \to \infty} \int s_n + t_n d\mu && (\tt{MCT})\\
+        &= \lim_{n \to \infty} \int s_n d\mu + \lim_{n \to \infty} \int t_n d\mu && (\tt{need step 1!})\\
+        &= \int \lim_{n \to \infty} s_n d\mu + \int \lim_{n \to \infty} t_n d\mu\\
+        &= \int f d\mu + \int g d\mu
+    \end{align*}
+
+    Finally, let $f$ and $g$ be integrable but not necessarily nonnegative. To see that $f + g$ is integrable, notice that
+    \[ \int \abs{f + g}d\mu \leq \int \abs{f} + \abs{g}d\mu = \int \abs{f} d\mu + \int \abs{g}d\mu \]
+    so the integral must be finite. Now, write
+    \[ (f + g)^{+} - (f + g)^{-} = (f + g) = (f^{+} - f^{-})  + (g^{+} - g^{-}) \]
+    Thus, we see that
+    \[ (f + g)^{+} + f^{-} + g^{-} = (f + g)^{-} + f^{+} + g^{+} \]
+    These are non-negative functions, so by step 2,
+    \[ \int (f + g)^{+}d\mu + \int f^{-}d\mu + \int g^{-}d\mu = \int (f + g)^{-}d\mu + \int f^{+}d\mu + \int g^{+}d\mu \]
+    Thus,
+    \[ \int (f + g)^{+}d\mu - \int (f + g)^{-}d\mu = \left(\int f^{+}d\mu - \int f^{-}d\mu\right) + \left(\int g^{+}d\mu - \int g^{-}d\mu\right) \]
+    which implies that
+    \[ \int (f + g)d\mu = \int f d\mu + \int g d\mu \]
+
+    $\qed$
+\end{proof}
+
+\begin{lemma}[\textbf{Corollary 12.4}]
+   If $\{f_n\}$ is a sequence of non-negative measurable functions, then
+   \[ \int \sum_{n = 1}^{\infty} f_n d\mu = \sum_{n = 1}^{\infty} \int f_n d\mu \] 
+\end{lemma}
+\begin{proof}{Proof:}
+    Let $F_N = \sum_{n = 1}^{N} f_n$. We see that $0 \leq F_1 \leq F_2 \leq \cdots$, so
+    \[ \lim_{N \to \infty} \int F_{N}d\mu = \int \lim_{N \to \infty} F_N d\mu = \int \sum_{n = 1}^{\infty} f_nd\mu \]
+    Then, for each $N$, as we have that
+    \[ \int F_{N}d\mu = \sum_{n = 1}^{N}\int f_nd\mu \]
+    by Corollary 12.3, we see that
+    \[ \sum_{n = 1}^{\infty} \int f_n d\mu = \int \sum_{n = 1}^{\infty} f_n d\mu \]
+
+    $\qed$
+\end{proof}
+
+Finally, we will state a lemma which we will prove next time.
+
+\begin{lemma}[\textbf{Lemma 12.5:} Fatou's Lemma]
+    Given a sequence $\{f_n\}$ of non-negative measurable functions, we have that
+    \[ \int \liminf_{n \to \infty} f_nd\mu \leq \liminf_{n \to \infty} \int f_nd\mu \]
+\end{lemma}
+
+This lemma actually lets us understand our previous examples. Let $f_n = \chi_{[n, n + 1]}$. We see that $\liminf_{n \to \infty} f_n = 0$, so clearly
+\[ \int \liminf_{n \to \infty} f_nd\mu \leq 1 = \liminf_{n \to \infty} \int f_nd\mu \]

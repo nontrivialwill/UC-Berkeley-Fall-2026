@@ -1,0 +1,91 @@
+\tocsection{\textbf{10/2/26 Lecture 16: }Topological Groups cont. and Intro to Algebraic Topology}
+
+Let's consider some examples:\\
+
+Consider $O(n)$ acting on $S^{n - 1}$. If $A \in O(n)$ and $v$ is a unit vector in $\R^n$, then $(A, v) \to Av$ is our group action. Now, consider $e_1 \in S^{n - 1}$. Which $A \in O(n)$ send $e_1$ to $e_1$? Well, it must be a matrix of the form
+\[ \begin{pmatrix} 1 & 0 \\ 0 & B \end{pmatrix} \]
+where $B \in O(n  - 1)$. Thus, this gives us a map $\alpha = O(n) / O(n - 1) \to S^{n - 1}$ by $[g] \to ge_1$, which is well defined. The map $\alpha$ is onto since $O(n)$ acts transitively on $S^{n - 1}$, injective since we quotiented by the isotropy group of $e_1$. Then, $O(n)$ is compact, so the quotient space is compact, and as $S^{n - 1}$ is Hausdorff, we see that $\alpha$ is a homeomorphism between $O(n)/O(n - 1)$ and $S^{n - 1}$.\\
+
+By the same argument $SO(n)/SO(n - 1)$ is homeomorphic to $S^{n - 1}$.
+
+\begin{lemma}[\textbf{Proposition 16.1}]
+    For any $n$, $SO(n)$ is connected.
+\end{lemma}
+\begin{proof}{Proof:}
+    We will prove this by induction. First $SO(1) = \{(1)\}$ is a point, so it is connected.\\
+
+    Now, suppose that for some $n > 1$, $SO(n - 1)$ is connected. Then, taking $G = SO(n - 1)$ and $X = SO(n)$, where $G$ acts on $X$ by ``multiplication'' (make an $n$ by $n$ block matrices with elements of $G$), so as $G$ is connected, and $X/G = SO(n)/SO(n - 1)$ is connected, we must have that $X = SO(n)$ is connected. 
+
+    $\qed$
+\end{proof}
+
+\begin{example}{\textbf{Example:} Lens Spaces}
+    Let
+    \begin{align*}
+        S^3 &= \{(z_1, z_2) \in \C^2 \col \abs{z_1}^2 + \abs{z_2}^2 = 1\}\\
+        &= \{(a, b, c, d) \in \R^3 \col a^2 + b^2 + c^2 + d^2 = 1\}
+    \end{align*}
+    Then, pick relatively prime integers $q < p$. Now, consider $G = \Z_{p}$ and $X = S^{3}$. We can define how $G$ acts on $X$ by saying that $1 \in \Z_{p}$ sends
+    \[ (z_1, z_2) \mapsto (e^{\frac{2\pi i}{p}}z_1, e^{\frac{2\pi i q}{p}}z_2) \]
+    We call $X/G$ the \emph{lens space} denoted $L(p, q)$. The map $S^3 \to L(p, q)$ turns out to be $p$-to-one. Note that if $p = 1$ and $q = 1$, then $L(2, 1) = P^3$. 
+\end{example}
+
+\begin{example}{\textbf{Example:}}
+    Consider $X = \R^2$. An \emph{isometry} of $\R^2$ is a distance preserving map $\R^2 \to \R^2$. The group $\tt{Isom}(\R^2)$ of isometries of $\R^2$ are a group under composition, and it turns out
+    \[ \tt{Isom}(\R^2) = \{x \mapsto Ax + b \col A \in O(2), b \in \R^2\} \]
+    Note that
+    \[ x \mapsto A_2x + b_2 \mapsto A_1(A_2x + b_2) + b_1 = A-1A_2x + A_1b_2 + b_1 \]
+    so if we represent $\tt{Isom}(\R^2)$ as pairs $(A, b)$, then
+    \[ (b_1, A_1) \cdot (b_2, A_2) = (b_1 + b_2A, A_1A_2) \]
+    This is called the \emph{semidirect product} of $\R^2$ and $O(2)$. More generally, if we have groups $G_1$ and $G_2$ and a homomorphism $\alpha \col G_2 \to \tt{Aut}(G_1)$, then the semidirect product $G_1 \tilde{\times} G_2$ is the group over $G_1 \times G_2$ with the following operation
+    \[ (g_1, g_2)(g_1', g_2') = (g_1 \cdot \alpha(g_2)(g_1'), g_2g_2') \]
+    so in our case, we have $G_1 = (\R^2, +)$, $G_2 = O(2)$, and $\alpha \col O(2) \to \tt{Aut}(G_1)$ is the inclusion $\alpha \col O(2) \to \tt{GL}_{2}(\R)$.\\
+
+    Going back, consider the topological space, $\tt{Isom}(\R^2) = \R^2 \times O(2)$. Then, if $G$ is a discrete subgroup of $\tt{Isom}(\R^2)$ (discrete in the subspace top), then $G$ acts on $\R^2$ by isometries, and we call $G$ a \emph{plane crystallographic group} or \emph{wallpaper group} if $\R^2/G$ is compact.\\
+
+    For instance, if $G = \Z^2 \subseteq \R^2 \subseteq \tt{Isom}(\R^2)$ by
+    \[ G = \{x \mapsto x + n_1a_1 + n_2a_2 \col n_1, n_2 \in \Z\} \]
+    where $a_1, a_2$ are fixed vectors in $\R^2$. \\
+
+    \fig{0.8}{Lecture16Fig1}{}
+
+    It turns out that there are only 17 distinct wallpaper groups (up to isomorphism!). Here are some examples and their corresponding symmetries:
+    \begin{multicols}{2}
+        \fig{0.6}{Lecture16Fig2}{
+        }
+        \columnbreak
+
+        \fig{0.55}{Lecture16Fig3}{}
+    \end{multicols}
+    
+    We can also do the same thing with $\R^2$ giving the spatial crystallographic groups, of which there are 230 unique. 
+\end{example}
+
+\subsection*{Moving Towards Algebraic Topology}
+\sectionspace
+
+Let $X$ be a topological space. 
+
+\begin{definition}[\textbf{Definition 16.2:} Loops]
+    A loop in $X$ is a map $\alpha \col [0, 1] \to X$ such that $\alpha(0) = \alpha(1)$. We say that the loop is \emph{based} at $\alpha(0)$. 
+\end{definition}
+\fig{0.8}{Lecture16Fig4}{}
+
+Idea: We fix a point $p \in X$, and we can form a group out of loops based at $p$ where multiplication is the composition of loops, and where the inverse is traversing the loop backwards.\\
+\fig{0.8}{Lecture16Fig5}{}
+
+Here are two problems with this construction:
+\begin{enumerate}
+    \item Too many loops!
+    \item Multiplication is not associative, traversal speeds change!
+    \item A loop times its inverse is not the identity!
+\end{enumerate} 
+
+
+Fix: Consider loops up to deformation. What is this? Given two maps, we want to define a continuous way of transforming $f$ into $g$. That is, we want this collection $\{f_{t}\}_{t \in [0, 1]}$ of continuous maps so that $f_{0} = f$ and $f_{1} = g$, and they transition smoothly. \\
+
+We will define this more rigorously here. 
+
+\begin{definition}[\textbf{Definition 16.3:} Homotopies]
+    Let $f, g : X \to Y$ be maps. Then, we say $f$ is \emph{homotopic} to $g$, denoted $f \overset{F}{\sim} g$,  if there exists a map $F \col X \times I \to Y$ with $I = [0, 1]$ so that $f(x) = F(x, 0)$ and $g(x) = F(x, 1)$ for all $x \in X$. We then call $F$ a \emph{homotopy} from $f$ to $g$.  
+\end{definition}

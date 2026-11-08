@@ -1,0 +1,91 @@
+\tocsection{\textbf{9/11/26 Lecture 7:} Compact and Hausdorff Spaces}
+
+\begin{lemma}[\textbf{Propositon 7.1}]
+    If $f : X \to Y$ is continuous and $X$ is compact, then $f(X) \subseteq Y$ is compact. 
+\end{lemma}
+\begin{proof}{Proof:}
+    We see that $f : X \to f(X)$ is continuous. Let $\{\cal{O}_{\lambda}\}$ be an open cover of $f(X)$. Then, 
+    \[ f(X) = \bigcup_{\lambda} \cal{O}_{\lambda} \]
+    Then, we see that $f^{-1}(f(X)) = X$ as $X$ is onto, and
+    \[ f^{-1}\left(\bigcup_{\lambda} \cal{O}_{\lambda}\right) = \bigcup_{\lambda} f^{-1}(\cal{O}_{\lambda}) \]
+    is an open cover as $f^{-1}(\cal{O}_{\lambda})$ is open. Then, as $X$ is compact, we can write
+    \[ X = \bigcup_{i = 1}^{n} f^{-1}(\cal{O}_{\lambda_i}) \]
+    then, as $f(X) = f\left(\bigcup_{i = 1}^{n} f^{-1}(\cal{O}_{\lambda_i})\right) = \bigcup_{i = 1}^{n} \cal{O}_{\lambda_i}$, so $f(X)$ has a finite subcover.
+
+    $\qed$
+\end{proof}
+
+\begin{definition}[\textbf{Definition 7.2: }Compact Subspace]
+    Let $X$ be a topological space. Then $Y \subseteq X$ is compact if it is compact in the subspace topology.
+\end{definition}
+This means that if $Y \subseteq \bigcup_{\lambda} \cal{O}_{\lambda}$ for $\cal{O}_{\lambda}$ open in $X$, then we can write $Y = \bigcup_{i = 1}^{n} \cal{O}_{\lambda_i}$.\\
+
+\begin{lemma}[\textbf{Proposition 7.3}]
+    A closed subset of a compact space is compact.
+\end{lemma}
+\begin{proof}{Proof:}
+    Let $Y \subseteq X$ be closed and $X$ be compact. Now, take an open cover $Y \subseteq \cup_{\alpha} \cal{O}_{\alpha}$. Then, notice that $X \backslash Y$ is open, so letting $X \backslash Y = \cal{O}_{\alpha'}$, we have
+    \[ X = \bigcup_{\alpha} \cal{O}_{\alpha} \]
+    which allows us to pass to an open cover
+    \[ X = \bigcup_{i = 1}^{n} \cal{O}_{\alpha_i} \]
+    Now, this may or may not contain $\cal{O}_{\alpha_i}$, but removing that set, it must still cover $Y$, so we have that $Y \subseteq \bigcup_{i = 1}^{n} \cal{O}_{\alpha_i}$, we see that $Y$ has a finite subcover.
+
+    $\qed$
+\end{proof}
+
+\begin{lemma}[\textbf{Proposition 7.4}]
+    If $X$ is Hausdorff, $A \subseteq X$ is compact and $x \in X \backslash A$, then there exists disjoint neighborhoods of $x$ and $A$. Thus, this implies that $X \backslash A$ is open, so $A$ is closed.
+\end{lemma}
+\begin{proof}{Proof:}
+    Take $z \in A$. Since $X$ is Hausdorff, we can find disjoint open sets $U_{z}, V_{z}$ so that $x \in U_{z}$ and $z \in V_{z}$.\\
+
+    Then, we see that $A \subseteq \bigcup_{z \in A} V_{z}$, and as $A$ is compact, pass to a finite subcover $A \subseteq \bigcup_{i = 1}^{n} V_{z_{i}}$. Now, since $x \in \bigcap_{i = 1}^{n} U_{z_{i}}$ is open, and $U_{z_{i}} \cap V_{z_{i}}$ are disjoint, we see that $\bigcup_{i = 1}^{n} V_{z_{i}} \cap \left(\bigcap_{i = 1}^{n} U_{z_{i}}\right) = \emptyset$, which gives us our two disjoint open neighborhoods of $x$ and $A$. 
+
+    $\qed$
+\end{proof}
+
+\begin{lemma}[\textbf{Corollary 7.5}]
+    The curve $f : [0, 1] \to \triangle$ from above is space filling.
+\end{lemma}
+\begin{proof}{Proof:}
+    Since $[0, 1]$ is compact, $f[0, 1]$ is compact, and as $\triangle$ is Hausdorff, we see that $f[0, 1]$ is closed by Proposition 7.4. Thus, we see that $f[0, 1] = \overline{f[0, 1]} = \triangle$. 
+\end{proof}
+
+\begin{lemma}[\textbf{Proposition 7.6}]
+    If $f : X \to Y$ is a continuous bijection, $X$ is compact, and $Y$ is Hausdorff, then $f$ is a homeomorphism.
+\end{lemma}
+\begin{proof}{Proof:}
+    We just need to show that $f^{-1} = g : Y \to X$ is continuous. Let $C$ be closed in $X$. Then all there is to show is that $g^{-1}(C) = f(C)$ is closed.\\
+
+    However, this is easy because $C \subseteq X$ is closed, so it is compact by Proposition 7.3, and as $Y$ is Hausdorff, we see that as $f(C)$ is compact, it is also closed.
+
+    $\qed$
+\end{proof}
+
+Now, an interesting question: Can the space filling curve from before, $f : [0, 1] \to \triangle$, be injective? Well, as $[0, 1]$ is compact, and $\triangle$ is Hausdorff, we see that if $f$ is injective, then $f$ is a homeomorphism by Proposition 7.6. However, we will later show that this is a contradiction, as $[0, 1]$ and $\triangle$ are not homeomorphic. 
+
+\begin{lemma}[\textbf{Proposition 7.7}]
+    If $X$ is compact, every infinite subset has a limit point.
+\end{lemma}
+\begin{proof}{Proof:}
+    Let $Y \subseteq X$ be infinite and suppose that $Y$ has no limit points. Then, for each $x \in X$, $x$ is not a limit point of $Y$, so there exists an open $U_{x}$ containing $x$ such that the intersection of $U_{x}$ and $Y$ contains at most one point. Then, as $\cup_{x \in X} U_{x}$ is an open cover for $X$, and $X$ is compact, consider the open cover
+    \[ X \subseteq \bigcup_{i = 1}^{n} U_{x_{i}} \]
+    Now, notice that $Y$ must be contained in this union, but each element of this union contains at most one point of $Y$, which implies that $Y$ must be finite. 
+\end{proof}
+
+\begin{theorem}[\textbf{Theorem 7.8:} Mini Heine-Borel Theorem]
+    A compact subset of $\R^n$ is closed and bounded.
+\end{theorem}
+\begin{proof}{Proof:}
+    Since $\R^n$ is Hausdorff, we see that a compact set $C$ is also closed by Proposition 7.4. Thus, we just need to show that this is bounded. However, notice that we can write $\R^n = \bigcup_{k = 1}^{\infty} B(0, k)$, so as $C \subseteq \bigcup_{i = 1}^{\infty} B(0, k)$ is comapact, we can write $C \subseteq \bigcup_{i = 1} B(0, k_{i})$, we can take the maximal $k_{i}$ and see that $C \subseteq B(0, k_{i})$, which implies that it is bounded.
+
+    $\qed$
+\end{proof}
+
+\begin{theorem}[\textbf{Theorem 7.9:} Extreme Value Theorem]
+    If $f : X \to \R$ is a continuous function and $X$ is compact, then $f$ is bounded above and below, and achieves its supremum and infimum. 
+\end{theorem}
+\begin{proof}{Proof:}
+    Since $f(X)$ is compact, we see that $f(X)$ is closed and bounded. Then, as $f(X)$ is closed, we see that $\sup f, \inf f \in f(X)$, so there exists $x_1, x_2$ such that
+    \[ f(x_1) = \sup f \quand f(x_2) = \inf f \]
+\end{proof}

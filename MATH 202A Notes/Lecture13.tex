@@ -1,0 +1,95 @@
+\tocsection{\textbf{9/25/26 Lecture 13: }Dominated Convergence Theorem}
+
+First, we will give a proof of Fatou's Lemma, as promised last section.
+
+\begin{theorem}[\textbf{Lemma 13.1:} Fatou's Lemma]
+    For any sequence $\{f_n\}_{n = 1}^{\infty}$ of non-negative measurable functions, we have that
+    \[ \int \liminf_{n \to \infty} f_n d\mu \leq \liminf_{n \to \infty} \int f_n d\mu \]
+\end{theorem}
+\begin{proof}{Proof:}
+    Consider the sequence $g_n(x) = \inf_{j \geq n} f_{j}(x)$. Notice it is a sequence of non-negative functions such that $g_{n} \uparrow \liminf_{n \to \infty} f_n$. Now, as $g_n \leq f_{j}$ for all $j \geq n$, we see that
+    \[ \int g_n d\mu \leq \inf_{j \neq n} \int f_{j}d\mu \]
+    Thus, taking limits, we see that
+    \[ \liminf_{n \to \infty} \inf f_{n}d\mu \geq \lim_{n \to \infty} \int g_n d\mu = \int \liminf_{n \to \infty} f_n d\mu \]
+    by the MCT.
+
+    $\qed$
+\end{proof}
+
+Note that the non-negative requirement is important: If we let $f_n =- 1/n\chi_{[n, 2n]}$ then $\liminf_{n \to \infty} f_n = 0$, but $\int f_nd\mu = -1$ for all $n$.\\
+
+Now, we will prove the Dominated Convergence Theorem, which tells us that we can interchange limits when our sequence of functions is dominated by an integrable function.
+
+\begin{theorem}[\textbf{Theorem 13.2:} Dominated Convergence Theorem]
+    Let $\{f_n\}_{n = 1}^{\infty}$ be a sequence of measurable functions, and let $f_n(x) \to f$ for all $x \in X$. Suppose that there is some non-negative integrable function $g$ for which $\abs{f_n(x)} \leq g(x)$ for all $x$. Then, 
+    \[ \int f d\mu = \lim{n \to \infty} \int f_nd\mu \]
+\end{theorem}
+\begin{proof}{Proof:}
+    The idea is that $f_n + g \geq 0$ and $g - f_n \geq 0$ are both positive functions. By Fatou's lemma, we see that
+    \[ \int (f + g)d\mu \leq \liminf_{n \to \infty} \int (f_n + g) d\mu = \liminf_{n \to \infty} \int f_n d\mu + \int g d\mu \]
+    Since $g$ is integrable, we can subtract it to get
+    \[ \int f d\mu \leq \liminf_{n \to \infty} \int f_n d\mu \]
+    We also have by Fatou's lemma that
+    \[ \int g - f d\mu \leq \liminf_{n \to \infty} \int g - f_n d\mu = \int g + \liminf_{n \to \infty} \int -f_n d\mu \]
+    Subtracting $\int g$ again, we have
+    \[ -\int f d\mu \leq \liminf_{n \to \infty} -\int f_nd\mu \]
+    Now, recall that $\liminf_{n \to \infty} -\int f_n d\mu = -\limsup_{n \to \infty} \int f_n d\mu$, so dividing by $-1$, we get
+    \[ \int f d\mu \geq \limsup_{n \to \infty} \int f_n d\mu \]
+    THus, we see that
+    \[ \int f d\mu \leq \liminf_{n \to \infty} \int f_n d\mu \leq \limsup_{n \to \infty} \int f_n d\mu \leq \int f d \mu \]
+    so equality holds and thus
+    \[ \int f d\mu = \lim_{n \to \infty} \int f_n d\mu \]
+
+    $\qed$
+\end{proof}
+
+Now, here's a corollary of the MCT and DCT.
+
+\begin{lemma}[\textbf{Corollary 13.3}]
+    If $f_n$ is a sequence of functions satisfying the hypotheses of the monotone or dominated convergence theorems, but suppose that $f_{n}(x) \to f(x) \tt{ a.e.}$. Then, we still have that
+    \[ \int \lim_{n \to \infty} d\mu = \int \lim_{n \to \infty} f_n d\mu \]
+\end{lemma}
+\begin{proof}{Proof:}
+    Let $A$ be the set of points for which $f_n(x)$ converges to $f(x)$. Notice that for any measurable function, we must have that
+    \[ \int g d\mu = \int g\chi_{A} d\mu + \int g\chi_{A^{c}}d\mu = \int g \chi_{A}d\mu \]
+    because the integral of a function only supported on a measure 0 set is 0.\\
+
+    Then, applying this fact to $f_{n}\chi_{A}$, we see that
+    \[ \lim_{n \to \infty} \int f_nd\mu = \lim_{n \to \infty} \int f_n\chi_{A}d\mu = \int f \chi_{A}d\mu = \int f d\mu \]
+
+    $\qed$
+\end{proof}
+
+Now, some notation that we will use in the next proposition, as well as for the rest of this class. For $A \subseteq X$, define
+\[ \int_{A} f d\mu := \int f \chi_{A} d\mu \]
+Also, if we have a Lebesgue measurable function $f : \R \to \R$, write
+\[ \int f(x) dx := \int f d\lambda \]
+where $\lambda$ is the Lebesgue measure. Finally, we define
+\[ \int_{a}^{b} f d\mu = \left\{\begin{matrix} \int_{[a, b]}fd\mu & a < b \\ -\int_{[b, a]} f d\mu & b < a \end{matrix}\right. \]
+
+\begin{lemma}[\textbf{Proposition 13.4}]
+    The following are true about integrals.
+    \begin{enumerate}
+        \item If $f \geq 0$ is measurable and $\int f d\mu = 0$, the $f = 0$ almost everywhere.
+        \item If $f$ is integrable and $\int_{A} d\mu = 0$ for all measurable $A$, then $f = 0$ almost everywhere.
+        \item If $f : \R \to \R$ is Lebesgue integrable and, for some $a$, $\int_{a}^{x} f(y)dy = 0$ for all $x$, then $f = 0$ almost everywhere. 
+    \end{enumerate}
+\end{lemma}
+\begin{proof}{Proof:}
+    
+    \textbf{(1)} Notice that
+    \[ f \geq \frac{1}{n}\chi_{\{x \col f(x) > 1/n\}} \]
+    Thus, we see that
+    \[ \int f d\mu \geq \frac{1}{n} \mu(\{x \col f(x) > 1/n\}) \]
+    which implies that $\mu(\{x \col f > 1/n\}) = 0$. Thus, as $\bigcup_{n = 1}^{N} \{x \col f(x) > 1/n\} \uparrow \{x \col f(x) > 0\}$, we see that
+    \[ \mu({x \col f(x) > 0}) = 0 \]
+    Thus, as $f$ is non-negative, this implies that $f$ is $0$ almost everywhere.\\
+
+    \textbf{(2)} Apply (1) to the sets $f\chi_{\{x \col f(x) > 0\}}$ and $-f\chi_{\{x \col f(x) > 0\}}$, which are both non-negative.\\
+
+    \textbf{(3)} By linearity, we see that
+    \[ \int_{b}^{c} f(y) dy = \int_{a}^{c} f(y)dy - \int_{a}^{b}f(y)dy = 0 \]
+    for all intervals $[b, c]$. Then, this implies that for any open set $U = \bigcup_{n}(a_n, b_n)$ (take intervals disjoint), we have that
+    \[ \int_{U} f d\mu = \int \sum_{n} f(y)\chi_{(a_n, b_n)}(y)dy = \sum_{n} \int_{a_n}^{b_n} f(y)dy = 0 \]
+    by the dominated convergence theorem applied to the sums (the bounding function is $f$). 
+\end{proof}

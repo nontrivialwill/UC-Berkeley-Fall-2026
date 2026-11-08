@@ -1,0 +1,98 @@
+\tocsection{\textbf{10/8/26 Lecture 12:} Signed Measures and the Radon-Nikodym Theorem}
+
+\begin{definition}[\textbf{Definition 12.1:} Bounded Signed Measures]
+    A \emph{bounded signed measure} on a measurable space $(\Omega, \cal{A})$ is a bounded function $\nu : \cal{A} \to \R$ such that
+    \[ \nu\left(\bigcup_{n} A_n\right) = \sum_{n} \nu A_n \]
+    for disjoint $A_i \in \cal{A}$, where this series converges absolutely.
+\end{definition}
+
+\begin{definition}[\textbf{Definition 12.2:} Mutually Singular Measures]
+    We say $\mu$ and $\nu$ on $(\Omega, \cal{A})$ are \emph{mutually singular} or \emph{orthogonal}, and write $\mu \perp \nu$, if there exists $A \in \cal{A}$ with $\mu A = \nu A^{c} = 0$.
+\end{definition}
+
+\begin{example}{\textbf{Example}}
+    The Lebesgue measure and the counting measure on the Cantor set are mutually singular.
+\end{example}
+
+\begin{lemma}[\textbf{Proposition 12.3}]
+    If $\alpha, \beta$ are bounded measures, then $\nu = \alpha - \beta$ is a bounded signed measure.
+\end{lemma}
+\begin{proof}{Proof:}
+    If $\sum_{n} x_n$ and $\sum_{n} y_n$ are absolutely convergent, then $\sum_{n} (x_n - y_n)$ is absolutely convergent.
+\end{proof}
+
+\begin{theorem}[\textbf{Theorem 12.4:} Hahn Decomposition]
+    Any bounded signed measure $\nu$ can be written uniquely as a difference of two bounded, non-negative, and mutually singular measures $\nu_{+}$ and $\nu_{-}$.
+\end{theorem}
+\begin{proof}{Proof:}
+    (Existence) Let $c = \sup\{\nu A \col A \in \cal{A}\}$. If $A, A' \in \cal{A}$ with $\nu A \geq c - \epsilon$ and $\nu A' \geq c - \epsilon'$, then
+    \begin{align*}
+        \nu(A \cup A') &= \nu A + \nu A' - \nu(A \cap A')\\
+        &\geq (c - \epsilon) + (c - \epsilon') - c = c - \epsilon - \epsilon'
+    \end{align*}
+    Choosing $A_1, A_2, \ldots \in \cal{A}$ with $\nu A_n \geq c - 2^{-n}$, we see that, by the above,
+    \[ \nu\left(\bigcup_{k \geq n} A_k\right) \geq c - \sum_{k \geq n} 2^{-k} = c - 2^{-n + 1},\quad n \in \N \]
+    Let $A_{+} = \bigcap_{n} \bigcup_{k \geq n} A_k$ and $A_{-} = A_{+}^{c}$. By continuity, $\nu A_{+} = c$. Hence, for $B \in \cal{A}$,
+    \begin{align*}
+        \nu B &= \nu A_{+} - \nu(A_{+} \backslash B) \geq 0, \quad B \subseteq A_{+}\\
+        \nu B &= \nu(A_{+} \cup B) - \nu A_{+} \leq 0, \quad B \subseteq A_{-}
+    \end{align*}
+    as $\nu A_{+} = \sup\{\nu A \col A \in \cal{A}\}$. Then, define $\nu_{+}$ and $\nu_{-}$ by
+    \[ \nu_{+}B = \nu(B \cap A_{+}) \quand \nu_{-}B = -\nu(B \cap A_{-}), \quad B \in \cal{A} \]
+    These are both clearly measures, and they are bounded and mutually singular.\\
+
+    (Uniqueness) Assume that $\nu = \mu_{+} - \mu_{-}$ for some positive measures $\mu_{+} \perp \mu_{-}$. Choose $B_{+} \in \cal{A}$ with $\mu_{-}B_{+} = \mu_{+}B_{+}^{c} = 0$. Then, we first have that $\nu(A_{+} \setminus B_{+}) \geq 0$, as otherwise it wouldn't be included in $A_{+}$, but we also have
+    \[ \nu(A_{+} \cap B_{+}^{c}) = \mu_{+}(A_{+} \cap B_{+}^{c}) - \mu_{-}(A_{+} \cap B_{+}^{c}) = - \mu_{-}(A_{+} \cap B_{+}^{c}) \leq 0 \]
+    So $\nu(A_{+} \setminus B_{+}) = 0$. By a similarly argument, $\nu(B_{+} \setminus A_{+}) = 0$, so $\nu = 0$ on $A_{+} \triangle B_{+}$. Hence, for any $C \in \cal{A}$,
+    \[ \mu_{+}C = \mu_{+}(B_{+} \cap C) = \nu(B_{+} \cap C) = \nu(A_{+} \cap C) = \nu_{+}C \] 
+    where the first equality comes from the fact $\mu_{+}$ is zero on $B_{+}^{c}$, the second equality comes from the fact $\mu_{-}$ is zero on $B_{+}$, and the third fact comes from the fact that $\nu(B_{+}) = \nu(B_{+} \cap A_{+}) = \nu(A_{+})$. Thus, $\mu_{+} = \nu_{+}$. Then, as $\mu_{-} = \mu_{+} - \nu = \nu_{+} - \nu = \nu_{-}$, we have the other result.
+
+    $\qed$
+\end{proof}
+
+
+\begin{lemma}[\textbf{Corollary 12.5:} Maximum and Minimum]
+    For any $\sigma$-finite measures $\mu$ and $\nu$ on a common measurable space, there exists a largest measure $\mu \wedge \nu$ bounded by $\mu$ and $\nu$ (i.e. $\mu \wedge \nu \leq \min\{\mu, \nu\}$) and a smallest measure $\mu \vee \nu$ bounding $\mu$ and $\nu$ (i.e. $\mu \vee \nu \geq \max\{\mu, \nu\}$). Furthermore,
+    \[ \mu - \mu \wedge \nu \perp \nu - \mu \wedge \nu \quand \mu \wedge \nu + \mu \vee \nu = \mu + \nu \]
+\end{lemma}
+\begin{proof}{Proof:}
+    We may assume that $\mu$ and $\nu$ are bounded. If not, note that given a $\mu$-finite cover of $X$ and a $\nu$-finite cover of $X$, we can intersect them giving us a cover that is both $\mu$ and $\nu$ finite, in which case we can restrict and add the up the result in the end. Anyways, letting $\rho_{+} - \rho_{-}$ be the Hahn decomposition of $\mu - \nu$, let
+    \begin{align*}
+        \mu \wedge \nu &= \mu - \rho_{+} = \nu - \rho_{-}\\
+        \mu \vee \nu &= \mu + \rho_{-} = \nu + \rho_{+}
+    \end{align*}
+    These clearly satisfy most of the desired properties, but we will show minimality and maximality. First, letting $A_+$ be the proof from above, we see that if $B \subseteq A_{+}$, then $\mu(B) \geq \nu(B)$, and if $B \subseteq A_{+}^{c}$, then $\nu(B) \geq \mu(B)$.\\
+
+    Now, suppose that $\lambda \geq \mu$ and $\lambda \geq \nu$. Then, for any $C \in \cal{A}$, we see that
+    \[ \lambda(C) = \lambda(C \cap A_{+}) + \lambda(C \cap A_{+}^{c}) \geq \mu(C \cap A_{+}) + \nu(C \cap A_{+}^{c}) = (\mu \vee \nu)(C) \]
+    and similarly, if $\lambda \leq \mu$ and $\lambda \leq \nu$, then for any $C \in \cal{A}$, 
+    \[ \lambda(C) = \lambda(C \cap A_{+}) + \lambda(C \cap A_{+}^{c}) \leq \nu(C \cap A_{+}) + \mu(C \cap A_{+}^{c}) = (\mu \wedge \nu)(C) \]
+
+    $\qed$
+\end{proof}
+
+\begin{definition}[\textbf{Definition 12.6:} Absolute Continuity]
+    For any two measures $\mu$ and $\nu$ on $(\Omega, \cal{A})$, $\nu$ is said to be \emph{absolutely continuous with respect to $\mu$} if $\mu A = 0$ implies $\nu A = 0$ for all $A \in \cal{A}$, in which case we write $\nu \ll \mu$.
+\end{definition}
+
+\begin{example}{\textbf{Example}}
+    If $\mu$ is any measure and $f \geq 0$ is measurable, define $\nu$ by $\nu A = \mu(f \cdot 1_{A})$. Then, $\nu \ll \mu$. We write $\nu = f \cdot \mu$.
+\end{example}
+
+\begin{theorem}[\textbf{Theorem 12.7:} Radon-Nikodym and Lebesgue Decomposition Theorem]
+    For any $\sigma$-finite measures $\mu$ and $\nu$ on $\Omega$, there exist some unique measures $\nu_{a} \ll \mu$ and $\nu_{s} \perp \mu$ such that $\nu = \nu_{a} + \nu_{s}$. Furthermore, $\nu_{a} = f \cdot \mu$ (that is, $\nu_{a}(A) = \mu(f1_{A})$) for some $\mu$-a.e. unique measurable function $f \geq 0$ on $\Omega$.
+\end{theorem}
+\begin{proof}{Proof:}
+    We need 2 lemmas.
+\end{proof}
+
+\begin{lemma}[\textbf{Lemma 12.8:} Closure]
+    Fix two measures $\mu$ and $\nu$ on $\Omega$ and some measurable functions $f_1, f_2, \ldots \geq 0$ on $\Omega$ with $f_n \cdot \mu \leq \nu$. Then $f \cdot \mu \leq \nu$, where $f = \sup_{n} f_n$.
+\end{lemma}
+\begin{proof}{Proof:}
+    Assume $f \cdot \mu \leq \nu$ and $g \cdot \mu \leq \nu$, and let $h = f \vee g$. Writing $A = \{f \geq g\}$, we have
+    \[ h \cdot \mu = 1_{A}h \cdot \mu + 1_{A^{c}}h \cdot \mu = 1_{A}f \cdot \mu + 1_{A^{c}}g \cdot \mu \leq 1_{A} \cdot \nu + 1_{A^{c}} \cdot \nu = \nu \]
+    So we can assume $f_n \uparrow f$. Then, $\nu \geq f_n \cdot \mu \uparrow f \cdot \mu$ by the MCT, so $f \cdot \mu \leq \nu$.
+
+    $\qed$
+\end{proof}

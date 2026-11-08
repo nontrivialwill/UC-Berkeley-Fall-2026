@@ -1,0 +1,83 @@
+\tocsection{\textbf{9/11/26 Lecture 7:} L-S Measures and More}
+
+\textbf{Remark:} Before we prove that L-S measures satisfy the conclusions of Proposition 6.3, recall that given a L-S outer measure $m^{*}$, all Borel sets are $m^{*}$-measurable, but the $\sigma$-algebra of $m^{*}$-measurable sets is not necessarily the Lebesgue $\sigma$-algebra. 
+
+\begin{lemma}[\textbf{Proposition 7.1}]
+    Let $m$ be an L-S measure. Then, if $A \subseteq [0, 1]$, then for all $\epsilon > 0$, there exists an open set $\cal{U} \supseteq A$ such that $m(\cal{U}\backslash A) < \epsilon$. With this, the rest of the conclusions of Proposition 6.3 also follow. 
+\end{lemma}
+\begin{proof}{Proof:}
+    By definition, we can write $A \subseteq \bigcup_{n} (a_n, b_n]$ such that $\sum_{i = 1}^{\infty} \ell(a_n, b_n] \leq m(A) + \frac{\epsilon}{2}$. Now, for each $n$, notice that
+    \[ m(a_n, b_n] = \lim_{m \to 0} m(a_n, b_n + \frac{1}{m}) \]
+    as we see that $(a_n, b_n + \frac{1}{m}) \downarrow (a_n, b_n]$. Thus, we can find a $c_n$ such that $m(a_n, c_n) \leq m(a_n, b_n] + \frac{\epsilon}{2^{n + 1}}$. Thus, we have that
+    \begin{align*}
+        m(\bigcup_{n = 1}^{\infty} (a_n, c_n) \backslash A) &= m(\bigcup_{n = 1}^{\infty} (a_n, c_n)) - m(A)\\
+        &\leq \sum_{i = 1}^{\infty} m((a_n, c_n)) - m(A)\\
+        &\leq \sum_{i = 1}^{\infty} \left(m(a_n, b_n] + \frac{\epsilon}{2^{n + 1}}\right) - m(A)\\
+        &= \sum_{i = 1}^{\infty} \ell(a_n, b_n] + \frac{\epsilon}{2} - m(A)\\
+        &\leq m(A) + \frac{\epsilon}{2} + \frac{\epsilon}{2} - m(A)\\
+        &= \epsilon
+    \end{align*}
+    which was to be shown as $\bigcup_{n = 1}^{\infty} (a_n, c_n)$ is open. 
+
+    $\qed$
+\end{proof}
+
+Now, in these past few lectures we've developed how to go from an outer-measure to a measure on a $\sigma$-algebra, but what if we know a bit more about our ``measuring function''. What if it's already pretty close to a measure? We will explore that now.
+
+\begin{definition}[\textbf{Definition 7.2:} Algebras]
+   Given a set $X$, a \emph{algebra} $\cal{A}_0$ is a collection of subsets such that
+   \begin{enumerate}
+       \item $\emptyset, X \in \cal{A}_0$
+       \item $A^{c} \in \cal{A}_{0}$ if $A \in \cal{A}_{0}$
+       \item If $A_1, \ldots, A_n \in \cal{A}_0$, then $\bigcup_{i = 1}^{n} A_i \in \cal{A_0}$
+   \end{enumerate} 
+\end{definition}
+
+\begin{definition}[\textbf{Definition 7.3:} Premeasures]
+    A \emph{premeasure} $\ell$ on an algebra $\cal{A}_0$ is a map $\ell : \cal{A}_0 \to [0, \infty]$ such that
+    \begin{enumerate}
+        \item $\ell(\emptyset) = 0$
+        \item If $A_1, \ldots \in \cal{A}_0$ and $\bigcup_{i = 1}^{\infty} A_n \in \cal{A}_0$, and the $A_i$ are pairwise disjoint, then
+        \[ \ell\left(\bigcup_{n = 1}^{\infty} A_n\right) = \sum_{n = 1}^{\infty} \ell(A_n) \]
+    \end{enumerate}
+\end{definition}
+Now, one last definition that we will need for our extension theorem.
+
+\begin{definition}[\textbf{Definition 7.4:} Finite and $\sigma$-Finite Measures]
+    A measure $\mu$ on $X$ is \emph{finite} if $\mu(X) < \infty$. A measure $\mu$ on $X$ is \emph{$\sigma$-finite} if there exists $X_n \in \cal{A}$ such that $X = \bigcup_{n = 1}^{\infty} X_n$ and $\mu(X_n) < \infty$. 
+\end{definition}
+
+Thus, for example $\lambda$ on $\R$ is not finite but it is $\sigma$-finite. Most spaces (and measures) that we will be concerned with are $\sigma$-finite. Now, we move onto our extension theorem.
+
+\begin{theorem}[\textbf{Theorem 7.5:} Caratheodory Extension Theorem]
+    Let $\cal{A}_0$ be an algebra on $X$ and let $\ell$ be a premeasure on $\cal{A}_0$. Define
+    \[ \mu^{*}(E) = \inf\left\{\sum_{i = 1}^{\infty} \ell(A_n) \col A_n \in \cal{A_0}, E \subseteq \bigcup_{n = 1}^{\infty} A_n \in \cal{A}_0\right\} \]
+    Then,
+    \begin{enumerate}
+        \item $\mu^{*}$ is an outer measure.
+        \item $\mu^{*}(A) = \ell(A)$ if $A \in \cal{A}_0$.
+        \item Every $\mu^{*}$ null set is $\mu^{*}$-measurable and every $A \in \cal{A}_0$ is $\mu^{*}$-measurable.
+        \item If $\ell$ is $\sigma$-finite, then $\mu^{*}$ is the unique extension of $\ell$ to $\sigma(\cal{A}_0)$.
+    \end{enumerate}
+\end{theorem}
+\begin{proof}{Proof:}
+    In this lecture we will prove the first three statements, and we will prove the fourth one in the next lecture.\\
+
+    \textbf{1)} This is the same proof as for our other extension theorems.\\
+
+    \textbf{2)} Suppose that $E \in \cal{A}_0$ and $E \subseteq \bigcup_{i =1}^{\infty} A_n$ for $A_n \in \cal{A}_0$. Define $B_n = E \cap \left(A_n \backslash \bigcup_{i = 1}^{n - 1} A_i\right)$. We see that $B_n \in \cal{A}$ for each $n$.\\
+
+    Then, we see that $\ell(E) = \sum_{n} \ell(B_n) \leq \sum_{n} \ell(A_n)$, so taking infimums over such collections, we see that $\ell(E) \leq \mu^{*}(E)$, and as we clearly have that $\mu^{*}(E) \leq \ell(E)$, we have the desired property.\\
+
+    \textbf{3)} Let $A \in \cal{A}_0$ and let $E \subseteq X$. WE want to show that $\mu^{*}(E) \leq \mu^{*}(E \cap A) + \mu^{*}(E \cap A^{c})$. Choose $B_n \in \cal{A}_0$ so that $\bigcup_{n} B_n \in \cal{A_0}$, $E \subseteq \bigcup_{n} B_n$, and
+    \[ \sum_{n} \ell(B_n) \leq \mu^{*}(E) + \epsilon \]
+    Then, we see that
+    \begin{align*}
+        \mu^{*}(E) + \epsilon &\geq \sum_{n} \ell(B_n \cap A) + \ell(B_n \cap A^{c})\\
+        &= \sum_{n} \ell(B_n \cap A) + \sum_{n} \ell(B_n \cap A^{c})\\
+        &\geq \mu^{*}(E \cap A) + \mu^{*}(E \cap A^{c})
+    \end{align*}
+    where the nontrivial step of the proof is that $\ell(B_n) = \ell(B_n \cap A) + \ell(B_n \cap A^{c})$ as $A \in \cal{A}_0$. Thus, as this holds for all $\epsilon$, we have what was to be shown.
+
+    $\qed$
+\end{proof}

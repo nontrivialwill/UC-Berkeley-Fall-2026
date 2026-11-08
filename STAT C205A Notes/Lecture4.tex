@@ -1,0 +1,79 @@
+\tocsection{\textbf{9/8/26 Lecture 4: }Measurability of Functions}
+
+\begin{lemma}[\textbf{Lemma 4.1}]
+    Let $f$ be a mapping between two measurable spaces $(S, \cal{S})$ and $(T, \cal{T})$. Then, 
+    \begin{enumerate}
+        \item $\cal{S}' = f^{-1}(\cal{T})$ is a $\sigma$-field on $S$. 
+        \item $\cal{T}' = \{B \subseteq T \col f^{-1}(B) \in \cal{S}\}$ is a $\sigma$-field on $T$. 
+    \end{enumerate}
+\end{lemma}
+\begin{proof}{Proof:}
+    Let $A$, $A_1, A_2 \in \cal{S}'$ and let $B, B_1, B_2 \in \cal{T}$ so that $B_i = f^{-1}(A_i)$ and $B = f^{-1}(A)$. Then, by the fact that $f$ distributes over complements and unions, we see that
+    \[ \bigcup_{i = 1}^{\infty} A_i \in \cal{S}' \text{ and } A^{c} \in \cal{S'} \]
+    
+    (2) holds similarly. 
+\end{proof}
+
+\begin{definition}[\textbf{Definition 4.2: }Measurability of Functions]
+    Given two measurable spaces $(S, \cal{S})$ and $(T, \cal{T})$, a map $f : S \to T$ is said to be \emph{$\cal{S} \backslash \cal{T}$-measurable} if $f^{-1}(\cal{T}) \subseteq \cal{S}$
+\end{definition}
+
+For example, we see that $(\R, \cal{P}(\R))$ and $(\R, \cal{T})$ are measurable spaces, all functions $f : \R \to \R$ are $\cal{P}(\R) \backslash \cal{T}$-measurable. For maps between $(\R, \cal{B})$, continuous maps are the $\cal{B}\backslash \cal{B}$-measurable functions.
+
+\begin{lemma}[\textbf{Lemma 4.3}]
+    Considering a mapping $f$ between two measurable spaces $(S, \cal{S})$ and $(T, \cal{T})$ and let $\cal{C} \subseteq \cal{P}(T)$ with $\sigma(\cal{C}) = T$, then $f$ is $\cal{S}\backslash \cal{T}$ measurable if, and only if, $f^{-1}(\cal{C}) \subseteq \cal{S}$
+\end{lemma}
+\begin{proof}{Proof:}
+    
+    $(\Rightarrow)$ is trivial, so we only need to show $(\Leftarrow)$. Suppose that $f^{-1}(\cal{C}) \subseteq \cal{S}$.\\
+
+    Let $\cal{T}' = \{B \subseteq T \col f^{-1}B \in \cal{S}\}$. Then, we see that $\cal{C} \subseteq \cal{T}$. Then, as $\cal{T'}$ is a $\sigma$-field, we see that
+    \[ \cal{T} = \sigma(\cal{C}) \subseteq \sigma(\cal{T}') = \cal{T'} \]
+    Thus, as $\cal{T} \subseteq \cal{T'}$, we see that $f^{-1}(\cal{T}) \subseteq \cal{S}$. 
+
+    $\qed$
+\end{proof}
+
+\begin{lemma}[\textbf{Lemma 4.4}]
+    Let $f$ be a continuous map between two topological spaces $S$ and $T$ with their Borel $\sigma$-fields $\cal{S}$ and $\cal{T}$. Then, $f$ is $\cal{S} \backslash \cal{T}$ measurable.
+\end{lemma}
+\begin{proof}{Proof:}
+    Let $\cal{S}'$ and $\cal{T}'$ be the collection of open sets in $S$ and $T$. Now, because $f$ is continuous, we have that $f^{-1}(\cal{T}') \subseteq \cal{S}'$. Then, it is clear that $f^{-1}(\cal{T}') \subseteq \sigma(\cal{S}') = \cal{S}$. Then, as $\cal{T} = \sigma(\cal{T}')$, we see by Lemma 4.3 that $f$ is $\cal{S}\backslash \cal{T}$-measurable. 
+
+    $\qed$
+\end{proof}
+
+\textbf{Notation:} If $(S, \cal{S})$ and $(T, \cal{T})$ are measurable spaces and $f : S \to T$ is $\cal{S}\backslash \cal{T}$-measurable, then we just say $f$ is measurable for brevity.\\
+
+\begin{lemma}[\textbf{Lemma 4.5}]
+    If $(S, \cal{S})$, $(T, \cal{T})$, and $(U, \cal{U})$ are measurable spaces and $f : S \to T$ and $g : T \to U$ are measurable, then $h = g \circ f : S \to U$ is measurable.
+\end{lemma}
+\begin{proof}{Proof:}
+    Since $h^{-1} = f^{-1} \circ g^{-1}$, we see that as $g^{-1}(\cal{U}) \subseteq \cal{T}$, we see that
+    \[ h^{-1}(\cal{U}) = f^{-1}(g^{-1}(\cal{U})) \subseteq f^{-1}(\cal{T}) \subseteq \cal{S} \]
+\end{proof}
+
+\begin{lemma}[\textbf{Lemma 4.6}]
+    Consider any set of functions $f_{t} : \Omega \to S_{t}$, $t \in T$ where $(\Omega, \cal{A})$ and $(S_{t}, \cal{S}_{t})$, $t \in T$ are measure spaces, and define $f = (f_{t}) : \Omega \to \bigtimes_{t} S_{t}$. Then, $f$ is $\cal{A} \backslash \bigotimes_{t} \cal{S}_{t}$-measurable if, and only if, $f_{t}$ is $\cal{A} \backslash \cal{S}_{t}$-measurable for all $t \in T$. 
+\end{lemma}
+\begin{proof}{Proof:}
+    For the $(\Leftarrow)$ direction, consider the family $\cal{C}$ of cylinder sets $A_{t} \times \bigtimes_{s \ne t} S_{s}$ for arbitrary $t \in T$ and $A_{t} \in \cal{S}_{t}$. Then, as
+    \[ f^{-1}(A_{t} \times \bigtimes_{s \ne t} S_{t}) = f_{t}^{-1}(A_{t}) \cap \bigcap_{s \ne t} f_{s}^{-1}(S_{s}) \in \cal{A} \]
+    as $\cal{A}$ is closed under intersections. Thus, we see that $f^{-1}(\cal{C}) \subseteq \cal{A}$, which proves the theorem.\\
+
+    For the $(\Rightarrow)$ direction, we see that if $C \in \cal{S}_{t}$, we want to show that $f_{t}^{-1}(C) \in \cal{A}$. Well, because $C \times \bigtimes_{s \ne t} S_{t} \in \bigotimes_{t} \cal{S}_{t}$, we see that
+    \[ f^{-1}(C \times \bigtimes_{s \ne t} S_{t}) = f_{t}^{-1}(C) \cap \Omega = f_{t}^{-1}(C) \in \cal{A} \]
+    which was to be proved. 
+
+    $\qed$
+\end{proof}
+
+Now, if $f : \Omega \to S$ and $S$ has a $\sigma$-field $\cal{S}$, then $f^{-1}(\cal{S})$ is a $\sigma$-field on $\Omega$, called $\sigma(f)$. This definition makes sense as it is, in some sense, the smallest $\sigma$-field that makes $f$ measurable.\\
+
+Now, assume that $f_{t}$ are mappings on $\Omega$ into some measurable space $(S_{t}, \cal{S}_{t})$, and let $f = (f_{t})$. In $\Omega$, let $\sigma(f) = \sigma\{f_{t} : t \in T\}$ be the smallest $\sigma$-field in $\Omega$ that makes all the $f_{t}$ measurable (making $f$ measurable by Lemma 4.6). That is
+\[ \sigma(f) = \bigcap \{\cal{A} \col f_{t} \text{ is } \cal{A} \backslash \cal{S}_{t} \text{ measurable for all } t\} \]
+With this notation, we see that $f_{t}$ is measurable with respect to the $\sigma$-field $\cal{A}$ in $\Omega$ if, and only if, $\sigma(f) \subseteq \cal{A}$. Note that, in fact, this coincides with the $\sigma$-field generated by all of the $\sigma(f_{t})$'s. That is
+\[ \sigma(f) = \sigma\left(\bigcup_{t} \sigma(f_{t})\right) \]
+For functions on or into $\R^d$, we assume measurability is with respect to the Borel $\sigma$-field $\cal{B}^{d} = \cal{B}(\R^{d})$. Thus, a real-valued function $f$ on a space $(\Omega, \cal{A})$ is measurable iff $\{\omega \col f(\omega) \leq x\} \in \cal{A}$ for all $x$ (this is because these sublevel sets generate $\cal{B}$).\\
+
+Similarly, for $f$ on $\overline{R} = [-\infty, \infty]$ or $\overline{R}_{+} = [0, \infty]$ (compactifications of $\R$ and $\R_{+}$) checking the above condition works to check measurability as well. Note that this is because $\cal{B}(\overline{\R}) = \sigma(\cal{B} \cup \{\pm \infty\})$ and $\cal{B}(\overline{\R}_{+}) = \sigma\{\cal{B}(\R_{+}), \infty\}$. 

@@ -1,0 +1,118 @@
+\tocsection{\textbf{9/4/26 Lecture 5: }More on Measures}
+
+Now, given an outer measure $\mu^{*}$ and the definition of $\mu^{*}$-measurable sets, it turns out we can construct a $\sigma$-algebra and define a measure $\mu$ on it!
+
+\begin{theorem}[\textbf{Theorem 5.1: }Construction of Measures from Outer Measures]
+    Given an outer measure $\mu^{*}$, the collection of $\mu^{*}$-measurable sets, denoted $\mathcal{A}$, is a $\sigma$-algebra, and the restriction of $\mu^{*}$ to $\mathcal{A}$ is a measure. Additionally, $\mathcal{A}$ contains all the null sets of $\mu^{*}$
+\end{theorem}
+\begin{proof}{Proof:}
+    First, we show that $\mathcal{A}$ is indeed a $\sigma$-algebra. Firstly, from the symmetry of the definition of $\mu^{*}$-measurability, we see that if $A \in \cal{A}$ then $A^{c} \in \cal{A}$.\\
+    
+    Now, we want to show that finite unions of sets in $\cal{A}$ are in $\cal{A}$. Firstly, notice that, in order to show that $A \in \cal{A}$, all we need is that for all $E \subseteq X$, $\mu^{*}(E) \supseteq \mu^{*}(E \cap A) + \mu^{*}(E \cap A^{c})$, as the opposite inequality follows from subadditivity.\\
+
+    Let $A, B \in \cal{A}$. We want to show that $A \cup B \in \cal{A}$. First, for $E \subseteq X$, 
+    \[ \mu^{*}(E) = \mu^{*}(E \cap A) + \mu^{*}(E \cap A^{c}) \]
+    Then, applying the $\mu^{*}$-measurability of $B$ to the set $E \cap A^{c}$, we see taht
+    \begin{align*}
+        \mu^{*}(E) &= \mu^{*}(E \cap A) + \mu^{*}(E \cap A^{c} \cap B) + \mu^{*}(E \cap A^{c} \cap B^{c})\\
+        &= \mu^{*}(E \cap A) + \mu^{*}(E \cap A^{c} \cap B) + \mu^{*}(E \cap (A \cup B)^{c})\\
+        &\geq \mu^{*}(E \cap (A \cup B)) + \mu^{*}(E \cap (A \cup B)^{c})
+    \end{align*}
+    where the last inequality comes from applying subadditivity to the fact that $A \cup (A^{c} \cap B) = A \cup B$. Thus, we see that $A \cup B$ is $\mu^{*}$-measurable, and by induction, we see that all finite unions of $\mu^{*}$-measurable sets is $\mu^{*}$-measurable.\\
+
+    Now, if $A_n \in \cal{A}$, we want to show that $\cup_{n} A_n \in \cal{A}$. Notice that it suffices to assume that $A_n$ are disjoint as we can write
+    \[ B_1 = A_1,\quad B_2 = A_1 \backslash A_2,\cdots \quad B_n = A_n \backslash \bigcup_{i = 1}^{n - 1} A_i \]
+    and see that the $B_i$ are disjoint, $\cup_{i = 1}^{\infty} B_i = \cup_{i = 1}^{\infty} A_i$, $B_i \in \cal{A}$, and $\mu^{*}(B_i) \leq \mu^{*}(A_i)$. Thus, assuming that the $A_i$ are disjoint, we have
+    \begin{align*}
+        \mu^{*}(E) &= \mu^{*}(E \cap A_1) + \mu^{*}(E \cap A_1^{c})\\
+        &= \mu^{*}(E \cap A_1) + \mu^{*}(E \cap A_1^c \cap A_2) + \mu^{*}(E \cap A_1^{c} \cap A_2^{c})\\
+        &= \mu^{*}(E \cap A_1) + \mu^{*}(E \cap A_2) + \mu^{*}(E \cap (A_1 \cup A_2)^{c})\\
+        &\vdots\\
+        &= \sum_{i = 1}^{N} \mu^{*}(E \cap A_i) + \mu^{*}\left(E \cap \left(\bigcup_{i = 1}^{N} A_i\right)^{c}\right)\\
+        &\geq \sum_{i = 1}^{N} \mu^{*}(E \cap A_i) + \mu^{*}\left(E \cap \left(\bigcup_{i = 1}^{\infty} A_i\right)^{c}\right)
+    \end{align*}
+    for all $N$, where the last step holds from the fact that $\left(\bigcup_{i = 1}^{N} A_i\right)^{c} \supseteq \left(\bigcup_{i = 1}^{\infty} A_i\right)^{c}$. Then, as this holds for all $N$, we can pass to the limit to see that
+    \begin{align*}
+        \mu^{*}(E) &\geq \sum_{i = 1}^{\infty} \mu^{*}(E \cap A_i) + \mu^{*}\left(E \cap \left(\bigcup_{i = 1}^{\infty} A_i\right)^{c}\right)\\
+        &\geq \mu^{*}\left(E \cap \left(\bigcup_{i = 1}^{\infty} A_i\right)\right) + \mu^{*}\left(E \cap \left(\bigcup_{i = 1}^{\infty} A_i\right)^{c}\right)
+    \end{align*}
+    We see that $\bigcup_{i = 1}^{\infty} A_i \in \cal{A}$. Thus, $\cal{A}$ is a $\sigma$-algebra. Then, using the inequality above, as we see
+    \[ \mu^{*}(E) \geq \sum_{i = 1}^{\infty} \mu^{*}(E \cap A_i) + \mu^{*}\left(E \cap \left(\bigcup_{i = 1}^{\infty} A_i\right)\right) \]
+    for all $E$, letting $E = \bigcup_{i = 1}^{\infty} A_i$, we see that
+    \[ \mu^{*}\left(\bigcup_{i = 1}^{\infty} A_i\right) \geq \sum_{i = 1}^{\infty} \mu^{*}(A_i) \]
+    so along with subadditivity, this implies that $\mu^{*}$ when restricted to $\cal{A}$ is countably additive, meaning that $\mu^{*}$ is a measure on $\cal{A}$.\\
+
+    All that is left to show is that $\cal{A}$ contains all of the null sets of $\mu^{*}$ (which are the sets for which $\mu^{*}(A) = 0$). Now, if $\mu^{*}(A) = 0$, then we immediately see
+    \[ \mu^{*}(E) \geq \mu^{*}(E \cap A^{c}) = \mu^{*}(E \cap A) + \mu^{*}(E \cap A^{c}) \]
+    so thus, $A$ is $\mu^{*}$-measurable!
+
+    $\qed$
+\end{proof}
+
+Now, we can define the Lebesgue measure formally using the outer-measure we constructed earlier!
+
+\begin{definition}[\textbf{Definition 5.2: }The Lebesgue Measure]
+    The \emph{Lebesgue measure} on $\R$ is the measure given by restricting the outer measure
+    \[ \lambda^{*}(A) = \inf\{\sum_{i = 1}^{\infty} \abs{I_{i}} \col A \subseteq \cup I_{i}\} \]
+    to the collection of $\lambda^{*}$-measurable sets. The corresponding $\sigma$-algebra $\cal{L}$ is called the \emph{Lebesgue $\sigma$-algebra}.
+\end{definition}
+
+Now, we just went through all that work to define a $\sigma$-algebra for an outer measure, but why didn't we just show that the outer measure was a measure on all sets? Well, it turns out we can't always do that, as we will soon show. First, a lemma that will help our construction.
+\clearpage
+
+\begin{lemma}[\textbf{Lemma 5.3}]
+    If $A \subseteq \R$ and $x \in \R$, then if $A + x = \{a + x \col a \in A\}$, then $\lambda^{*}(A + x) = \lambda^{*}(A)$. Thus, the Lebesgue measure is translation invariant.
+\end{lemma}
+\begin{proof}{Proof:}
+    This is quite obvious from the definition of $\lambda^{*}$.
+\end{proof}
+
+\begin{theorem}[\textbf{Theorem 5.4:} Existence of Non-Measurable Sets]
+    There exists sets in $\cal{P}(\R)$ that are not Lebesgue measurable.
+\end{theorem}
+\begin{proof}{Proof:}
+    First, define an equivalence relation $\sim$ on $[0, 1]$ by $x \sim y$ if, and only if, $x - y \in \Q$. Now, define $V$ by choosing one representative from each equivalence class of $\sim$.\\
+
+    Now, suppose that $V$ is Lebesgue-measurable. Enumerate $\Q \cap [-1, 1]$ as $q_1, q_2, \cdots$ and let $V_n = V + q_n$. It can be easily shown that all the $V_n$ are disjoint, and by our lemma. $\lambda(V_n) = \lambda(V)$. Thus, we see that
+    \[ \lambda\left(\bigcup_{n = 1}^{\infty} V_n\right) = \sum_{n = 1}^{\infty} \lambda(V_n) = \sum_{n = 1}^{\infty} \lambda(V) \]
+    Thus, this must be either $0$ or infinity depending on whether $\lambda(V) = 0$ or $\lambda(V) > 0$. We will show that neither can happen.\\
+
+    First, since every $x \in [0, 1]$ must lie in some $V_n$, we see that $[0, 1] \subseteq \bigcup_{n = 1}^{\infty} V_n$, we must have that $\lambda(\cup_{i = 1}^{\infty}V_n) \geq 1$, so $\lambda(V) = 0$ cannot occur. Then, as $V_n \subseteq [-1, 2]$ for all $n$, we must also have that $\lambda(\bigcup_{n = 1}^{\infty} V_n) \leq \lambda([-1, 2]) \leq 3$, so $\lambda(V) > 0$ cannot occur as well. Thus, we have a contradiction, so $V$ must not be measurable.
+
+    $\qed$
+\end{proof}
+
+This doesn't look good... What is the point of a function that could possibly fail to give a measure to a set that we want to measure? Well, fortunately, most of the sets we care about are measurable, as we will see next.
+
+\begin{lemma}[\textbf{Proposition 5.5}]
+    Every Borel set is Lebesgue measurable.
+\end{lemma}
+\begin{proof}{Proof:}
+    It suffices to show that each interval is Lebesgue measurable. We want to show that, for all $E$, 
+    \[ \lambda^{*}(E) \geq \lambda^{*}(E \cap (a, b)) + \lambda^{*}(E \cap (a, b)^{c}) \]
+    Let $\epsilon > 0$. By definition of $\lambda^{*}$, there exists a collection $\{I_n\}$ such that $\sum_{n = 1}^{\infty} \abs{I_n} \leq \lambda^*(E) + \epsilon$ and $E \subseteq \bigcup_{n = 1}^{\infty} I_n$. Then, as we have
+    \[ \lambda^{*}(E \cap (a, b)) \leq \sum_{i = 1}^{\infty} \lambda^{*}(I_n \cap (a, b)) \leq \sum_{i = 1}^{\infty} \abs{I_n \cap (a, b)} \]
+    and
+    \[ \lambda^{*}(E \cap (a, b)^{c}) \leq \sum_{i = 1}^{\infty} \abs{I_n \cap [b, \infty)} + \sum_{i = 1}^{\infty} \abs{I_n \cap (-\infty, a]} \]
+    we see that
+    \begin{align*} 
+        \lambda^{*}(E \cap (a, b)) + \lambda^{*}(E \cap (a, b)^{c}) &\leq \sum_{i = 1}^{\infty} \left(\abs{I_n \cap (a, b)} + \abs{I_n \cap (-\infty, a]} + \abs{I_n \cap [b, \infty)}\right)\\
+        &= \sum_{i = 1}^{\infty} \abs{I_n}\\
+        &\leq \lambda^{*}(E) + \epsilon
+    \end{align*}
+    as this holds for all $\epsilon > 0$, we have
+    \[ \lambda^{*}(E) \geq \lambda^{*}(E \cap (a, b)) + \lambda^{*}(E \cap (a, b)^{c}) \]
+    which was to be proved.
+
+    $\qed$
+\end{proof}
+
+\begin{lemma}[\textbf{Proposition 5.6}]
+    There exists Lebesgue measurable sets that are not Borel. That is
+    \[ \cal{B} \subsetneq \cal{L} \subsetneq \P(\R) \]
+\end{lemma}
+\begin{proof}{Proof Sketch:}
+    We won't prove this in it's entirety, but it turns out that $\abs{\cal{B}} = \abs{\R}$, since we can map sequences of $\N$ into $\cal{B}$. Then, it turns out that $\cal{L} > \cal{R}$, so there are quite a bit more Lebesgue measurable sets than Borel measurable sets. 
+
+    $\qed$
+\end{proof}

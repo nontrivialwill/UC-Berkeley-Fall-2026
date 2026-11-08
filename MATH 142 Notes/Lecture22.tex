@@ -1,0 +1,127 @@
+\tocsection{\textbf{10/16/26 Lecture 22:} Homotopy Equivalence and Fundamental Groups}
+
+\begin{example}{\textbf{Example:} Homeomorphic Spaces}
+    If $X$ and $Y$ are homeomorphic, they are homotopy equivalent. Simply take $f$ to be any homeomorphism and $g = f^{-1}$.
+\end{example}
+
+However, in general, homotopy equivalent $\not\Rightarrow$ homeomorphic.\\
+
+\textbf{Digression:}
+
+\begin{definition}[\textbf{Definition 22.1:} Manifolds]
+    An \emph{$n$-dimensional manifold} is a second-countable Hausdorff space locally homeomorphic to $\R^n$.
+\end{definition}
+
+\textbf{Q:} If two compact manifolds are homotopy equivalent, are they homeomorphic?\\
+\textbf{A:} No, $L(7, 1)$ and $L(7, 2)$ are homotopy equivalent but not homeomorphic.
+
+\begin{definition}[\textbf{Definition 22.2:} Aspherical Manifolds]
+    A manifold $X$ is \emph{aspherical} if every map $f : S^n \to X$, $n > 1$, is homotopic to a constant map.
+\end{definition}
+
+\textbf{Borel Conjecture:} If $X_1, X_2$ are two homotopy equivalent compact aspherical manifolds, they are homeomorphic.\\
+
+\textbf{A:} For dimension $n$ of $X_1, X_2$:
+\begin{center}
+    \begin{tabular}{c|ccccc}
+        $n$ & $1$ & $2$ & $3$ & $4$ & $5+$ \\
+        \hline
+        & Trivial, & Classical, & Perelman, & (OpenAI) & ? \\
+        & Yes & Yes & Yes & No &
+    \end{tabular}
+\end{center}
+
+\begin{example}{\textbf{Example:} Convex Sets}
+    Any convex subset of $\R^n$ is homotopy equivalent to a point. This is why:\\
+
+    If $C$ is convex in $\R^n$ and $p \in C$, take $X = \{p\}$, $Y = C$, and let $f : \{p\} \hookrightarrow C$ by inclusion and $g : C \to \{p\}$ by the only map.\\
+
+
+    Now, $g \circ f = \id_{\{p\}}$ and $f \circ g : C \to C$ by $C \to p$. Now let $F(x, t) = (1 - t)x + tp$, which is a homotopy $\id_C \overset{F}{\simeq} p$.
+\end{example}
+
+Thus, $\R^n$ is homotopy equivalent to a point.
+
+\begin{example}{\textbf{Example:} Punctured $\R^n$}
+    $\R^n - \{0\}$ is homotopy equivalent to $S^{n - 1}$.\\
+
+    Take $f : S^{n - 1} \hookrightarrow \R^n - \{0\}$ by the inclusion and $g : \R^n - \{0\} \to S^{n - 1}$ by $g(x) = \frac{x}{\abs{x}}$. Then, $g \circ f = \id_{S^{n - 1}}$ and $f \circ g = g : \R^n - \{0\} \to \R^n - \{0\}$.\\
+
+    Let
+    \[ F(x, t) = (1 - t)x + t\left(\frac{x}{\abs{x}}\right) \]
+    This is a homotopy $\id_{\R^n - \{0\}} \overset{F}{\simeq} g$.
+\end{example}
+
+\begin{definition}[\textbf{Definition 22.3:} Deformation Retractions]
+    If $A \subseteq X$, a \emph{deformation retract} of $X$ to $A$ is a homotopy $G : X \times I \to X$ (rel $A$) so that for all $x \in X$,
+    \[ G(x, 0) = x \quand G(x, 1) \in A \]
+\end{definition}
+
+If there exists a deformation retraction of $X$ to $A$, then $X$ and $A$ are homotopy equivalent, and the two maps are $f : A \hookrightarrow X$ inclusion and $g : X \to A$ by $g(x) = G(x, 1) \in A$.
+
+\begin{example}{\textbf{Example:} $D^3$ Minus Three Balls}
+    Let $X = D^3 - \{3 \tt{ open balls}\}$.
+    \fig{0.6}{Lecture22Fig1}{}
+    $X \to A$ is a deformation retraction.
+\end{example}
+
+\begin{theorem}[\textbf{Theorem 22.4:} Homotopy Theorem]
+    If $f \overset{F}{\simeq} g : X \to Y$ (rel $\{p\}$), then $f_* = g_* : \pi_1(X, p) \to \pi_1(Y, f(p))$ ($f(p) = g(p)$, so it doesn't matter which base point).
+\end{theorem}
+\begin{proof}{Proof:}
+    Say $\alpha$ is a loop at $p$. Then, $f_*\brac{\alpha} = \brac{f \circ \alpha}$ and $g_*\brac{\alpha} = \brac{g \circ \alpha}$. We have a homotopy $F : X \times I \to Y$ so
+    \[ F(x, 0) = f(x), \quad F(x, 1) = g(x), \quad F(p, t) = f(p) = g(p)\ \forall t \in [0, 1] \]
+    We want
+    \begin{center}
+        \begin{tikzpicture}
+            \draw (0, 0) rectangle (1.5, 1.5);
+            \node[left] at (0, 0.75) {$I$};
+            \node[below] at (0.75, 0) {$I$};
+            \draw[->] (1.8, 0.75) -- (2.4, 0.75);
+            \draw (2.9, 0) rectangle (4.4, 1.5);
+            \node[left] at (2.9, 0.75) {$I$};
+            \node[below] at (3.65, 0) {$X$};
+            \draw[->] (4.7, 0.75) -- node[above] {$F$} (5.5, 0.75);
+            \node at (5.8, 0.75) {$Y$};
+        \end{tikzpicture}
+    \end{center}
+    so define $G : I \times I \to Y$ by $G(s, t) = F(\alpha(s), t)$. Now $G(s, 0) = F(\alpha(s), 0) = (f \circ \alpha)(s)$ and
+    \[ G(s, 1) = F(\alpha(s), 1) = g(\alpha(s)) = (g \circ \alpha)(s) \]
+    Finally, $G(0, t) = F(\alpha(0), t) = F(p, t) = f(p)$ and $G(1, t) = F(\alpha(1), t) = F(p, t) = f(p)$.\\
+
+    Thus, $G$ is a homotopy between $f \circ \alpha$ and $g \circ \alpha$ relative to $f(p)$. Thus, $\brac{f \circ \alpha} = \brac{g \circ \alpha} \in \pi_1(Y, f(p))$.
+
+    $\qed$
+\end{proof}
+
+\begin{theorem}[\textbf{Theorem 22.5:} Generalized Homotopy Theorem]
+    If $f \overset{F}{\simeq} g : X \to Y$, then $g_* : \pi_1(X, p) \to \pi_1(Y, g(p))$ is the same as the composition
+    \[ \pi_1(X, p) \xrightarrow{f_*} \pi_1(Y, f(p)) \xrightarrow{\gamma_*} \pi_1(Y, g(p)) \]
+    where $\gamma$ is the path from $f(p)$ to $g(p)$ by $\gamma(s) = F(p, s)$, and we define
+    \[ \gamma_*\brac{\beta} = \brac{\gamma^{-1} \cdot \beta \cdot \gamma} \]
+\end{theorem}
+\begin{proof}{Proof:}
+    See book.
+\end{proof}
+
+\begin{theorem}[\textbf{Theorem 22.6}: Fundamental Groups of Homotopy Equivalent Spaces]
+    If two path-connected spaces $X$ and $Y$ are homotopy equivalent, then they have isomorphic fundamental groups.
+\end{theorem}
+\begin{proof}{Proof:}
+    We have
+    \begin{center}
+        \begin{tikzcd}
+            X \arrow[r, bend left, "f"] & Y \arrow[l, bend left, "g"]
+        \end{tikzcd}
+    \end{center}
+    with $g \circ f \simeq \id_X$ and $f \circ g \simeq \id_Y$. Choose $q \in Y$ and let $p = g(q) \in X$. Then, we will show $f_* : \pi_1(X, p) \to \pi_1(Y, f(p))$ is an isomorphism.\\
+
+    Like above, join $p$ to $g(f(p))$ by $\gamma(s) = F(p, s)$, where $F$ is the homotopy from $\id_{X}$ to $g \circ f$. Apply the previous theorem to $g \circ f$ and $\id_X$, which gives
+    \[ (g \circ f)_* = \gamma_* : \pi_1(X, p) \to \pi_1(X, (g \circ f)(p)) \]
+    But $\gamma_*$ is an isomorphism, so $f_*$ is injective.\\
+
+
+    Similarly, we can show $(f \circ g)_*$ is an isomorphism, which implies $f_*$ is onto. Thus, $f_*$ is an isomorphism.
+
+    $\qed$
+\end{proof}

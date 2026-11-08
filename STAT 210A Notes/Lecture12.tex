@@ -1,0 +1,86 @@
+\tocsection{\textbf{10/6/26 Lecture 12}: More on Bayes Estimators}
+
+\begin{example}{\textbf{Example:} Curved Gaussian Family}
+    Let $X_1, \ldots, X_n \iidsim N_{d}(\mu(\theta), I_{d})$, where $\mu : \R \to \R^{d}$.\\
+
+    Then, in our ambient family,
+    \[ S_{\mu}^{(\mu)}(X) = \sum X_i - n\mu = n(\overline{X} - \mu) \]
+    and
+    \[ J^{(\mu)}(\mu) = nI_{d} \]
+
+    An in our curved family,
+    \[ S_{\theta}(X) = \dot{\mu(\theta)}'(\overline{X} - \mu(\theta)) \]
+    and
+    \[ J(\theta) = n\norm{\dot{\mu}(\theta)}^2 \]
+
+    Now, suppose that $\mu(\theta) = (\cos \theta\ \sin \theta)$, for $\theta \in [0, \pi/2]$. For $\theta = 0$, we see that $\mu(0) = (1\ 0)$ and $\dot{\mu}(0) = (0\ 1)$ so by a quick computation $S_{0}(X) = n\overline{X_2}$. Similarly, for $\theta = \pi/2$, then $\mu(\pi/2) = (0\ 1)$ and $\dot{\mu}(\pi/2) = (-1\ 0)$, so $S_{\pi/2}(X) = -n\overline{X_1}$. 
+\end{example}
+
+Going back to Bayes risk, recall we have the Bayes error
+\[ r_{\Lambda}(\delta) = \int R(\theta; \delta(\cdot))d\Lambda(\theta) = \bb{E}[L(\theta, \delta(X))] \]
+where this expectation is with respect to $\theta \sim \Lambda$ and $X \given \theta \sim P_{\theta}$. \\
+
+We also have our prior $\lambda(\theta)$, likelihood $p_{\theta}(x)$ and marginal $q(x) = \int \lambda(\theta)p_{\theta}(x)d\theta$. We also have our posterior
+\[ \lambda(\theta \given X) = \lambda(\theta)\frac{p_{\theta}(X)}{q(X)} \]
+What we will do is try to minimize $\bb{E}[L(\theta, \delta(X))]$ $X$ by $X$ and then piece this together.\\
+
+\begin{lemma}[\textbf{Theorem 12.1}: Existance of Bayes Estimator]
+    Consider the model $\cal{P} = \{P_{\theta} \col \theta \in \Theta\}$ with a proper prior $\Lambda(\theta)$. Suppose that $L(\theta, d) \geq 0$ and that $r_{\Lambda}(\delta_0) < \infty$ for some $\delta_0$. Then, it turns out that $\delta_{\Lambda}(x)$ is Bayes (bayes risk minimizing), with $r_{\Lambda}(\delta_{\Lambda}) < \infty$ if, and only if, 
+    \[ \delta_{\Lambda}(x) \in \underset{d}{\tt{argmin}}\bb{E}[L(\theta, d) \given X = x] \]
+    for almost every $x$. That, is $\delta_{\Lambda}(x)$ is Bayes if it is argmin almost everywhere.
+\end{lemma}
+\begin{proof}{Proof:}
+    $(\Rightarrow)$ Suppose that $\delta(X)$ is some other estimator, so almost everywhere
+    \[ \bb{E}[L(\theta, \delta(x)) \given X = x] \geq \bb{E}[L(\theta, \delta_{\Lambda}(x)) \given X = x] \]
+    Then, taking the expectation over $X$, we see that $r_{\Lambda}(\delta) \geq r_{\Lambda}(\delta_{\Lambda})$, so $\delta_{\Lambda}$ is Bayes risk minimizing, which implies it is a Bayes estimator.  \\
+
+    $(\Leftarrow)$ Assume that $\delta_{\Lambda}(x) < \infty$ is a Bayes estimator (as otherwise, $\delta_0$ would be better). Then, defining
+    \[ E_{x}(d) := \bb{E}[L(\theta, d) \given X = x] \]
+    Now, let 
+    \[ A_{\epsilon} = \{x \col E_{x}(\delta_{\Lambda}(x) > \epsilon + \inf_{d} E_{x}(d))\} \]
+    Now, suppose there exists an $\epsilon > 0$ such that $\bb{P}(X \in A_{\epsilon}) > 0$. Then, on $A_{\epsilon}$, we can choose a $\delta^{*}(X)$ such that 
+    \[ \delta^{*}(X) \leq E_{x}(\delta_{\Lambda}(x)) - \epsilon \]
+    by the definition of an inf. Then, on $A_{\epsilon}^{c}$, take $\delta^{*}(x) = \delta_{\Lambda}(x)$. Then, we see that
+    \[ r_{\Lambda}(\delta_{\Lambda}) - r_{\Lambda}(\delta^{*}) \geq \bb{P}(X \in A)\epsilon \]
+    This contradicts that $\delta_{\Lambda}$ is a Bayes estimator. Thus, no epsilon exists, so $A_{\epsilon}$ must have measure zero for all $\epsilon$. 
+\end{proof}
+
+If we choose our loss to be $L(\theta, d) = (g(\theta) - d)^2$, then 
+\[ \delta_{\Lambda}(x) = \bb{E}[g(\theta) \given X] \]
+This is because
+\begin{align*}
+    \bb{E}[(g(\theta) - d)^2 \given X] &= \bb{E}[(g(\theta) - \bb{E}[g(\theta) \given X] + \bb{E}[g(\theta) \given X] - d)^2 \given X]\\
+    &= \Var(g(\theta) \given X) + (\bb{E}[g(\theta) \given X] - d)^2 + 2\bb{E}((g(\theta) - \bb{E}[g(\theta) \given X])(\bb{E}[g(\theta) \given X] - d) \given X)\\
+    &= \Var(g(\theta) \given X) + (\bb{E}[g(\theta) \given X] - d)^2 
+\end{align*}
+Then, if we let $\delta_{\Lambda}(X) = \bb{E}[g(\theta \given X)]$, this minimizes the integrand of $r_{\Lambda}(\delta)$ as the second term becomes zero, and we see that
+\[ r_{\Lambda}(\delta_{\lambda}) = \bb{E}[\Var(g(\theta) \given X)] \]
+Now, suppose that 
+\[ L(\theta, d) = w(\theta)(g(\theta) - d)^2 \]
+which is reasonable as when $g(\theta)$ is really big, it might make sense to scale the errors down. For instance, we might want to look at
+\[ L(\theta, d) = \frac{\theta - d}{\theta}^2 \]
+Now, we see that
+\begin{align*}
+    \bb{E}[(d - g(\theta))^2w(\theta) \given X] &= d^2\bb{E}[w(\theta) \given X] - 2d\bb{E}[w(\theta)g(\theta) \given X] + \bb{E}[w(\theta)g(\theta)^2 \given X]
+\end{align*}
+Taking a derivative with respect to $d$ to and setting this equal to zero, we find that the Bayes estimator must be
+\[ \delta_{\Lambda}(X) = \frac{\bb{E}[w(\theta)g(\theta) \given X]}{\bb{E}[w(\theta) \given X]} = \frac{\int g(\theta)w(\theta)\lambda(\theta \given x)d\theta}{\int w(\theta)\lambda(\theta \given x)d\theta} \]
+Then, simplifying the RHS, 
+\begin{align*}
+    \frac{\int g(\theta)w(\theta)\lambda(\theta \given x)d\theta}{\int w(\theta)\lambda(\theta \given x)d\theta} &= \frac{\int g(\theta)w(\theta)\lambda(\theta)p_{\theta}(x)d\theta}{\int w(\theta)\lambda(\theta)p_{\theta}(x)d\theta}\\
+    &= \frac{\int g(\theta) (\lambda(\theta)w(\theta))p_{\theta}(x)d\theta}{\int \lambda(\theta)w(\theta)p_{\theta}(x)d\theta}
+\end{align*}
+where the last integral is $\bb{E}[g(\theta) \given X]$ where $\theta$ is sampled from $(\lambda \cdot w)(\theta)$ and $X \given \theta \sim p_{\theta}(x)$. Thus, scaling the loss is effectively changing the prior.
+
+\begin{example}{\textbf{Example:} Beta Binomial}
+    Suppose $X \given \theta \sim \Binom(n, \theta)$ and $\theta \sim \tt{Beta}(\alpha, \beta)$. Now, we have
+    The first has density $\theta^{x}(1 - \theta)^{n - x}{n \choose x}$ and the second has density $\theta^{\alpha - 1}(1 - \theta)^{\beta - 1}\frac{\Gamma(\alpha)\Gamma(\beta)}{\Gamma(\alpha + \beta)}$. We see that
+    \[ \lambda(\theta \given X) = \lambda(\theta)\frac{p_{\theta}(x)}{q(x)} \]
+    we will ignore $q(x)$ and other constants and recover it by renormalizing. Thus, we see that
+    \[ \lambda(\theta \given X) \propto \theta^{\alpha - 1}(1 - \theta)^{\beta - 1}\theta^{x}(1 - \theta)^{n - x} = \theta^{x + \alpha - 1}(1 - \theta)^{n - x + \beta - 1}\]
+    Thus, this is proportional to $\tt{Beta}(x + \alpha, n - x + \beta)$, which implies that once we normalize, we see that $\lambda(\theta \given X)$ is $\tt{Beta}(x + \alpha, n - x + \beta)$, and knowing this, we can compute that
+    \[ \bb{E}[\theta \given X] = \frac{X + \alpha}{n + \alpha + \beta} \]
+    Thus, from this result, we see that $\frac{X + 1}{n + 2}$ is the Bayes estimator for $\Lambda = U[0, 1]$, and $\frac{X + 2}{n + 4}$ is the Bayes estaimtor for $\Lambda = \tt{Beta}(2, 2)$. Now, notice that we can write
+    \[ \bb{E}[{\theta \given X}] = \frac{X}{n} \cdot \frac{n}{n + \alpha + \beta} + \frac{\alpha}{\alpha + \beta} \cdot \frac{\alpha + \beta}{n + \alpha + \beta} \]
+    which is a convex combination of actual data $(X/n)$ and pseudo-data ($\alpha/(\alpha + \beta)$). 
+\end{example}

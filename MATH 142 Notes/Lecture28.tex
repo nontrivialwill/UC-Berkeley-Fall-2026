@@ -1,0 +1,90 @@
+\tocsection{\textbf{11/2/26 Lecture 28:} Presentations of the Edge Group}
+
+\begin{theorem}[\textbf{Theorem 28.1:} Equivalence of $G(K, l)$ and $E(K, v)$]
+    \[ G(K, L) \cong E(K, v) \]
+\end{theorem}
+\begin{proof}{Proof:}
+    We will construct
+    \begin{center}
+        \begin{tikzcd}
+            G(K, L) \arrow[r, bend left, "\phi"] & E(K, v) \arrow[l, bend left, "\theta"]
+        \end{tikzcd}
+    \end{center}
+    To define $\phi$, join $v$ to each vertex $v_i$ by an edge path $E_i$ in $L$
+    \fig{0.7}{Lecture28Fig1}{}
+    and define
+    \[ \phi(g_{ij}) = \{E_i v_i v_j E_j^{-1}\} \in E(K, v) \]
+    and extend to products of generators.\\
+
+
+    We need to show $\phi$ respects relations. If $v_i v_j$ is a simplex in $L$, then $E_i v_i v_j E_j^{-1}$ is in $L$, but as $L$ is simply connected, we see
+    \[ \{E_i v_i v_j E_j^{-1}\} = \{v\} \in E(K, v) \]
+    Now, if $v_i v_j v_k$ span a simplex in $K$, then
+    \begin{align*}
+        \phi(g_{ij})\phi(g_{jk}) &= \{E_i v_i v_j E_j^{-1}\} \cdot \{E_j v_j v_k E_k^{-1}\}\\
+        &= \{E_i v_i v_j E_j^{-1} E_j v_j v_k E_k^{-1}\}\\
+        &= \{E_i v_i v_j v_j v_k E_k^{-1}\}\\
+        &= \{E_i v_i v_k E_k^{-1}\}\\
+        &= \phi(g_{ik})
+    \end{align*}
+    Thus, $\phi$ is a homomorphism.\\
+
+    Recall that $v_0 = v$. Then, define $\theta : E(K, v) \to G(K, L)$ by
+    \[ \theta(\{v v_k v_{\ell} \cdots v_n v\}) = g_{0k}g_{k\ell} \cdots g_{n0} \in G(K, L) \]
+    We want to show this is well defined. This is identical to above, so we will skip this part. This is also a homomorphism.\\
+
+
+    Now, consider $\theta \circ \phi : G(K, L) \to G(K, L)$. Note
+    \begin{align*}
+        \theta \circ \phi(g_{ij}) = \theta(\phi(g_{ij})) &= \theta(\{E_i v_i v_j E_j^{-1}\})\\
+        &= \theta(\{v_i v_j\}) \quad (E_i, E_j^{-1} \in L)\\
+        &= g_{ij}
+    \end{align*}
+    so $\theta \circ \phi$ is the identity on $G(K, L)$.\\
+
+    Finally, consider $\phi \circ \theta : E(K, v) \to E(K, v)$. Note that in $E(K, v)$, we always have
+    \[ \{v v_k v_{\ell} \cdots v_n v\} = \{E_0 v v_k E_k^{-1}\}\{E_k v_k v_{\ell} E_{\ell}^{-1}\} \cdots \{E_n v_n v E_0^{-1}\} \]
+    where $E_0$ is the trivial edge path $v \to v$. Thus,
+    \[ \phi \circ \theta(\{v v_k v_{\ell} \cdots v_n v\}) = \phi \circ \theta(\{E_0 v v_k E_k^{-1}\}) \cdots \phi \circ \theta(\{E_n v_n v E_0^{-1}\}) \]
+    and as
+    \[ \phi \circ \theta(\{E_i v_i v_j E_j^{-1}\}) = \phi(g_{ij}) = \{E_i v_i v_j E_j^{-1}\} \]
+    as $E_i, E_j^{-1} \in L$, $\phi \circ \theta$ is the identity on $E(K, v)$.
+
+    $\qed$
+\end{proof}
+
+\subsection*{Simplified Presentation}
+\sectionspace
+
+
+Start by ordering the vertices $V = \{v_0, \ldots, v_s\}$ and consider the generators $g_{ij}$ for each edge $v_i v_j$ not in $L$ with $i < j$, with the relations $g_{ij}g_{jk} = g_{ik}$ whenever $v_i, v_j, v_k$ are vertices of a $2$-simplex (if an edge $v_a v_b$ is in $L$, write $g_{ab} = e$).
+
+\begin{example}{\textbf{Example:} Boundary of a Triangle}
+    \fig{0.8}{Lecture28Fig2}{}
+    Let $L = \{v_0, v_1, v_2, \{v_0, v_1\}, \{v_0, v_2\}\}$. The only generator is $g_{12}$, and we have no relations. Thus,
+    \[ \pi_1(K) \cong \brac{g_{12} \mid \emptyset} \cong \Z \]
+\end{example}
+
+\begin{example}{\textbf{Example:} Solid Triangle}
+    \fig{0.8}{Lecture28Fig3}{}
+    Let $L = \{v_0, v_1, v_2, \{v_0, v_1\}, \{v_0, v_2\}\}$. The only generator is $g_{12}$ with relation $g_{01}g_{12} = g_{02} \implies eg_{12} = e \implies g_{12} = e$, so
+    \[ \pi_1(K) = \brac{g_{12} \mid g_{12}} \cong \{e\} \]
+\end{example}
+
+\begin{example}{\textbf{Example:} Boundary of a Tetrahedron}
+    \fig{0.8}{Lecture28Fig4}{}
+    Let $L = \{v_0, v_1, v_2, v_3, \{v_0, v_1\}, \{v_0, v_2\}, \{v_0, v_3\}\}$. Our generators are $g_{12}, g_{23}, g_{13}$, and our relations are 
+    \[ g_{01}g_{12} = g_{02} \implies g_{12} = e \qquad g_{02}g_{23} = g_{03} \implies g_{23} = e \]
+    \[ g_{01}g_{13} = g_{03} \implies g_{13} = e \qquad g_{12}g_{23} = g_{13} \]
+    Then,
+    \[ \pi_1(K) = \brac{g_{12}, g_{23}, g_{13} \mid g_{12}, g_{23}, g_{13}, g_{12}g_{23}g_{13}^{-1}} = \{e\} \]
+\end{example}
+
+\begin{example}{\textbf{Example:} Three Circles}
+    \fig{0.5}{Lecture28Fig5}{}
+    Let $L$ be the maximal tree made of the edges $v_0 v_1, \ldots, v_0 v_6$:
+    \fig{0.6}{Lecture28Fig6}{}
+    Then, our generators are $g_{12}, g_{34}, g_{56}$. There are no relations, so
+    \[ \pi_1(X) \cong \brac{g_{12}, g_{34}, g_{56} \mid \emptyset} \cong F_3 \]
+    In general, if we have $n$ circles that intersect at a point, called a \emph{bouquet of $n$ circles}, then $\pi_1(X) \cong F_n$.
+\end{example}

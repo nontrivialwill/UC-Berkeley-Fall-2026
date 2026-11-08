@@ -1,0 +1,358 @@
+\documentclass[10pt, oneside]{book}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{array}
+\usepackage{bookmark}
+\usepackage{bm}
+\usepackage[justification = centering]{caption}
+\usepackage{changepage}
+\usepackage{color, soul}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{float}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage[all]{hypcap}
+\usepackage[utf8]{inputenc}
+\usepackage{longtable}
+\usepackage[version=4]{mhchem}
+\usepackage{multicol}
+\usepackage{pgfplots}
+\usepackage[most]{tcolorbox}
+\usepackage{titlesec}
+\usepackage{tikz-cd}
+\usepackage{wrapfig}
+\usepackage[usenames,dvipsnames]{xcolor}
+
+% ---------- Header / Footer ----------
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \fancyhead[L]{STAT 210A: Theoretical Statistics}
+    \fancyhead[R]{William Nguyen}
+    \fancyfoot[C]{\thepage}
+}
+
+\definecolor{pen}{HTML}{212120}
+\definecolor{theoremFont}{HTML}{94330E}
+\definecolor{theoremBg}{HTML}{FAF1EA}
+\definecolor{exampleFont}{HTML}{B58900}
+\definecolor{exampleBg}{HTML}{FFF8E6}
+\definecolor{definitionFont}{HTML}{538ACA}
+\definecolor{definitionBg}{HTML}{F3F5FC}
+\definecolor{proofBg}{HTML}{FEFDFB}
+\definecolor{proofFont}{HTML}{94330E}
+\definecolor{solutionFont}{HTML}{B58900}
+\definecolor{solutionBg}{HTML}{FFFBEF}
+\definecolor{remarkFont}{HTML}{149B52}
+\definecolor{remarkBg}{HTML}{ECFAEB}
+
+
+\color{pen}
+
+\newtcolorbox{theoremBox}[1]{
+  enhanced,
+  skin=enhancedmiddle,
+  colback=theoremBg,
+  sharp corners = all,
+  boxrule=0pt,
+  arc=5pt,
+  left=8pt,
+  right=8pt,
+  top=8pt,
+  bottom=8pt,
+  grow to left by=11pt,    
+  grow to right by=11pt,
+  frame hidden,
+  borderline west= {1mm}{0mm}{theoremFont},
+  fonttitle=\large\sffamily,
+  coltitle=theoremFont,
+  title={#1},
+  attach title to upper,
+  after title = {\\ \vspace{-8pt} \\}  
+}
+
+\newtcolorbox{definitionBox}[1]{
+  enhanced,
+  skin=enhancedmiddle,
+  colback=definitionBg,
+  sharp corners = all,
+  boxrule=0pt,
+  arc=5pt,
+  left=8pt,
+  right=8pt,
+  top=8pt,
+  bottom=8pt,
+  grow to left by=11pt,    
+  grow to right by=11pt,
+  frame hidden,
+  borderline west= {1mm}{0mm}{definitionFont},
+  fonttitle=\large\sffamily,
+  coltitle=definitionFont,
+  title={#1},
+  attach title to upper,
+  after title = {\\ \vspace{-8pt} \\}  
+}
+
+\newtcolorbox{remarkBox}[1]{
+  enhanced,
+  skin=enhancedmiddle,
+  colback=remarkBg,
+  sharp corners = all,
+  boxrule=0pt,
+  arc=5pt,
+  left=8pt,
+  right=8pt,
+  top=8pt,
+  bottom=8pt,
+  grow to left by=11pt,    
+  grow to right by=11pt,
+  frame hidden,
+  borderline west= {1mm}{0mm}{remarkFont},
+  fonttitle=\bfseries\large\sffamily,
+  coltitle=remarkFont,
+  title={#1},
+  attach title to upper,
+  after title = {\\ \vspace{-8pt} \\}  
+}
+
+\newtcolorbox{proofBox}[1]{
+  enhanced,
+  skin=enhancedmiddle,
+  colback=proofBg,
+  sharp corners = all,
+  boxrule=0pt,
+  arc=5pt,
+  left=8pt,
+  right=8pt,
+  top=8pt,
+  bottom=8pt,
+  grow to left by=11pt,    
+  grow to right by=11pt,
+  frame hidden,
+  borderline west= {1mm}{0mm}{proofFont},
+  fonttitle=\bfseries\fontsize{11pt}{13pt}\selectfont\sffamily,
+  coltitle=proofFont,
+  title={#1},
+  attach title to upper,
+  after title = { },
+  breakable
+}
+
+\newtcolorbox{solutionBox}[1]{
+  enhanced,
+  skin=enhancedmiddle,
+  colback=solutionBg,
+  sharp corners = all,
+  boxrule=0pt,
+  arc=5pt,
+  left=8pt,
+  right=8pt,
+  top=8pt,
+  bottom=8pt,
+  grow to left by=11pt,    
+  grow to right by=11pt,
+  frame hidden,
+  borderline west= {1mm}{0mm}{solutionFont},
+  fonttitle=\bfseries\fontsize{11pt}{13pt}\selectfont\sffamily,
+  coltitle=solutionFont,
+  title={#1},
+  attach title to upper,
+  after title = { },
+  breakable
+}
+
+\newtcolorbox{exampleBox}[1]{
+  enhanced,
+  skin=enhancedmiddle,
+  colback=exampleBg,
+  sharp corners = all,
+  boxrule=0pt,
+  arc=5pt,
+  left=8pt,
+  right=8pt,
+  top=8pt,
+  bottom=8pt,
+  grow to left by=11pt,    
+  grow to right by=11pt,
+  frame hidden,
+  borderline west= {1mm}{0mm}{exampleFont},
+  fonttitle=\large\sffamily,
+  coltitle=exampleFont,
+  title={#1},
+  attach title to upper,
+  after title = {\\ \vspace{-8pt} \\},
+  breakable
+}
+
+\renewenvironment{proof}[1][]{\vspace{-16pt}\begin{proofBox}}{\end{proofBox}\vspace{4pt}}
+\newenvironment{solution}[1][]{\vspace{-16pt}\begin{solutionBox}}{\end{solutionBox}\vspace{4pt}}
+\newenvironment{theorem}[1][]{\boxsubsection{#1} \begin{theoremBox}{#1}}{\end{theoremBox}\vspace{4pt}}
+\newenvironment{definition}[1][]{\boxsubsection{#1} \begin{definitionBox}{#1}}{\end{definitionBox}\vspace{4pt}}
+\newenvironment{remark}[1][]{\begin{remarkBox}}{\end{remarkBox}\vspace{4pt}}
+\newenvironment{example}[1][]{\begin{exampleBox}}{\end{exampleBox}\vspace{4pt}}
+\newenvironment{lemma}[1][]{\begin{theoremBox}{#1}}{\end{theoremBox}\vspace{4pt}}
+
+\titleformat{\chapter}
+  [display]
+  {}
+  {\huge\bfseries Chapter \thechapter}
+  {1ex}
+  {\raggedright\Huge\bfseries}
+
+
+
+
+
+
+\hypersetup{
+    hypertexnames=false,
+    hidelinks
+}
+
+\pgfplotsset{compat=1.18}
+
+\pgfplotsset{
+    every axis/.style={
+        axis lines=middle,   % axes through the origin
+        ticks=none,          % no tick marks or numbers
+        xlabel={}, ylabel={}, % no axis labels
+        clip=true,          % allow plots beyond axes
+    },
+}
+
+
+\graphicspath{{./Images/}}
+\newcommand{\defcolor}{Goldenrod!35!white}
+\newcommand{\theoremcolor}{Cerulean!15!white}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\C}{\mathbb{C}}
+\renewcommand{\P}{\mathcal{P}}
+\newcommand{\lda}{\lambda}
+\newcommand{\norm}[1]{\lVert {#1} \rVert}
+\newcommand{\abs}[1]{\left\lvert {#1} \right\rvert}
+\newcommand{\dist}{\text{dist}}
+\newcommand{\proj}{\text{proj}}
+\newcommand{\Span}{\text{Span}}
+\newcommand{\brac}[1]{\left\langle {#1} \right\rangle}
+\newcommand{\Nul}{\text{Nul}\,}
+\newcommand{\Col}{\text{Col}\,}
+\newcommand{\Row}{\text{Row}\,}
+\newcommand{\rank}{\text{rank}\,}
+\newcommand{\quand}{\quad \text{and} \quad}
+\newcommand{\qqquad}{\qquad \qquad}
+\renewcommand{\div}{\mid}
+\newcommand{\ndiv}{\nmid}
+\renewcommand{\mod}[1]{\ (\text{mod } {#1})}
+\newcommand{\Rel}{\ R\ }
+\newcommand{\id}{\text{id}}
+\newcommand{\del}{\partial}
+\newcommand{\res}[1]{\left|_{#1}\right.}
+\newcommand{\col}{\, :\, }
+\newcommand{\codim}{\text{codim}\mkern1mu}
+\renewcommand{\H}{\mathbb{H}}
+\newcommand{\Int}{\text{Int}\mkern1mu}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\V}{\mathcal{V}}
+\newcommand{\bb}[1]{\mathbb{#1}}
+\renewcommand{\cal}[1]{\mathcal{#1}}
+\renewcommand{\tt}[1]{\text{#1}}
+\renewcommand\arraystretch{}
+\newcommand{\given}{\ |\ }
+\newcommand{\iidsim}{\overset{\tt{iid}}{\sim}}
+\newcommand{\Binom}{\tt{Binom}}
+\newcommand{\Pois}{\tt{Pois}}
+\newcommand{\Bern}{\tt{Bern}}
+\newcommand{\grad}{\nabla}
+\renewcommand{\dot}[1]{\overset{\cdot}{#1}}
+
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Var}{\text{Var}}
+\newcommand{\Cov}{\text{Cov}}
+
+\newcommand{\defspace}{\phantom{0} \vspace{0.2cm}\\}
+\newcommand{\sectionspace}{\vspace{0.2cm}}
+\newcommand{\chapterspace}{\vspace{2.4cm}}
+\renewcommand{\indent}{\hspace{0.4cm}}
+\newcommand{\exspace}{\vspace{0.6cm}}
+
+\newcommand{\tocchapter}[1]{\chapter{#1}}
+\newcommand{\tocsection}[1]{\section*{#1} \phantomsection \addcontentsline{toc}{section}{#1} \sectionspace}
+\newcommand{\tocsubsection}[1]{\subsection*{#1} \phantomsection \addcontentsline{toc}{subsection}{#1} \sectionspace}
+\newcommand{\tocsubsubsection}[1]{\subsubsection*{#1} \phantomsection \addcontentsline{toc}{subsubsection}{#1}}
+\newcommand{\boxsubsection}[1]{\phantomsection \addcontentsline{toc}{subsection}{#1}}
+\newcommand{\fig}[3]{\begin{figure}[H] \centering \includegraphics[scale = {#1}]{{#2}} \caption*{#3} \end{figure}}
+\renewcommand{\qed}{\hfill\blacksquare\\}
+\newcommand{\miniqed}{\hfill\square\\}
+\newcommand{\longline}{\noindent\makebox[\linewidth]{\rule{\paperwidth - 2in}{0.4pt}}\vspace{0.4cm}}
+\newcommand{\grid}[2]{\draw[step=1, gray!30] (-{#2},-{#1}) grid ({#2},{#1}); \filldraw (0, 0) circle (2pt);}
+\newcommand{\commutes}{\arrow[phantom]{ul}{\circlearrowleft}}
+\newcommand{\torus}[4]{\begin{scope}[shift = {(#1, #2)}, scale = {0.5*#3}, rotate = {#4}] \draw[thick] (-2, 0) to[out = 90, in = 180] (0, 1) to[out = 0, in = 90] (2, 0) to[out = -90, in = 0] (0, -1) to[out = 180, in = -90] cycle; \draw[thick] (-1, 0.1) to[out = -20, in = 200] (1, 0.1); \draw[thick] (-0.7, -0) to[out = 20, in = 160] (0.7, -0); \end{scope}}
+\newcommand{\sphere}[4]{\begin{scope}[shift = {(#1, #2)}, scale = {#3}, rotate = {#4}] \draw[thick] (0, 0) circle (1); \draw[thick] (-1, -0.03) to[out = -25, in = 205] (1, -0.03); \draw[thick, dotted] (-1, 0.03) to[out = 15, in = 165] (1, 0.03); \end{scope}}
+\newcommand{\transv}{\mathrel{\text{\tpitchfork}}}
+\makeatletter
+\newcommand{\tpitchfork}{%
+  \vbox{
+    \baselineskip\z@skip
+    \lineskip-.52ex
+    \lineskiplimit\maxdimen
+    \m@th
+    \ialign{##\crcr\hidewidth\smash{$-$}\hidewidth\crcr$\pitchfork$\crcr}
+  }%
+}
+\makeatother
+
+
+\let\vect\mathbf
+\let\cal\mathcal
+
+\titleformat*{\subsection}{%
+    \fontsize{14}{15}\bfseries%
+}
+\titleformat*{\section}{%
+    \fontsize{16}{19}\bfseries\filcenter%
+}
+
+\setlength{\parindent}{0px}
+\setcounter{tocdepth}{2}
+
+
+\begin{document}
+
+\frontmatter
+\begin{titlepage}
+    \centering
+    \vspace*{8cm}
+
+    {\Huge \textbf{STAT 210A: Theoretical Statistics}}\\[1cm]
+    {\Large By William Nguyen}\\[0.5cm]
+    {\large Fall 2026}\\
+    \vfill
+    
+\end{titlepage}
+
+\tableofcontents
+\newpage
+\pagenumbering{arabic}
+
+\clearpage
+\mainmatter
+\pagestyle{plain}
+
+\include{Lecture19}
+
+
+
+
+
+
+
+
+\end{document}

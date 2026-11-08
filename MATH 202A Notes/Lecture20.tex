@@ -1,0 +1,89 @@
+\tocsection{\textbf{10/14/26 Lecture 20:} The Hahn and Jordan Decompositions}
+
+\begin{proof}{Proof of Lemma 19.6 (cont.):}
+    Now, we need to check that $B'$ is a negative set. Suppose not. Then, there exists $P \subseteq B'$ such that $\mu(P) > 0$. Then, there exists $N$ such that $0 \leq 1/N < \mu(P)$. Now, since $n_j \to \infty$, there exists $J$ such that $1/n_J < 1/N$. However, this is a contradiction, as $n_J$ was chosen to be the smallest such integer for a set in $B_{J - 1}$, but there exists a set in $B_{J - 1}$ with measure greater than $1/N$.
+
+    $\qed$
+\end{proof}
+Now, we can prove the Hahn Decomposition theorem.
+\vspace{0.5cm}
+
+\begin{theorem}[\textbf{Theorem 20.1:} Hahn Decomposition Theorem]
+    Let $\mu$ be a signed measure on $(X, \cal{A})$.
+    \begin{enumerate}
+        \item There exist disjoint sets $A, B \in \cal{A}$ such that $A$ is positive, $B$ is negative, and $A \cup B = X$. 
+        \item If $A'$ and $B'$ are another pair of sets satisfying 1, then $A \triangle A'$ and $B \triangle B'$ are null sets.
+        \item If $\mu$ is not a positive measure, then $\mu(B) < 0$, and if $-\mu$ is not positive, then $\mu(A) > 0$.
+    \end{enumerate}
+\end{theorem}
+\begin{proof}{Proof:}
+    \textbf{(1)} Let
+    \[ L = \inf\{\mu(B) \col B \tt{ is a negative set}\} \]
+    Choose $B_n$ so that $\mu(B_n) \downarrow L$. Now, let $B_1' = B_1$ and $B_n' = B_n \setminus \bigcup_{j = 1}^{n - 1} B_j'$. Now, $B = \bigcup_{n} B_n = \bigsqcup_{n} B_n'$. Then, for $E \subseteq B$,
+  .
+    \[ \mu(E) = \lim_{n \to \infty} \mu \left(E \cap \bigcup_{j = 1}^{n} B_j'\right) = \lim_{n \to \infty} \sum_{j = 1}^{n} \mu(E \cap B_j') \leq 0 \]
+    so $B$ is negative. Now, because $B$ is negative,
+    \[ \mu(B) = \mu(B_n) + \mu(B \setminus B_n) \leq \mu(B_n) \]
+    so taking the limit, we see that $\mu(B) \leq L$, so as $\mu(B) \geq L$, we have equality. Note that this also shows that this shows $L > -\infty$ as $\mu(B) > -\infty$.\\
+
+    Let $A = B^{c}$. We want to show that $A$ is positive. If not, there exists $E \subseteq A$ such that $\mu(E) < 0$, so we can also find a negative $E' \subseteq E$ such that $\mu(E') < 0$. But then
+    \[ \mu(B \cup E') = \mu(B) + \mu(E') < L \]
+    which is a contradiction, as $B \cup E'$ is negative.\\
+
+    \textbf{(2)} Let $E \subseteq A \setminus A' = B' \setminus B$. Then, as $A$ is positive and $B'$ is negative, $\mu(E) \geq 0$ and $\mu(E) \leq 0$. A similar fact holds for $E \subseteq A' \setminus A = B \setminus B'$. Thus, $A \triangle A'$ and $B \triangle B'$ are null.
+
+    \textbf{(3)} Suppose $\mu$ is not positive. Then, there exists $E$ such that $\mu(E) < 0$. Then,
+    \begin{align*}
+        \mu(E) &= \mu(E \cap A) + \mu(E \cap B)\\
+        &\geq \mu(E \cap B)\\
+        &\geq \mu(B) && (B \tt{ is negative})
+    \end{align*}
+    Thus, $0 > \mu(E) \geq \mu(B)$, so $\mu(B) < 0$. Similarly, if $\mu$ is not negative, there exists $E$ such that $\mu(E) > 0$, so
+    \begin{align*}
+        \mu(E) &= \mu(E \cap A) + \mu(E \cap B)\\
+        &\leq \mu(E \cap A) \leq \mu(A)
+    \end{align*}
+    so $0 < \mu(E) \leq \mu(A)$.
+
+    $\qed$
+\end{proof}
+
+\begin{definition}[\textbf{Definition 20.2:} Mutually Singular Measures]
+    Two measures $\mu$ and $\nu$, both on $(X, \cal{A})$, are \emph{mutually singular} if there exist disjoint $A, B$ such that $A \cup B = X$ and $\mu(B) = \nu(A) = 0$. We denote this by $\mu \perp \nu$.
+\end{definition}
+
+\begin{example}{\textbf{Example 1}}
+    On $\R$, consider the Lebesgue measure and the point mass at $0$. Then, $\R = (\R \setminus \{0\}) \sqcup \{0\}$ and
+    \[ \delta_0(\R \setminus \{0\}) = \lambda(\{0\}) = 0 \]
+\end{example}
+
+\begin{example}{\textbf{Example 2}}
+    Recall the Cantor function $f$:
+    \fig{0.4}{Lecture20Fig1}{}
+    Let $m$ be the Lebesgue-Stieltjes measure of $f$. We claim that $\lambda$ and $m$ are mutually singular. The idea is that $m$ only assigns measure to the Cantor set $C$. Then,
+    \[ m(C^{c}) = \lambda(C) = 0 \]
+\end{example}
+
+\begin{theorem}[\textbf{Theorem 20.3:} Jordan Decomposition Theorem]
+    If $\mu$ is a signed measure, then there are positive measures $\mu^{+}$ and $\mu^{-}$, with $\mu^{-}$ finite, so that $\mu = \mu^{+} - \mu^{-}$ and $\mu^{+} \perp \mu^{-}$, and these measures are unique.
+\end{theorem}
+\begin{proof}{Proof:}
+    Apply the Hahn decomposition to get a positive set $A$ and a negative set $B$. Then, let
+    \[ \mu^{+}(E) = \mu(A \cap E) \quand \mu^{-}(E) = -\mu(E \cap B) \]
+    These are positive measures, and
+    \[ \mu(E) = \mu(A \cap E) + \mu(E \cap B) = \mu^{+}(E) - \mu^{-}(E) \]
+    so $\mu = \mu^{+} - \mu^{-}$. It is clear that $\mu^{+} \perp \mu^{-}$ as $\mu^{-}(A) = \mu^{+}(B) = 0$ and $A \cup B = X$. We also see that $\mu^{-}$ is finite as $\mu^{-}(X) = -\mu(B) < \infty$. \\
+
+    Now, we check uniqueness. Suppose $\mu = \nu^{+} - \nu^{-}$. We want to show that $\nu^{+} = \mu^{+}$ and $\nu^{-} = \mu^{-}$. We know $\nu^{+} \perp \nu^{-}$, so pick $A'$ and $B'$ so that $\nu^{+}(B') = \nu^{-}(A') = 0$. Then, for $E \subseteq A'$,
+    \[ \mu(E) = \nu^{+}(E) \geq 0 \]
+    so $A'$ is positive for $\mu$, and similarly $B'$ is negative for $\mu$. Thus, $A'$ and $B'$ form a Hahn decomposition for $\mu$, so $A \triangle A'$ is null. Now,
+    \begin{align*}
+        \nu^{+}(E) = \nu^{+}(E \cap A') &= \nu^{+}(E \cap A') - \nu^{-}(E \cap A')\\
+        &= \mu(E \cap A')\\
+        &= \mu(E \cap A)\\
+        &= \mu^{*}(E)
+    \end{align*}
+    so $\mu^{+} = \nu^{+}$. Then, as $\nu^{-} = \nu^{+} - \mu = \mu^{+} - \mu = \mu^{-}$, we are done.
+
+    $\qed$
+\end{proof}

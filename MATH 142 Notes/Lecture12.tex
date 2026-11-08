@@ -1,0 +1,122 @@
+\tocsection{\textbf{9/23/26 Lecture 12:} Identification Spaces}
+
+Consider $X = [0, 1]$ where we want to identify $\{0\}$ and $\{1\}$. What happens is that it becomes a circle!
+\fig{0.6}{Lecture12Fig1}{}
+
+Now, consider $X = [0, 1]$ where we want to identify $\{0\}, \{1/2\}$ and $\{1\}$. This gives us a figure 8!
+
+\fig{0.6}{Lecture12Fig2}{}
+
+Finally, consider $X = [0, 1] \times [0, 1]$. We want to identify the top and bottom edges. That is, for each $x \in [0, 1]$, we want to identify $(x, 0)$ and $(x, 1)$.
+\fig{0.6}{Lecture12Fig3}{}
+
+\textbf{Question:} If $X$ is a topological space, how to put a topology on $Y$?
+
+\begin{definition}[\textbf{Definition 12.1:} Identification Space]
+    Let $X$ be a set and $P$ is a family of disjoint subsets whose union is $X$ (that is, $P$ is a partition). Then, the \emph{identification space} $Y$ is the set of elements in $P$. \\ 
+\end{definition}
+This definition induces an onto function $f : X \to Y$ by $f(x) = [x]$ where $[x]$ is the element of $P$ containing $x$.\\
+
+Conversely, given an onto function $\pi : X \to Y$, then we can let $P = \{\pi^{-1}(y)\}_{y \in Y}$, and let that be an identification space.\\
+
+Equivalently, we can also let $X$ be a set and $\sim$ be an equivalence relation on $X$. Then, we can let $P$ be the set of equivalence classes of $\sim$, and this gives us another identification space. In this case, we call $Y$ the \emph{quotient space} of $\sim$, denoted $X / \sim$.
+
+\subsection*{Identification Topology (a.k.a Quotient Topology)}
+\sectionspace
+
+Suppose that $X$ has a topology $\cal{T}$ and we want to put a topology on $Y$, an identification space. To do this, all we need is to force the quotient map $\pi : X \to Y$ to be continuous.\\
+
+\begin{definition}[\textbf{Definition 12.2: }Identification Topology]
+    Given an identification space $Y$ of $X$, we say $\cal{O} \subseteq Y$ is open if $\pi^{-1}(\cal{O})$ is open in $X$. 
+\end{definition}
+
+\begin{definition}[\textbf{Definition 12.3: }Identification Maps]
+    Suppose that $X$ and $Y$ are topological spaces. We say that an onto map $f : X \to Y$ is an \emph{identification map} if $\cal{O} \subseteq Y$ is open if, and only if $f^{-1}(\cal{O})$ is open in $X$. Then, $Y$ is homeomorphic to the identification space induced by $P = \{f^{-1}(y)\}_{y \in Y}$.  
+\end{definition}
+
+\textbf{Warning:} If $f : X \to Y$ is an identification map, it need not send open sets to open sets. Consider the following example: Let $X = \{a, b, c, d\}$ with the topology $\{\emptyset, \{a\}, \{b\}, \{a, b\}, \{a, b, c, d\}\}$, and let $Y = \{e, f\}$ consider the onto map $f : X \to Y$ by $\phi(a) = \phi(c) = e$ and $\phi(b) = \phi(d) = f$.\\
+
+Then, the quotient topology induced by $f$ is $\{\emptyset, Y\}$ as $\phi^{-1}(e)$ and $\phi^{-1}(d)$ are not open in $X$. We see immediately that $\phi$ is not an open map as $\phi(\{a\}) = \{e\}$ which is not open. 
+
+\begin{lemma}[\textbf{Proposition 12.4}]
+    Say $\pi : X \to Y$ is an ID map. Given a topological space $Z$ and a map $f : Y \to Z$, then $f$ is continuous iff $f \circ \pi : X \to Z$ is continuous. That is, $\pi$ satisfies the universal property for a quotient map
+    \begin{center}
+        \begin{tikzcd}
+            X \arrow[r, "\pi"] \arrow[dr, "f \circ \pi"'] & Y \arrow[d, "f"]\\
+            & Z
+        \end{tikzcd}
+    \end{center}
+
+\end{lemma}
+\begin{proof}{Proof:}
+
+    $(\Rightarrow)$ This is immediate as $\pi$ is continuous.\\
+
+    $(\Leftarrow)$ Suppose that $f \circ \pi$ is continuous, and let $U \subseteq Z$ be open. Then, we see that
+    \[ (f \circ \pi)^{-1}(U) = \pi^{-1}(f^{-1}(U)) \text{ is open} \]
+    But as $\pi$ is an identification map, we see that $f^{-1}(U)$ is open. 
+
+    $\qed$
+\end{proof}
+
+\begin{lemma}[\textbf{Proposition 12.5}]
+    Suppose that $f : X \to Y$ is an onto map from $X \to Y$. Then, if $f$ is an open map (resp. closed map); that is, it sends open sets to open sets (resp. closed sets to closed sets), then it is an ID map.
+\end{lemma}
+\begin{proof}{Proof:}
+    Suppose that $f$ is an open map. We need to show that $O \subseteq Y$ is open if, and only if, $f^{-1}(O)$ is open.\\
+
+    Now, if $O \subseteq Y$ is open, then $f^{-1}(O)$ is open as $f$ is a map.\\
+
+    Now, suppose that $f^{-1}(O)$ is open. Then, as $f(f^{-1}(O)) = O$ because $f$ is surjective, and $f$ is an open map, we see that $O$ is open, which was to be shown.
+
+    $\qed$
+\end{proof}
+
+
+\begin{lemma}[\textbf{Proposition 12.6:}]
+    Suppose that $f : X \to Y$ is an onto map. Then, if $X$ is compact and $Y$ is Hausdorff, then $f$ is an ID map. Hence, $Y$ is homeomorphic to the ID space corresponding to $P = \{f^{-1}(Y)\}_{y \in Y}$. 
+\end{lemma}
+\begin{proof}{Proof:}
+    It is enough to show that $f$ sends closed sets to closed sets by Proposition 12.5. Let $C$ be closed. Then $C$ is compact, so $f(C)$ is compact in $Y$. Then, $f(C)$ is closed as $Y$ is Hausdorff.
+
+    $\qed$
+\end{proof}
+
+Now with the formal rigamarole, here are some fun examples of identification spaces:\\
+
+Let $X = [0, 1] \times [0, 1]$. Say $P$ consists of:
+\begin{enumerate}
+    \item all of the 4 corner points of the square.
+    \item the top and bottom edges of the square.
+    \item the left and right edges of the square.
+    \item all the interior points.
+\end{enumerate}
+This is what this looks like:
+\fig{0.75}{Lecture12Fig4}{}
+
+We call this surface $T^2$, or the two-torus.
+
+\begin{lemma}[\textbf{Lemma 12.7}]
+    The 2-torus, $T^2$ is homeomorphic to $S^1 \times S^1$.
+\end{lemma}
+\begin{proof}{Proof:}
+    Consider the map $f : [0, 1] \times [0, 1] \to S^1 \times S^1$ by $f(r, s) = (e^{2\pi i r}, e^{2\pi i s})$. We see that $f$ is surjective, $[0, 1] \times [0, 1]$ is compact, and $S^1 \times S^1$ is Hausdorff. \\
+
+    The preimages of $f$ will consist of either all the corners of the square, the top and bottom edges of the square, the left and right edges of the square, or some interior open set. Thus, by above, there exists a homeomorphism $h$ so that this diagram commutes.
+
+    \begin{center}
+        \begin{tikzcd}
+            {[0, 1] \times [0, 1]} \arrow[d, "\pi"] \arrow[dr, "f"] & \\
+            T^2 \arrow[r, "h"'] & S^1 \times S^1
+        \end{tikzcd}
+    \end{center}
+
+    $\qed$
+\end{proof}
+
+\begin{definition}[\textbf{Definition 12.8:} Cone over a Topological Space]
+    Suppose that $X$ is a topological space. Start with $X \times [0, 1]$, and let $P = \{X \times \{1\}\} \cup \{(x, t)\}_{x \in X, t \in [0, 1)}$. Then, the ID space is $CX$ called the \emph{cone} over $X$. 
+\end{definition}
+
+Here's an example to show why it is called a cone: Suppose $X = S^1$. Then, the cone over $X$ is
+\fig{0.9}{Lecture12Fig5}{}

@@ -1,0 +1,108 @@
+\tocsection{\textbf{11/3/26 Lecture 18:} Weak Convergence, Tightness, and Uniform Integrability}
+
+\begin{definition}[\textbf{Definition 18.1:} Cauchy in Probability]
+    Random elements $\xi_1, \xi_2, \ldots$ in a metric space $(S, \rho)$ are \emph{Cauchy in probability} if $\rho(\xi_m, \xi_n) \xrightarrow{P} 0$ as $m, n \to \infty$, in the sense that $\mathbb{E}[\rho(\xi_m, \xi_n) \wedge 1] \to 0$.
+\end{definition}
+
+\begin{lemma}[\textbf{Lemma 18.2:} Completeness]
+    Let $\xi_1, \xi_2, \ldots$ be random elements in a complete metric space $(S, \rho)$. Then $(\xi_n)$ is Cauchy in probability or a.s.\ iff $\xi_n \xrightarrow{P} \xi$ or $\xi_n \to \xi$ a.s., respectively, for some random element $\xi$ in $S$.
+\end{lemma}
+\begin{proof}{Proof:}
+    The a.s.\ case we already proved.\\
+
+    Now, if $\xi_n \xrightarrow{P} \xi$, then as
+    \[ \mathbb{E}[\rho(\xi_m, \xi_n) \wedge 1] \leq \mathbb{E}[\rho(\xi_m, \xi) \wedge 1] + \mathbb{E}[\rho(\xi_n, \xi) \wedge 1] \to 0 \]
+    we see $(\xi_n)$ is Cauchy in $P$.\\
+
+    Assume the latter. Let
+    \[ n_k = \inf\left\{n \geq k \col \sup_{m \geq n} \mathbb{E}[\rho(\xi_m, \xi_n) \wedge 1] \leq 2^{-k}\right\}, \quad k \in \N \]
+    % NOTE (check): the n_k are increasing (the sup over m >= n decreases in n, so the condition for 2^{-(k+1)} implies the one for 2^{-k}). That's what gives E[rho(xi_{n_k}, xi_{n_{k+1}}) ^ 1] <= 2^{-k}.
+    Then, the $n_k$ are finite and
+    \[ \mathbb{E}\sum_{k}\{\rho(\xi_{n_k}, \xi_{n_{k + 1}}) \wedge 1\} \leq \sum_{k} 2^{-k} < \infty \]
+    % NOTE (check): this gives sum_k (rho ^ 1) < infinity a.s.; the terms then go to 0, so eventually rho ^ 1 = rho, which gives the sum of rho.
+    so $\sum_{k} \rho(\xi_{n_k}, \xi_{n_{k + 1}}) < \infty$ a.s.\\
+
+    Thus, we see that $(\xi_{n_k})$ is a.s.\ Cauchy, and as $(S, \rho)$ is complete, it converges a.s.\ to some limit $\xi$. Thus, as
+    \[ \mathbb{E}[\rho(\xi_m, \xi) \wedge 1] \leq \mathbb{E}[\rho(\xi_m, \xi_{n_k}) \wedge 1] + \mathbb{E}[\rho(\xi_{n_k}, \xi) \wedge 1] \]
+    % NOTE (check): the first term -> 0 because (xi_n) is Cauchy in probability, and the second by dominated convergence, since xi_{n_k} -> xi a.s.
+    letting $m, k \to \infty$, we see that $\mathbb{E}[\rho(\xi_m, \xi) \wedge 1] \to 0$.
+
+    $\qed$
+\end{proof}
+
+\begin{definition}[\textbf{Definition 18.3:} Weak Convergence]
+    Consider probability measures $\mu$ and $\mu_1, \mu_2, \ldots$ on a metric space $(S, \rho)$ with Borel $\sigma$-field $\cal{S}$. Say that $\mu_n$ \emph{converges weakly} to $\mu$ (written $\mu_n \xrightarrow{w} \mu$) if
+    \[ \mu_n f \to \mu f \quad \tt{for any } f \in C_b(S) \]
+    where $C_b(S)$ is the set of bounded, continuous functions $f : S \to \R$.
+\end{definition}
+
+We call this ``weak'' convergence since it is weaker than convergence in total variation, which is good because convergence in TV is overly strong ($\delta_{x_n} \to \delta_x$ iff $x_n = x$ for all large $n$). The reason we choose $C_b(S)$ is that
+\[ x_n \to x \iff f(x_n) \to f(x) \quad \forall f \in C_b(S) \]
+so $\delta_{x_n} \xrightarrow{w} \delta_x \iff x_n \to x$.
+
+\begin{definition}[\textbf{Definition 18.4:} Convergence in Distribution]
+    If $\xi$ and $\xi_1, \xi_2, \ldots$ are random elements in $S$, say $\xi_n$ \emph{converges in distribution} to $\xi$ (written $\xi_n \xrightarrow{d} \xi$) if $\cal{L}(\xi_n) \xrightarrow{w} \cal{L}(\xi)$; that is,
+    \[ \mathbb{E}[f(\xi_n)] \to \mathbb{E}[f(\xi)] \quad \forall f \in C_b(S) \]
+\end{definition}
+
+\begin{lemma}[\textbf{Lemma 18.5}]
+    Let $\xi, \xi_1, \xi_2, \ldots$ be random elements in $(S, \rho)$. If $\xi_n \xrightarrow{P} \xi$, then $\xi_n \xrightarrow{d} \xi$, and the converse is true when $\xi$ is a.s.\ constant.
+\end{lemma}
+\begin{proof}{Proof:}
+    Assume $\xi_n \xrightarrow{P} \xi$. Suppose for some $f \in C_b(S)$, $\mathbb{E}[f(\xi_n)] \not\to \mathbb{E}[f(\xi)]$. Choose a subsequence $N' \subseteq \N$ such that
+    \[ \inf_{n \in N'} \abs{\mathbb{E}[f(\xi_n)] - \mathbb{E}[f(\xi)]} > 0 \]
+    Now, as $\xi_n \xrightarrow{P} \xi$, there exists a subsequence $N'' \subseteq N'$ such that $\xi_n \to \xi$ a.s.\ along $N''$. By continuity and DCT, we see $\mathbb{E}[f(\xi_n)] \to \mathbb{E}[f(\xi)]$ along $N''$, a contradiction.\\
+
+    Now, assume $\xi_n \xrightarrow{d} s \in S$. Since $\rho(x, s) \wedge 1$ is bounded and continuous in $x$,
+    \[ \mathbb{E}[\rho(\xi_n, s) \wedge 1] \to \mathbb{E}[\rho(s, s) \wedge 1] = 0 \]
+    so $\xi_n \xrightarrow{P} s$.
+
+    $\qed$
+\end{proof}
+
+\begin{definition}[\textbf{Definition 18.6:} Tightness]
+    A family of random vectors $\xi_t$, $t \in T$ in $\R^d$ is said to be \emph{tight} if
+    \[ \lim_{r \to \infty} \sup_{t \in T} P\{\abs{\xi_t} > r\} = 0 \]
+\end{definition}
+
+For sequences $(\xi_n)$, this is equivalent to
+\[ \lim_{r \to \infty} \limsup_{n \to \infty} P\{\abs{\xi_n} > r\} = 0 \]
+because if $\xi$ is a finite random variable,
+\[ \lim_{r \to \infty} P\{\abs{\xi} > r\} = 0 \]
+and this also holds for sups over finite collections.
+
+\begin{lemma}[\textbf{Lemma 18.7:} Weak Convergence and Tightness]
+    Let $\xi, \xi_1, \xi_2, \ldots$ be random vectors in $\R^d$ such that $\xi_n \xrightarrow{d} \xi$. Then $(\xi_n)$ is tight.
+\end{lemma}
+\begin{proof}{Proof:}
+    For any $r > 0$, define $f(x) = (1 - (r - \abs{x})_{+})_{+}$. Then, this looks like
+    \fig{0.4}{Lecture18Fig1}{}
+    so
+    \[ (1 - (r - \abs{x})_{+})_{+} = \left\{\begin{matrix} 0 & 0 \leq \abs{x} \leq r - 1 \\ \tt{LERP} & r - 1 \leq \abs{x} \leq r \\ 1 & r \leq \abs{x} \end{matrix}\right. \]
+    % FIXED: page has limsup_{r -> infinity} on the left; changed to n -> infinity (r is fixed here and sent to infinity afterwards).
+    % NOTE (check): both inequalities come from 1{|x| > r} <= f(x) <= 1{|x| > r - 1}, and the middle equality is f in C_b(R^d) with xi_n -> xi in distribution.
+    Thus,
+    \[ \limsup_{n \to \infty} P\{\abs{\xi_n} > r\} \leq \lim_{n \to \infty} \mathbb{E}f(\xi_n) = \mathbb{E}f(\xi) \leq P\{\abs{\xi} > r - 1\} \]
+    so as the RHS tends to $0$, we see that $(\xi_n)$ is tight.
+
+    $\qed$
+\end{proof}
+
+\begin{lemma}[\textbf{Lemma 18.8:} Tightness and Convergence in Probability]
+    % NOTE (check): no proof on the page.
+    Let $\xi_1, \xi_2, \ldots$ be random vectors in $\R^d$. Then $(\xi_n)$ is tight iff $c_n\xi_n \xrightarrow{P} 0$ for any $c_1, c_2, \ldots \geq 0$ with $c_n \to 0$.
+\end{lemma}
+
+\begin{definition}[\textbf{Definition 18.9:} Uniform Integrability]
+    A family of random variables $\xi_t$, $t \in T$ is said to be \emph{uniformly integrable} if
+    \[ \lim_{r \to \infty} \sup_{t \in T} \mathbb{E}[\abs{\xi_t} ; \abs{\xi_t} > r] = 0 \]
+\end{definition}
+
+For $(\xi_n)$ in $L^1$, this is equivalent to
+\[ \lim_{r \to \infty} \limsup_{n \to \infty} \mathbb{E}[\abs{\xi_n} ; \abs{\xi_n} > r] = 0 \]
+as for $\xi \in L^1$, $\lim_{r \to \infty} \mathbb{E}[\abs{\xi} ; \abs{\xi} > r] = 0$.\\
+
+% FIXED: page has "r, p > 0"; changed to p >= 1. The bound uses |xi| = |xi|^p |xi|^{1 - p} <= r^{1 - p} |xi|^p on {|xi| > r}, which needs 1 - p <= 0 (for p < 1 it goes the other way).
+Note that the condition holds if the $\xi_t$ are $L^p$-bounded for some $p > 1$ ($\sup_t \mathbb{E}\abs{\xi_t}^p < \infty$) because
+\[ \mathbb{E}[\abs{\xi_t} ; \abs{\xi_t} > r] \leq r^{-p + 1}\,\mathbb{E}\abs{\xi_t}^p, \quad r > 0,\ p \geq 1 \]
+and $r^{-p + 1} \to 0$ as $r \to \infty$ when $p > 1$.

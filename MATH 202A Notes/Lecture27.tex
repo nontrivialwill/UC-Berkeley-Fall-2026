@@ -1,0 +1,130 @@
+\tocsection{\textbf{10/30/26 Lecture 27:} Absolute Continuity and the Lebesgue FTC}
+
+\textbf{Recall:} A function $F : \R \to \R$ is BV iff it can be written as a difference of bounded increasing functions (Theorem 26.3), and
+\[ \tt{NBV} = \{F \in \tt{BV} \col F \tt{ is right continuous and } F(-\infty) = 0\} \]
+Finite signed Borel measures on $\R$ correspond to NBV functions (Theorem 26.6).
+
+\begin{lemma}[\textbf{Proposition 27.1}]
+    If $F \in \tt{NBV}$, then $F' \in L^1$. Moreover, the LS measure $m_F$ satisfies
+    \[ m_F \perp \lambda \iff F' = 0 \tt{ a.e.} \]
+    and
+    \[ m_F \ll \lambda \iff F(x) = \int_{-\infty}^{x} F'(y)\, dy \]
+\end{lemma}
+
+\begin{definition}[\textbf{Definition 27.2:} Absolute Continuity]
+    A function $F : [a, b] \to \R$ is \emph{absolutely continuous} if for every $\epsilon > 0$ there is $\delta > 0$ such that, given finitely many disjoint intervals $(a_1, b_1), \ldots, (a_N, b_N)$ in $[a, b]$ with
+    \[ \sum_{j = 1}^{N} (b_j - a_j) < \delta \]
+    then
+    \[ \sum_{j = 1}^{N} \abs{F(b_j) - F(a_j)} < \epsilon \]
+\end{definition}
+
+\begin{example}{\textbf{Example:} Bounded Derivative}
+    If $F$ is differentiable and $\abs{F'} \leq M$, then by the mean value theorem,
+    \[ \abs{F(b_j) - F(a_j)} \leq \abs{F'(c_j)}(b_j - a_j) \leq M(b_j - a_j) \]
+    for some $c_j \in (a_j, b_j)$. Given $\epsilon$, make $\delta = \frac{\epsilon}{M}$.
+\end{example}
+
+\begin{example}{\textbf{Example:} The Cantor Function}
+    An NBV function that is not AC is the Cantor function $F_c$, since $F_c' = 0$ a.e.
+\end{example}
+
+\begin{lemma}[\textbf{Proposition 27.3}]
+    If $F \in \tt{NBV}$, then $F$ is absolutely continuous on $\R$ iff $m_F \ll \lambda$.
+\end{lemma}
+\begin{proof}{Proof:}
+    If $m_F \ll \lambda$, for every $\epsilon$ we can find $\delta$ so that if $\lambda(A) < \delta$, then $\abs{m_F}(A) < \epsilon$. So if $\lambda\left(\bigcup_j (a_j, b_j)\right) < \delta$,
+    \[ \sum_j \abs{F(b_j) - F(a_j)} = \sum_j \abs{m_F((a_j, b_j])} \leq \abs{m_F}\left(\bigcup_j (a_j, b_j]\right) < \epsilon \]
+
+    Conversely, let $A$ such that $\lambda(A) = 0$. Let $\epsilon > 0$, and pick the $\delta > 0$ that comes from absolute continuity of $F$. By outer regularity, we can find open sets $U_1 \supseteq U_2 \supseteq \cdots \supseteq A$ so that $\abs{m_F}(U_k) \to \abs{m_F}(A)$.
+    Also, we can find $V$ open so that $\lambda(V) < \delta$ and $A \subseteq V$, so $\lambda(U_n \cap V) < \delta$.\\
+
+    Write $U_n \cap V = \bigcup_{j = 1}^{\infty} (a_{nj}, b_{nj})$ as a disjoint union of open intervals. By absolute continuity, for every finite $N$,
+    \[ \sum_{j = 1}^{N} \abs{m_F((a_{nj}, b_{nj}))} = \sum_{j = 1}^{N} \abs{F(b_{nj}) - F(a_{nj})} < \epsilon \]
+    Taking $N \to \infty$, $\abs{m_F(U_n \cap V)} \leq \epsilon$, so letting $n \to \infty$, $\abs{m_F(A)} \leq \epsilon$. Taking $\epsilon \to 0$, we get $m_F(A) = 0$.
+
+    $\qed$
+\end{proof}
+
+\begin{lemma}[\textbf{Corollary 27.4}]
+    If $f \in L^1$, then $F(x) = \int_{-\infty}^{x} f(y)\, dy$ is NBV and absolutely continuous, with $F' = f$ a.e.\\
+
+    Conversely, if $F \in \tt{NBV}$ and is AC, then $F' \in L^1$ and $F(x) = \int_{-\infty}^{x} f(y)\, dy$ where $f = F'$ a.e.
+    % NOTE (check): no proof on the page. First part: F(x) = mu((-infinity, x]) for d mu = f d lambda, a finite signed measure << lambda, so F is NBV (Theorem 26.6), AC (Prop 27.3), and F' = f a.e. by the Lebesgue differentiation theorem. Converse: Prop 27.3 gives m_F << lambda, then Prop 27.1.
+\end{lemma}
+
+\begin{lemma}[\textbf{Proposition 27.5}]
+    If $F$ is AC on $[a, b]$, then it is BV on $[a, b]$.
+\end{lemma}
+\begin{proof}{Proof:}
+    Choose $\delta$ so that if $\sum_j (b_j - a_j) < \delta$, then
+    \[ \sum_j \abs{F(b_j) - F(a_j)} < 1 \quad (\epsilon = 1) \]
+    Divide $[a, b]$ into $N$ pieces $I_1, \ldots, I_N$ with width less than $\delta$.\\
+
+    We want to show that, given $a = x_0 < \cdots < x_n = b$,
+    \[ \sum_{j = 1}^{n} \abs{F(x_j) - F(x_{j - 1})} < L \]
+    for any partition.
+    % NOTE (check): adding points only increases the sum (triangle inequality), so it's enough to bound partitions that contain the endpoints of the I_k.
+    We can always add the endpoints of the $\delta$-intervals to the partition.\\
+
+    % FIXED: page calls the pieces I_n, which clashes with the n in x_n; renamed them I_k.
+    Group the set of points into intervals: since $\abs{I_k} < \delta$, set $N$ groups, and for every group $G$,
+    % FIXED: page has |F(x_j) - F(x_j)|; changed to F(x_j) - F(x_{j-1}).
+    \[ \sum_{j \in G} \abs{F(x_j) - F(x_{j - 1})} < 1 \]
+    so in total,
+    % NOTE (check): so L = N works. The point is that N depends only on delta and b - a, not on the partition, so the sup over partitions is at most N.
+    \[ \sum_{j = 1}^{n} \abs{F(x_j) - F(x_{j - 1})} < N \]
+
+    $\qed$
+\end{proof}
+
+\begin{theorem}[\textbf{Theorem 27.6:} Fundamental Theorem of Calculus for Lebesgue Integrals]
+    For $F : [a, b] \to \R$ (on a finite interval), the following are equivalent:
+    \begin{enumerate}
+        \item $F$ is AC.
+        \item $F(x) - F(a) = \int_{a}^{x} f(y)\, dy$ for some $f \in L^1([a, b])$.
+        \item $F$ is differentiable a.e.\ with $F' \in L^1([a, b])$ and $F(x) - F(a) = \int_{a}^{x} F'(y)\, dy$.
+    \end{enumerate}
+\end{theorem}
+\begin{proof}{Proof:}
+    $(1 \Rightarrow 3)$ Let $G : \R \to \R$,
+    \[ G(x) = \left\{\begin{matrix} F(b) - F(a) & x \geq b \\ F(x) - F(a) & x \in [a, b) \\ 0 & x < a \end{matrix}\right. \]
+    % NOTE (check): G is NBV because F is BV on [a, b] (Prop 27.5) and continuous (AC implies continuous), so G is right continuous with G(-infinity) = 0.
+    % NOTE (check): the first equality below is the converse in Corollary 27.4, which needs G to be AC on R, not just NBV (the Cantor function is NBV). G is AC on R: it's constant off [a, b] and AC on [a, b] (split any interval that straddles a or b). For the second equality, G' = F' a.e. on (a, b) and G' = 0 off [a, b]; this also gives F' in L^1.
+    $G$ is NBV. This implies it is differentiable a.e., and
+    % FIXED: page has G'(x) dy; changed to G'(y) dy.
+    \[ F(x) - F(a) = \int_{-\infty}^{x} G'(y)\, dy = \int_{a}^{x} F'(y)\, dy \]
+    which gives 3.\\
+
+    $(3 \Rightarrow 2)$ Immediate.\\
+
+    % NOTE (check): with f extended by 0, Corollary 27.4 says H(x) = int_{-infinity}^x f is AC on R, and F(x) = F(a) + H(x) on [a, b], so F is AC on [a, b].
+    $(2 \Rightarrow 1)$ Extend $f$ by $0$ outside $[a, b]$ and apply Corollary 27.4.
+
+    $\qed$
+\end{proof}
+
+\begin{definition}[\textbf{Definition 27.7:} Discrete and Continuous Measures]
+    % NOTE (check): for the sum to define a finite signed measure you need sum |a_j| < infinity (for a positive measure, a_j >= 0).
+    A Borel measure is \emph{discrete} if it can be written as
+    \[ \sum_{j = 1}^{\infty} a_j \delta_{x_j}, \quad x_j \in \R^d,\ a_j \in \R \]
+    A measure $\mu$ is \emph{continuous} if $\mu(\{x\}) = 0$ for all $x$.
+\end{definition}
+
+\begin{lemma}[\textbf{Proposition 27.8}]
+    % NOTE (check): "AC" means mu_ac << lambda, and "singular continuous" means mu_sc is continuous and mu_sc is singular to lambda.
+    Let $\mu$ be a finite positive Borel measure. Then
+    \[ \mu = \underbrace{\mu_d}_{\tt{discrete}} + \underbrace{\mu_{ac}}_{\tt{AC}} + \underbrace{\mu_{sc}}_{\tt{singular continuous}} \]
+\end{lemma}
+\begin{proof}{Proof:}
+    % FIXED: page names the set X on the first line and A afterwards; called it A throughout.
+    Let $A = \{x \col \mu(\{x\}) > 0\}$. Then
+    \[ \{x \col \mu(\{x\}) > 1/k\} \tt{ is finite for every } k \]
+    % FIXED: page says "A is continuous"; changed to countable.
+    % NOTE (check): each of these sets has at most k mu(R^d) points, and A is their union over k.
+    because $\mu$ is finite, so $A$ is countable. Then $\mu|_A$ is discrete and $\mu|_{A^c}$ is continuous.\\
+
+    % NOTE (check): mu|_A = sum_{x in A} mu({x}) delta_x by countable additivity. The Lebesgue decomposition mu|_{A^c} = mu_ac + mu_sc has both parts positive and <= mu|_{A^c}, so both are continuous; that's why mu_sc is singular *continuous*.
+    Now, apply the Lebesgue decomposition to $\mu|_{A^c}$.
+
+    $\qed$
+\end{proof}

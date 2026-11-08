@@ -1,0 +1,115 @@
+\tocsection{\textbf{10/12/26 Lecture 20:} Brouwer Fixed Point Theorem and Simply Connected Spaces}
+
+Last time, we showed $\pi_1(S^1, 1) \simeq \Z$ by $\alpha \mapsto$ ``winding number of $\alpha$'', by lifting $\alpha$ to $\tilde{\alpha}$ on $\R$ and defining its winding number to be $\tilde{\alpha}(1)$.
+
+\begin{definition}[\textbf{Definition 20.1:} Fixed Points]
+    If $X$ is a set and $f : X \to X$ is a function, we say $f$ has a \emph{fixed point} if there exists $x \in X$ such that $f(x) = x$.
+\end{definition}
+
+\begin{lemma}[\textbf{Lemma 20.2}]
+    If $f : [0, 1] \to [0, 1]$, then $f$ has a fixed point.
+\end{lemma}
+\begin{proof}{Proof:}
+    Let $g(x) = f(x) - x$. Now, $g(0) \geq 0$ and $g(1) \leq 0$, so there exists $c \in [0, 1]$ such that $g(c) = 0$, so $f(c) = c$.
+\end{proof}
+
+\begin{theorem}[\textbf{Theorem 20.3:} 2D Brouwer Fixed Point Theorem]
+    Let $D$ be the closed unit disk in $\R^2$, and $f : D \to D$ is a map. Then, $f$ has a fixed point.
+\end{theorem}
+\begin{proof}{Proof:}
+    Suppose $f$ has no fixed point. Then, $f(x) \neq x$ for all $x \in D$. Thus, consider the map $g$ as follows:
+    \fig{0.6}{Lecture20Fig1}{}
+
+    Now, $g : D \to S^1$ is continuous and surjective, as $g\res{S^1} = \id_{S^1}$. Now, if $i : S^1 \hookrightarrow D$ is the inclusion, then $g \circ i = \id_{S^1}$. Now, $g \circ i$ is one-to-one and onto as it maps points on the boundary to themselves, so
+    \begin{center}
+        \begin{tikzcd}
+            \pi_1(S^1, 1) \arrow[r, "i_{*}"] \arrow[rr, out = -15, in = 195, "\id_{S^1}"'] & \pi_1(D, 1) \arrow[r, "g_{*}"] & \pi_1(S^1, 1)
+        \end{tikzcd}
+    \end{center}
+    so $g_{*} \circ i_{*} = \id_{\pi_1(S^1, 1)}$. However, $\pi_1(S^1, 1) = \Z$ and $\pi_1(D, 1) = \{e\}$, so no such $i_{*}$ and $g_{*}$ can exist!
+
+    $\qed$
+\end{proof}
+
+\begin{lemma}[\textbf{Corollary 20.4}]
+    If $X$ is homeomorphic to $D$, then a map $\alpha : X \to X$ has a fixed point.
+\end{lemma}
+\begin{proof}{Proof:}
+    Let $h : D \to X$ be a homeomorphism. Then, $f = h^{-1} \circ \alpha \circ h : D \to D$, so there exists $x \in D$ such that $f(x) = x$. Then,
+    \[ h^{-1} \circ \alpha \circ h(x) = x \implies \alpha(h(x)) = h(x) \]
+    so $\alpha$ has a fixed point.
+
+    $\qed$
+\end{proof}
+
+\begin{definition}[\textbf{Definition 20.5:} Simply Connected Spaces]
+    We say $X$ is \emph{simply connected} if it is path connected and $\pi_1(X, p) = \{e\}$.
+\end{definition}
+
+\begin{lemma}[\textbf{Proposition 20.6}]
+    Suppose $X = U \cup V$ with $U$ and $V$ open and simply connected, and $U \cap V$ is path connected. Then, $X$ is simply connected.
+\end{lemma}
+\begin{proof}{Proof:}
+    It is clear that $X$ is path connected. Choose $p \in U \cap V$ and let $\alpha$ be a loop based at $p$. We want to show $\alpha$ is homotopic to a product of loops based at $p$, each in $U$ or $V$.\\
+
+    Now, $\{\alpha^{-1}(U), \alpha^{-1}(V)\}$ is an open cover of $[0, 1]$, so by the Lebesgue lemma, there exists a partition $0 = T_0 < T_1 < \cdots < T_n = 1$ so that $\alpha_k := \alpha\res{[T_{k - 1}, T_{k}]}$ is contained in $U$ or $V$.\\
+
+    Choose a path $\gamma_k$ from $p$ to $\alpha(T_k)$ that lies entirely in $U$ if $\alpha(T_k) \in U$ and lies in $V$ if $\alpha(T_k) \in V$. If $\alpha(T_k) \in U \cap V$, just pick $\gamma_k$ lying in $U \cap V$ (we can always do this as $U$, $V$, and $U \cap V$ are path connected). Then,
+    \fig{0.7}{Lecture20Fig2}{}
+
+    So
+    \begin{align*}
+        \alpha = \alpha_1 \cdot \alpha_2 \cdots \alpha_{n} &\simeq \alpha_1 \cdot \gamma_1^{-1} \cdot \gamma_1 \cdot \alpha_2 \cdot \gamma_2^{-1} \cdot \gamma_2 \cdots \gamma_{n} \cdot \alpha_{n}\\
+        &= (\alpha_1 \cdot \gamma_1^{-1})(\gamma_1 \cdot \alpha_2 \cdot \gamma_2^{-1}) \cdots (\gamma_{n} \cdot \alpha_{n})\\
+        &= \brac{\alpha_1 \cdot \gamma_1^{-1}} \cdot \brac{\gamma_1 \cdot \alpha_2 \cdot \gamma_2^{-1}} \cdots \brac{\gamma_{n} \cdot \alpha_{n}}\\
+        &\simeq \brac{\id} \cdot \brac{\id} \cdots \brac{\id}\\
+        &= \brac{\id}
+    \end{align*}
+    where the last homotopy comes from the fact that each term is a loop contained in $U$ or $V$, so it follows from the simple connectedness of $U$ and $V$.\\
+
+    Thus, $\pi_1(X, p)$ is trivial, which was to be shown.
+
+    $\qed$
+\end{proof}
+
+\begin{lemma}[\textbf{Corollary 20.7}]
+    $\pi_1(S^n) = \{e\}$ if $n > 1$.
+\end{lemma}
+\begin{proof}{Proof:}
+    Let $U = S^n - \{\tt{north pole}\}$ and $V = S^n - \{\tt{south pole}\}$. $U$ and $V$ are homeomorphic to $\R^n$, so they are simply connected. Then, as $U \cap V = S^n - \{\tt{north pole}, \tt{south pole}\}$ is path connected, we see that $S^n$ is simply connected.
+
+    $\qed$
+\end{proof}
+
+We showed that $X = U \cup V$ with $U$ and $V$ open and simply connected, and $U \cap V$ path connected, implies $X$ is simply connected. These hypotheses turn out to all be necessary. Here are example examples.
+
+\begin{example}{\textbf{Example}}
+    If we forget that $U \cap V$ needs to be path connected, we have
+    \fig{0.5}{Lecture20Fig3}{}
+\end{example}
+\clearpage
+
+\begin{example}{\textbf{Example}}
+    If we forget that $U$ and $V$ need to be open, we get
+    \fig{0.5}{Lecture20Fig4}{}
+\end{example}
+
+\begin{definition}[\textbf{Definition 20.8:} Free Actions]
+    A group $G$ \emph{acts freely} on $X$ if for all $g \neq e$ and $x \in X$, $gx \neq x$. That is, $\{gx\} \cap \{x\} = \emptyset$.
+\end{definition}
+
+\begin{example}{\textbf{Example}}
+    $\Z$ acts freely on $\R$ by $(n, x) \mapsto x + n$.
+\end{example}
+
+\begin{lemma}[\textbf{Proposition 20.9}]
+    Suppose $G$ is a discrete group that acts freely on a simply connected space $X$ so that for all $x \in X$, there exists a neighborhood $U$ of $x$ so that $U \cap gU = \emptyset$ for all $g \neq e$. Then, $\pi_1(X / G) \simeq G$.
+\end{lemma}
+\begin{proof}{Proof:}
+    We will prove this next time.
+\end{proof}
+
+\begin{example}{\textbf{Example}}
+    Let $G = \Z$ and $X = \R$. Then, for $x \in \R$, $U = (x - \frac{1}{6}, x + \frac{1}{6})$ satisfies the above property. Thus,
+    \[ \pi_1(\R / \Z) \cong \Z \]
+\end{example}

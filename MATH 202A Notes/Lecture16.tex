@@ -1,0 +1,126 @@
+\tocsection{\textbf{10/5/26 Lecture 16:} $L^p$ Convergence and Product Measures}
+\vspace{0.2cm}
+
+\begin{proof}{Proof of (2):}
+    Let $n_1 = 1$. Now, pick $n_{j} > n_{j - 1}$ so that
+    \[ \mu(A_{j}) < 2^{-j} \]
+    where $A_{j} = \{x \col \abs{f_{n_{j}}(x) - f(x)} > 1/j\}$. Let
+    \[ A = \bigcap_{k = 1}^{\infty} \bigcup_{j \geq k} A_{j} \]
+    so we see 
+    \begin{align*}
+        \mu(A) &= \lim_{k \to \infty} \mu\left(\bigcup_{j \geq k} A_{j}\right)\\
+        &= \lim_{k \to \infty} \sum_{j = k}^{\infty} 2^{-j} = 0
+    \end{align*}
+    We claim that if $x \notin A$, then $f_{n_{j}}(x) \to f(x)$. Note that points in $A$ are points that are in infinitely many $A_{j}$. Thus, for sufficiently large $j$, we see that $\abs{f_{n_{j}}(x) - f(x)} < \frac{1}{j}$, so $f_{n_{j}}(x) \to f(x)$. Thus, $f_{n_{j}}$ converges almost everywhere to $f$. 
+
+    $\qed$
+\end{proof}
+
+Now, we give one more definition of convergence. 
+
+\begin{definition}[\textbf{Definition 16.1:} Convergesnce in $L^{p}$]
+    Let $1 \leq p < \infty$. A sequence of measurable functions $f_n$ \emph{converges to $f$ in $L^{p}$} if
+    \[ \int \abs{f_n - f}^{p}d\mu \to 0 \]
+    as $n \to \infty$. 
+\end{definition}
+
+Why didn't we just choose $p = 0$? Here is why:
+
+\begin{example}{Example}
+    Let $f_n = n^{1/2}\chi_{[0, 1/n]}$. We see that
+    \[ \int \abs{f_n - 0}dx = \frac{1}{n^{1/2}} \to 0 \]
+    so $f_n \to 0$ in $L^{1}$. However, notice that
+    \[ \int \abs{f_n - 0}^2 dx = \int n\chi_{[0, 1/n]}^2 dx = \int 1 dx = 1 \]
+    Heuristically, in $L^1$ area under the curve is width times height, but in $L^2$ area is width times height squared. 
+\end{example}
+
+\begin{theorem}[\textbf{Lemma 16.2:} Chebyshev's Inequality]
+    For any integrable $f$ and some $1 \leq p < \infty$, then for any $\epsilon > 0$, 
+    \[ \mu(\{x \col \abs{f(x)} \geq a\}) \leq \frac{\int \abs{f}^{p} d\mu}{a^{p}} \]
+\end{theorem}
+\begin{proof}{Proof:}
+    Notice that
+    \[ a^{p}\chi_{\{x \col \abs{f(x)} \geq a\}} \leq \abs{f(x)}^{p} \]
+    on $A$. Integrating, we see that
+    \[ a^{p}\mu(\{x \col \abs{f(x)} \geq a\}) \leq \int_{A} \abs{f}^{p} \leq \int \abs{f}^{p} \]
+    which gives us our desired inequality.
+
+    $\qed$
+\end{proof}
+
+\begin{lemma}[\textbf{Proposition 16.3}]
+    Convergence in $L^{p}$ implies convergence in measure, which implies a subsequence converges almost everywhere. 
+\end{lemma}
+\begin{proof}{Proof:}
+    Fix $\epsilon > 0$. By Chebyshev's inequality, we have that
+    \[ \mu(\{x \col \abs{f_{n}(x) - f(x)} \geq \epsilon\}) \leq \epsilon^{p} \int \abs{f_n(x) - f(x)}^{p} d\mu \]
+    which goes to zero as $n \to \infty$. 
+
+    $\qed$
+\end{proof}
+
+Now, recall that $f_{n}(x) \to f$ uniformly on $A$ if
+\[ \lim_{n \to \infty} \sup_{x \in A} \abs{f_{n}(x) - f(x)} = 0 \]
+This brings us to a very useful theorem.
+
+\begin{theorem}[\textbf{Theorem 16.4:} Egorov's Theorem]
+    Let $\mu$ be a finite measure. Then, if $f_n \to f$ almost everywhere, for any $\epsilon > 0$, there exists a set $A$ with $\mu(A) < \epsilon$ such that $f_n \to f$ uniformly on $A^{c}$.
+\end{theorem}
+\begin{proof}{Proof:}
+    Define the sets
+    \[ A_{n, k} = \bigcup_{m \geq n} \{x \col \abs{f_m(x) - f(x)} > 1/k\} \]
+    Fixing $k$, we see that $A_{n, k}$ is decreasing in $n$. Now, notice that $\bigcap_{n} A_{n, k} \subseteq \{x \col f_m(x) \not \to f(x)\}$, which was measure zero. We also see that
+    \[ \lim_{n \to \infty} \mu(A_{n, k}) = \mu\left(\bigcap_{n} A_{n, k}\right) \]
+    which goes to zero, so choose $n_{k}$ so that $\mu(A_{n_{k}, k}) < \epsilon 2^{-k}$. Now, let
+    \[ A = \bigcup_{k = 1}^{\infty} A_{n_{k}, k} \]
+    by subadditivity, $\mu(A) < \epsilon$. Now, if $x \notin A$, then for all $k$, 
+    \[ \abs{f_{n}(x) - f(x)} < 1/k \]
+    for $n \geq n_{k}$. As this holds for all $x \in A^{c}$, we see that
+    \[ \sup_{x \in A} \abs{f_{n}(x) - f(x)} \leq 1/k \]
+    for all $n \geq n_{k}$, so uniform convergence follows taking $k \to 0$.
+
+    $\qed$
+\end{proof}
+
+\textbf{Remark:} This can be used to give a pretty quick proof of Lusin's theorem. 
+
+\subsection*{Product Measures}
+\sectionspace
+
+Recall the Lebesgue measure on $\R$. The way we constructed it was starting with a premeasure on algebra of intervals, moving this to the Lebesgue outer measure, and then going to the measure. Now what we want is the Lebesgue measure on $\R^n$.\\
+
+Lets first consider $\R^2$. Define
+\[ \lambda^{2}([a, b] \times [c, d]) = (b - a) \cdot (d - c) = \lambda([a, b]) \cdot \lambda([c, d]) \]
+Thus, we are thinking of $\R^2$ as $\R \times \R$, and saying that the measures of rectangles is length times height!\\
+
+Fix two measure spaces $(X, \cal{A}, \mu)$ and $(Y, \cal{B}, \nu)$.
+\begin{definition}[\textbf{Definition 16.5:} Measurable Rectangles and Product $\sigma$-Algebras]
+    A \emph{measurable rectangle} in $X \times Y$ is a set of the form $A \times B$ where $A \in \cal{A}$ and $B \in \cal{B}$. The \emph{product $\sigma$-algebra} is the $\sigma$-algebra generated by measurable rectangles. 
+\end{definition}
+
+Now, we want to define a premeasure on an algebra that we can then extend. Let $\cal{C}_{0}$ be the collection of finite unions of measurable rectangles. We claim that this is an algebra. It is clear this is closed under finite unions, so we need to check complements. We see that
+\[ (A \times B)^{c} = (X \times B^{c}) \cup (A^{c} \times B) \]
+Now, for $A \times B$, let $\ell(A \times B) = \mu(A) \cdot \nu(B)$. 
+
+\begin{lemma}[\textbf{Proposition 16.6}]
+    Let $A \times B = \bigcup_{n = 1}^{\infty} A_n \times B_n$ where $A_n \in \cal{A}$, $B_n \in \cal{B}$, and they are all disjoint. Then, 
+    \[ \ell(A \times B) = \sum_{n} \ell(A_{n} \times B_{n}) \]
+    which is to show that
+    \[ \mu(A)\nu(B) = \sum_{n} \mu(A_n) \nu(B_n) \]
+\end{lemma}
+\begin{proof}{Proof:}
+    First, write
+    \[ \chi_{A}(x)\chi_{B}(y) = \chi_{A \times B}(x, y) = \sum_{n} \chi_{A_n \times B_{n}}(x, y) = \sum_{n} \chi_{A_n}(x)\chi_{B_n}(y) \]
+    fixing $y$, we get an equality of functions of $x$, so integrating
+    \begin{align*}
+        \mu(A)\chi_{B}(y) &= \sum_{n} \int \chi_{A_n}(x)\chi_{B_n}(y)d\mu(x)\\
+        &= \sum_{n} \mu(A_n)\chi_{B_n}(x)
+    \end{align*}
+    Then, as this gives us a function of $y$, we see that integrating this again, 
+    \[ \mu(A)\mu(B) = \sum_{n} \mu(A_n) \int \chi_{B_n}(y)d\nu = \sum_{n} \mu(A_n)\nu(B_n) \]
+
+    $\qed$
+\end{proof}
+
+By the Caratheodory extension theorem, we get a measure on $(X \times Y, \cal{A} \times \cal{B})$ with the property that
+\[ (\mu \times \nu)(A \times B) = \mu(A) \nu(B),\quad A \in \cal{A}, B \in \cal{B} \]

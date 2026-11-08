@@ -1,0 +1,129 @@
+\tocsection{\textbf{10/29/26 Lecture 19:} Least Favorable Sequences and Hypothesis Testing}
+
+\textbf{Recall:}
+\[ r^{*} = \inf_{\delta}\sup_{\theta} R(\theta; \delta) \]
+may not be attained, but if $\sup_{\theta} R(\theta; \delta^{*}) = r^{*}$, then $\delta^{*}$ is minimax.\\
+
+Now, recall
+\[ r_{\Lambda} = \inf_{\delta}\int_{\Theta} R(\theta, \delta) d\Lambda(\theta) \]
+and if $\Lambda^{*}$ maximizes $r_{\Lambda}$, then $\Lambda^{*}$ is least-favorable. Recall that, for all $\delta, \Lambda$,
+\[ r_{\Lambda} \leq r_{\Lambda^{*}} \leq r^{*} \leq \sup_{\theta} R(\theta, \delta) \]
+Thus, if we can find a pair $\Lambda, \delta_{\Lambda}$ for which
+\[ r_{\Lambda} = \sup_{\theta} R(\theta, \delta_{\Lambda}) \]
+then $\Lambda$ is least favorable and $\delta_{\Lambda}$ is minimax.\\
+
+Thus, $\delta$ is minimax if $\delta$ is Bayes with constant risk.
+
+\begin{example}{\textbf{Example:} Binomial}
+    $X \sim \Binom(n, \theta)$, $\delta_{\Lambda}$ is minimax for $\Lambda \sim \tt{Beta}\left(\frac{\sqrt{n}}{2}, \frac{\sqrt{n}}{2}\right)$.
+\end{example}
+
+\begin{example}{\textbf{Example:} Gaussian}
+    What about $X \sim N(\theta, 1)$, $\theta \in \R$, and we want to estimate $\theta$ with squared error loss?\\
+
+    \textbf{Idea:} Flat prior is good but not proper.
+\end{example}
+
+This motivates LF prior sequences.
+
+\begin{definition}[\textbf{Definition 19.1:} Least Favorable Sequences]
+    A sequence $\Lambda_1, \Lambda_2, \ldots$ is \emph{least favorable} if $r_{\Lambda_k} \to \sup_{\Lambda} r_{\Lambda}$.
+\end{definition}
+
+\begin{theorem}[\textbf{Theorem 19.2}]
+    Suppose $\Lambda_1, \Lambda_2, \ldots$ is a sequence of priors and $\delta$ is an estimator such that
+    \[ \sup_{\theta} R(\theta, \delta) = \lim_{n \to \infty} r_{\Lambda_n} \]
+    Then, $\{\Lambda_i\}$ is LF, $\delta$ is minimax, and $r^{*} = \lim_{n} r_{\Lambda_n}$.
+\end{theorem}
+\begin{proof}{Proof:}
+    \[ r_{\Lambda_i} \leq \sup_{\Lambda} r_{\Lambda}  \leq r^{*} \leq \sup_{\theta} R(\theta, \delta) \]
+    and $r_{\Lambda_i} \to \sup_{\theta} R(\theta, \delta)$.
+
+    $\qed$
+\end{proof}
+
+\textbf{Example:} $X \sim N_d(\theta, I_d)$, $\delta_0(X) = X$, and $\tt{MSE} \equiv d$. Now, we see that $\Lambda_k = N_d(0, kI_d)$ converges to the flat prior. Recall that the Bayes estimator is
+\[ \delta_{\Lambda_k}(X) = (1 - \zeta_k)X, \quad \zeta_k = \frac{1}{1 + k} \]
+and so
+\[ \tt{MSE}(\theta, \delta_{\Lambda_k}) = \zeta_k^2\norm{\theta}^2 + (1 - \zeta_k)^2 d \]
+
+Taking $k \to \infty$, we see
+\[ r_{\Lambda_k} = \E[\tt{MSE}(\theta, \delta_{\Lambda_k})] = \frac{kd}{(1 + k)^2} + \frac{k^2 d}{(1 + k)^2} \to d \]
+
+so as $\sup_{\theta} R(\theta, \delta_0) = d = \lim_{k \to \infty} r_{\Lambda_k}$, we see $\delta_0$ is minimax and $(N_d(0, kI_d))_k$ is LF.\\
+
+\subsection*{Bounding the Minimax Risk}
+
+Notice that our theorem gives us a way to bound $r^{*}$, as it tells us that for any $\delta$, $\Lambda$, 
+\[ \int R(\theta; \delta_{\Lambda}) d\Lambda(\theta) \leq r^{*} \leq \sup_{\theta} R(\theta; \delta) \]
+thus, although minimax esimators are typically hard to find, minimax bounds are often used to characterize how hard a problem is (especially the lower bound).\\
+
+That is, we will typically propose a practical estimator $\delta$, and find a $\Lambda$ for which $r_{\Lambda}$ is close to $\sup_{\theta} R(\theta; \delta)$. Then, if we can do that, we can say that $\delta$ cannot be improved much in the minimax sense.\\
+
+One caveat with minimax estimators however is that a problem might be typically easy throughout most of the parameter space, but very difficult in a bizarre case that is rarely every encountered.
+
+\subsection*{Hypothesis Testing}
+\sectionspace
+
+\textbf{Setup:} Data $X \sim P_{\theta}$, $P_{\theta}$ in model $\cal{P} = \{P_{\theta} \col \theta \in \Theta\}$. Partition into:
+\begin{align*}
+    \tt{Null Hyp.} &\quad H_0 \col \theta \in \Theta_0\\
+    \tt{Alternative Hyp.} &\quad H_1 \col \theta \in \Theta_1
+\end{align*}
+
+
+\textbf{Usually:} Require hypotheses to be disjoint and exhaustive (so $\Theta_0, \Theta_1$ partition $\Theta$). If $\Theta_1$ is unspecified, we can let $\Theta_1 = \Theta \setminus \Theta_0$.\\
+
+We have two actions:\\
+\indent \underline{Reject $H_0$}: Conclude $\theta \in \Theta_1$\\
+\indent \underline{Fail to reject $H_0$}: No conclusion\\
+
+
+Typically, $P_{\theta}$ has the same support for all $\theta$, so we can never completely rule out $\theta \in \Theta_0$. Thus, we typically never have complete certainty in our actions.
+
+\begin{definition}[\textbf{Definition 19.3:} Simple and Composite Hypotheses]
+    $H_0$ or $H_1$ are called \emph{simple} if $\Theta_0 = \{\theta_0\}$ or $\Theta_1 = \{\theta_1\}$. Otherwise, we call them \emph{composite}.
+\end{definition}
+
+Simple hypotheses are nice since we just need to consider one distribution; namely $P_{\theta_0}$ or $P_{\theta_1}$.
+
+\begin{example}{\textbf{Example:} $z$-test}
+    $X \sim N(\theta, 1)$.
+    \begin{align*}
+        H_0 \col \theta \leq 0 \quad &\tt{vs} \quad H_1 \col \theta > 0 \quad (\tt{comp vs comp})\\
+        H_0 \col \theta = 0 \quad &\tt{vs} \quad H_1 \col \theta \neq 0 \quad (\tt{simple vs comp})
+    \end{align*}
+\end{example}
+
+\begin{example}{\textbf{Example:} Two-Sample}
+    $X_1, \ldots, X_n \iidsim P$ and $Y_1, \ldots, Y_m \iidsim Q$.
+    \[ H_0 \col P = Q \quad \tt{vs} \quad H_1 \col P \neq Q \]
+\end{example}
+
+To make these decisions, we construct the critical function
+\[ \phi(X) = \left\{\begin{matrix} 0 & \tt{accept } H_0 \\ \pi \in (0, 1) & \tt{reject } H_0 \tt{ w.p. } \pi \\ 1 & \tt{reject } H_0 \end{matrix}\right. \]
+If a critical function is not randomized, we partition $\cal{X}$ into
+\[ \tt{rejection region: } R = \{x \col \phi(x) = 1\} \qquad \tt{acceptance region: } A = \{x \col \phi(x) = 0\} \]
+A useful way to construct a test is via a \emph{test statistic} $T(X) \in \R$. We say \emph{$\phi$ rejects for large $T(X)$} if
+\[ \phi(x) = \left\{\begin{matrix} 0 & T(x) < c \\ \gamma \in (0, 1) & T(x) = c \\ 1 & T(x) > c \end{matrix}\right. \quad (\tt{if randomized}) \]
+We say $c$ is the \emph{critical threshold}.\\
+
+Thus, the goal is to choose a good test statistic $T$ to discriminate $H_0$ from $H_1$.
+\fig{0.42}{Lecture19Fig1}{}
+
+\subsection*{Significance Level}
+\sectionspace
+
+\underline{Type I Error}: $H_0$ true, but we reject\\
+\underline{Type II Error}: $H_0$ false, but we don't reject\\
+
+Typically we, as statisticians, are required to control Type I, but subject to a constraint on Type I error, we minimize Type II error.\\
+
+\textbf{Usual goal:} Minimize $\bb{P}_{H_1}(\tt{Type II})$ subject to $\bb{P}_{H_0}(\tt{Type I}) \leq \alpha$.\\
+
+\textbf{Power function:} $\beta_{\phi}(\theta) = \E_{\theta}[\phi(X)] = \bb{P}_{\theta}(\tt{Reject } H_0)$. Then, the goal is
+\[ \underset{\phi}{\tt{maximize}}\ \beta_{\phi}(\theta) \tt{ for } \theta \in \Theta_1 \quad \tt{subject to} \quad \beta_{\phi}(\theta) \leq \alpha \tt{ for } \theta \in \Theta_0 \]
+
+\begin{definition}[\textbf{Definition 19.4:} Level-$\alpha$ Tests]
+    We say $\phi$ is a \emph{level-$\alpha$ test} if $\sup_{\theta \in \Theta_0} \beta_{\phi}(\theta) \leq \alpha$.
+\end{definition}

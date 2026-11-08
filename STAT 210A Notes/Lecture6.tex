@@ -1,0 +1,115 @@
+\tocsection{\textbf{9/15/26 Lecture 6:} Exponential Families}
+
+\subsection*{Exponential Families}
+\sectionspace
+
+\begin{definition}[\textbf{Definition 6.1:} Exponential Families]
+    An \emph{$s$-parameter exponential family} is a family $\cal{P} = \{P_{\eta} \col \eta \in \Xi\}$ with densities of the form
+    \[ p_{\eta}(x) = e^{\eta'T(x) - A(\eta)}h(x) \]
+    with respect to a common dominating measure $\mu$ on $X$. Recall that $\eta' := \eta^{\top}$. 
+\end{definition}
+Each of the components in the density has a name:
+\begin{itemize}
+    \item $\eta \in \Xi \subseteq \R^s$ is called the \emph{natural parameter}
+    \item $T : \chi \to \R^{s}$ is the $s$-dimensional \emph{sufficient statistic}
+    \item $h : \chi \to [0, \infty)$ is called the \emph{base-density} or \emph{carrier-density}
+    \item $A : \Xi \to \R$ is called the \emph{log-partition function} or \emph{normalizing constant}
+\end{itemize}
+Now that, as $p_{\eta}$ must be a probability density, we can solve for $A(\eta)$ to get
+\[ A(\eta) = \log \int_{\chi} e^{\eta'T(x)}h(x)d\mu \leq \infty \]
+Notice that sometimes this can be infinity, which is not good, so we give the following definition.
+
+\begin{definition}[\textbf{Definition 6.2:} Natural Parameter Space]
+    The \emph{natural parameter space} is $\Xi_{1} = \{\eta \col A(\eta) < \infty\}$. That is, the set of $\eta$ for which $A(\eta)$ is finite.
+\end{definition}
+
+It can be shown that (using H\"older's inequality!) as the function $A(\eta)$ is convex, we also know $\Xi_1$ is a convex set, which may come in handy.\\
+
+\textbf{Heuristically}: The reason we care about these families is that they are in some sense the closest we can get to a ``hyperplane'' of densities. The reason is that, absorbing $h(x)$ into $\mu$, we get $p_{\eta}(x) = e^{\eta'T(x) - A(\eta)}$, so
+\[ \log p_{\eta}(x) = \eta'T(x) - A(\eta) \]
+removing the normalizing factor, we get a hyperplane! Now, there is still the log in front, but this turns out to be more of a blessing in the curse, because logs turn multiplication into addition, so we are, in a sense, linearizing multplication which is good since we do a lot more multiplication than addition in statistics. 
+
+\begin{example}{\textbf{Exapmle 1}: Poisson}
+    Let $X \sim \Pois(\lambda)$ which has pmf $\frac{\lambda^{x}e^{-\lambda}}{x!}$. Then, we can write
+    \[ p_{\lambda}(x) = e^{x\log\lambda - \lambda} \cdot \frac{1}{x!} \]
+    Now, to put it in the form of the exponential family above, we must then have that $\eta(\lambda) = \log(\lambda)$, $T(x) = x$, $A(\eta) = \lambda = e^{\eta}$, and $h(x) = \frac{1}{x!}$, so that
+    \[ p_{\eta}(x) = e^{\eta x - e^{\eta}} \frac{1}{x!} \]
+    A question one may have is that: Why didn't we just leave it in terms of $\lambda$? Well, having it explicitly in this form will prove itself useful soon.
+\end{example}
+
+\begin{example}{\textbf{Example 2:} Poisson, n Variables}
+    Let $X_1, \ldots, X_n \iidsim \Pois(\lambda)$. We see that
+    \begin{align*}
+        p_{\lambda}(X) &= \prod_{i = 1}^{n} e^{\log \lambda x_i - \lambda} \frac{1}{x_i!}\\
+        &= e^{\log \lambda \sum_{i = 1}^{n}x_i - n\lambda} \cdot \frac{1}{\prod_{i = 1}^{n} x_i!}
+    \end{align*}
+    Thus, in this case $\eta = \log \lambda$, $T(x) = \sum_{i = 1}^{n} x_i$, $A(\eta) = ne^{\eta}$, and $h(x) = \frac{1}{\prod_{i = 1}^{n} x_i!}$
+\end{example}
+
+\begin{example}{\textbf{Example 3:} Generic, n Variables}
+    Suppose that 
+    \[ X_1, \ldots, X_n \iidsim p_{eta}^{(1)} = e^{\eta'T^{(1)}(x) - A^{(1)}(\eta)} \cdot h^{(1)}(x) \]
+    where the $(1)$ means each density is for a single variable. Then,
+    \begin{align*}
+        p_{\eta}(x) &= \prod_{i = 1}^{n} e^{\eta'T^{(1)}(x_i) - A^{(1)}(\eta)}h^{(1)}(x)\\
+        &= e^{\eta'\sum_{i = 1}^{n} T^{(1)}(x_i) - nA^{(1)}(\eta)}\prod_{i =1}^{n} h^{(1)}(x_i)
+    \end{align*}
+    Thus, we see that $\eta = \eta$, $T(x) = \sum_{i = 1}^{n}T^{(1)}(x_i)$, $A(\eta) = nA^{(1)}(\eta)$, and $h(x) = \prod_{i = 1}^{n} h^{(1)}(x_i)$. 
+\end{example}
+
+\subsection*{Differential Identites}
+\sectionspace
+
+Notice that on $\Xi_1$
+\[ e^{A(\eta)} = \int e^{\eta'T(x)}h(x)d\mu \]
+Let $g(\eta) = \int f(x)e^{\eta'T(x)}h(x)d\mu$. On the interior of where $\int \abs{f(x)e^{\eta'T(x)}h(x)}d\mu$ is finite, $g(\eta)$ is infinitely differentiable (this is via a theorem from real analysis), so on the interior of $\Xi_1$, we see that $e^{A(\eta)}$ is infinitely differentiable. Thus, taking the derivative with respect to a component $\eta_j$, we see that, assuming we can differentiate under the integral sign. 
+\begin{align*}
+    \frac{\del}{\del \eta_j} e^{A(\eta)} &= \int \frac{\del}{\del \eta_j} e^{\eta'T(x)}h(x)d\mu\\
+    \frac{\del A}{\del \eta_j}(\eta)e^{A(\eta)} &= \int T_{j}(x)e^{\eta'T(x)}h(x)d\mu\\
+    \frac{\del A}{\del \eta_j}(\eta) &= \int T_{j}(x)e^{\eta'T(x) - A(\eta)}h(x)d\mu\\
+    &= \bb{E}_{\eta}[T_{j}(X)]
+\end{align*}
+Thus, as this holds for all partial derivatives, we see that $\nabla_{\eta}A(\eta) = \bb{E}_{\eta}\left[T(X)\right]$. That's a nice way to compute the expectation, but can we get more?\\
+
+Taking the second derivative with respect to another component $\eta_k$ (which may be the same as before), we see
+\begin{align*}
+    \frac{\del^2}{\del \eta_j \del \eta_k}e^{A(\eta)} &= \int \frac{\del^2}{\del \eta_j \del \eta_k} e^{\eta'T(x)}h(x)d\mu\\
+    e^{A(\mu)}\left(\frac{\del^2A}{\del \eta_j\del\eta_k}(\eta) + \frac{\del A}{\del \eta_j}(\eta)\frac{\del A}{\del \eta_j}(\eta)\right) &= \int T_{j}(x)T_{k}(x)e^{\eta'T(x)}h(x)d\mu\\
+    \left(\frac{\del^2A}{\del \eta_j\del\eta_k}(\eta) + \frac{\del A}{\del \eta_j}(\eta)\frac{\del A}{\del \eta_j}(\eta)\right) &= \int T_{j}(x)t_{k}(x)e^{\eta'T(x) - A(\eta)}h(x)d\mu\\
+    \left(\frac{\del^2 A}{\del\eta_j\del\eta_k}(\eta) + \bb{E}_{\eta}[T_{j}(X)]\bb{E}_{\eta}[T_{k}(X)]\right) &= \mathbb{E}_{\eta}[T_j(X)T_k(X)]\\
+    \frac{\del^2A}{\del \eta_j \del \eta_k}(\eta) &= \tt{Cov}_{\eta}(T_{j}(X), T_{k}(X))
+\end{align*}
+Thus, we see that $\nabla_{\eta}^2 A(\eta) = \tt{Var}_{\eta}(T(X)) \in \R^{s \times s}$, where $\nabla_{\eta}^2$ is the Hessian, and $\tt{Var}_{\eta}(T(X))$ is the variance-covariance matrix.\\
+
+\begin{example}{\textbf{Example 4:} Poisson}
+    Recall from above we have that $T(x) = x$ and $A(\eta) = e^{\eta} = \lambda$. Then, we see that
+    \[ \bb{E}_{\eta}[X] = \frac{dA}{d\eta} = e^{\eta} = \lambda \]
+    and
+    \[ \tt{Var}_{\eta}[X] = \frac{d^{2}A}{d\eta^2} = e^{\eta} = \lambda \]
+    which is expected! Notice that if we were to not replace $\eta$ with $\lambda$ as we did above, and had $A(\lambda) = \lambda$, then we would see that
+    \[ \bb{E}_{\eta}[X] = 1 \quand \tt{Var}_{\eta}[X] = 0 \]
+    which is wrong.
+\end{example}
+\clearpage
+
+\subsection*{Moment Generating Functions}
+
+Now, because taking derivatives gives moments, there must be some connection to moments right? Here it is:
+
+\begin{align*}
+    M_{\eta}^{T(X)}(u) &= \bb{E}_{\eta}[e^{u'T(x)}]\\
+    &= \int e^{u'T(x)}e^{\eta'T(x) - A(\eta)}h(x)d\mu\\
+    &= \frac{e^{A(\eta + u)}}{e^{A(\eta)}}\int e^{(u + \eta)'T(x) - A(u + \eta)}h(x)d\mu(x)\\
+    &= e^{A(\eta + u) - A(\eta)}
+\end{align*}
+where the third step follows from the fact we are integrating a probability density over the space, which requires that $u + \eta \in \xi_1$, but forget about it. \\
+
+Anyways, taking derivatives with respect to $u$ gives
+\[ \nabla_{u} e^{A(\eta + u) - A(\eta)} = \nabla(A(\eta + u))e^{A(\eta + u) - A(\eta)} \]
+Then, as $u = 0$, we get
+\[ \nabla_{u} M_{\eta}^{T(X)}(u) = \nabla(A(\eta)) = \E_{\eta}[T(X)] \]
+which is as expected!\\
+
+There is also another related function called the cumulant-generating function, which looks like
+\[ K_{\eta}^{T(X)}(u) = \log M_{\eta}^{T(X)}(u) = A(\eta + u) - A(\eta) \]
+but we will talk about these later. 

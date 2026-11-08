@@ -1,0 +1,86 @@
+\tocsection{\textbf{9/2/31 Lecture 4: }Topological Spaces and Bases}
+
+\begin{definition}[\textbf{Definition 4.1:} Basis]
+    Let $X$ be a topological space. A collection $\beta$ of open sets is a \emph{basis} for $X$ if every open set can be written as a union of elements in $\beta$. 
+\end{definition}
+
+If $X = \R$ it can be shown that $\beta = \{(a, b) \col a, b \in \Q\}$ is a basis. Similarly, $\beta = \{B(x, r) \col x \in X, r \in \Q^{+}\}$ is a basis for a typical metric space. 
+
+\begin{lemma}[\textbf{Proposition 4.2}]
+    A collection $\beta$ is a basis if, and only if, given $p \in X$ and a neighborhood $N$ of $p$, there exists a $B \in \beta$ such that $p \in B \subseteq N$. 
+\end{lemma}
+\begin{proof}{Proof:}
+    ($\Rightarrow$) Suppose that $\beta$ is a basis. Given a point $p \in X$ and a neighborhood $N$ of $p$, there exists an open $\cal{O}$ such that $p \in \cal{O} \subseteq N$. Since $\beta$ is a basis, $\cal{O}$ is a union of elements in $\beta$, and one of them, namely $B$, contains $p$, so $p \in B \subseteq N$.\\
+
+    ($\Leftarrow$) Let $\cal{O}$ be an open set. For all $p \in \cal{O}$, $\cal{O}$ is a neighborhood of $p$, so there exists a $B_{p} \in \beta$ such that $p \in B_{p} \subseteq \cal{O}$. Thus, we can write
+    \[ \cal{O} = \bigcup_{p \in \cal{O}} B_{p} \]
+    and as $B_{p} \in \beta$ for all $p$, $\cal{O}$ can be written as a union of elements in $\beta$. 
+
+    $\qed$
+\end{proof} 
+
+\begin{definition}[\textbf{Definition 4.2: }Continuous Functions]
+    Let $X, Y$ be topological spaces. A function $f : X \to Y$ is \emph{continuous} if, and only if, for any open $\cal{U} \subseteq Y$, $f^{-1}(\cal{U})$ is open in $X$. We will use the word \emph{map} for continuous functions. 
+\end{definition} 
+
+Now, for the rest of this section we will give properties about maps. 
+
+\begin{lemma}[\textbf{Proposition 4.3}]
+    The composition of maps is a map.
+\end{lemma}
+\begin{proof}{Proof:}   
+    Let $f : X \to Y$ and $g : Y \to Z$ be maps. If $\cal{U} \subseteq Z$ is open, 
+    \[ (g \circ f)^{-1}(\cal{U}) = f^{-1} \circ g^{-1}(\cal(U)) = f^{-1}(g^{-1}(\cal{U})) \]
+    Then, as $g^{-1}(\cal{U})$ is open, we see that $f^{-1}(g^{-1}(\cal{U}))$ is open in $X$.
+
+    $\qed$
+\end{proof}
+
+\begin{lemma}[\textbf{Proposition 4.4}]
+    If $f : X \to Y$ is a map and $A \subseteq X$, then $f \res{A} : A \to Y$ is a map (in the subspace topology). 
+\end{lemma}
+\begin{proof}{Proof:}
+    We see that if $\cal{U} \subseteq Y$ is open, then as
+    \begin{align*}
+        f \res{A}^{-1}(\cal{U}) &= \{x \in A \col f(x) \in \cal{U}\}\\
+        &= f^{-1}(\cal{U}) \cap A
+    \end{align*}
+    Since $f^{-1}(\cal{U})$ is open in $X$, then $f \res{A}^{-1}(\cal{U})$ is open in $A$. 
+
+    $\qed$
+\end{proof}
+
+Now, since the identity function on $X$, $\id_{X}$, is continuous, we see that for a subset $A \subseteq X$, the inclusion $i : A \to X$, which is equal to $\id_{X} \res{A}$ is continuous as well.
+
+\begin{lemma}[\textbf{Proposition 4.5}]
+    The following are equivalent.
+    \begin{enumerate}
+        \item $f : X \to Y$ is a map.
+        \item If $\beta$ is a basis for $Y$, then for all $B \in \beta$, $f^{-1}(B)$ is open in $X$.
+        \item For any $A \subseteq X$, $f(\overline{A}) \subseteq \overline{f(A)}$
+        \item For any $B \subseteq Y$, $\overline{f^{-1}(B)} \subseteq f^{-1}(\overline{B})$
+        \item The preimage of a closed set is closed. 
+    \end{enumerate}
+\end{lemma}
+\begin{proof}{Proof:}
+
+    (1) $\implies$ (2) Obvious.\\
+
+    (2) $\implies$ (3) Suppose $A \subseteq X$. We have $f(A) \subseteq \overline{f(A)}$. For $x \in \overline{A}$, we want to show that $f(x) \in \overline{f(A)}$. If $f(x) \in f(A)$ we are done, so suppose that $f(x) \notin f(A)$. If $f(x) \notin \overline{f(A)}$, then $f(x) \in X \backslash \overline{f(A)}$, which is an open set. Thus, there exists some $B \in \beta$ such that $f(x) \in B \subseteq X \backslash \overline{f(A)}$. Now, $f^{-1}(B)$ is an open set in $X$ containing $x$, and as for all $b \in B$, $f(b) \notin f(A)$, we see that $f^{-1}(B) \cap A = \emptyset$. This contradicts the fact that $x \in \overline{A}$.\\
+
+    (3) $\implies$ (4) Since $f(\overline{f^{-1}(B)}) \subseteq \overline{f(f^{-1}(B))} = \overline{B}$, we see that
+    \[ \overline{f^{-1}(B)} \subseteq f^{-1}(\overline{B}) \]
+
+    (4) $\implies$ (5) Suppose that $B$ is closed. Then $f^{-1}(B) \supseteq \overline{f^{-1}(B)}$. However, $f^{-1}(B) \subseteq \overline{f^{-1}(B)}$, so $f^{-1}(B) = \overline{f^{-1}(B)}$. Thus, the preimage of $B$ is closed.\\
+
+    (5) $\implies$ (1) Suppose that $\cal{U}$ is open. Then $Y \backslash \cal{U}$ is closed, so $f^{-1}(Y \backslash \cal{U})$ is closed. Now, 
+    \begin{align*}
+        X \backslash f^{-1}(Y \backslash \cal{U}) &= \{x \in X \col x \notin f^{-1}(Y \backslash \cal{U})\}\\
+        &= \{x \in X \col f(x) \notin Y \backslash \cal{U}\}\\
+        &= \{x \in X \col f(x) \in \cal{U}\}\\
+        &= f^{-1}(\cal{U})
+    \end{align*}
+    Thus, $f^{-1}(\cal{U})$ is open, so $f$ is a map.
+
+    $\qed$
+\end{proof}

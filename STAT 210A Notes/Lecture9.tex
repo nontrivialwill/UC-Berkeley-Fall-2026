@@ -1,0 +1,136 @@
+\tocsection{\textbf{9/26/26 Lecture 9:} Rao-Blackwellization}
+
+Recall that with estimation, we will be using $\delta(X)$, an estimate ($\delta$ is called the estimator), to guess $g(\theta)$, an estimand. To test how good a given estimate is, we compute the loss $L(\theta, \delta(X))$. Then, to test how good an estimator is, we compute the risk:
+\[ R(\theta, \delta) = \bb{E}_{\theta}[L(\theta, \delta(X))] \]
+There is no $\delta$ that minimizes risk everywhere, so we need to find a way to judge which estimators are better than others.\\
+
+One way to do it is to summarize the risk with a value, whether it be the mean risk, or maximum possible risk.\\
+
+Another way to do it is by restricting to a smaller class of estimators. We will first see what happens when we restrict to unbiased estimators. Recall that the bias of an estimator, $\tt{Bias}(\theta, \delta)$ is defined to be
+\[ \tt{Bias}(\theta, \delta) = \bb{E}_{\theta}[\delta(X)] - g(\theta) \]
+we say an estimator is \emph{unbiased} if $\tt{Bias}(\theta, \delta) = 0$, so the average value of $\delta(X)$ is always $g(\theta)$.
+
+\subsection*{Convex Loss}
+
+\begin{definition}[\textbf{Definition 9.1: }Convex Functions]
+    A function $f(x)$ is \emph{convex} if, for all $x_1, x_2$ and $\gamma \in (0, 1)$, we have that
+    \[ f(\gamma x_1 + (1 - \gamma)x_2) \leq \gamma f(x_1) + (1 - \gamma) f(x_2) \]
+    The function $f$ is \emph{strictly convex} if equality never holds.
+\end{definition}
+Here is what a convex (and in this case, strictly convex) function looks like visually. These secant lines always lie above the function.
+\fig{0.6}{Lecture9FIg1}{}
+
+\begin{theorem}[\textbf{Theorem 9.2: }Jensen's Inequality]
+    If $f$ is convex, then $f(\bb{E}(X)) \leq \bb{E}f(X)$. If $f$ is strictly convex, then $f(\bb{E}(X)) < \bb{E}f(X)$ unless $X$ is almost surely constant. 
+\end{theorem}
+
+This is useful since if we have a convex loss function, then we can find a lower bound on the risk by just taking the expectation of $X$ and then plugging into the loss.\\
+
+Note: We say that $L(\theta, d)$ is a convex loss function if it is convex in $d$ (as we typically fix $\theta$).\\
+
+\begin{example}{\textbf{Example}}
+    Consider the squared error loss $L(\theta, d) = (g(\theta) - d)^2$, and the mean square error $\tt{MSE}(\theta; \delta) = \bb{E}_{\theta}[(g(\theta) - \delta(X))^2]$. Recall that we can write
+    \[ \tt{MSE}(\theta; \delta) = \tt{Bias}(\theta, \delta)^2 + \tt{Var}_{\theta}(\delta(X)) \]
+    Now, if $\delta$ is unbiased, then
+    \[ \tt{MSE}(\theta; \delta) = \tt{Var}_{\theta}(\delta(X)) \]
+    so the best unbiased estimator is the one that gives the least variance.
+\end{example}
+
+\begin{theorem}[\textbf{Theorem 9.3:} Rao-Blackwell Theorem]
+    Assume that $T(X)$ is sufficient, and $\delta(X)$ is any estimator. Let 
+    \[ \overline{\delta}(T(X)) = \bb{E}[\delta(X) \given T(X)] \]
+    If $L(\theta, d)$ is convex, then $R(\theta, \overline{\delta}) \leq R(\theta, \delta)$ for all $\theta$. Then, if $L(\theta, d)$ is strictly convex, then $R(\theta, \delta) < R(\theta, \delta)$ unless $\delta(X) \overset{\tt{a.s.}}{=} \overline{\delta}(T(X))$ for all $\theta$. We call $\overline{\delta}(T(x))$ is called the \emph{Rao-Blackwellization} of $\delta(x)$. 
+\end{theorem}
+
+\begin{definition}[\textbf{Definition 9.4:} U-estimability]
+    An estimand $g(\theta)$ is \emph{U-estimable} if there is some estimator $\delta(X)$ for which $\tt{Bias}_{\theta}(\theta, \delta) = 0$ for all $\theta$
+\end{definition}
+
+\begin{example}{\textbf{Example}}
+    Let $X \sim \Bern(\theta)$, $\theta \in (0, 1)$. Now, $\bb{E}_{\theta}[\delta(X)] = (1 - \theta)\delta(0) + \theta \delta(1)$, so estimators are just maps $\{0, 1\} \to \R$, and there is no way to have this be zero for all $\theta$, so $\theta$ is not U-estimable. 
+\end{example}
+
+\begin{definition}[\textbf{Definition 9.5:} Uniform Minimum Variance Unbiased (UMVU)]
+    We say that $\delta(X)$ is \emph{uniform minimum variance unbiased (UMVU)} if for any unbiased $\tilde{\delta}(X)$
+    \[ \Var_{\theta}(\delta(X)) \leq \Var_{\theta}(\tilde{\delta}(X)) \]
+    for all $\theta$.
+\end{definition}
+
+\begin{theorem}[\textbf{Theorem 9.6:} Uniqueness of Rao-Blackwellization]
+    Assume that $T(X)$ is complete sufficient, $g(\theta)$ is U-estimable and $L(\theta, d)$ is convex. Then, there is a unique unbiased estimator $\delta^{*}$ of the form $\delta^{*}(T(X))$ that uniformly minimizes risk (over all $\theta$) among all unbiased estimators. 
+\end{theorem}
+\begin{proof}{Proof Sketch:}
+    Since there is some unbiased estimator as $g(\theta)$ is U-estimable, then we can Rao-Blackwellize it. Then, it must be unique as $T(X)$ is complete. Then, it uniformly minimizes risk over all unbiased estimators because the Rao-Blackwellization of all unbiased estimators $\delta$ is $\delta^{*}$, and this has less risk than $\delta^{*}$. 
+\end{proof}
+Notice that Theorem 9.6 implies that $\delta^{*}$ also is UMVU as it minimizes the MSE and is unbiased.\\
+
+Now, let's go into some examples to show the general process for finding the UMVU estimator. We will consider the case when $X_1, \ldots, X_n \iidsim \Pois(\theta)$. Notice that $\overline{X}$ is the UMVU for $g(\theta) = \theta$ as it is an unbiased estimator which is a function of the complete sufficient statistic (recall that $T(X) = \sum x_i$ is the complete sufficient statistic)\\
+
+Now, what about estimators for $g(\theta) = \theta^2$? Is it naively $\overline{X}^2$? Well, let's use our methods to find it. Recall that the probability mass function as a function of $T(X)$ is
+\[ p_{\theta}(t) = \frac{e^{-n\theta}(n\theta)^{t}}{t!} \]
+We will find the UMVU in two ways: Solving for an unbiased estimator based on $T$, and Rao-Blackwellizing any unbiased estimator.\\
+
+\textbf{Strategy 1:} Create an Estimator as a function of $T$\\
+
+Now, suppose that we have an unbiased estimator $\delta(T)$ as a function of the complete sufficient statistic. Then, we know that $\delta(T)$ is unbiased if, and only if
+\begin{align*}
+    \theta^2 &= \int_{\{0, 1, \ldots\}} \delta(t)dP_{\theta}(t)\\
+    &= \sum_{t = 0}^{\infty} \delta(t)p_{\theta}(t)\\
+    &= e^{-n\theta}\sum_{t = 0}^{\infty} \delta(t)\frac{n^{t}}{t!}\theta^t
+\end{align*}
+Thus, we see that $e^{n\theta} \theta^2 = \sum_{t = 0}^{\infty} \delta(t)\frac{n^{t}}{t!}\theta^t$. Then, we can expand the left hand side of this equation to get two power series
+\[ \sum_{k = 0}^{\infty} \frac{n^{k}\theta^{k + 2}}{k!} = \sum_{t = 0}^{\infty} \delta(t)\frac{n^{t}\theta^{t}}{t!} \]
+Now, change the index so the powers of $\theta$ start at the first term, which gives
+\[ \sum_{t = 2}^{\infty} \frac{n^{t - 2}\theta^{t}}{(t - 2)!} = \sum_{t = 0}^{\infty} \delta(t)\frac{n^{t}}{t!}\theta^{t} \]
+Matching terms, we must have that $\delta(0) = 0$, $\delta(1) = 0$, and for $t \geq 2$, we must have
+\[ \delta(t) = \frac{t(t - 1)}{n^2} \]
+Thus, that is our estimator!
+\[ \delta(T(X)) = \frac{T(X)(T(X) - 1)}{n^2} = \overline{X}^2 - \frac{\overline{X}}{n} \]
+since $\overline{X} = \frac{T(X)}{n}$.\\
+
+\textbf{Strategy 2:} Rao-Blackwellize an Unbiased Estimator\\
+
+Let $\delta(X) = X_1 \cdot X_2$. Since $\bb{E}[\delta(X)] = \theta^2$, this is an unbiased estimator (although a bad one). Now, let's Rao-Blackwellize. Let
+\[ \delta^{*}(T) = \bb{E}[X_1X_2 \given T] \]
+Recall that $X \given T \sim \tt{Multinom}(t, \frac{1}{n}1_{n})$ where $1_{n}$ is a $n$-vector of $1$'s. Thus, we see that $X_1 \given T \sim \tt{Binom}(t, \frac{1}{n})$. Thus, we see that
+\[ \bb{E}[X_1 \given T] = \frac{T}{n} \quand \tt{Var}(X_1 \given T) = T \cdot \frac{1}{n} \cdot \left(1 - \frac{1}{n}\right) = \frac{T(n - 1)}{n^2} \]
+Then, as $X_2 \given T, X_1 \sim \Binom(t - x_1, \frac{1}{n - 1})$, we have that
+\[ \bb{E}[X_2 \given T, X_1] = \frac{T - X_1}{n - 1} \]
+Thus, we have that
+\begin{align*}
+    \bb{E}[X_1X_2 \given T] &= \bb{E}[X_1 \cdot \bb{E}[X_2 \given T, X_1] \given T]\\
+    &= \bb{E}\left[X_1 \cdot \frac{T - X_1}{n - 1} \given T\right]\\
+    &= \bb{E}\left[\frac{TX_1}{n - 1} - \frac{X_1^2}{x - 1} \given T\right]\\
+    &= \frac{T(T - 1)}{n^2}
+\end{align*}
+which is the same thing we got before!\\
+
+\textbf{Trick Strategy 3:} Fun trick\\
+
+There is an even easier way to do this (just by coincidence that $\overline{X}^2$ is a moment). Notice that as 
+\[ \bb{E}[\overline{X}^2] = \Var(\overline{X}) + (\bb{E}[\overline{X}])^2 = \frac{\theta}{n} + \theta^2 \]
+we see that
+\[ \bb{E}\left[\overline{X}^2 - \frac{\overline{X}}{n}\right] = \theta^2 \]
+so as this is the expectation of $\delta(T) = \frac{T^2}{n^2} - \frac{T}{n^2}$, we see it is unbiased and as it is a function of $T$, is is the UMVU. \\
+
+Here is one last interesting example.
+
+\begin{example}{\textbf{Example}}
+    Let $X_1, \ldots, X_n \iidsim U[0, \theta]$ with $\theta > 0$. Now, recall that $T = X_{(n)}$ is complete sufficient with
+    \[ p_{\theta}^{T}(X) = \frac{n}{\theta^{n}}t^{n - 1}1\{t \leq \theta\} \]
+    Then, notice we have that
+    \begin{align*}
+        \bb{E}_{\theta}[T] &= \int_{0}^{\theta} tp_{\theta}(t) dt\\
+        &= \int_{0}^{\theta} \frac{n}{\theta^{n}}t^{n}dt\\
+        &= \left[\frac{nt^{n + 1}}{(n + 1)\theta^{n}}\right]_{0}^{\theta}\\
+        &= \frac{n}{n + 1}\theta
+    \end{align*}
+    Thus, we then see that
+    \[ \bb{E}_{\theta}\left[\frac{n + 1}{n}T\right] = \theta \]
+    so $\delta(T) = \frac{n + 1}{n}T$ must be the UMVU as it is an unbiased estimator of $T$.
+
+    $\qed$
+\end{example}
+
+
+

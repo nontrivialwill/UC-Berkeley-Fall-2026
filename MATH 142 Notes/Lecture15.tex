@@ -1,0 +1,110 @@
+\tocsection{\textbf{9/30/26 Lecture 15:} Group Actions}
+
+Recall the quaternions
+\[ \bb{H} = \{a + bi + cj + dk \col a, b, c d \in \R\} \]
+with multiplication such that
+\[ i^2 = j^2 = k^2 = -1 \]
+and
+\[ ij = k,\ ji = -k\ jk = i\ kj = -i\ ki = j\ ik = -j \]
+Then, the unit quaternions
+\[ U_{\bb{H}} = \{q \in \bb{H} \col a^2 + b^2 + c^2 + d^2 = 1\} \]
+turn out to be a group. Because we can identify a point in $U_{\bb{H}}$ with three coordinates satisfying a condition, we see that
+\[ U_{\bb{H}} \simeq S^3 \]
+Now, the pure quaternions
+\[ \{bi + cj + dk \col b, c, d \in \R\} \simeq \R^3 \]
+are not a group under multiplication. However, it can be checked that if $q$ is a unit quaternion and $v$ is a pure quaternion, then $qvq^{-1}$ is a pure quaternion. We will use the above discussion to prove the following lemma. 
+
+\begin{lemma}[\textbf{Proposition 15.1}]
+    The group $SO(3)$ is homeomorphic to $P^3$. 
+\end{lemma}
+\begin{proof}{Proof:}
+    Define a map $\phi \col S^3 \to SO(3)$ as follows: given a unit quaternion in $S^3$, define $\phi(q) = \phi_{q} \in SO(3)$ by
+    \[ \phi_{q}(v) = qvq^{-1} \]
+    for any $v \in \R^3$ for any pure quaternion. Now $\phi(q)$ sends $\R^3$ to $\R^3$ linearly, so we can check that it is indeed a matrix in $SO(3)$. This is a homomorphism $S^3 \to SO(3)$. Thus also turns out to be continuous and onto. Interestingly, we see that
+    \[ \ker(\phi) = \{\pm 1\} \subseteq U_{\bb{H}} \]
+    then, by the first isomorphism theorem, we see that
+    \[ S^{3} / \{\pm 1\} \to SO(3) \]
+    is an isomorphism of groups, and it turns out this is also a homeomorphism. Finally, notice that
+    \[ S^{3}/ \{\pm 1\} \simeq \P^{3} \]
+    as points in $S^3 / \{\pm 1\}$ identify antipodal points in $S^3$. 
+
+    $\qed$
+\end{proof}
+
+\subsection*{Group Actions}
+\sectionspace
+
+Let $G$ be a group and let $X$ be a set. Then, we say that $G$ acts on $X$ to mean that we have a map $f : G \times X \to X$, which we denote $(g, x) \to gx$ so that $g_1(g_2x) = (g_1g_2)x$ and $ex = x$. Equivalently, a group action is a homeomorphism $\phi : G \to \tt{Perm}(X)$, where $\tt{Perm}(X)$ is the permutation group on $X$.\\
+
+For example, we see that $O(n)$ acts on $\R^n$ by $(A, v) \mapsto Av$.
+
+\begin{definition}[\textbf{Definition 15.2:} Orbits of Group Actions]
+    We define the \emph{orbit} of $x \in X$ under a group action to be
+    \[ \cal{O}(x) = \{gx \col g \in G\} \]
+    This gives us a partition of $x$ by orbits. 
+\end{definition}
+
+For $O(n)$ acting on $\R^n$, it turns out that $\cal{O}(x)$ is a sphere around the origin containing $x$, and $\cal{O}(0) = \{0\}$. 
+
+\begin{definition}[\textbf{Definition 15.3:} Orbit Spaces]
+    An \emph{orbit space} is a set denoted $X / G$, is the identification space induced by the partition of $X$ by $G$-orbits. 
+\end{definition}
+
+For $O(n)$ acting on $\R^n$, we see that the orbit space is $[0, \infty)$, as each sphere can be identified by its radius. Here are some another example:
+
+\begin{example}{\textbf{Example}}
+    Let $G = \Z$ and $X = \R$, and consider $(n, x) \mapsto x + n$ for $n \in \Z$ and $x \in \R$. Then, the orbit space is $[0, 1)$, as each orbit must have one element in $[0, 1)$. Then, as $[0, 1) \simeq S^1$, we see that that
+    \[ S^1 \simeq \R / \Z \]
+
+    Now, consider $O(n)$ acting on $S^{n - 1} \subseteq \R^n$. This action is transitive meaning that there is only a single orbit. That is, between any two points $x, y$ in $S^{n - 1}$, there exists a $g \in O(n)$ such that $gx = y$. To see this, we see that if $(e_1, \ldots, e_n)$ is the standard basis of $\R^n$, we can complete this to an orthonormal basis $(v, f_2, \ldots, f_n)$, and as there is some orthonormal matrix that maps $(e_1, \ldots, e_n)$ to $(v, f_2, \ldots, f_n)$. Thus, $v$ and $e_1$ lie in the same orbit, and as $v$ was arbitrary, all of $S^{n - 1}$ lies in the orbit of $e_1$. 
+\end{example}
+
+\begin{definition}[\textbf{Definition 15.4:} Topological Groups acting on Topological Spaces]
+    A topological group $G$ \emph{acts o}n a topological space $X$ if $G$ acts on $X$ and
+    \[ G \times X \to X \tt{ is continuous} \]
+\end{definition}
+The above definition gives us a homeomorphism $\phi \col G \to \tt{Homeo}(X)$ where
+\[ \tt{Homeo}(X) = \{\tt{Homeomorphisms from } X \to X\} \]
+and gives us the ID space $X / G$ from the partition into $G$ orbits. Here are some examples.
+
+\begin{example}{Example}
+    For example, if we consider $\Z^2$ acting on $\R^2$ with $(n, x) \to x + n$ with $n \in \Z^2$ and $x \in \R^2$. Then, $\R^2 / \Z^2$ is homeomorphic to $T^2$ as we can pick representatives in $[0, 1) \times [0, 1) \simeq S^1 \times S^1 \simeq T^2$.\\
+
+    Consider $\Z_{2}$ acting on $S^{n}$ by $\phi(1) = \id_{S^{n}}$ and $\phi(-1) = -\id_{S^{n}}$. Then, we see that
+    \[ S^{n} / \Z_{2} = P^{n} \]
+
+    Now, let $G$ be any topological group, and let $H$ be any subgroup of $G$. We know $H$ acts on $G$ by left-multiplication $(h, g) \to hg$. Now, $g, g'$ is in the same orbit if there is some $h$ such that $g' = hg$. Thus, the orbit space is the set of right-cosets
+    \[ G/H = Hg \]
+    Similarly, we also know that $H$ acts on $G$ by right-multiplication $(h, g) \to gh^{-1}$. From the same arguments above, the orbit space is the set of left-cosets
+    \[ G/H = gH \]
+\end{example}
+
+\begin{lemma}[\textbf{Proposition 15.5}]
+    If $G$ acts on $X$, then the ID map
+    \[ \pi \col X \to X/G \]
+    is an open map. 
+\end{lemma}
+\begin{proof}{Proof:}
+    Say that $\cal{O} \subseteq X$ is open. We want to show that $\pi(\cal{O})$ is open in $X / G$. That is to show that $\pi^{-1}(\pi(\cal{O}))$ is open in $X$, by the definition of an identification map.\\
+
+    Let $x \in \pi^{-1}(\pi(\cal{O}))$. Then, as $\pi(x) \in \pi(\cal{O})$, this implies that there exists a $y \in \cal{O}$ so that $\pi(x) = \pi(y)$, so $x = gy$ for some $g \in G$. Thus, we have that
+    \[ \pi^{-1}(\pi(\cal{O})) = \bigcup_{g \in G} g\cal{O} \]
+    Then, as this is a union of open sets in $X$, we see that $\pi^{-1}(\pi(\cal{O}))$ is open. Here is a visual proof:
+    \fig{0.8}{Lecture15Fig1}{}
+
+    $\qed$
+\end{proof}
+
+ 
+\begin{lemma}[\textbf{Proposition 15.6}]
+    If $G$ acts on $X$, and $G$ and $X / G$ are connected, then $X$ is connected. 
+\end{lemma}
+\begin{proof}{Proof:}
+    Suppose not. Then, we can write $X = U \cup V$ with $U$ and $V$ being disjoint nonempty open sets. Then, as the projection $\pi$ is open, then $\pi(U)$ and $\pi(V)$ are nonempty open sets in $X / G$. However, as $X / G$ is connected, then $\pi(U) \cap \pi(V)$ must not be empty.\\
+    
+    Now, say $\pi(x) \in \pi(U) \cap \pi(V)$. Then, there exists an orbit $Gx$ that intersects $U$ and $V$. Since the map $G \to X$ by $g \to gx$ is continuous, which implies that the image of $G$ is connected. Thus, $Gx$ must be connected, but $Gx \cap U$ and $Gx \cap V$ are two nonempty open sets whose union is $G$. Thus, we have a contradiction. Here is a visual proof:
+
+    \fig{0.8}{Lecture15Fig2}{}
+
+    $\qed$
+\end{proof}
