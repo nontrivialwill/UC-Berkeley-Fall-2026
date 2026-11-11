@@ -1,0 +1,73 @@
+\tocsection{\textbf{11/5/26 Lecture 19:} Uniform Integrability and Convergence of Means}
+
+We want to know when $\xi, \xi_1, \xi_2, \ldots$ in $L^1$ with $\xi_n \xrightarrow{d} \xi$ implies $\mathbb{E}[\xi_n] \to \mathbb{E}[\xi]$.
+
+\begin{lemma}[\textbf{Lemma 19.1:} Uniform Integrability]
+    Random variables $\xi_t$, $t \in T$ are uniformly integrable iff $\sup_t \mathbb{E}\abs{\xi_t} < \infty$ and
+    \[ \lim_{PA \to 0} \sup_{t \in T} \mathbb{E}[\abs{\xi_t} ; A] = 0 \]
+    that is, for all $\epsilon > 0$, there exists $\delta > 0$ such that
+    \[ P(A) < \delta \implies \mathbb{E}[\abs{\xi_t} ; A] < \epsilon \quad \forall t \in T \]
+\end{lemma}
+\begin{proof}{Proof:}
+    If $\xi_t$ is uniformly integrable, then as
+    \[ \mathbb{E}[\abs{\xi_t} ; A] \leq rPA + \mathbb{E}[\abs{\xi_t} ; \abs{\xi_t} > r], \quad r > 0 \]
+    taking $PA \to 0$ and $r \to \infty$ at appropriate rates, we can get $\mathbb{E}[\abs{\xi_t} ; A] < \epsilon$ for all $t$, for any $\epsilon > 0$.\\
+
+    For boundedness, let $A = \Omega$ and take $r$ sufficiently large.\\
+
+    Conversely, let $\xi_t$ be $L^1$-bounded and satisfy the above condition. By Chebyshev,
+    \[ \sup_{t} P\{\abs{\xi_t} > r\} \leq r^{-1}\sup_{t} \mathbb{E}\abs{\xi_t} \to 0 \]
+    as $r \to \infty$. Thus, if we set $A = \{\abs{\xi_t} > r\}$, we see $PA \to 0$ uniformly as $r \to \infty$, so $\mathbb{E}[\abs{\xi_t} ; \abs{\xi_t} > r] \to 0$.
+
+    $\qed$
+\end{proof}
+
+\begin{example}{\textbf{Example:} Critical Galton-Watson Branching Process}
+    \fig{0.8}{Lecture19Fig1}{}
+    Clearly, $\mathbb{E}[\#\tt{ offspring in } n^{\tt{th}} \tt{ generation}] = m^{n}$, where $m$ is the expected number of offspring of a single person.\\
+
+    If $m > 1 \implies$ positive probability the tree never dies out.\\
+
+    If $m < 1 \implies$ dies out with probability $1$.\\
+
+    If $m = 1 \implies$ dies out almost surely!
+    \begin{itemize}
+        \item $\mathbb{E}[Z_n] = 1$, but $\mathbb{E}[Z_n] \not\to 0 = \mathbb{E}[\lim_{n} Z_n]$
+    \end{itemize}
+\end{example}
+
+\begin{lemma}[\textbf{Lemma 19.2:} Convergence of Means]
+    Let $\xi, \xi_1, \xi_2, \ldots$ be $\R_{+}$-valued random variables with $\xi_n \xrightarrow{d} \xi$. Then,
+    \begin{enumerate}[label = (\roman*)]
+        \item $\mathbb{E}\xi \leq \liminf_{n} \mathbb{E}\xi_n$
+        \item $\mathbb{E}\xi_n \to \mathbb{E}\xi < \infty$ iff the $\xi_n$ are uniformly integrable; that is,
+        \[ \lim_{r \to \infty} \limsup_{n \to \infty} \mathbb{E}[\abs{\xi_n} ; \abs{\xi_n} > r] = 0 \]
+    \end{enumerate}
+\end{lemma}
+\begin{proof}{Proof:}
+    \textbf{(i)} For any $r > 0$, $x \mapsto x \wedge r$ is bounded and continuous on $\R_{+}$, so
+    \[ \liminf_{n \to \infty} \mathbb{E}[\xi_n] \geq \lim_{n \to \infty} \mathbb{E}[\xi_n \wedge r] = \mathbb{E}[\xi \wedge r] \]
+    as $\xi_n \to \xi$ in distribution. Letting $r \to \infty$, we see
+    \[ \liminf_{n \to \infty} \mathbb{E}[\xi_n] \geq \mathbb{E}[\xi] \]
+    where we can turn $\liminf$ to $\lim$ as we know the limit exists.\\
+
+    \textbf{(ii)} $(\Leftarrow)$ Assume uniform integrability. Then,
+    \[ \mathbb{E}[\xi] \leq \liminf_{n} \mathbb{E}[\xi_n] < \infty \]
+    (since they are $L^1$-bounded by above). Then, for any $r > 0$,
+    \begin{align*}
+        \abs{\mathbb{E}[\xi_n] - \mathbb{E}[\xi]} &\leq \abs{\mathbb{E}[\xi_n] - \mathbb{E}[\xi_n \wedge r]} + \abs{\mathbb{E}[\xi_n \wedge r] - \mathbb{E}[\xi \wedge r]}\\
+        &\qquad + \abs{\mathbb{E}[\xi \wedge r] - \mathbb{E}[\xi]}
+    \end{align*}
+
+    Now, $(x - x \wedge r) \leq x1\{x > r\}$, so as $\mathbb{E}[\xi_n ; \xi_n > r]$ (uniform integrability) and $\mathbb{E}[\xi ; \xi > r]$ (DCT) go to zero,
+    \[ \abs{\mathbb{E}[\xi_n] - \mathbb{E}[\xi_n \wedge r]} \to 0 \qquad \abs{\mathbb{E}[\xi \wedge r] - \mathbb{E}[\xi]} \to 0 \]
+    and by convergence in distribution,
+    \[ \abs{\mathbb{E}[\xi_n \wedge r] - \mathbb{E}[\xi \wedge r]} \to 0 \]
+    so taking $n \to \infty$ and $r \to \infty$, we get $\mathbb{E}[\xi_n] \to \mathbb{E}[\xi]$.\\
+
+    $(\Rightarrow)$ Assume $\mathbb{E}\xi_n \to \mathbb{E}\xi < \infty$. Fix $r > 0$. Then, by continuity,
+    \[ \mathbb{E}[\xi_n ; \xi_n > r] \leq \mathbb{E}[\xi_n - \xi_n \wedge (r - \xi_n)_{+}] \to \mathbb{E}[\xi - \xi \wedge (r - \xi)_{+}] \]
+    since $x1\{x > r\} + x \wedge (r - x)_{+} \leq x$. Then, as $x \wedge (r - x)_{+} \uparrow x$ as $r \to \infty$, the RHS goes to $0$ by DCT, so uniform integrability holds.
+
+    $\qed$
+\end{proof}

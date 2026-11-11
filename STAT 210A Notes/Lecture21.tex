@@ -1,0 +1,127 @@
+\tocsection{\textbf{11/5/26 Lecture 21:} Monotone Likelihood Ratios, UMP Tests, and the Score Test}
+
+\begin{example}{\textbf{Example:} Binomial}
+    Consider $X \sim \Binom(n, \theta)$, $H_0 \col \theta = \theta_0$ vs.\ $H_1 \col \theta = \theta_1$. Recall the LRT test:
+    \[ \phi_{\alpha}^{*}(x) = \left\{\begin{matrix} 1 & \tt{LR}(x) > c_{\alpha} \\ \gamma_{\alpha} & \tt{LR}(x) = c_{\alpha} \\ 0 & \tt{LR}(x) < c_{\alpha} \end{matrix}\right. \]
+    where we choose $c_{\alpha}$ and $\gamma_{\alpha}$ so $\E_{H_0}\phi_{\alpha}(X) = \alpha$.\\
+
+    Because the test didn't end up depending on the value of $\theta_1$, just that $\theta_1 > \theta_0$, we see the LRT works for
+    \[ H_0 \col \theta = \theta_0 \qquad H_1 \col \theta > \theta_0 \]
+    and as it turns out, even for
+    \[ H_0 \col \theta \leq \theta_0 \qquad H_1 \col \theta > \theta_0 \]
+    Recall
+    \[ \tt{LR}(x) = \frac{\theta_1^{x}(1 - \theta_1)^{n - x}}{\theta_0^{x}(1 - \theta_0)^{n - x}} \propto_{x} \left(\frac{\theta_1}{1 - \theta_1} \cdot \frac{1 - \theta_0}{\theta_0}\right)^{x} \]
+    which is increasing in $x$ if $\theta_1 > \theta_0$. We say LR is monotone in $x$.
+\end{example}
+
+\begin{definition}[\textbf{Definition 21.1:} Monotone Likelihood Ratio]
+    Assume $\cal{P} = \{P_{\theta} \col \theta \in \Theta \subseteq \R\}$ has densities $p_{\theta}$. We say $\cal{P}$ has \emph{monotone likelihood ratio (MLR)} in a test statistic $T(x)$ if
+    \[ \frac{p_{\theta_2}}{p_{\theta_1}}(x) \tt{ is a nondecreasing function of } T(x) \]
+    whenever $\theta_1 < \theta_2$.
+\end{definition}
+
+\begin{example}{\textbf{Example:} 1-Parameter Exponential Families}
+    Let $X \sim p_{\eta}(x) = e^{\eta T(x) - A(\eta)}h(x)$. Then,
+    \[ \frac{p_{\eta_2}}{p_{\eta_1}}(x) = \exp\{(\eta_2 - \eta_1)T(x) - (A(\eta_2) - A(\eta_1))\} \]
+    so if $\eta_2 > \eta_1$, we see LR is increasing in $T(x)$, so the LRT for $H_0 \col \eta = \eta_0$ vs.\ $H_1 \col \eta = \eta_1$ with $\eta_1 > \eta_0$ will reject for large $T(x)$.
+\end{example}
+
+\begin{definition}[\textbf{Definition 21.2:} Uniformly Most Powerful Tests]
+    If $\phi^{*}$ is level $\alpha$ and for any other level-$\alpha$ test $\phi$,
+    \[ \E_{\theta}\phi^{*}(X) \geq \E_{\theta}\phi(X) \quad \tt{for all } \theta \in \Theta_1 \]
+    then $\phi^{*}$ is \emph{uniformly most powerful} or \emph{UMP} for that testing problem.
+\end{definition}
+
+\begin{theorem}[\textbf{Theorem 21.3}]
+    Assume $\cal{P}$ has MLR in $T(X)$ and consider testing
+    \[ H_0 \col \theta \leq \theta_0 \quad \tt{and} \quad H_1 \col \theta > \theta_0 \quad \tt{for } \theta_0 \in \Theta^{\circ} \subseteq \R \]
+    If $\phi^{*}(X)$ rejects for large $T(X)$, then $\phi^{*}$ is UMP at level $\alpha = \E_{\theta_0}\phi^{*}(X)$.
+\end{theorem}
+\begin{proof}{Proof:}
+    
+    Let $\phi$ be another level-$\alpha$ test and let $\theta_1 > \theta_0$. Then, $\phi$ is a level-$\alpha$ test for testing $H_0 \col \theta = \theta_0$ vs.\ $H_1 \col \theta = \theta_1$.\\
+
+    Since $\phi^{*}(X)$ rejects for large $T(X)$, it is an LR test, so by the Neyman-Pearson Theorem, $\E_{\theta_1}\phi^{*} \geq \E_{\theta_1}\phi$. Thus, $\phi^{*}$ is UMP for $H_0 \col \theta = \theta_0$ and $H_1 \col \theta > \theta_0$. We now need to make sure it controls the power on $H_0$.\\
+
+    Note that we have $\E_{\theta_1}\phi^{*}(X) \geq \alpha$ on $H_1$ by testing against $\phi(X) \equiv \alpha$.\\
+
+    Now, consider testing $H_0 \col \theta = \theta_0$ vs.\ $H_1 \col \theta = \theta_2$, $\theta_2 < \theta_0$. Define
+    \[ \overline{\phi}(x) = 1 - \phi^{*}(x) \]
+    This test rejects for small $T$, and is level $(1 - \alpha)$. This is an LRT for this hypothesis, which implies that, by Neyman-Pearson, testing it against $\phi(x) \equiv 1 - \alpha$,
+    \[ \E_{\theta_2}[\overline{\phi}(X)] \geq 1 - \alpha \implies \E_{\theta_2}\phi^{*}(X) \leq \alpha \]
+    which was to be shown as $\theta_2 \in H_0$. Even stronger, note that for any other $\phi(x)$ with $\E_{\theta_0}\phi(x) = \alpha$, then testing $1 - \phi(x)$ against $\overline{\phi}(x)$, we get
+    \[ \E_{\theta_2}\phi^{*}(X) \leq \E_{\theta_2}\phi(X) \]
+    so $\phi^{*}$ is even better than $\phi$ on $H_0$!
+
+    $\qed$
+\end{proof}
+
+\fig{0.4}{Lecture21Fig1}{}
+
+\subsection*{One Parameter Families}
+\sectionspace
+
+Let $\cal{P} = \{P_{\theta} \col \theta \in \Theta \subseteq \R\}$. Consider
+\[ H_0 \col \theta \leq \theta_0 \quad \tt{vs} \quad H_1 \col \theta > \theta_0 \]
+We call this a \emph{one-sided hypothesis test}. We say a statistic $T(X)$ is \emph{stochastically increasing} in $\theta$ if
+\[ \bb{P}_{\theta}(T(X) \leq t) \tt{ is non-increasing in } \theta, \tt{ for all } t \]
+(or $\bb{P}_{\theta}(T(X) > t)$ is non-decreasing in $\theta$).\\
+
+
+If $\phi(x)$ rejects for large $T(x)$ and $\E_{\theta_0}\phi(X) = \alpha$, then
+\begin{align*}
+    \E_{\theta}\phi(X) &= \bb{P}_{\theta}(T > c) + \gamma\bb{P}_{\theta}(T = c)\\
+    &= (1 - \gamma)\bb{P}_{\theta}(T > c) + \gamma\bb{P}_{\theta}(T \geq c)
+\end{align*}
+so as these are both non-decreasing in $\theta$, $\E_{\theta}\phi(X)$ is increasing in $\theta$, so it is level-$\alpha$ and we can calibrate at the boundary.\\
+
+\textbf{Heuristic:} We want to maximize power for values near the boundary (if a UMP doesn't exist), which motivates the score test.
+
+\subsection*{Score Test}
+\sectionspace
+
+We see
+\[ \log\tt{LR}(X) = \log\frac{p_{\theta_0 + \epsilon}(X)}{p_{\theta_0}(X)} \approx \epsilon \cdot \dot{\ell}(\theta_0; X) \]
+(locally most powerful near $\theta_0$), so we use $S_{\theta_0}(X) = \dot{\ell}(\theta_0; X)$. Then, we reject for large values of the score. Here is a nice example.
+
+\begin{example}{\textbf{Example:} Laplace}
+    Consider Laplace $X_1, \ldots, X_n \iidsim \frac{1}{2}e^{-\abs{x - \theta}}$. We want to test $H_0 \col \theta \leq \theta_0$ vs.\ $H_1 \col \theta > \theta_0$. For $\theta_1 > \theta_0$,
+    \begin{align*}
+        \log\frac{p_{\theta_1}(x)}{p_{\theta_0}(x)} &= \sum_{i = 1}^{n}(\abs{x_i - \theta_0} - \abs{x_i - \theta_1})\\
+        &= \sum_{i = 1}^{n} T(x_i; \theta_0, \theta_1)
+    \end{align*}
+    What does $T$ look like?
+    \fig{0.4}{Lecture21Fig2}{}
+    so
+    \[ T(x) = \left\{\begin{matrix} \theta_0 - \theta_1 & x < \theta_0 \\ 2x - \theta_0 - \theta_1 & \theta_0 \leq x \leq \theta_1 \\ \theta_1 - \theta_0 & x \geq \theta_1 \end{matrix}\right. \]
+    Note, taking $\theta_1 \to \theta_0$, we get a jump function, and renormalizing,
+    \[ \tilde{T}(x) = \left\{\begin{matrix} +1 & x > \theta_1 \\ \frac{2x - \theta_0 - \theta_1}{\theta_1 - \theta_0} & \theta_0 \leq x \leq \theta_1 \\ -1 & x < \theta_0 \end{matrix}\right. \to S_{\theta_0}(x) = \tt{sgn}(x - \theta_0) \]
+    so as $\theta_1 \downarrow \theta_0$,
+    \begin{align*}
+        \frac{1}{\theta_1 - \theta_0}\log\tt{LR}(X) \to S_{\theta_0}(X) &= \sum_{i = 1}^{n} \tt{sgn}(X_i - \theta_0)\\
+        &= 2\#\{X_i > \theta_0\} - n
+    \end{align*}
+    where
+    \begin{align*}
+        \#\{X_i > \theta_0\} &\sim \Binom(n, \bb{P}(X_i > \theta_0))\\
+        &= \Binom(n, \bb{P}_{\theta}(Z_i + \theta > \theta_0))
+    \end{align*}
+    which is stochastically increasing in $\theta$. We call it the ``\emph{sign test}'': we reject for the upper $\alpha$ quantile of $\Binom(n, 1/2)$. Let
+    \begin{align*}
+        B_{\theta_0}(X) = \sum_{i = 1}^{n} 1\{X_i > \theta_0\} &\sim \Binom(n, \bb{P}(X_i > \theta_0))\\
+        &\overset{\theta = \theta_0}{=} \Binom(n, 1/2)
+    \end{align*}
+\end{example}
+
+\begin{example}{\textbf{Example:} Quantiles}
+    $X_1, \ldots, X_n \iidsim F$ (a cdf on $\R$). Define the ``lower $\zeta$ quantile''
+    \[ \theta(F) = \min\{t \col F(t) \geq \zeta\} \]
+    A minimum is attained since $F$ is right-continuous. We want to test
+    \[ H_0 \col \theta(F) \leq \theta_0 \quad \tt{vs} \quad H_1 \col \theta(F) > \theta_0 \]
+    which is equivalent to testing
+    \[ H_0 \col F(\theta_0) \geq \zeta \quad \tt{vs} \quad H_1 \col F(\theta_0) < \zeta \]
+    \fig{0.55}{Lecture21Fig3}{}
+    It turns out a good test is
+    \[ B_{\theta_0}(X) = \#\{X_i > \theta_0\} \sim \Binom(n, 1 - F(\theta_0)) \overset{H_0}{\leq} \Binom(n, 1 - \zeta) \]
+    and we reject for large values of $B_{\theta_0}$.
+\end{example}

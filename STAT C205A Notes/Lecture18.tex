@@ -16,15 +16,13 @@
 
     Assume the latter. Let
     \[ n_k = \inf\left\{n \geq k \col \sup_{m \geq n} \mathbb{E}[\rho(\xi_m, \xi_n) \wedge 1] \leq 2^{-k}\right\}, \quad k \in \N \]
-    % NOTE (check): the n_k are increasing (the sup over m >= n decreases in n, so the condition for 2^{-(k+1)} implies the one for 2^{-k}). That's what gives E[rho(xi_{n_k}, xi_{n_{k+1}}) ^ 1] <= 2^{-k}.
+
     Then, the $n_k$ are finite and
     \[ \mathbb{E}\sum_{k}\{\rho(\xi_{n_k}, \xi_{n_{k + 1}}) \wedge 1\} \leq \sum_{k} 2^{-k} < \infty \]
-    % NOTE (check): this gives sum_k (rho ^ 1) < infinity a.s.; the terms then go to 0, so eventually rho ^ 1 = rho, which gives the sum of rho.
     so $\sum_{k} \rho(\xi_{n_k}, \xi_{n_{k + 1}}) < \infty$ a.s.\\
 
     Thus, we see that $(\xi_{n_k})$ is a.s.\ Cauchy, and as $(S, \rho)$ is complete, it converges a.s.\ to some limit $\xi$. Thus, as
     \[ \mathbb{E}[\rho(\xi_m, \xi) \wedge 1] \leq \mathbb{E}[\rho(\xi_m, \xi_{n_k}) \wedge 1] + \mathbb{E}[\rho(\xi_{n_k}, \xi) \wedge 1] \]
-    % NOTE (check): the first term -> 0 because (xi_n) is Cauchy in probability, and the second by dominated convergence, since xi_{n_k} -> xi a.s.
     letting $m, k \to \infty$, we see that $\mathbb{E}[\rho(\xi_m, \xi) \wedge 1] \to 0$.
 
     $\qed$
@@ -79,8 +77,6 @@ and this also holds for sups over finite collections.
     \fig{0.4}{Lecture18Fig1}{}
     so
     \[ (1 - (r - \abs{x})_{+})_{+} = \left\{\begin{matrix} 0 & 0 \leq \abs{x} \leq r - 1 \\ \tt{LERP} & r - 1 \leq \abs{x} \leq r \\ 1 & r \leq \abs{x} \end{matrix}\right. \]
-    % FIXED: page has limsup_{r -> infinity} on the left; changed to n -> infinity (r is fixed here and sent to infinity afterwards).
-    % NOTE (check): both inequalities come from 1{|x| > r} <= f(x) <= 1{|x| > r - 1}, and the middle equality is f in C_b(R^d) with xi_n -> xi in distribution.
     Thus,
     \[ \limsup_{n \to \infty} P\{\abs{\xi_n} > r\} \leq \lim_{n \to \infty} \mathbb{E}f(\xi_n) = \mathbb{E}f(\xi) \leq P\{\abs{\xi} > r - 1\} \]
     so as the RHS tends to $0$, we see that $(\xi_n)$ is tight.
@@ -89,9 +85,17 @@ and this also holds for sups over finite collections.
 \end{proof}
 
 \begin{lemma}[\textbf{Lemma 18.8:} Tightness and Convergence in Probability]
-    % NOTE (check): no proof on the page.
     Let $\xi_1, \xi_2, \ldots$ be random vectors in $\R^d$. Then $(\xi_n)$ is tight iff $c_n\xi_n \xrightarrow{P} 0$ for any $c_1, c_2, \ldots \geq 0$ with $c_n \to 0$.
 \end{lemma}
+\begin{proof}{Proof:}
+    Assume that $(\xi_n)$ is tight, and let $c_n \to 0$. Letting $r, \epsilon > 0$, and noting that $c_{n}r < \epsilon$ for all but finitely many $n \in \N$, we see that
+    \[ \limsup_{n \to \infty} P\{\abs{c_n\xi_n} > \epsilon\} \leq \limsup_{n \to \infty} P\{\abs{\xi_n} > r\} \]
+    Now the right hand side tends to zero as $r \to \infty$, so $P\{\abs{c_n\xi_n} > \epsilon\} \to 0$. Thus, we see that $\xi_n \xrightarrow{P} 0$.\\
+
+    Now, if $(\xi_n)$ is not tight, then we can find a sequence $(n_k) \subseteq \N$ such that $\inf_{k} P\{\abs{\xi_{n_k}} > k\} > 0$. Thus, letting $c_n = \sup\{k^{-1} \col n_k \geq n\}$, we see that $c_n \to 0$, but the subsequence $P\{\abs{c_{n_k}\xi_{n_k}} > 1\} \not \to 0$, so $c_n\xi_n$ cannot converge in probability to $0$. 
+
+    $\qed$
+\end{proof}
 
 \begin{definition}[\textbf{Definition 18.9:} Uniform Integrability]
     A family of random variables $\xi_t$, $t \in T$ is said to be \emph{uniformly integrable} if
@@ -102,7 +106,6 @@ For $(\xi_n)$ in $L^1$, this is equivalent to
 \[ \lim_{r \to \infty} \limsup_{n \to \infty} \mathbb{E}[\abs{\xi_n} ; \abs{\xi_n} > r] = 0 \]
 as for $\xi \in L^1$, $\lim_{r \to \infty} \mathbb{E}[\abs{\xi} ; \abs{\xi} > r] = 0$.\\
 
-% FIXED: page has "r, p > 0"; changed to p >= 1. The bound uses |xi| = |xi|^p |xi|^{1 - p} <= r^{1 - p} |xi|^p on {|xi| > r}, which needs 1 - p <= 0 (for p < 1 it goes the other way).
 Note that the condition holds if the $\xi_t$ are $L^p$-bounded for some $p > 1$ ($\sup_t \mathbb{E}\abs{\xi_t}^p < \infty$) because
 \[ \mathbb{E}[\abs{\xi_t} ; \abs{\xi_t} > r] \leq r^{-p + 1}\,\mathbb{E}\abs{\xi_t}^p, \quad r > 0,\ p \geq 1 \]
 and $r^{-p + 1} \to 0$ as $r \to \infty$ when $p > 1$.

@@ -8,7 +8,6 @@
     \[ \prod_{\alpha \in I} X_{\alpha} = \left\{f : I \to \bigsqcup_{\alpha} X_{\alpha} \col f(\alpha) \in X_{\alpha}\right\} \]
 \end{definition}
 
-% FIXED: page asks "Can prod X_alpha be empty?"; added "if every X_alpha is nonempty". If some X_alpha is empty, the product is empty in ZF; it's the nonempty case that ZF can't decide.
 \textbf{Question:} If every $X_{\alpha}$ is nonempty, can $\prod_{\alpha \in I} X_{\alpha}$ be empty?\\
 
 \textbf{Answer:} Whether or not it is, is independent of ZF (you need AC).
@@ -18,39 +17,36 @@
 \end{theorem}
 
 \begin{definition}[\textbf{Definition 28.3:} Partially Ordered Sets]
-    A \emph{partially ordered set (poset)} $(X, \leq)$ is a set $X$ with a binary relation $\leq$ that is reflexive, antisymmetric, and transitive. A poset is \emph{totally ordered} if for every $x, y \in X$, $x \leq y$ or $y \leq x$.
+    A \emph{partially ordered set (poset)} $(X, \preceq)$ is a set $X$ with a binary relation $\preceq$ that is reflexive, antisymmetric, and transitive. A poset is \emph{totally ordered} if for every $x, y \in X$, $x \preceq y$ or $y \preceq x$.
 \end{definition}
 
 \begin{example}{\textbf{Example:} Power Set}
-    % FIXED: page says "for any X"; added "with at least two elements" (if X has 0 or 1 elements, P(X) is totally ordered).
     For any $X$ with at least two elements, $(\P(X), \subseteq)$ is a poset that is not totally ordered.
 \end{example}
 
 \begin{example}{\textbf{Example:} Trees}
-    A tree $T$ can be made a poset by picking a ``root'' and saying that $x \leq y$ if the unique path from the root to $y$ contains $x$.
+    A tree $T$ can be made a poset by picking a ``root'' and saying that $x \preceq y$ if the unique path from the root to $y$ contains $x$.
 \end{example}
 
 \begin{definition}[\textbf{Definition 28.4:} Chains, Upper Bounds, and Maximal Elements]
-    If $(X, \leq)$ is a poset, a subset $Y \subseteq X$ is called a \emph{chain} if it is totally ordered. An \emph{upper bound} for $Y \subseteq X$ is an element $x \in X$ such that $y \leq x$ for all $y \in Y$. An element $x \in X$ is \emph{maximal} if $x \leq z \implies x = z$.
+    If $(X, \preceq)$ is a poset, a subset $Y \subseteq X$ is called a \emph{chain} if it is totally ordered. An \emph{upper bound} for $Y \subseteq X$ is an element $x \in X$ such that $y \preceq x$ for all $y \in Y$. An element $x \in X$ is \emph{maximal} if $x \preceq z \implies x = z$.
 \end{definition}
 
 \begin{lemma}[\textbf{Lemma 28.5:} Zorn's Lemma]
-    Let $(X, \leq)$ be a poset. Suppose every chain in $X$ has an upper bound. Then, $X$ has a maximal element.
+    Let $(X, \preceq)$ be a poset. Suppose every chain in $X$ has an upper bound. Then, $X$ has a maximal element.
 \end{lemma}
 
 \textbf{Fact:} Zorn's Lemma $\iff$ Axiom of Choice.
 
-\begin{theorem}[\textbf{Theorem 28.6}]
+\begin{theorem}[\textbf{Theorem 28.6:} Basis Existance Theorem]
     Every vector space has a basis.
 \end{theorem}
 \begin{proof}{Proof:}
-    % NOTE (check): the empty chain is covered too: its union is the empty set, which is linearly independent.
     Let $X = \{A \subseteq V \col A \tt{ linearly independent}\}$ with $\subseteq$. We need to show every chain has an upper bound. Let $Y$ be a chain in $X$. We claim
     \[ U = \bigcup_{B \in Y} B \]
     is an upper bound, which is to show it is linearly independent.\\
 
-    % FIXED: page starts with v_1, ..., v_r but then writes v_n in B_n and "v_1, ..., v_n are LI"; made it v_i in B_i and v_1, ..., v_r throughout.
-    % NOTE (check): "some B" is the largest of B_1, ..., B_r, which exists because there are finitely many and Y is totally ordered.
+
     Let $v_1, \ldots, v_r \in U$ be distinct. We want to show these are LI. Well, $v_i \in B_i \in Y$, so as $Y$ is totally ordered, all of them lie in some $B$. However, since $B$ is LI, $v_1, \ldots, v_r$ are LI.\\
 
     Thus, every chain has an upper bound, so by Zorn's Lemma, we have a maximal element $\tilde{A}$. Suppose $\tilde{A}$ is not a basis. Then, there exists $v \notin \Span(\tilde{A})$. Then, $\{v\} \cup \tilde{A}$ is LI, which contradicts that $\tilde{A}$ is maximal.
@@ -83,6 +79,5 @@
 By De Morgan's laws, closed sets are preserved under finite unions and arbitrary intersections.
 
 \begin{definition}[\textbf{Definition 28.9:} Closure, Interior, and Boundary]
-    % FIXED: page writes the boundary as closure / interior; changed / to \setminus (set difference).
     Given $A \subseteq X$, the \emph{closure} of $A$, $\overline{A}$, is the smallest closed set containing $A$. Similarly, the \emph{interior} of $A$, $A^{\circ}$, is the largest open set contained in $A$. The \emph{boundary} of $A$, $\partial A$, is $\overline{A} \setminus A^{\circ}$.
 \end{definition}

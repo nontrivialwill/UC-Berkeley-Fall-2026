@@ -30,11 +30,11 @@ This motivates LF prior sequences.
     A sequence $\Lambda_1, \Lambda_2, \ldots$ is \emph{least favorable} if $r_{\Lambda_k} \to \sup_{\Lambda} r_{\Lambda}$.
 \end{definition}
 
-\begin{theorem}[\textbf{Theorem 19.2}]
+\begin{lemma}[\textbf{Theorem 19.2}]
     Suppose $\Lambda_1, \Lambda_2, \ldots$ is a sequence of priors and $\delta$ is an estimator such that
     \[ \sup_{\theta} R(\theta, \delta) = \lim_{n \to \infty} r_{\Lambda_n} \]
     Then, $\{\Lambda_i\}$ is LF, $\delta$ is minimax, and $r^{*} = \lim_{n} r_{\Lambda_n}$.
-\end{theorem}
+\end{lemma}
 \begin{proof}{Proof:}
     \[ r_{\Lambda_i} \leq \sup_{\Lambda} r_{\Lambda}  \leq r^{*} \leq \sup_{\theta} R(\theta, \delta) \]
     and $r_{\Lambda_i} \to \sup_{\theta} R(\theta, \delta)$.
