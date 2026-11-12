@@ -1,0 +1,147 @@
+\tocsection{\textbf{11/9/26 Lecture 31:} Simplicial Homology}
+
+
+\textbf{Recall:} If $K$ is a simplicial complex,
+\[ C_q(K) = \left\{\sum n_i\sigma_i \col n_i \in \Z,\ \sigma_i \tt{ an oriented } q\tt{-simplex}\right\} / \{\tau + \sigma \col \tau, \sigma \text{ same simplex with opposite orientation}\} \]
+These are called the $q$-chains of $K$, and they form a free abelian group. Also recall
+\[ \partial : C_q(K) \to C_{q - 1}(K) \]
+by
+\[ \partial(v_0, \ldots, v_q) = \sum (-1)^{i}(v_0, \ldots, \widehat{v}_i, \ldots, v_q) \in C_{q - 1}(K) \]
+and
+\[ Z_q = \ker(\partial : C_q(K) \to C_{q - 1}(K)) \quand B_q = \operatorname{Im}(\partial : C_{q + 1}(K) \to C_q(K)) \]
+
+\textbf{Question:} What happens if you apply $\partial$ twice?
+
+\begin{example}{\textbf{Example:} A Triangle}
+    Let $\sigma$ be the oriented triangle
+    \fig{0.8}{Lecture31Fig1}{}
+    \[ \partial(\sigma) = (v_0v_1) + (v_1v_2) + (v_2v_0) \in C_1(K) \]
+    It turns out, by computation, $\partial(\partial(\sigma)) = 0$.
+\end{example}
+
+\begin{example}{\textbf{Example:} A Tetrahedron}
+    Let $\sigma$ be the tetrahedron
+    \fig{0.8}{Lecture31Fig2}{}
+    Take the orientation $(v_0v_1v_2v_3)$.
+    \[ \partial\sigma = (v_1v_2v_3) - (v_0v_2v_3) + (v_0v_1v_3) - (v_0v_1v_2) \in C_2(K) \]
+    With the induced orientation, we can compute to see
+    \[ \partial(\partial\sigma) = 0 \in C_1(K) \]
+\end{example}
+
+\begin{lemma}[\textbf{Lemma 31.1}]
+    $\partial^2 = 0$. That is,
+    \begin{center}
+        \begin{tikzcd}
+            C_{q + 1}(K) \arrow[r, "\partial"] \arrow[rr, bend right, "0"'] & C_q(K) \arrow[r, "\partial"] & C_{q - 1}(K)
+        \end{tikzcd}
+    \end{center}
+\end{lemma}
+\begin{proof}{Proof:}
+    It is enough to look at generators. Thus, consider $\partial(\partial\sigma)$ for $\sigma$ a $(q + 1)$-simplex. We see
+    \[ \partial(v_0v_1 \cdots v_{q + 1}) = \sum (-1)^{i}(v_0, \ldots, \widehat{v}_i, \ldots, v_{q + 1}) \]
+    so
+    \begin{align*}
+        \partial(\partial(v_0v_1 \cdots v_{q + 1})) &= \sum (-1)^{i}\partial(v_0, \ldots, \widehat{v}_i, \ldots, v_{q + 1})\\
+        &= \sum (-1)^{i}\sum_{j > i}(-1)^{j - 1}(v_0, \ldots, \widehat{v}_i, \ldots, \widehat{v}_j, \ldots, v_{q + 1})\\
+        &\qquad + \sum (-1)^{i}\sum_{j < i}(-1)^{j}(v_0, \ldots, \widehat{v}_j, \ldots, \widehat{v}_i, \ldots, v_{q + 1})\\
+        &= \sum_{k < \ell}(-1)^{k + \ell - 1}(v_0, \ldots, \widehat{v}_k, \ldots, \widehat{v}_{\ell}, \ldots, v_{q + 1})\\
+        &\qquad + \sum_{k < \ell}(-1)^{k + \ell}(v_0, \ldots, \widehat{v}_k, \ldots, \widehat{v}_{\ell}, \ldots, v_{q + 1})\\
+        &= 0
+    \end{align*}
+
+    $\qed$
+\end{proof}
+
+\begin{lemma}[\textbf{Corollary 31.2}]
+    $B_q(K) \subseteq Z_q(K)$
+\end{lemma}
+\begin{proof}{Proof:}
+    $\operatorname{Im}(\partial : C_{q + 1}(K) \to C_q(K)) \subseteq \ker(\partial : C_q(K) \to C_{q - 1}(K))$ because $\partial^2 = 0$.
+
+    $\qed$
+\end{proof}
+
+\textbf{Question:} How different are $B_q(K)$ and $Z_q(K)$? This motivates the following definition.
+
+\begin{definition}[\textbf{Definition 31.3:} Homology Groups]
+    Let the \emph{$q^{\tt{th}}$ homology group} of $K$ be
+    \[ H_q(K) = Z_q(K)/B_q(K) \]
+\end{definition}
+
+\begin{definition}[\textbf{Definition 31.4:} Homologous Cycles]
+    If $z \in Z_q(K)$ is a cycle, write $[z]$ for its class in $H_q(K)$. If two cycles differ by a boundary, they are \emph{homologous}.
+\end{definition}
+
+Now, $H_q(K)$ is a finitely generated abelian group since $K$ is finite (so $Z_q(K)$ and $B_q(K)$ are finitely generated).\\
+
+Let
+\[ T_q(K) := \{\alpha \in H_q(K) \col n\alpha = 0 \tt{ for some } n \neq 0\} \]
+a finite group, called the \emph{$q$-torsion group} of $K$. Also, let $F_q(K) = H_q(K)/T_q(K)$, a free abelian group. This is isomorphic to some $\Z^{\beta_q}$ for $\beta_q \geq 0$. We call $\beta_q$ the \emph{$q^{\tt{th}}$ Betti number} of $K$.\\
+
+\textbf{Note:} $H_q(K) \cong T_q(K) \oplus \Z^{\beta_q(K)}$
+
+\begin{example}{\textbf{Example:} Boundary of a Triangle}
+    Let $K$ be the triangle with no interior, and let's compute its homology.
+    \fig{0.8}{Lecture31Fig3}{}
+    \begin{align*}
+        C_0(K) &= \{n_0v_0 + n_1v_1 + n_2v_2\}\\
+        C_1(K) &= \{n_2(v_0v_1) + n_0(v_1v_2) + n_1(v_2v_0)\}
+    \end{align*}
+    Now, $\partial : C_0(K) \to 0$ since $C_{-1}(K) = 0$. Also,
+
+    \begin{align*}
+        \partial(n_2(v_0v_1) + n_0(v_1v_2) + n_1(v_2v_0)) &= n_2((v_1) - (v_0)) + n_0((v_2) - (v_1)) + n_1((v_0) - (v_2))\\
+        &= (n_1 - n_2)(v_0) + (n_2 - n_0)(v_1) + (n_0 - n_1)(v_2)\\
+        &\in C_0(K)
+    \end{align*}
+    so
+    \begin{align*}
+        Z_0(K) &= C_0(K)\\
+        Z_1(K) &= \{z((v_0v_1) + (v_1v_2) + (v_2v_0)) \col z \in \Z\} = \Z((v_0v_1) + (v_1v_2) + (v_2v_0))\\
+        B_1(K) &= \operatorname{Im}(\partial : \underbrace{C_2(K)}_{= 0} \to C_1(K)) = 0
+    \end{align*}
+
+    \[ B_0(K) = \operatorname{Im}(\partial : C_1(K) \to C_0(K)) = \{m_0v_0 + m_1v_1 + m_2v_2 \col m_0 + m_1 + m_2 = 0\} \]
+    so
+    \begin{align*}
+        H_1(K) &= Z_1(K)/B_1(K) \cong \Z\\
+        H_0(K) &= Z_0(K)/B_0(K) = C_0(K)/\{m_0v_0 + m_1v_1 + m_2v_2 \col m_0 + m_1 + m_2 = 0\}
+    \end{align*}
+    To understand this, consider $\alpha : C_0(K) \to \Z$ by $\alpha(m_0v_0 + m_1v_1 + m_2v_2) = m_0 + m_1 + m_2$. Since $\ker(\alpha) = B_0(K)$ and $\alpha$ is surjective,
+    \[ Z_0(K)/B_0(K) \cong \operatorname{Im}(\alpha) = \Z \]
+\end{example}
+
+\begin{example}{\textbf{Example:} A Solid Triangle}
+    Let $K$ be the $2$-dimensional simplex (the triangle with its interior).\\
+
+
+    We stated before $\alpha = (v_0v_1) + (v_1v_2) + (v_2v_0) \in Z_1(K)$ is still a $1$-cycle, but this is the boundary of $(v_0v_1v_2)$. Thus, $[\alpha] = 0$ in $H_1(K)$.\\
+
+    By similar work, $H_0(K) = \Z$ and $H_i(K) = 0$ if $i > 0$.
+\end{example}
+
+\begin{theorem}[\textbf{Theorem 31.5}]
+    $H_0(K) = \Z^{r}$, where $r$ is the number of components of $K$.
+\end{theorem}
+\begin{proof}{Proof:}
+    $Z_0(K) = \ker(\partial : C_0(K) \to 0) = C_0(K)$. Say that the components of $\abs{K}$ are $C_1, \ldots, C_r$.
+    \fig{0.4}{Lecture31Fig4}{}
+    Let $\phi : Z_0(K) \to \Z^{r}$ be
+    \[ \phi\left(\sum n_iv_i\right) = (\tt{sum of } n_i \tt{ for } v_i \tt{ in } C_1, \ldots, \tt{sum of } n_i \tt{ for } v_i \tt{ in } C_r) \]
+    We see $\phi$ is onto. Then, $z \in \ker(\phi)$ iff in every component $C_j$, the sum of the $n_i$'s for vertices $v_i$ in $C_j$ is zero.\\
+
+
+    Take $z = \sum n_iv_i \in \ker(\phi)$. Choose a vertex $v_j$ in $C_j$. Say $P_i$ is an edge path from $v_j$ to $v_i$ in $C_j$. Let
+    \[ \alpha = \sum_{j}\sum_{v_i \in C_j} n_iP_i \in C_1(K) \]
+    Then, as $\del P_i = ((v_i) - (v_j))$ as seen before,
+    \begin{align*}
+        \partial\alpha &= \sum_{j = 1}^{r}\sum_{v_i \in C_j} n_i((v_i) - (v_j))\\
+        &= \sum_{j = 1}^{r}\sum_{v_i \in C_j} n_iv_i - \sum_{j = 1}^{r}\underbrace{\left(\sum_{v_i \in C_j} n_i\right)}_{= 0}v_j\\
+        &= \sum_{j = 1}^{r}\sum_{v_i \in C_j} n_iv_i\\
+        &= z
+    \end{align*}
+    for $z = \partial\alpha$. Thus, $z \in B_0$. It is also clear $B_0 \subseteq \ker(\phi)$, so
+    \[ H_0(K) = Z_0(K)/B_0(K) = Z_0(K)/\ker\phi \cong \Z^{r} \]
+
+    $\qed$
+\end{proof}
