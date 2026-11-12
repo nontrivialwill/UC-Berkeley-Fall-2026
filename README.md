@@ -13,7 +13,6 @@ LaTeX lecture notes for my Fall 2026 courses at UC Berkeley, written up from my 
 | **STAT 210A** — Theoretical Statistics | Sufficiency, exponential families, Rao–Blackwell and Cramér–Rao, Bayes and minimax estimation, hypothesis testing | [PDF](STAT%20210A%20Notes/STAT%20210A%20Notes.pdf) | [.tex](https://github.com/nontrivialwill/UC-Berkeley-Fall-2026/tree/main/STAT%20210A%20Notes) |
 | **STAT C205A** — Probability Theory | Measure-theoretic probability, integration and L<sup>p</sup> spaces, independence, zero-one laws, modes of convergence | [PDF](STAT%20C205A%20Notes/STAT%20C205A%20Notes.pdf) ·  | [.tex](https://github.com/nontrivialwill/UC-Berkeley-Fall-2026/tree/main/STAT%20C205A%20Notes) |
 
-## Repository layout
 
 ## Disclaimer
 
