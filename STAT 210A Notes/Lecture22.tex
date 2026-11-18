@@ -1,0 +1,104 @@
+\tocsection{\textbf{11/10/26 Lecture 22:} Two-Sided Tests, Unbiasedness, and $p$-Values}
+
+\subsection*{Two-Sided Alternatives}
+\sectionspace
+
+Let $\cal{P} = \{P_{\theta} \col \theta \in \Theta \subseteq \R\}$ and $\theta_0 \in \Theta^{\circ}$. We want to test
+\[ H_0 \col \theta = \theta_0 \quad \tt{vs} \quad H_1 \col \theta \neq \theta_0 \]
+(this also generalizes to $H_0 \col \theta \in [\theta_1, \theta_2]$ vs.\ $H_1 \col \theta \notin [\theta_1, \theta_2]$).\\
+
+Two-tailed tests reject when a statistic $T(X)$ is ``extreme'':
+\[ \phi(x) = \left\{\begin{matrix} 1 & T(x) > c_2 \tt{ or } T(x) < c_1 \\ 0 & c_1 < T(x) < c_2 \\ \gamma_i & T(x) = c_i \quad (i = 1, 2) \end{matrix}\right. \]
+
+\begin{example}{\textbf{Example:} Normal}
+    $X \sim N(\theta, 1)$, $H_0 \col \theta = \theta_0$ vs.\ $H_1 \col \theta \neq \theta_0$.
+    \[ \phi_2(x) = 1\{\abs{x - \theta_0} > z_{\alpha/2}\} \]
+    \fig{0.4}{Lecture22Fig1}{}
+\end{example}
+
+In general, if we have a point null $H_0 \col \theta = \theta_0$, let
+\begin{align*}
+    \alpha_1 &= \bb{P}_{\theta_0}(T < c_1) + \gamma_1\bb{P}_{\theta_0}(T = c_1)\\
+    \alpha_2 &= \bb{P}_{\theta_0}(T > c_2) + \gamma_2\bb{P}_{\theta_0}(T = c_2)
+\end{align*}
+We want $\alpha_1 + \alpha_2 = \alpha$.\\
+
+\underline{Equal-Tailed Test}: We take $\alpha_1 = \alpha_2 = \alpha/2$.
+
+\begin{example}{\textbf{Example:} Exponential}
+    Suppose $X \sim \tt{Exp}(\theta)$. Test $H_0 \col \theta = 1$ vs.\ $H_1 \col \theta \neq 1$. We want to solve for
+    \[ \frac{\alpha}{2} = \bb{P}(X \leq c_1) = 1 - e^{-c_1} \implies c_1 = -\log\left(1 - \frac{\alpha}{2}\right) \]
+    Similarly,
+    \[ 1 - \frac{\alpha}{2} = 1 - e^{-c_2} \implies c_2 = -\log\left(\frac{\alpha}{2}\right) \]
+    So we get
+    \[ \phi(x) = 1\left\{x < -\log\left(1 - \frac{\alpha}{2}\right)\right\} + 1\left\{x > -\log\left(\frac{\alpha}{2}\right)\right\} \]
+    Now,
+    \begin{align*}
+        \beta_{\phi} &= \bb{P}_{\theta}\left\{X < -\log\left(1 - \frac{\alpha}{2}\right)\right\} + \bb{P}_{\theta}\left\{X > -\log\left(\frac{\alpha}{2}\right)\right\}\\
+        &= \bb{P}_{\theta}\left\{\frac{X}{\theta} < \frac{-\log(1 - \alpha/2)}{\theta}\right\} + \bb{P}_{\theta}\left\{\frac{X}{\theta} > \frac{-\log(\alpha/2)}{\theta}\right\}\\
+        &= 1 - \left(1 - \frac{\alpha}{2}\right)^{1/\theta} + \left(\frac{\alpha}{2}\right)^{1/\theta}
+    \end{align*}
+    Clearly, plugging in $\theta = 1$, we get $\alpha$. If we plug in $\theta = 1/2$, we also get $\alpha$. In fact, in between those two values, $\beta_{\phi} < \alpha$!
+    \fig{0.4}{Lecture22Fig2}{}
+    We want to shift until the minimum is at $1$, which can be done by choosing $c_1$ and $c_2$ with $\frac{d}{d\theta}\beta_{\phi}(1) = 0$.
+\end{example}
+
+\subsection*{Unbiased Tests}
+\sectionspace
+
+\begin{definition}[\textbf{Definition 22.1:} Unbiased Tests]
+    An $\alpha$-level test $\phi(X)$ is \emph{unbiased} if
+    \[ \inf_{\theta \in \Theta_1} \E_{\theta}[\phi(X)] \geq \alpha \]
+\end{definition}
+
+To do this, we choose $c_1, \gamma_1$ and $c_2, \gamma_2$ to solve
+\[ \beta(\theta_0) = \alpha \quand \dot{\beta}(\theta_0) = 0 \]
+
+\begin{example}{\textbf{Example:} 1-Parameter Exponential Families}
+    For a 1-parameter exponential family (which has MLR), say we are testing $H_0 \col \eta = \eta_0$ and $H_1 \col \eta \neq \eta_0$, with
+    \[ X \sim e^{\eta T(x) - A(\eta)}h(x) \]
+    Then, we solve
+    \begin{align*}
+        \alpha = \beta(\eta_0) &= \bb{P}_{\eta_0}(T < c_1) + \bb{P}_{\eta_0}(T > c_2)\\
+        0 = \dot{\beta}(\eta_0) &= \frac{d}{d\eta}\E_{\eta}[\phi(X)]\Big|_{\eta = \eta_0}\\
+        &= \Cov_{\eta_0}(T(X), \phi(X))\\
+        &= \E_{\eta_0}[(\phi(X) - \alpha)T(X)]\\
+        &\implies \E_{\eta_0}[\phi T] = \alpha\E_{\eta_0}[T]
+    \end{align*}
+    for $c_1$ and $c_2$. In a sense, we are trying to find the balance point of the distribution.
+\end{example}
+
+\begin{theorem}[\textbf{Theorem 22.2:} Characterizatiom of UMPU]
+    Assume $X \sim e^{\theta T(x) - A(\theta)}h(x)$ and we are testing
+    \[ H_0 \col \abs{\theta - \theta_0} \leq \delta \quad \tt{vs} \quad H_1 \col \abs{\theta - \theta_0} > \delta, \quad \delta \geq 0 \]
+    Let $\phi^{*}$ be the test that rejects for extreme $T(X)$, where $c_1, \gamma_1$ and $c_2, \gamma_2$ are chosen so that
+    \begin{enumerate}[label = (\roman*)]
+        \item $\beta_{\phi^{*}}(\theta_0 - \delta) = \beta_{\phi^{*}}(\theta_0 + \delta) = \alpha$
+        \item If $\delta = 0$, $\dot{\beta}_{\phi^{*}}(\theta_0) = 0 = \E_{\theta_0}[(T - \E_{\theta_0}T)\phi^{*}(X)]$
+    \end{enumerate}
+    Then, $\phi^{*}$ is uniformly most powerful among all unbiased tests (UMPU).
+\end{theorem}
+
+\subsection*{$p$-Values}
+\sectionspace
+
+\textbf{Informal definition of $p$-value:}
+\begin{align*}
+    p(x) &= \tt{``Null probability that } T(X) \tt{ is at least as large as observed''}\\
+    &= \tt{``}\bb{P}_{H_0}(T(X) \geq T(x))\tt{''}\\
+    &= \sup_{\theta \in \Theta_0} \bb{P}_{\theta}(T(X) \geq T(x))
+\end{align*}
+
+\begin{example}{\textbf{Example:} Binomial}
+    Let $X \sim \Binom(n, \theta)$, $H_0 \col \theta \leq 0.5$ vs.\ $H_1 \col \theta > 0.5$. Then, the $p$-value is
+    \[ p(x) = \bb{P}_{0.5}(X \geq x) = \sup_{\theta \leq 0.5} \bb{P}_{\theta}(X \geq x) \]
+\end{example}
+
+\textbf{Formal definition of $p$-value:}
+
+\begin{definition}[\textbf{Definition 22.3:} $p$-Values]
+    Let $\cal{P}$, $\Theta_0$, $\Theta_1$ be as usual. Assume we have a test $\phi_{\alpha}$ for each significance level $\alpha \in [0, 1]$. That is,
+    \[ \sup_{\theta \in \Theta_0} \E_{\theta}\phi_{\alpha}(X) \leq \alpha \]
+    Also assume $\phi_{\alpha}(x)$ is nondecreasing in $\alpha$. Then,
+    \[ p(x) = \sup\{\alpha \col \phi_{\alpha}(x) < 1\} = \inf\{\alpha \col \phi_{\alpha}(x) = 1\} \]
+\end{definition}

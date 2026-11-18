@@ -1,0 +1,122 @@
+\tocsection{\textbf{11/10/26 Lecture 20:} $L^p$-Convergence and Random Series}
+
+\begin{lemma}[\textbf{Proposition 20.1:} $L^p$-Convergence]
+    Fix $p > 0$ and let $\xi, \xi_1, \xi_2, \ldots \in L^p$ with $\xi_n \xrightarrow{P} \xi$. Then, these conditions are equivalent:
+    \begin{enumerate}[label = (\roman*)]
+        \item $\xi_n \to \xi$ in $L^p$
+        \item $\norm{\xi_n}_p \to \norm{\xi}_p$
+        \item The variables $\abs{\xi_n}^p$, $n \in \N$ are uniformly integrable
+    \end{enumerate}
+    Conversely, (i) implies $\xi_n \xrightarrow{P} \xi$.
+\end{lemma}
+\begin{proof}{Proof:}
+    $(\Leftarrow)$ Assume $\xi_n \to \xi$ in $L^p$. Then $\norm{\xi_n}_p \to \norm{\xi}_p$ by a previous result, and we see that, for any $\epsilon > 0$,
+    \[ P\{\abs{\xi_n - \xi} > \epsilon\} = P\{\abs{\xi_n - \xi}^p > \epsilon^p\} \leq \epsilon^{-p}\norm{\xi_n - \xi}_p^p \to 0 \]
+    by Chebychev, so $\xi_n \xrightarrow{P} \xi$.\\
+
+    $(\Rightarrow)$ Now, assume $\xi_n \xrightarrow{P} \xi$. Then, $\abs{\xi_n}^p \xrightarrow{d} \abs{\xi}^p$ by the continuous mapping lemma and as convergence in probability implies convergence in distribution, so by Lemma 19.2, (ii) and (iii) are equivalent.\\
+
+    
+    Now, assume (ii) and suppose (i) fails. Then, there exists a subsequence $N' \subseteq \N$ such that $\inf_{n \in N'} \norm{\xi_n - \xi}_p > 0$. Now, as $\xi_n \xrightarrow{P} \xi$, we can find a further subsequence $N'' \subseteq N'$ such that $\xi_n \to \xi$ a.s.\ along $N''$, which implies $\norm{\xi_n - \xi}_p \to 0$ along $N''$, which is a contradiction.\\
+
+    Thus, (ii) $\implies$ (i), and as (i) $\implies$ (ii), we are done.
+
+    $\qed$
+\end{proof}
+
+\begin{lemma}[\textbf{Proposition 20.2:} Sums with Positive Terms]
+    Let $\xi_1, \xi_2, \ldots$ be independent $\R_{+}$-valued random variables. Then, $\sum_n \xi_n < \infty$ a.s.\ iff $\sum_n \mathbb{E}[\xi_n \wedge 1] < \infty$.
+\end{lemma}
+\begin{proof}{Proof:}
+    Assuming the condition, we see $\mathbb{E}\sum_n(\xi_n \wedge 1) < \infty$ by Fubini's theorem, so $\sum_n(\xi_n \wedge 1) < \infty$ a.s.\\
+
+    In particular, $\sum_n 1\{\xi_n > 1\} < \infty$ a.s., so $\sum_n(\xi_n \wedge 1)$ and $\sum_n \xi_n$ differ at finitely many values. Thus, $\sum_n \xi_n < \infty$ a.s.\\
+
+    Conversely, assume $\sum_n \xi_n < \infty$ a.s. Then, also $\sum_n(\xi_n \wedge 1) < \infty$ a.s., so we can assume WLOG $\xi_n \leq 1$ for all $n$.\\
+
+    Using that $1 - x \leq e^{-x} \leq 1 - ax$ for $x \in [0, 1]$, where $a = 1 - e^{-1}$,
+    \begin{align*}
+        0 < \mathbb{E}\left[e^{-\sum_n \xi_n}\right] &= \prod_n \mathbb{E}[e^{-\xi_n}]\\
+        &\leq \prod_n(1 - a\mathbb{E}[\xi_n])\\
+        &\leq \prod_n e^{-a\mathbb{E}[\xi_n]}\\
+        &= e^{-a\sum_n \mathbb{E}[\xi_n]}
+    \end{align*}
+    (the first inequality holds since $\sum_n \xi_n < \infty$ a.s.), and so $\sum_n \mathbb{E}\xi_n < \infty$, as otherwise $0 = e^{-a\sum_n \mathbb{E}\xi_n}$.
+
+    $\qed$
+\end{proof}
+
+\textbf{Note:} $\sum_n \xi_n$ converges $\iff \lim_{N \to \infty} \sup_{m} \abs{\xi_{N + 1} + \cdots + \xi_{N + m}} = 0$.
+
+\begin{lemma}[\textbf{Lemma 20.3:} Maximum Inequality (Kolmogorov)]
+    Let $\xi_1, \xi_2, \ldots$ be independent random variables with mean zero, and put $S_n = \xi_1 + \cdots + \xi_n$. Then,
+    \[ P\left\{\sup_n \abs{S_n} > r\right\} \leq r^{-2}\sum_n \mathbb{E}\xi_n^2, \quad r > 0 \]
+\end{lemma}
+\begin{proof}{Proof:}
+    Assume $\sum_n \mathbb{E}\xi_n^2 < \infty$ (otherwise obvious). Letting $\tau = \inf\{n \col \abs{S_n} > r\}$, and noting that
+    \[ S_k1\{\tau = k\} \perp\!\!\!\perp (S_n - S_k) \quad \tt{for } k \leq n \]
+    since $S_k1\{\tau = k\}$ is measurable with respect to $\sigma(\xi_1, \ldots, \xi_k)$ and $S_n - S_k$ is measurable with respect to $\sigma(\xi_{k + 1}, \ldots, \xi_n)$. Then, we see
+    \begin{align*}
+        \sum_{k \leq n} \mathbb{E}\xi_k^2 &= \mathbb{E}S_n^2 \quad (\mathbb{E}\xi_n = 0)\\
+        &\geq \sum_{k \leq n} \mathbb{E}[S_n^2 ; \tau = k]\\
+        &\geq \sum_{k \leq n}\left\{\mathbb{E}[S_k^2 ; \tau = k] + 2\mathbb{E}[S_k(S_n - S_k) ; \tau = k]\right\}\\
+        &= \sum_{k \leq n} \mathbb{E}[S_k^2 ; \tau = k]\\
+        &\geq \sum_{k \leq n} r^2P\{\tau = k\}\\
+        &= r^2P\{\tau \leq n\}
+    \end{align*}
+    where
+    \begin{itemize}
+        \item the second inequality uses $S_n^2 = S_k^2 + 2S_k(S_n - S_k) + (S_n - S_k)^2$,
+        \item the equality uses $S_k1\{\tau = k\} \perp\!\!\!\perp S_n - S_k$ and $\mathbb{E}[S_n - S_k] = 0$,
+        \item the last inequality uses $S_k^2 1\{\tau = k\} \geq r^2 1\{\tau = k\}$.
+    \end{itemize}
+    Taking $n \to \infty$,
+    \[ \sum_k \mathbb{E}\xi_k^2 \geq r^2P\{\tau < \infty\} = r^2P\left\{\sup_k \abs{S_k} > r\right\} \]
+
+    $\qed$
+\end{proof}
+
+\textbf{Remark:} This is quite remarkable since
+\[ P\{\abs{S_n} > r\} \leq \frac{\mathbb{E}[S_n^2]}{r^2} = \frac{\sum_{k \leq n} \mathbb{E}\xi_k^2}{r^2} \quad (\tt{mean } 0) \]
+so Chebyshev extends!
+
+\begin{lemma}[\textbf{Lemma 20.4:} Variance Criterion for Series]
+    Let $\xi_1, \xi_2, \ldots$ be independent random variables with mean $0$ and $\sum_n \mathbb{E}\xi_n^2 < \infty$. Then, $\sum_n \xi_n$ converges a.s.
+\end{lemma}
+\begin{proof}{Proof:}
+    Write $S_n = \xi_1 + \cdots + \xi_n$. By the lemma, for any $\epsilon > 0$,
+    \[ P\left\{\sup_{k \geq n} \abs{S_n - S_k} > \epsilon\right\} \leq \epsilon^{-2}\sum_{k \geq n} \mathbb{E}\xi_k^2 \]
+    Thus, $\sup_{k \geq n} \abs{S_n - S_k} \xrightarrow{P} 0$ as $n \to \infty$. Then, $\sup_{k \geq n} \abs{S_n - S_k} \to 0$ a.s.\ along a subsequence.\\
+
+    By the triangle inequality,
+    \[ \sup_{k, \ell \geq n} \abs{S_k - S_{\ell}} \leq \sup_{k \geq n} \abs{S_n - S_k} + \sup_{\ell \geq n} \abs{S_n - S_{\ell}} \]
+    so the LHS converges to $0$ along the subsequence. Moreover, the sup is non-increasing in $n$, so a.s.\ convergence extends to the entire sequence. Thus, $(S_n)$ is a.s.\ Cauchy.\\
+
+    Thus, $S_n$ converges a.s.\ by a previous lemma.
+
+    $\qed$
+\end{proof}
+
+\begin{theorem}[\textbf{Theorem 20.5:} Positive and Symmetric Terms]
+    Let $\xi_1, \xi_2, \ldots$ be independent symmetric random variables. Then, these conditions are equivalent:
+    \begin{enumerate}[label = (\roman*)]
+        \item $\sum_n \xi_n$ converges a.s.
+        \item $\sum_n \xi_n^2 < \infty$ a.s.
+        \item $\sum_n \mathbb{E}[\xi_n^2 \wedge 1] < \infty$
+    \end{enumerate}
+    If these conditions fail, then $\abs{\sum_{k \leq n} \xi_k} \xrightarrow{P} \infty$; that is, for all $r > 0$,
+    \[ P\left\{\abs{\sum_{k \leq n} \xi_k} < r\right\} \to 0 \]
+\end{theorem}
+\begin{proof}{Proof:}
+    We have (ii) $\iff$ (iii) from earlier.\\
+
+    
+  
+    Now, assume (iii). Then, $\sum_n \xi_n1\{\abs{\xi_n} \leq 1\}$ converges a.s.\ by Lemma 20.4 as $\mathbb{E}[\xi_n1\{\abs{\xi_n} \leq 1\}] = 0$ and
+    \[ \sum_n \mathbb{E}\left[(\xi_n1\{\abs{\xi_n} \leq 1\})^2\right] \leq \sum_n \mathbb{E}[\xi_n^2 \wedge 1] < \infty \]
+    Then, by Fubini's theorem applied to (iii), $\sum_n 1\{\abs{\xi_n} > 1\} < \infty$ a.s., so $\sum_n \xi_n1\{\abs{\xi_n} \leq 1\}$ and $\sum_n \xi_n$ differ by finitely many terms, so $\sum_n \xi_n$ converges a.s.\\
+
+    Now, assume (i) and suppose (ii) fails. Then, $\sum_n \xi_n^2 = \infty$ a.s.\ by Kolmogorov's 0-1 law. Using an argument outside the scope of this course, we see $\abs{S_n} \xrightarrow{P} \infty$. Thus, $\abs{S_n} \to \infty$ a.s.\ along a subsequence, which contradicts (i).
+
+    $\qed$
+\end{proof}

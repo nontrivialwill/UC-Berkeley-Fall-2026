@@ -1,0 +1,127 @@
+\tocsection{\textbf{11/13/26 Lecture 31:} Hausdorff Spaces and the Finite Intersection Property}
+
+\begin{lemma}[\textbf{Proposition 31.1}]
+    Let $f : X \to Y$ be continuous and let $X$ be compact. Then, $f(X)$ is compact.
+\end{lemma}
+\begin{proof}{Proof:}
+    If $f(X) \subseteq \bigcup U_{\alpha}$, then $X \subseteq \bigcup f^{-1}(U_{\alpha})$, so by compactness,
+    \[ X = \bigcup_{i = 1}^{n} f^{-1}(U_{\alpha_i}) \]
+    Then,
+    \[ f(X) \subseteq \bigcup_{i = 1}^{n} U_{\alpha_i} \]
+
+    $\qed$
+\end{proof}
+
+\begin{lemma}[\textbf{Corollary 31.2}]
+    % NOTE (check): X needs to be nonempty. f(X) is a compact subset of R, so it's closed and bounded, and the sup is a max.
+    Let $f : X \to \R$ be continuous with $X$ compact. Then, there exists $x \in X$ such that
+    \[ f(x) = \sup_{y \in X} f(y) \]
+\end{lemma}
+
+\begin{example}{\textbf{Example:} Compact $\not\Rightarrow$ Closed}
+    % NOTE (check): {0} is compact because there are only finitely many open sets. It isn't closed because the only closed sets are the empty set and {0, 1}.
+    Take $\{0, 1\}$ with the indiscrete topology. $\{0\}$ is compact but not closed.
+\end{example}
+
+\begin{definition}[\textbf{Definition 31.3:} Hausdorff Spaces]
+    % FIXED: page has "for every x, y in X"; added x != y (otherwise no space with a point would be Hausdorff).
+    We say a topological space $X$ is \emph{Hausdorff} if for every $x, y \in X$ with $x \neq y$, there exist disjoint open sets $U, V$ such that $x \in U$, $y \in V$.
+\end{definition}
+
+\begin{example}{\textbf{Example:} Metric Spaces}
+    % NOTE (check): for x != y, so that d(x, y) > 0. The balls are disjoint by the triangle inequality: a point z in both would give d(x, y) <= d(x, z) + d(z, y) < d(x, y).
+    Metric spaces are always Hausdorff, as for $x, y \in X$,
+    \[ B\left(x, \frac{d(x, y)}{2}\right) \cap B\left(y, \frac{d(x, y)}{2}\right) = \emptyset \]
+\end{example}
+
+\begin{lemma}[\textbf{Proposition 31.4}]
+    Let $A \subseteq X$ be compact and suppose $X$ is Hausdorff. Then, $A$ is closed.
+\end{lemma}
+\begin{proof}{Proof:}
+    Let $x \in A^{c}$. For all $y \in A$, we can find open sets $x \in U_y$ and $y \in V_y$ such that $U_y \cap V_y = \emptyset$. Now,
+    \[ A \subseteq \bigcup_{y \in A} V_y \]
+    % NOTE (check): the finite subcover uses compactness of A in the sense of the note in Lecture 30 (covers of A by open sets of X).
+    so $A \subseteq \bigcup_{i = 1}^{n} V_{y_i}$. Thus, noting that for $U = \bigcap_{i = 1}^{n} U_{y_i}$, an open set, $x \in U$, and as $U \cap V_{y_i} = \emptyset$, we see $U \cap A = \emptyset$. Thus, $U \subseteq A^{c}$. Letting $U_x := U$, then we see
+    \[ A^{c} = \bigcup_{x \in A^{c}} U_x \]
+    so $A^{c}$ is open.
+
+    $\qed$
+\end{proof}
+
+Now, we want to answer the question: if the $X_{\alpha}$ are compact, is $\prod_{\alpha} X_{\alpha}$ compact?
+
+\begin{definition}[\textbf{Definition 31.5:} Finite Intersection Property]
+    Let $X$ be a set. A collection of subsets of $X$ has the \emph{finite intersection property} (f.i.p.) if the intersection of any finite subcollection is nonempty.
+\end{definition}
+
+\begin{lemma}[\textbf{Proposition 31.6}]
+    Let $X$ be a topological space. Then, $X$ is compact iff every collection of closed sets with the finite intersection property has nonempty intersection.
+\end{lemma}
+\begin{proof}{Proof:}
+    Let $X$ be compact and let $\{C_{\alpha}\}$ be a collection of closed sets with the f.i.p. If $\bigcap_{\alpha} C_{\alpha} = \emptyset$, then note that $X = \bigcup_{\alpha} C_{\alpha}^{c}$. Then, by compactness,
+    \[ X = \bigcup_{i = 1}^{n} C_{\alpha_i}^{c} \]
+    Thus, we see $\emptyset = \bigcap_{i = 1}^{n} C_{\alpha_i}$, which violates the f.i.p.\\
+
+    % FIXED: page has "so the intersection of the U_alpha is nonempty"; changed to the intersection of the U_alpha^c (that's what the f.i.p. of {U_alpha^c} gives, and it contradicts {U_alpha} covering X).
+    % NOTE (check): the U_alpha^c are closed, which is why the hypothesis applies to them.
+    Conversely, let $\{U_{\alpha}\}$ be an open cover of $X$ and suppose no finite subcover exists. Then, $\bigcap_{i = 1}^{n} U_{\alpha_i}^{c} \neq \emptyset$ for all $\alpha_i$, $n$. Thus, $\{U_{\alpha}^{c}\}$ has the f.i.p., so $\bigcap_{\alpha} U_{\alpha}^{c} \neq \emptyset$, which is a contradiction.
+
+    $\qed$
+\end{proof}
+
+Let's say $X, Y$ are compact and we want to show $X \times Y$ is compact. Let $\cal{C}$ be a collection of closed sets in $X \times Y$ with the f.i.p. Consider the collections
+\[ \{\overline{\pi_X(C)} \subseteq X \mid C \in \cal{C}\} \quand \{\overline{\pi_Y(C)} \subseteq Y \mid C \in \cal{C}\} \]
+% NOTE (check): the f.i.p. passes to the projections since pi_X(C_1 cap ... cap C_n) is contained in the intersection of the pi_X(C_i) (and similarly for closures).
+These collections have the f.i.p., so their intersection is nonempty by compactness. Thus,
+\[ x \in \bigcap_{C} \overline{\pi_X(C)} \quand y \in \bigcap_{C} \overline{\pi_Y(C)} \]
+Is $(x, y) \in \bigcap_{C \in \cal{C}} C$? Not necessarily.
+\fig{0.5}{Lecture31Fig1}{}
+% FIXED: page has [1/3, 2/3] contained in the collections {pi_X(C) : C in C} and {pi_Y(C) : C in C}; changed to their intersections (that's where x and y come from). Also the point (1/3, 2/3) is written with a left bracket on the page.
+% NOTE (check): here X = Y = [0, 1]. D itself is closed and convex, so D is in C and the intersection of C is exactly D. Every C in C contains D, so each projection contains [1/3, 2/3].
+Let $\cal{C}$ be the closed convex sets containing $D$. Then,
+\[ [1/3, 2/3] \subseteq \bigcap\{\overline{\pi_X(C)} \subseteq X \mid C \in \cal{C}\} \quand [1/3, 2/3] \subseteq \bigcap\{\overline{\pi_Y(C)} \subseteq Y \mid C \in \cal{C}\} \]
+but $(1/3, 2/3) \notin D = \bigcap_{C \in \cal{C}} C$.\\
+
+Note $(1/3, 1/3) \in D$ though, so we need to coordinate the $x$ and $y$ we choose.\\
+
+\textbf{Idea:} Enlarge $\cal{C}$ in some maximal way which makes the intersection smaller, so that the set gives a point that works.\\
+
+% FIXED: page has C' >= C; written as C' contains C (P is ordered by inclusion).
+Let $\cal{C}$ be a collection of sets with the f.i.p. Let $\mathbb{P}$ be the super-collection of collections $\cal{C}'$ that have the f.i.p.\ and $\cal{C}' \supseteq \cal{C}$.\\
+
+$\mathbb{P}$ is partially ordered under inclusion.
+
+\begin{lemma}[\textbf{Proposition 31.7}]
+    % NOTE (check): with Zorn's lemma, this gives a maximal element of P (P is nonempty since C is in it), which is what Proposition 31.8 is about.
+    Every chain in $\mathbb{P}$ has an upper bound.
+\end{lemma}
+\begin{proof}{Proof:}
+    % NOTE (check): if the chain is empty, C itself is an upper bound, so assume it's nonempty (that's where "clearly C is in U" comes from).
+    Let $\cal{G}$ be a chain in $\mathbb{P}$. Let
+    \[ \cal{U} = \bigcup_{\cal{C}' \in \cal{G}} \cal{C}' \]
+    Clearly $\cal{C} \subseteq \cal{U}$. We just need to check that it has the f.i.p.\\
+
+    % NOTE (check): C* is the largest of the finitely many C_j, which exists because a chain is totally ordered.
+    % FIXED: page has C_j <= C*; written as C_j contained in C*.
+    Let $C_1, \ldots, C_n \in \cal{U}$. We know $C_j \in \cal{C}_j$ for some $\cal{C}_j \in \cal{G}$. Then, as this is a chain, we see there is a $\cal{C}^{*}$ such that $\cal{C}_j \subseteq \cal{C}^{*}$ for all $j$, so
+    \[ C_1, \ldots, C_n \in \cal{C}^{*} \implies \bigcap C_i \neq \emptyset \]
+    as $\cal{C}^{*}$ has the f.i.p. Thus, $\cal{U}$ has the f.i.p.
+
+    $\qed$
+\end{proof}
+
+\begin{lemma}[\textbf{Proposition 31.8}]
+    Let $\cal{D}$ be a maximal element of $\mathbb{P}$. Then,
+    \begin{enumerate}[label = (\arabic*)]
+        \item $\cal{D}$ is closed under finite intersections.
+        \item If $E \subseteq X$ intersects every $D \in \cal{D}$, then it is in $\cal{D}$.
+    \end{enumerate}
+\end{lemma}
+\begin{proof}{Proof:}
+    % NOTE (check): D cup {D_1 cap ... cap D_n} has the f.i.p. because any finite intersection from it is a finite intersection of members of D. It's in P since it contains C, so it equals D by maximality.
+    (1) If $D_1, \ldots, D_n \in \cal{D}$, we claim that $\cal{D} \cup \{\bigcap_{i = 1}^{n} D_i\}$ still has the f.i.p.\ (obvious), so it must be that $\bigcap_{i = 1}^{n} D_i \in \cal{D}$ by maximality.\\
+
+    % NOTE (check): (2) isn't proved in these notes. Sketch: if E meets every member of D, then by (1) it meets every finite intersection D_1 cap ... cap D_n, so D cup {E} has the f.i.p., and maximality gives E in D.
+
+    $\qed$
+\end{proof}

@@ -1,0 +1,160 @@
+\tocsection{\textbf{11/12/26 Lecture 23:} Confidence Sets, Nuisance Parameters, and Conditional Testing}
+
+\begin{lemma}[\textbf{Proposition 23.1}]
+    % NOTE (check): as written (with >= in the conclusion) this is false for discrete T. E.g. T ~ Bernoulli(1/2) under a simple null and alpha = 0.1: then c_alpha = 1 (P(T > 1) = 0 <= 0.1, but P(T > c) = 1/2 for c < 1), and P(T >= 1) = 1/2 > 0.1. What holds by the definition of c_alpha is P_theta(T(X) > c_alpha) <= alpha for all theta in Theta_0 (the min is attained since c -> P(T > c) is right-continuous). The point of the proposition is probably the p-value p(x) = sup_{theta in Theta_0} P_theta(T(X) >= T(x)) from last lecture: for a non-randomized test, p(X) <= alpha exactly when T(X) > c_alpha, so P_theta(p(X) <= alpha) <= alpha, which is the super-uniformity in the next definition. Worth checking against the official notes.
+    Assume for each $\alpha$, we reject for large $T(X)$, taking the threshold $c_{\alpha}$ as small as possible while maintaining Type I error control:
+    \[ c_{\alpha} = \min\{c \col \bb{P}_{\theta}(T(X) > c) \leq \alpha\ \forall \theta \in \Theta_0\} \]
+    Then,
+    \[ \bb{P}_{\theta}(T(X) \geq c_{\alpha}) \leq \alpha \quad \forall \theta \in \Theta_0 \]
+    if the test is not randomized.
+\end{lemma}
+
+\begin{definition}[\textbf{Definition 23.2:} Super-Uniform $p$-Values]
+    % NOTE (check): for a family of valid level-alpha tests phi_alpha that is monotone in alpha (Definition 22.3), this always holds for non-randomized tests: p(X) < alpha forces phi_alpha(X) = 1, so P_theta(p(X) < alpha) <= alpha, and letting alpha' decrease to alpha gives P_theta(p(X) <= alpha) <= alpha.
+    The $p$-value of any valid test $\phi_{\alpha}$ is \emph{super-uniform} on the null if
+    \[ \bb{P}_{\theta}(p(X) \leq \alpha) \leq \alpha \quad \forall \theta \in \Theta_0 \]
+\end{definition}
+
+\begin{definition}[\textbf{Definition 23.3:} Conservative Tests]
+    % NOTE (check): i.e. sup_{theta in Theta_0} E_theta phi(X) < alpha (strictly), as for a non-randomized test of a discrete statistic.
+    A test is called \emph{conservative} if its rejection probability is less than $\alpha$.
+\end{definition}
+
+\begin{example}{\textbf{Example:} Two Tests for a Normal Mean}
+    $X \sim N_d(\mu, I_d)$, $H_0 \col \mu = 0$, $H_1 \col \mu \neq 0$. We could reject for large
+    \[ T_1 = \norm{X}_2^2 \quad (\chi^2 \tt{ test}) \quad \tt{or} \quad T_2(X) = \norm{X}_{\infty} = \max_i \abs{X_i} \quad (\tt{max-test}) \]
+\end{example}
+
+\subsection*{Confidence Sets}
+\sectionspace
+
+\textbf{Problem with $p$-values:} They don't tell you if $H_0$ is ``very wrong'' or not. That is, they don't tell you where you expect $\theta$ to actually be.\\
+
+\textbf{Solution:} Confidence sets.
+
+\begin{definition}[\textbf{Definition 23.4:} Confidence Regions]
+    Let $\cal{P} = \{P_{\theta} \col \theta \in \Theta\}$ with estimand $g(\theta)$. We say $C(X)$ is a \emph{$1 - \alpha$ confidence region} if
+    \[ \bb{P}_{\theta}(C(X) \ni g(\theta)) \geq 1 - \alpha \quad \tt{for all } \theta \in \Theta \]
+    We say $C(x)$ \emph{covers} $g(\theta)$ if $C(x) \ni g(\theta)$, and the \emph{coverage probability} at $\theta$ is $\bb{P}_{\theta}(C(X) \ni g(\theta))$. The \emph{confidence level} of $C(X)$ is
+    \[ \inf_{\theta \in \Theta} \bb{P}_{\theta}(C(X) \ni g(\theta)) \]
+\end{definition}
+
+The use of $\ni$ is deliberate. $C(X)$ is random, and covering $g(\theta)$ is the action of $C(X)$ on the fixed object.\\
+
+When $C(X)$ is still random, we can say ``$C(X)$ has an X\% probability of covering $g(\theta)$'', but after $C(x)$ is computed, it either does or it doesn't; there is no probability.
+
+\subsection*{Duality of Tests and Confidence Regions}
+\sectionspace
+
+% FIXED: page has "H_0: g(theta) != a" for the alternative; changed to H_1.
+\underline{Inverting a Test}: Start with level-$\alpha$ tests $\phi(x; a)$ for
+\[ H_0 \col g(\theta) = a \quad \tt{vs} \quad H_1 \col g(\theta) \neq a \]
+Then, let
+\[ C(X) = \{a \col \phi(X; a) < 1\} = \tt{``all non-rejected values''} \]
+% NOTE (check): the equality P(C(X) not containing g(theta)) = P(phi(X; g(theta)) = 1) is the definition of C(X); the <= alpha is P(phi = 1) <= E_theta phi(X; g(theta)) <= alpha, since phi(X; g(theta)) is a level-alpha test of the true null g(theta) = a. This works for randomized tests too.
+This is a confidence set, as for all $\theta$,
+\begin{align*}
+    \bb{P}_{\theta}(C(X) \not\ni g(\theta)) &= \bb{P}_{\theta}(\phi(X; g(\theta)) = 1)\\
+    &\leq \alpha \quad \forall \theta
+\end{align*}
+Conversely, we can obtain a level-$\alpha$ test by letting
+\[ \phi(x; a) = 1\{a \notin C(x)\} \]
+and this is a valid level-$\alpha$ test.
+
+\subsection*{Confidence Interval for the Median}
+\sectionspace
+
+$X_1, \ldots, X_n \iidsim F$, $F$ a continuous cdf, and let $g(F) = \tt{median}(F) = F^{-1}(1/2)$.\\
+
+The \emph{sign test}:
+\begin{align*}
+    H_0 &\col g(F) = \mu \iff F(\mu) = 1/2\\
+    \tt{vs} \quad H_1 &\col g(F) \neq \mu \iff F(\mu) \neq 1/2
+\end{align*}
+Letting $S(X; \mu) = \#\{X_i > \mu\}$, for instance, we know this is $\Binom(n, 1 - F(\mu))$. Under the null, this is $\Binom(n, 1/2)$.\\
+
+% FIXED: page has "reject if S(X) > 85" (or a 55 written like 85); with n = 100 and c_alpha = 5, |S - 50| > 5 means S > 55 or S < 45.
+Thus, we could reject for large values of
+\[ T(X, \mu) = \abs{S(X, \mu) - \frac{n}{2}} \]
+(e.g.\ if $n = 100$, $c_{\alpha} = 5$, reject if $S(X) > 55$ or $S(X) < 45$).\\
+
+% NOTE (check): the last step uses #{X_i > mu} = k iff X_(n-k) <= mu < X_(n-k+1) (no ties a.s. since F is continuous, with X_(0) = -infinity and X_(n+1) = +infinity), so k in [n/2 - c_alpha, n/2 + c_alpha] iff mu in [X_(n/2 - c_alpha), X_(n/2 + c_alpha + 1)). Here n is even and c_alpha < n/2 is an integer.
+To make the confidence set, invert the test:
+\begin{align*}
+    \mu \in C(X) &\iff \abs{S(X, \mu) - n/2} \leq c_{\alpha}\\
+    &\iff \#\{X_i > \mu\} \in [n/2 - c_{\alpha}, n/2 + c_{\alpha}]\\
+    &\iff \mu \in [X_{(n/2 - c_{\alpha})}, X_{(n/2 + c_{\alpha} + 1)})
+\end{align*}
+
+\begin{definition}[\textbf{Definition 23.5:} Confidence Intervals and Bounds]
+    If $C(X) = [C_L(X), C_R(X)] \subseteq \R$, we call it a \emph{confidence interval}. If $C(X) = [C_L(X), \infty)$ or $(-\infty, C_U(X)]$, we say $C_L(X)$ is a \emph{lower confidence bound} and $C_U(X)$ an \emph{upper confidence bound}.
+\end{definition}
+
+\begin{definition}[\textbf{Definition 23.6:} UMA and UMAU]
+    A confidence bound is \emph{uniformly most accurate} (UMA) if it inverts a UMP test, and a confidence interval is \emph{uniformly most accurate unbiased} (UMAU) if it inverts a UMPU test.
+\end{definition}
+
+\begin{example}{\textbf{Example:} Exponential}
+    $X \sim \tt{Exp}(\theta)$, $\frac{1}{\theta}e^{-x/\theta}$, $x > 0$, $\theta > 0$. Cdf:
+    \[ \bb{P}_{\theta}(X \leq x) = 1 - e^{-x/\theta} \]
+    We want an LCB $C(X)$ for $\theta$. We will invert the UMP test for $H_0 \col \theta \leq \theta_0$ vs.\ $H_1 \col \theta > \theta_0$.\\
+
+    % FIXED: page has c_alpha = -ln theta_0 log(alpha) (an extra "ln"); the next line uses c_alpha = -theta_0 log(alpha).
+    This test rejects for large values of $X$, so we want to solve
+    \[ \alpha = \bb{P}_{\theta_0}(X > c_{\alpha}) = e^{-c_{\alpha}/\theta_0} \iff c_{\alpha} = -\theta_0\log(\alpha) \]
+    Inverting, we see the test rejects iff $X > -\theta_0\log(\alpha)$, so
+    \[ C(X) = \{\theta_0 \col X \leq -\theta_0\log\alpha\} = \left[\frac{X}{-\log\alpha}, \infty\right) \]
+    % NOTE (check): since theta > 0, the UCB interval is really (0, X/(-log(1 - alpha))]; writing -infinity just matches the form in Definition 23.5.
+    By the same idea, we can obtain the UCB by inverting the UMP test for $H_0 \col \theta \geq \theta_0$ vs.\ $H_1 \col \theta < \theta_0$. We reject when $X < -\theta_0\log(1 - \alpha)$, giving confidence region
+    \[ C(X) = \{\theta_0 \col X \geq -\theta_0\log(1 - \alpha)\} = \left(-\infty, \frac{X}{-\log(1 - \alpha)}\right] \]
+    % NOTE (check): the intersection has coverage >= 1 - alpha by a union bound (each bound misses with probability alpha/2).
+    To obtain a $1 - \alpha$ confidence interval by inverting the equal-tailed test, we can simply intersect the bounds computed at level $1 - \alpha/2$, so
+    \[ C(X) = \left[\frac{X}{-\log(\alpha/2)}, \frac{X}{-\log(1 - \alpha/2)}\right] \]
+    % NOTE (check): c_1 < c_2 are the UMPU cutoffs for theta_0 = 1 (acceptance region c_1 <= X <= c_2); since Exp is a scale family, the cutoffs at theta_0 are theta_0 c_1 and theta_0 c_2.
+    Inverting the UMPU test can be harder, but as Exp is a scale family, the CI is of the form
+    \[ C(X) = \{\theta_0 \col \theta_0c_1 \leq X \leq \theta_0c_2\} = \left[\frac{X}{c_2}, \frac{X}{c_1}\right] \]
+\end{example}
+
+\subsection*{Nuisance Parameters}
+\sectionspace
+
+Observe $X \sim P_{\theta, \lambda}$ for $\cal{P} = \{P_{\theta, \lambda} \col (\theta, \lambda) \in \Omega\}$. We test $H_0 \col \theta \in \Theta_0$ and $H_1 \col \theta \in \Theta_1$. We call $\theta$ the \emph{parameter of interest} and $\lambda$ the \emph{nuisance parameter}.\\
+
+\textbf{Issue:} $\lambda$ is unknown and we don't care about it, but it may affect the rejection probability. Thus, a valid test must be valid for all $\lambda$.
+
+\begin{example}{\textbf{Example:} Two-Sample Normal}
+    $X_1, \ldots, X_n \iidsim N(\mu, \sigma^2)$, $Y_1, \ldots, Y_m \iidsim N(\nu, \sigma^2)$ ($X \perp\!\!\!\perp Y$), and $\mu, \nu$, and $\sigma^2 > 0$ are unknown, and we want to test
+    \[ H_0 \col \mu = \nu \quad \tt{vs} \quad H_1 \col \mu \neq \nu \]
+    % FIXED: page has the alternative nuisance parameter as (mu + lambda, sigma^2); changed to (mu + nu, sigma^2) (lambda can't appear in its own definition). There's also a small "sigma^2" mark above it on the page.
+    We can express our parameter of interest $\theta = \mu - \nu$, and our nuisance parameter can be $\lambda = (\mu, \sigma^2)$ (or $\lambda = (\mu + \nu, \sigma^2)$). Then, we want to test
+    \[ H_0 \col \theta = 0 \quad \tt{vs} \quad H_1 \col \theta \neq 0 \]
+\end{example}
+
+\begin{example}{\textbf{Example:} Two Poissons}
+    $X \sim \tt{Pois}(\mu)$, $Y \sim \tt{Pois}(\nu)$ with $X \perp\!\!\!\perp Y$. We want to test $H_0 \col \mu \leq \nu$ vs.\ $H_1 \col \mu > \nu$.\\
+
+    We could call $\mu - \nu$ the parameter of interest, but it is typically more natural to use $\theta = \frac{\mu}{\mu + \nu}$ and $\lambda = \mu + \nu$, so
+    \[ H_0 \col \theta \leq 1/2 \quad \tt{vs} \quad H_1 \col \theta > 1/2 \]
+\end{example}
+
+\subsection*{Conditional Testing}
+\sectionspace
+
+\begin{example}{\textbf{Example:} Binomial Distribution with Random Sample Size}
+    \begin{enumerate}
+        \item Sample $N \sim \tt{Pois}(10)$
+        \item Sample $X \mid N = n \sim \Binom(n, \theta)$
+    \end{enumerate}
+    We observe $(N, X)$ and test $H_0 \col \theta \leq 1/2$ vs.\ $H_1 \col \theta > 1/2$.\\
+
+    \underline{Two ideas for testing}:
+    \begin{enumerate}
+        % NOTE (check): X ~ Pois(10 theta) is Poisson thinning. Validity for all theta <= 1/2 is because Pois(10 theta) is stochastically increasing in theta (that's the MLR).
+        \item Marginally, $X \sim \tt{Pois}(10 \cdot \theta)$. This has MLR in $X$, so we can test $\theta \leq 1/2$ vs.\ $\theta > 1/2$ easily by taking $c_{\alpha}^{(1)}$ to be the upper $\alpha$-quantile of a $\tt{Pois}(5)$ distribution and rejecting if $X > c_{\alpha}^{(1)}$. This gives us a valid test with $\E_{\theta}\phi_1(X) \leq \alpha$ for all $\theta \leq 1/2$.
+        \item We have $X \mid N = n \sim \Binom(n, \theta)$, which has MLR in $X$, so we can reject if $X > c_{\alpha}^{(2)}(n)$, the upper $\alpha$-quantile of $\Binom(n, 1/2)$. This gives a conditionally valid test $\phi_2$ in the sense
+        \[ \E_{\theta}[\phi_2(X) \mid N = n] \leq \alpha \quad \forall n \geq 0 \tt{ and } \theta \leq 1/2 \]
+        so hence, $\E_{\theta}\phi_2(X) \leq \alpha$ for $\theta \leq 1/2$.
+    \end{enumerate}
+    % NOTE (check): there's no UMP test for the whole distribution because the joint likelihood theta^x (1 - theta)^{n - x} = (1 - theta)^n (theta/(1 - theta))^x weighs n and x differently for different alternatives (a curved exponential family). phi_2 being UMP for the conditional problem needs randomization at the cutoff for exact level alpha given N = n.
+    Both of these were valid! Neither are UMP for the entire distribution, however, but $\phi_2$ is UMP for the conditional problem.
+\end{example}

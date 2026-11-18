@@ -1,0 +1,101 @@
+\tocsection{\textbf{11/12/26 Lecture 21:} The Three-Series Criterion}
+
+\begin{theorem}[\textbf{Theorem 21.1:} Three-Series Criterion]
+    Let $\xi_1, \xi_2, \ldots$ be independent random variables. Then, $\sum_n \xi_n$ converges a.s.\ iff it converges in distribution, and also iff these conditions are fulfilled:
+    % NOTE (check): Var[xi_n; |xi_n| <= 1] means the variance of xi_n 1{|xi_n| <= 1}, matching E[xi_n; |xi_n| <= 1] in (ii).
+    \begin{enumerate}[label = (\roman*)]
+        \item $\sum_n P\{\abs{\xi_n} > 1\} < \infty$
+        \item $\sum_n \mathbb{E}[\xi_n ; \abs{\xi_n} \leq 1]$ converges
+        \item $\sum_n \operatorname{Var}[\xi_n ; \abs{\xi_n} \leq 1] < \infty$
+    \end{enumerate}
+\end{theorem}
+
+Before we prove this, we need some things. Say that $m$ is a \emph{median} of the random variable $\xi$ if
+\[ P\{\xi > m\} \vee P\{\xi < m\} \leq \frac{1}{2} \]
+A \emph{symmetrization} of $\xi$ is defined as a random variable of the form $\tilde{\xi} = \xi - \xi'$ with $\xi' \perp\!\!\!\perp \xi$ and $\xi' \overset{d}{=} \xi$. For symmetrized versions of the random variables $\xi_1, \xi_2, \ldots$, we require the same properties for the whole sequences $(\xi_n)$ and $(\xi_n')$.
+
+\begin{lemma}[\textbf{Lemma 21.2:} Symmetrization]
+    Let $\tilde{\xi}$ be the symmetrization of a random variable $\xi$ with median $m$. Then,
+    \[ \frac{1}{2}P\{\abs{\xi - m} > r\} \leq P\{\abs{\tilde{\xi}} > r\} \leq 2P\{\abs{\xi} > r/2\}, \quad r \geq 0 \]
+\end{lemma}
+\begin{proof}{Proof:}
+    We see
+    \begin{align*}
+        \{\xi - m > r,\ \xi' \leq m\} \cup \{\xi - m < -r,\ \xi' \geq m\} &\subseteq \{\abs{\tilde{\xi}} > r\}\\
+        &\subseteq \{\abs{\xi} > r/2\} \cup \{\abs{\xi'} > r/2\}
+    \end{align*}
+    and the previous arrows we want as
+    \[ (\xi - m > r,\ \xi' \leq m) \tt{ or } (\xi - m < -r,\ \xi' \geq m) \implies \abs{\tilde{\xi}} > r \]
+    and
+    \[ \abs{\tilde{\xi}} > r \implies \abs{\xi} > r/2 \tt{ or } \abs{\xi'} > r/2 \]
+    % green text omitted here -- add your own
+    % NOTE (check): to finish, take probabilities. The two events on the left are disjoint, and by independence and P{xi' <= m}, P{xi' >= m} >= 1/2 (m is a median), the left side has probability >= (1/2)(P{xi - m > r} + P{xi - m < -r}) = (1/2) P{|xi - m| > r}. The right side has probability <= P{|xi| > r/2} + P{|xi'| > r/2} = 2 P{|xi| > r/2}, since xi' has the same distribution as xi.
+\end{proof}
+
+\begin{lemma}[\textbf{Lemma 21.3:} Centering]
+    Let the random variables $\xi_1, \xi_2, \ldots$ and constants $c_1, c_2, \ldots$ be such that $\xi_n$ and $\xi_n + c_n$ converge in distribution. Then, $c_n$ converges.
+\end{lemma}
+\begin{proof}{Proof:}
+    % NOTE (check): xi_n + c_n is tight because it converges in distribution (Lemma 18.7); xi_n + c_n -> +-infinity in probability since |xi_n + c_n| >= |c_n| - |xi_n| and (xi_n) is tight too.
+    Assume $\xi_n \xrightarrow{d} \xi$. If $c_n \to \pm\infty$ along some subsequence $N' \subseteq \N$, then clearly $\xi_n + c_n \xrightarrow{P} \pm\infty$ along $N'$, which contradicts the tightness of $\xi_n + c_n$. Thus, the $c_n$ must be bounded.\\
+
+    % FIXED: page has subsequences N_1, N_2 in N; changed to subset.
+    % NOTE (check): the reason xi + a and xi + b have the same distribution is uniqueness of distributional limits (both are limits of xi_n + c_n, along N_1 and N_2), not linearity of expectation. Expectations would only compare them when xi is integrable; see the remark after the proof.
+    Now, assume $c_n \to a$ and $c_n \to b$ along the subsequences $N_1, N_2 \subseteq \N$. Then, $\xi_n + c_n \xrightarrow{d} \xi + a$ along $N_1$ and $\xi_n + c_n \xrightarrow{d} \xi + b$ along $N_2$, so $\xi + a \overset{d}{=} \xi + b$ by linearity of expectation.\\
+
+    % NOTE (check): "impossible unless a = b" because xi + n(b - a) -> +-infinity in probability if a != b, but it has the fixed distribution of xi.
+    Now, we see $\xi \overset{d}{=} \xi + (b - a)$, so in general $\xi + n(b - a) \overset{d}{=} \xi$ for arbitrary $n \in \N$, which is impossible unless $a = b$. Thus, all limit points of $(c_n)$ agree, and $c_n$ converges.
+
+    $\qed$
+\end{proof}
+
+% NOTE (check): this idea only works if xi is integrable (so that E[xi] is finite and monotone convergence applies to f_n = f ^ n, which is still unbounded below). The n(b - a) argument in the proof doesn't need that.
+\textbf{Proof idea} (for $\xi + a \overset{d}{=} \xi + b$): Consider $f : x \mapsto x - a$. Then,
+\[ \mathbb{E}[f(\xi + a)] = \mathbb{E}[\xi] \quand \mathbb{E}[f(\xi + b)] = \mathbb{E}[\xi] + (b - a) \]
+But $f \notin C_b(\R)$. Consider $f_n := f \wedge n \uparrow f$. Then,
+\[ \mathbb{E}[f_n(\xi + a)] \uparrow \mathbb{E}[f(\xi + a)] \quand \mathbb{E}[f_n(\xi + b)] \uparrow \mathbb{E}[f(\xi + b)] \]
+
+\begin{proof}{Proof of Theorem 21.1:}
+    % NOTE (check): the a.s. convergence in the first display is the variance criterion (Lemma 20.4): xi_n' - E xi_n' are independent, mean 0, with summable variances by (iii).
+    Assume conditions (i) through (iii) and define $\xi_n' = \xi_n1\{\abs{\xi_n} \leq 1\}$. By (iii), the series
+    \[ \sum_n(\xi_n' - \mathbb{E}\xi_n') \quad \tt{converges a.s.} \]
+    so by (ii), we see that $\sum_n \xi_n'$ converges as well.\\
+
+    Finally, as $P\{\xi_n \neq \xi_n' \tt{ i.o.}\} = 0$ by (i) and Borel-Cantelli, $\sum_n(\xi_n - \xi_n')$ has a.s.\ finitely many nonzero terms. Thus,
+    \[ \sum_n \xi_n \quad \tt{converges a.s.} \]
+
+    % green text omitted here -- add your own
+    % NOTE (check): the "theorem from before" is Theorem 20.5: sum_{k<=n} xi~_k is the symmetrization of S_n, so it's tight by the symmetrization lemma (S_n converges in distribution, so it's tight). If the conditions of Theorem 20.5 failed, |sum_{k<=n} xi~_k| -> infinity in probability, contradicting tightness.
+    Now, assume $\sum_n \xi_n$ converges in distribution. Then, by the symmetrization lemma, we know $\sum_{k \leq n} \tilde{\xi}_k$ is tight, so
+    \[ \sum_n \tilde{\xi}_n \quad \tt{converges a.s.} \]
+    by the theorem from before. Thus, $\tilde{\xi}_n \to 0$ a.s.\\
+
+    % NOTE (check): this is part (ii) of Borel-Cantelli (the xi~_n are independent): P{|xi~_n| > eps i.o.} = 0 forces sum_n P{|xi~_n| > eps} < infinity.
+    For any $\epsilon > 0$, we see $\sum_n P\{\abs{\tilde{\xi}_n} > \epsilon\} < \infty$ by Borel-Cantelli (part 2). Hence,
+    \[ \sum_n P\{\abs{\xi_n - m_n} > \epsilon\} < \infty \]
+    by the symmetrization lemma, where $m_1, m_2, \ldots$ are the medians of $\xi_1, \xi_2, \ldots$. Using the Borel-Cantelli lemma again, $\xi_n - m_n \to 0$ a.s.\\
+
+    Now, let $c_1, c_2, \ldots$ be arbitrary with $m_n - c_n \to 0$. Then, $\xi_n - c_n \to 0$ a.s.\\
+
+    Let $\eta_n = \xi_n1\{\abs{\xi_n - c_n} \leq 1\}$. Then, $\xi_n = \eta_n$ a.s.\ for all but finitely many $n$, and similarly for the symmetrized variables $\tilde{\xi}_n$ and $\tilde{\eta}_n$. Thus, $\sum_n \tilde{\eta}_n$ converges a.s.\\
+
+    % NOTE (check): Var(eta~_n) = 2 Var(eta_n) because eta_n' is an independent copy of eta_n. The finiteness is Theorem 20.5 (sum eta~_n converges a.s. => sum E[eta~_n^2 ^ 1] < infinity) together with the eta~_n being bounded.
+    Since the $\tilde{\eta}_n$ are bounded and symmetric, from a theorem before, we have
+    \[ \sum_n \operatorname{Var}(\eta_n) = \frac{1}{2}\sum_n \operatorname{Var}(\tilde{\eta}_n) < \infty \]
+    Then,
+    \[ \sum_n(\eta_n - \mathbb{E}\eta_n) \quad \tt{converges a.s.} \]
+    by a theorem from before (Lemma 20.4), which implies that $\sum_n(\xi_n - \mathbb{E}\eta_n)$ converges a.s.\ as well.\\
+
+    % NOTE (check): the centering lemma is applied to the partial sums: sum_{k<=n} xi_k and sum_{k<=n} (xi_k - E eta_k) both converge in distribution, so the constants sum_{k<=n} E eta_k converge.
+    Since $\sum_n \xi_n$ converges in distribution, we see that $\sum_n \mathbb{E}[\eta_n]$ converges by the centering lemma.\\
+
+    % NOTE (check): with c_n = 0, eta_n = xi_n 1{|xi_n| <= 1}. Then (i) is Borel-Cantelli part (ii) (xi_n = eta_n eventually a.s., and the xi_n are independent), (ii) is sum E eta_n converging, and (iii) is sum Var(eta_n) < infinity.
+    In particular, $\mathbb{E}\eta_n \to 0$ and $\eta_n - \mathbb{E}\eta_n \to 0$ a.s., so $\eta_n \to 0$ a.s., and thus $\xi_n \to 0$ a.s. Thus, $m_n \to 0$, so we may take $c_n = 0$, so the conditions follow from the definition of $\eta_n$.
+
+    $\qed$
+\end{proof}
+
+\begin{lemma}[\textbf{Lemma 21.4:} Kronecker's Lemma]
+    If $\sum_n n^{-c}a_n$ converges for some $a_1, a_2, \ldots \in \R$ and $c > 0$, then
+    \[ n^{-c}\sum_{k \leq n} a_k \to 0 \]
+\end{lemma}
