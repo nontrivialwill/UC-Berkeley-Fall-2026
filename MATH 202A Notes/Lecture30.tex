@@ -110,7 +110,6 @@ Note that the product and box topologies are the same on finite products. Howeve
     A topological space $(X, \cal{T})$ is \emph{compact} if every open cover has a finite subcover.
 \end{definition}
 
-% NOTE (check): here the U_alpha are open sets of X (their traces U_alpha cap A are the open sets of A), and it's "iff": A is compact in the subspace topology exactly when every such cover of A has a finite subcover.
 \textbf{Note:} If $A \subseteq X$, $A$ is compact in the subspace topology iff
 \[ A \subseteq \bigcup_{\alpha} U_{\alpha} \implies A \subseteq \bigcup_{i = 1}^{n} U_{\alpha_i} \]
 
@@ -120,7 +119,6 @@ Note that the product and box topologies are the same on finite products. Howeve
 \begin{proof}{Proof:}
     Let $A \subseteq X$ be closed. Then, if $\{U_{\alpha}\}$ is an open cover of $A$, then $\{U_{\alpha}\} \cup \{A^{c}\}$ is an open cover of $X$. Now, we get a finite subcover
     \[ X = \bigcup_{i = 1}^{n} V_{\alpha_i} \implies A \subseteq \bigcup_{i = 1}^{n} V_{\alpha_i} \]
-    % FIXED: page has the V's drawn from {U_alpha} cup {A}; changed A to A^c (that's the set added to make the cover of X, and the one removed next).
     where $V_{\alpha_i}$ is drawn from $\{U_{\alpha}\} \cup \{A^{c}\}$. Removing $A^{c}$ from the collection, we still cover $A$ with a finite subcollection of $\{U_{\alpha}\}$.
 
     $\qed$

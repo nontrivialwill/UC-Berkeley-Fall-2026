@@ -1,0 +1,115 @@
+\tocsection{\textbf{11/16/26 Lecture 32:} Tychonoff's Theorem, One-Point Compactification, and Connectedness}
+
+\textbf{Recall} the definition of the f.i.p., and that we proved $X$ is compact iff every collection of closed sets with the f.i.p.\ has nonempty total intersection. We also showed the existence of a maximal element $\cal{D}$. Now, we prove (2) in the proposition before.
+
+\begin{lemma}[\textbf{Proposition 31.8 (2)}]
+    If $E \subseteq X$ intersects every $D \in \cal{D}$, then it is in $\cal{D}$.
+\end{lemma}
+\begin{proof}{Proof:}
+    We will show $\cal{D} \cup \{E\}$ has the f.i.p. Let $D_1, \ldots, D_n \in \cal{D}$. Now, as $D_1 \cap \cdots \cap D_n \in \cal{D}$ by $(1)$, we see that $E \cap D_1 \cap \cdots \cap D_n \ne \emptyset$. Thus, $\cal{D} \cup \{E\}$ has the f.i.p., so by maximality, $E \in \cal{D}$. 
+
+    $\qed$
+\end{proof}
+
+\begin{theorem}[\textbf{Theorem 32.1:} Tychonoff's Theorem]
+    Let $X = \prod_{\alpha} X_{\alpha}$ with $X_{\alpha}$ compact. Then, $X$ is compact.
+\end{theorem}
+\begin{proof}{Proof:}
+    Let $\cal{C}$ be a collection of subsets of $X$ with the f.i.p.. It is enough to show
+    \[ \bigcap_{C \in \cal{C}} \overline{C} \neq \emptyset \]
+    since then the total intersection of a collection of closed sets is nonempty. By our proposition before, find a maximal collection $\cal{D}$ containing $\cal{C}$. It suffices to show
+    \[ \bigcap_{D \in \cal{D}} \overline{D} \neq \emptyset \]
+    Now, for each $\alpha \in I$,
+    \[ \{\overline{\pi_{\alpha}(D)} \subseteq X_{\alpha} \col D \in \cal{D}\} \]
+    is a collection of closed sets with the f.i.p. Since $X_{\alpha}$ is compact, there exists
+    \[ x_{\alpha} \in \bigcap_{D \in \cal{D}} \overline{\pi_{\alpha}(D)} \]
+    Let $x \in X$ be $x = (x_{\alpha})_{\alpha \in I}$. We want to show $x \in \bigcap_{D \in \cal{D}} \overline{D}$.\\
+
+    
+    \textbf{Claim 1:} $\pi_{\alpha}^{-1}(U_{\alpha}) \cap D \neq \emptyset$ for any $D \in \cal{D}$ and $U_{\alpha}$ open containing $x_{\alpha}$.\\
+
+    \textit{Proof of Claim 1:} Since $x_{\alpha} \in \overline{\pi_{\alpha}(D)}$, $U_{\alpha} \cap \overline{\pi_{\alpha}(D)} \neq \emptyset$. Now, if $U_{\alpha} \cap \pi_{\alpha}(D) = \emptyset$, then $\overline{\pi_{\alpha}(D)} \subseteq U_{\alpha}^{c}$ since $U_{\alpha}^{c}$ is a closed set containing $\pi_{\alpha}(D)$, which contradicts that $U_{\alpha} \cap \overline{\pi_{\alpha}(D)} \neq \emptyset$. Thus, $U_{\alpha} \cap \pi_{\alpha}(D) \neq \emptyset$, so taking preimages proves our claim. $\miniqed$
+
+
+    By the proposition above, we see that $\pi_{\alpha}^{-1}(U_{\alpha}) \in \cal{D}$ for all $U_{\alpha}$ containing $x_{\alpha}$. Now, finite intersections of the $\pi_{\alpha}^{-1}(U_{\alpha})$ are basis elements for the product topology, and $\cal{D}$ is closed under finite intersections, so any basis element containing $x$ is in $\cal{D}$.\\
+
+
+    Let $U$ be open in $X$ containing $x$. Fix a basis element $B$ containing $x$ with $B \subseteq U$, so $B \in \cal{D}$. Thus, for any $D \in \cal{D}$, $D$ has nonempty intersection with $B$ as $\cal{D}$ has the f.i.p., so $U \cap D \neq \emptyset$. Therefore, every open set in $X$ containing $x$ intersects any $D \in \cal{D}$.\\
+    
+    Thus, $x \in \overline{D}$, because if $x \in \overline{D}^{c}$, then as this set is open, we would have $\overline{D}^{c} \cap D \neq \emptyset$, a contradiction.\\
+
+    Thus,
+    \[ x \in \bigcap_{D \in \cal{D}} \overline{D} \]
+
+    $\qed$
+\end{proof}
+
+\subsection*{One-Point Compactification}
+\sectionspace
+
+\begin{example}{\textbf{Example:} Stereographic Projection}
+    Take $\R$, which is not compact. Now, recall the stereographic projection $\phi : S^1 \setminus \{\tt{north pole}\} \to \R$ by
+    \fig{0.5}{Lecture32Fig1}{}
+    We will have $\R \subseteq \R \cup \{\infty\}$ (with $\infty$ ``$= \phi(\tt{North Pole})$''), which is compact, but we will want to formalize this.
+\end{example}
+
+\begin{definition}[\textbf{Definition 32.2:} Local Compactness]
+    A topological space is \emph{locally compact} if every $x \in X$ has an open set $U \ni x$ such that $\overline{U}$ is compact.
+\end{definition}
+
+\begin{example}{\textbf{Example:} $\R$}
+    $\R$ is locally compact with the standard topology.
+\end{example}
+
+\begin{definition}[\textbf{Definition 32.3:} One-Point Compactification]
+    Let $(X, \cal{T})$ be locally compact and Hausdorff. The \emph{one-point compactification} is a topological space $(X^{*}, \cal{T}^{*})$, with
+    \[ X^{*} = X \cup \{\infty\}, \quad \cal{T}^{*} = \cal{T} \cup \{U \subseteq X^{*} \mid U^{c} \subseteq X,\ U^{c} \tt{ is compact}\} \]
+\end{definition}
+
+\begin{example}{\textbf{Example:} $\R^{*}$}
+    \fig{0.7}{Lecture32Fig2}{}
+    The arc around $\infty$ (between the two marks) is open because its complement is a compact interval.
+\end{example}
+
+\begin{lemma}[\textbf{Proposition 32.4}]
+    $\cal{T}^{*}$ is a topology and $(X^{*}, \cal{T}^{*})$ is compact and Hausdorff.
+\end{lemma}
+\begin{proof}{Proof:}
+    Suppose $U \in \cal{T}^{*}$ contains $\infty$. $U^{c}$ is compact in $X$ $\implies$ $U^{c}$ is closed in $X$. Thus, $U \setminus \{\infty\}$ is open in $X$ (in $\cal{T}$), so by a straightforward argument using cases, we see $\cal{T}^{*}$ is a topology.\\
+
+    Now, to show compactness, let $X^{*} = \bigcup_{\alpha} U_{\alpha}$ be an open cover. Say $\infty \in U_{\alpha^{*}}$. Now, $U_{\alpha^{*}}^{c}$ is compact in $X$, and as
+    \[ U_{\alpha^{*}}^{c} \subseteq \bigcup_{\alpha \neq \alpha^{*}} U_{\alpha} \implies U_{\alpha^{*}}^{c} \subseteq \bigcup_{i = 1}^{n} U_{\alpha_i} \implies X^{*} = \bigcup_{i = 1}^{n} U_{\alpha_i} \cup U_{\alpha^{*}} \]
+    which is a finite subcover.\\
+
+    Finally, to show Hausdorff, let $x, y \in X^{*}$ with $x \neq y$. If neither is infinity, we're done as $X$ is Hausdorff. Thus, assume WLOG $y = \infty$. By local compactness, there exists $U \ni x$ such that $\overline{U}$ is compact, so $\overline{U}$ is closed. Then, $(\overline{U})^{c}$ is open, and as $\infty$ is contained in all open sets whose complement is compact, we see that $\infty \in (\overline{U})^{c}$, so $x \in U$ and $y \in (\overline{U})^{c}$.
+
+    $\qed$
+\end{proof}
+
+\subsection*{Connectedness}
+\sectionspace
+
+\begin{definition}[\textbf{Definition 32.5:} Connectedness]
+    A topological space $X$ is \emph{connected} if the only clopen sets are $\emptyset$ and $X$.
+\end{definition}
+
+\begin{lemma}[\textbf{Proposition 32.6}]
+    $X$ is connected iff there are no disjoint nontrivial open sets $U$ and $V$ such that $X = U \sqcup V$.
+\end{lemma}
+\begin{proof}{Proof:}
+   
+    For the forward direction, $U^{c} = V$, so $U$ is open and closed, so $U$ is $\emptyset$ or $X$. Similarly, if $U$ is a clopen set, then as $X = U \sqcup U^{c}$, we see that $U$ and $U^{c}$ are trivial. 
+
+    $\qed$
+\end{proof}
+
+\begin{lemma}[\textbf{Proposition 32.7}]
+    Suppose $X$ is connected and $f : X \to Y$ is continuous. Then, $f(X)$ is connected.
+\end{lemma}
+\begin{proof}{Proof:}
+    Say $f(X) = U \cup V$ with $U, V$ disjoint. Then,
+    \[ X = f^{-1}(U) \cup f^{-1}(V) \]
+    so either $f^{-1}(U)$ or $f^{-1}(V)$ is the empty set, so $U$ or $V$ is empty.
+
+    $\qed$
+\end{proof}
