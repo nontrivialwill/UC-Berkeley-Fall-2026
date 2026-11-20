@@ -1,0 +1,146 @@
+\tocsection{\textbf{11/18/26 Lecture 33:} Connectedness and the Arzel\`a-Ascoli Theorem}
+
+\begin{lemma}[\textbf{Proposition 33.1}]
+    $X$ is connected iff every continuous $f : X \to \Z$ is constant.
+\end{lemma}
+\begin{proof}{Proof:}
+    % NOTE (check): Z has the discrete topology here (as a subspace of R), which is why {n} is open and closed. "It must be constant": for nonempty X, pick x and n = f(x); then f^{-1}({n}) is nonempty, so it's all of X.
+    Let $f : X \to \Z$ be continuous. Then, $f^{-1}(\{n\})$ is open and closed as $\{n\}$ is open and closed, so $f^{-1}(\{n\}) = \emptyset$ or $X$, so then, it must be constant.\\
+
+    Conversely, if $X = U \sqcup V$ for open nontrivial $U$ and $V$, then let $f : X \to \Z$ by
+    \[ f(x) = \left\{\begin{matrix} 1 & x \in U \\ 0 & x \in V \end{matrix}\right. \]
+    This is continuous and non-constant.
+
+    $\qed$
+\end{proof}
+
+\begin{lemma}[\textbf{Corollary 33.2}]
+    Every continuous map $f : [0, 1] \to [0, 1]$ has a fixed point; i.e.\ a $c \in [0, 1]$ such that $f(c) = c$.
+\end{lemma}
+\begin{proof}{Proof:}
+    Suppose $f(x) \neq x$ for all $x \in [0, 1]$. Let $g : [0, 1] \to \R$ by
+    \[ g(x) = \left\{\begin{matrix} 1 & f(x) - x > 0 \\ -1 & f(x) - x < 0 \end{matrix}\right. \]
+    % FIXED: page says "g is well defined & as the sets ... are open"; added "continuous" (that's what the openness gives).
+    % NOTE (check): g takes values in {-1, 1}, so it's a continuous map into Z for Proposition 33.1. The contradiction also needs g to be non-constant, which is where [0, 1] -> [0, 1] comes in: f(0) >= 0 and f(0) != 0 give g(0) = 1, and f(1) <= 1 and f(1) != 1 give g(1) = -1. The sets are open as preimages of (0, infinity) and (-infinity, 0) under the continuous x -> f(x) - x.
+    $g$ is well defined and continuous, as the sets $\{f(x) - x > 0\}$ and $\{f(x) - x < 0\}$ are open. This contradicts that $[0, 1]$ is connected.
+
+    $\qed$
+\end{proof}
+
+\subsection*{The Arzel\`a-Ascoli Theorem}
+\sectionspace
+
+% NOTE (check): sup |f(x)| < infinity is Corollary 31.2 applied to |f| (X compact). d_infinity is then a metric on C(X).
+Let $X$ be a compact Hausdorff space and $C(X)$ be the space of continuous functions $X \to \R$. Now, $\sup_{x \in X} \abs{f(x)} < \infty$ for $f \in C(X)$. Thus, define the metric
+\[ d_{\infty}(f, g) = \sup_{x \in X} \abs{f(x) - g(x)} \]
+Note that convergence in $d_{\infty}$ is the same as uniform convergence.\\
+
+% NOTE (check): the convergent subsequence needs its limit in K.
+We want to know which subsets of $C(X)$ are compact. Recall that in a metric space, $K$ is compact $\iff$ every sequence in $K$ has a convergent subsequence.
+
+\begin{example}{\textbf{Example:} Non-Compact Sets}
+    % NOTE (check): in both, any two different f_n are at d_infinity distance >= 1, so no subsequence is Cauchy. For the first, d_infinity(f_n, f_m) = |n - m|. For the second, the integral over [0, 1] of (sin(pi n x) - sin(pi m x))^2 is 1/2 + 1/2 - 0 = 1 for n != m, so the sup of |sin(pi n x) - sin(pi m x)| is >= 1. The second set is bounded, so what fails is equicontinuity (near x = 0, say).
+    \begin{itemize}
+        \item If $f_n : [0, 1] \to \R$ by $f_n \equiv n$, $\{f_n\}$ is not compact.
+        \item $f_n : [0, 1] \to \R$ by $f_n(x) = \sin(\pi nx)$. $\{f_n\}$ is not compact.
+    \end{itemize}
+\end{example}
+
+\begin{definition}[\textbf{Definition 33.3:} Equicontinuity]
+    % FIXED: page has K in C(X); changed to K subset C(X).
+    A set $K \subseteq C(X)$ is \emph{equicontinuous} if, for every $x \in X$ and $\epsilon > 0$, there is an open set $U \ni x$ such that
+    \[ \abs{f(x) - f(y)} < \epsilon \quad \forall y \in U \tt{ and } f \in K \]
+\end{definition}
+
+\begin{theorem}[\textbf{Theorem 33.4:} Arzel\`a-Ascoli]
+    Let $X$ be a compact Hausdorff space. Then, $K \subseteq C(X)$ is compact iff $K$ satisfies
+    \begin{enumerate}
+        \item $K$ is closed
+        \item For every $x \in X$, $\sup_{f \in K} \abs{f(x)} < \infty$
+        \item $K$ is equicontinuous
+    \end{enumerate}
+\end{theorem}
+\begin{proof}{Proof:}
+    % NOTE (check): C(X) is Hausdorff because it's a metric space (Lecture 31), and then Proposition 31.4 applies.
+    Let $K$ be compact. We know $K$ is closed as $C(X)$ is Hausdorff.\\
+
+    % NOTE (check): ev_x is even 1-Lipschitz: |f(x) - g(x)| <= d_infinity(f, g). Then ev_x(K) is a compact subset of R by Proposition 31.1, so it's bounded.
+    To see 2, take $x \in X$, and define $\operatorname{ev}_x : C(X) \to \R$ by $\operatorname{ev}_x(f) = f(x)$. This is continuous since if $f_n \xrightarrow{d_{\infty}} f$, then $f_n(y) \to f(y)$ for all $y \in X$. Then, as $K$ is compact,
+    \[ \sup_{f \in K} \abs{\operatorname{ev}_x(f)} < \infty \]
+    as $\operatorname{ev}_x(K)$ is compact.\\
+
+    For 3, fix $\epsilon > 0$. Then,
+    \[ K \subseteq \bigcup_{f \in K} B_{\epsilon/3}(f) \]
+    % NOTE (check): U_j is open with x in it since f_j is continuous, so U is an open set containing x, and it doesn't depend on f. For each f the bound holds for y in U_j for its own j, so in particular for all y in U, which is what equicontinuity asks for.
+    % FIXED: page says "for some f in K"; changed to "for any f in K" (the bound has to hold for every f).
+    so by compactness of $K$, we see
+    \[ K \subseteq \bigcup_{j = 1}^{n} B_{\epsilon/3}(f_j) \]
+    For every $f_j$, given $x \in X$, we can find $U_j$ so that $\abs{f_j(x) - f_j(y)} < \epsilon/3$ for all $y \in U_j$.\\
+
+    Let $U = \bigcap_{j = 1}^{n} U_j$. Now, for any $f \in K$, since $d_{\infty}(f, f_j) < \epsilon/3$ for some $f_j$, for $y \in U_j$,
+    \begin{align*}
+        \abs{f(x) - f(y)} &\leq \abs{f(x) - f_j(x)} + \abs{f_j(x) - f_j(y)} + \abs{f_j(y) - f(y)}\\
+        &< \epsilon/3 + \epsilon/3 + \epsilon/3\\
+        &= \epsilon
+    \end{align*}
+
+    % FIXED: page has r(x) = sup over x in K; changed to the sup over f in K.
+    Now, suppose $K$ satisfies 1--3. Let $r(x) = \sup_{f \in K} \abs{f(x)} < \infty$ by 2. Now, let
+    \[ Z = \prod_{x \in X} \overline{B_{r(x)}(0)} \subseteq \R^{X} \quad (\R^X \leftrightarrow \{f : X \to \R\}) \]
+    So elements in $Z$ are $f : X \to \R$ such that $\abs{f(x)} \leq r(x)$ for all $x \in X$.\\
+
+    \textbf{Claim 1:} If $f_n \to f$ in $\R^{X}$, then $f_n \to f$ pointwise.\\
+
+    % NOTE (check): to finish: f_n -> f in the product topology iff each basis set around f eventually contains f_n, and for the sets {g : |g(x_j) - f(x_j)| < eps} that says exactly f_n(x_j) -> f(x_j). So convergence in R^X is the same as pointwise convergence.
+    \textit{Proof of Claim 1:} A basis element is of the form
+    \[ \bigcap_{j = 1}^{n} \{f \in \R^{X} \mid \abs{f(x_j) - a_j} < \epsilon \tt{ for some } x_j, a_j\} \]
+    % green text omitted here -- add your own
+    $\miniqed$
+
+    Now, for every $x \in X$ and $\epsilon > 0$, let $U_{\epsilon}(x) \subseteq X$ be the set given by the equicontinuity of $K$. That is,
+    \[ \abs{f(x) - f(y)} < \epsilon \quad \forall y \in U_{\epsilon}(x),\ f \in K \]
+    Consider $\{f \in Z \col \abs{f(x) - f(y)} \leq \epsilon \ \forall y \in U_{\epsilon}(x)\}$. Now, write this as
+    \[ \bigcap_{y \in U_{\epsilon}(x)} \{f \in Z \col \abs{f(y) - f(x)} \leq \epsilon\} \]
+    % FIXED: page has < in the first set; changed to <= (it's the set in the intersection above, and it has to match [-eps, eps]).
+    Then, as
+    \begin{align*}
+        \{f \in Z \col \abs{f(y) - f(x)} \leq \epsilon\} &= \{f \col -\epsilon \leq f(y) - f(x) \leq \epsilon\}\\
+        &= (\operatorname{ev}_y - \operatorname{ev}_x)^{-1}([-\epsilon, \epsilon])
+    \end{align*}
+    % NOTE (check): Claim 1 alone doesn't give this, since R^X isn't metrizable when X is uncountable, so sequences don't detect continuity. The direct reason: ev_x = pi_x is a projection, which is continuous for the product topology (Proposition 30.5), so ev_y - ev_x is continuous.
+    % FIXED: page writes the closed set as {y in Z : ...}; changed y to f (it's a set of functions).
+    we need to show that $\operatorname{ev}_y - \operatorname{ev}_x$ is continuous on $Z$, but this is true by the first claim. Thus,
+    \[ \{f \in Z \col \abs{f(x) - f(y)} \leq \epsilon \ \forall y \in U_{\epsilon}(x)\} \tt{ is closed} \]
+    % FIXED: page has U_z(y) in the definition of F; changed to U_eps(x).
+    % NOTE (check): two facts used below: K is contained in F (each f in K has |f(x)| <= r(x) and satisfies the equicontinuity bound), and F is contained in C(X) (each f in F has |f(y) - f(x)| <= eps on the open set U_eps(x), for every eps, so it's continuous at x). The second is what makes d_infinity make sense on F.
+    Define
+    \[ \cal{F} = \bigcap_{x \in X}\bigcap_{\epsilon > 0} \{f \in Z \col \abs{f(y) - f(x)} \leq \epsilon \ \forall y \in U_{\epsilon}(x)\} \]
+    We see $\cal{F}$ is closed in $Z$.\\
+
+    Now, define $\operatorname{id} : (\cal{F}, \tt{prod}) \to (\cal{F}, d_{\infty})$. We want to show that the identity is continuous, which means that open sets with respect to $d_{\infty}$ are open with respect to the product topology.\\
+
+    % NOTE (check): U_1 x ... x U_n x Z^infinity is shorthand for a basis set of the product topology (finitely many coordinates restricted), intersected with F.
+    Now, open sets in $(\cal{F}, d_{\infty})$ are unions of balls with respect to $d_{\infty}$, and open sets in $(\cal{F}, \tt{prod})$ are unions of
+    \[ B = U_1 \times \cdots \times U_n \times Z^{\infty} \]
+    % FIXED: page has "basis element B in f"; changed to B containing f.
+    Thus, it suffices to show that, for every $f \in \cal{F}$ and $\epsilon > 0$, there exists a basis element $B \ni f$ of the product topology such that if $g \in B$, $d_{\infty}(f, g) < \epsilon$.\\
+
+    % NOTE (check): the finite cover uses compactness of X (the U_eps(x) are open and x is in U_eps(x)). B is the basis set for the coordinates x_1, ..., x_n (all j at once).
+    Cover $X$ by $U_{\epsilon}(x_1), \ldots, U_{\epsilon}(x_n)$ coming from equicontinuity. Now, define
+    \[ B = \{g \in \cal{F} \col \abs{g(x_j) - f(x_j)} < \epsilon \ \forall j\} \]
+    % NOTE (check): the first and third terms are <= eps because g, f are in F and x is in U_eps(x_j), and the middle one is < eps since g is in B. Taking the sup over x gives d_infinity(f, g) <= 3 eps; running the argument with eps/4 in place of eps gives d_infinity(f, g) < eps as wanted.
+    For $g \in B$ and $x \in X$, find $x_j$ such that $x \in U_{\epsilon}(x_j)$. Then,
+    \begin{align*}
+        \abs{g(x) - f(x)} &\leq \abs{g(x) - g(x_j)} + \abs{g(x_j) - f(x_j)} + \abs{f(x_j) - f(x)}\\
+        &< 3\epsilon
+    \end{align*}
+    as $g, f \in \cal{F}$ and $g \in B$.\\
+
+    % NOTE (check): the step that matters is compactness, not closedness: Z is compact by Tychonoff (each closed ball [-r(x), r(x)] is compact), F is closed in Z, so F is compact in the product topology (Proposition 30.8), and then F = id(F) is compact in d_infinity because id is continuous (Proposition 31.1).
+    Thus, $\cal{F}$ is closed in the product topology and $\operatorname{id}(\cal{F})$ is closed in the uniform topology $d_{\infty}$. Then, as $Z$ is compact by Tychonoff, and $\cal{F} \subseteq Z$ is closed, $\cal{F}$ is compact in the $d_{\infty}$ topology.\\
+
+    % NOTE (check): K is closed in C(X), so it's closed in the subspace F, and a closed subset of a compact set is compact (Proposition 30.8).
+    Then, as $K \subseteq \cal{F}$ and is closed in $d_{\infty}$, it is compact.
+
+    $\qed$
+\end{proof}

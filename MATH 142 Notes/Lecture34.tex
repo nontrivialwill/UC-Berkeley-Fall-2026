@@ -1,0 +1,128 @@
+\tocsection{\textbf{11/18/26 Lecture 34:} Chain Maps and Invariance of Homology}
+
+\begin{lemma}[\textbf{Lemma 33.4}]
+    $\partial \circ s_q = s_{q - 1} \circ \partial$ as maps $C_q(K)$ to $C_{q - 1}(L)$. That is, the following diagram commutes:
+    \begin{center}
+        \begin{tikzcd}
+            C_q(K) \arrow[r, "\partial"] \arrow[d, "s_q"'] & C_{q - 1}(K) \arrow[d, "s_{q - 1}"] \\
+            C_q(L) \arrow[r, "\partial"] & C_{q - 1}(L)
+        \end{tikzcd}
+    \end{center}
+\end{lemma}
+\begin{proof}{Proof:}
+    It is enough to show $\partial \circ s_q(\sigma) = s_{q - 1} \circ \partial(\sigma)$ for $\sigma = (v_0v_1, \ldots, v_q)$. It is clear from the definition that if the $\{s(v_i)\}$ are distinct, then this holds.\\
+
+    Now, suppose $s(v_j) = s(v_k)$ for $j < k$. Then, $s_q(\sigma) = 0$, so $\partial \circ s_q(\sigma) = 0$. Now,
+    \[ \partial\sigma = \sum (-1)^{i}(v_0, \ldots, \widehat{v}_i, \ldots, v_q) \]
+    Taking $s_{q - 1}$ of this, we know that all terms in which $v_j$ and $v_k$ are not removed are sent to zero, so
+    \[ s_{q - 1} \circ \partial\sigma = s_{q - 1}((-1)^{j}(v_0, \ldots, \widehat{v}_j, \ldots, v_q)) + s_{q - 1}((-1)^{k}(v_0, \ldots, \widehat{v}_k, \ldots, v_q)) \]
+    Now, if we have more repetitions, both of the RHS terms vanish. On the other hand, if we don't,
+    \begin{align*}
+        s_{q - 1} \circ \partial\sigma &= (-1)^{j}(s(v_0) \cdots \widehat{s(v_j)} \cdots s(v_q)) + (-1)^{k}(s(v_0) \cdots \widehat{s(v_k)} \cdots s(v_q))\\
+        &= (-1)^{j}(s(v_0) \cdots \widehat{s(v_j)} \cdots s(v_j) \cdots s(v_q)) + (-1)^{k}(s(v_0) \cdots s(v_j) \cdots \widehat{s(v_j)} \cdots s(v_q))\\
+        &= (-1)^{j}(s(v_0) \cdots \widehat{s(v_j)} \cdots s(v_j) \cdots s(v_q))\\
+        &\qquad + (-1)^{k}(-1)^{k - j - 1}(s(v_0) \cdots \widehat{s(v_j)} \cdots s(v_j) \cdots s(v_q))\\
+        &= 0
+    \end{align*}
+    where the $(-1)^{k - j - 1}$ term comes from the $k - j - 1$ transpositions needed to move the $j^{\tt{th}}$ slot to the $k^{\tt{th}}$ slot.
+
+    $\qed$
+\end{proof}
+
+\begin{lemma}[\textbf{Corollary 34.1}]
+    $s_q(Z_q(K)) \subseteq Z_q(L)$ and $s_q(B_q(K)) \subseteq B_q(L)$.
+\end{lemma}
+\begin{proof}{Proof:}
+    If $z \in Z_q(K)$, then
+    \[ \partial \circ s_q(z) = s_{q - 1} \circ \partial(z) = s_{q - 1}(0) = 0 \]
+    so $s_q(z) \in Z_q(L)$.\\
+
+    Similarly, if $y \in B_q(K)$, there exists $x \in C_{q + 1}(K)$ such that $y = \partial x$. Then,
+    \[ s_q(y) = s_q \circ \partial x = \partial \circ s_{q + 1}(x) \]
+    so $s_q(y) \in \operatorname{Im}(\partial : C_{q + 1}(L) \to C_q(L))$.
+
+    $\qed$
+\end{proof}
+
+\begin{lemma}[\textbf{Corollary 34.2}]
+    There is a well defined map $s_{q*} : H_q(K) \to H_q(L)$.
+\end{lemma}
+\begin{proof}{Proof:}
+    Given $h \in H_q(K)$, we can write $h = z + B_q(K)$ for some $z \in Z_q(K)$, so define
+    \[ s_{q*}(h) = s_q(z) + B_q(L) \]
+    This is a well defined map by the above.
+
+    $\qed$
+\end{proof}
+
+\textbf{Notation:}
+\begin{center}
+    \begin{tikzcd}
+        \cdots \arrow[r, "\partial"] & C_q(K) \arrow[r, "\partial"] & C_{q - 1}(K) \arrow[r, "\partial"] & \cdots \arrow[r, "\partial"] & C_1(K) \arrow[r, "\partial"] & C_0(K) \arrow[r] & 0
+    \end{tikzcd}
+\end{center}
+This collection is the \emph{chain complex} $C(K)$ of $K$.
+
+\begin{definition}[\textbf{Definition 34.3:} Chain Maps]
+    A \emph{chain map} $\phi : C(K) \to C(L)$ is a collection of homomorphisms $\phi_q : C_q(K) \to C_q(L)$ so that
+    \[ \partial \circ \phi_q = \phi_{q - 1} \circ \partial \]
+    That is, a collection of homomorphisms so the following diagram commutes:
+    \begin{center}
+        \begin{tikzcd}[column sep = small]
+            \cdots \arrow[r, "\partial"] & C_q(K) \arrow[r, "\partial"] \arrow[d, "\phi_q"] & C_{q - 1}(K) \arrow[r, "\partial"] \arrow[d, "\phi_{q - 1}"] & C_{q - 2}(K) \arrow[r, "\partial"] \arrow[d, "\phi_{q - 2}"] & \cdots \arrow[r, "\partial"] & C_0(K) \arrow[r] \arrow[d, "\phi_0"] & 0 \\
+            \cdots \arrow[r, "\partial"] & C_q(L) \arrow[r, "\partial"] & C_{q - 1}(L) \arrow[r, "\partial"] & C_{q - 2}(L) \arrow[r, "\partial"] & \cdots \arrow[r, "\partial"] & C_0(L) \arrow[r] & 0
+        \end{tikzcd}
+    \end{center}
+    This gives us a map $\phi_* : H(K) \to H(L)$ defined by $\phi_{q*} : H_q(K) \to H_q(L)$.
+\end{definition}
+
+\begin{example}{\textbf{Example:} Simplicial Maps}
+    We saw that if $s : K \to L$ is a simplicial map, $(s_q)$ is a chain map.
+\end{example}
+
+\begin{lemma}[\textbf{Lemma 34.4}]
+    Let $\phi : C(K) \to C(L)$ and $\psi : C(L) \to C(M)$ be maps of chain complexes. Then, $\psi \circ \phi : C(K) \to C(M)$ is a map of chain complexes and
+    \[ (\psi \circ \phi)_* = \psi_* \circ \phi_* : H(K) \to H(M) \]
+\end{lemma}
+
+We will now give a brief overview of 8.5 and 8.6.\\
+
+\textbf{Question:} What kind of invariant is $H_q(K)$? Is it a homeomorphism invariant of $\abs{K}$? Is it a homotopy invariant?\\
+
+Let $K$ be a simplicial complex and $K^1$ be the barycentric subdivision.
+
+\begin{theorem}[\textbf{Theorem 34.5:} Homology of Barycentric Subdivisions]
+    There is a chain map $\lambda : C(K) \to C(K^1)$ so that $\lambda_* : H(K) \to H(K^1)$ is an isomorphism.
+\end{theorem}
+\begin{proof}{Proof Idea:}
+    \fig{0.5}{Lecture34Fig1}{}
+    $\lambda$ sends an oriented $q$-simplex $\sigma \in K$ to the sum of the oriented $q$-simplices (with the induced orientation) in its barycentric subdivision.\\
+
+    
+\end{proof}
+
+Note that, by induction, we can construct an isomorphism $\lambda_* : H(K) \to H(K^{m})$.
+
+\begin{theorem}[\textbf{Theorem 34.6}: Induced Maps on Homology]
+    Any map $f : \abs{K} \to \abs{L}$ induces a homomorphism $f_* : H(K) \to H(L)$.
+\end{theorem}
+\begin{proof}{Proof Idea:}
+    Let $s : K^{m} \to L$ be a simplicial approximation to $f$. Now,
+    \[ H(K) \cong H(K^{m}) \xrightarrow{s_*} H(L) \]
+    We can show this is independent of the choice of simplicial approximation.
+\end{proof}
+
+\begin{theorem}[\textbf{Theorem 34.7}: Homotopy Invariance of Induced Maps]
+    If $f, g : \abs{K} \to \abs{L}$ are homotopic maps, then $f_* = g_* : H(K) \to H(L)$.
+\end{theorem}
+
+\begin{lemma}[\textbf{Corollary 34.8}]
+    If $\abs{K}$ and $\abs{L}$ are homotopy equivalent, then $H(K) \cong H(L)$. In particular, if $\abs{K}$ and $\abs{L}$ are homeomorphic, then $H(K) \cong H(L)$.
+\end{lemma}
+\begin{proof}{Proof:}
+    Say $f : \abs{K} \to \abs{L}$ is a homotopy equivalence, with homotopy inverse $g : \abs{L} \to \abs{K}$. Then, $g \circ f \simeq \operatorname{id}_{\abs{K}}$ and $f \circ g \simeq \operatorname{id}_{\abs{L}}$.\\
+
+    Then, $g_* \circ f_* = \operatorname{id}_{H(K)}$ and $f_* \circ g_* = \operatorname{id}_{H(L)}$ by the theorem above. Thus, $f_* : H(K) \to H(L)$ is an isomorphism.
+
+    $\qed$
+\end{proof}
